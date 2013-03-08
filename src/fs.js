@@ -1,4 +1,4 @@
-(function(App, $) {
+(function(App) {
 	var requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
 
     var defaults = {
@@ -197,4 +197,4 @@ fs.root.getDirectory('music/genres/jazz', {}, function(dirEntry) {
 	}
 
 	window.App.Fs = fs ;
-})(App, jQuery) ;
+})(App) ;

@@ -1,35 +1,51 @@
-describe("Compress", function() {
+describe("App.Store", function() {
 
+  // demonstrates App.Store is created/defined
   it("should exist", function() {
-    expect(App.Compress).toBeDefined() ;
+    expect(App.Store).toBeDefined() ;
   });
 
-  describe("should create a blob", function() {
-    var c = new App.Compress("this is a test") ;
-      player.resume();
-      expect(player.isPlaying).toBeTruthy();
-      expect(player.currentlyPlayingSong).toEqual(song);
+  // demonstrates that the input is stored correctly, as a Blob
+  it("should accept a string as input", function() {
+    var input = "this is a test string" ;
+    var c = new App.Store(input) ;
+
+    // read back the string
+    var retVal = null ;
+    runs( function() {
+        c.read(function(output) {
+            retVal = output
+        })
+    } ) ;
+
+    waitsFor(function() { // latch function
+          return retVal;
+    }, "Reading the data back", 500);
+
+    runs(function() {
+        expect(retVal).toEqual(input)
     });
+
   });
 
-  // demonstrates use of spies to intercept and test method calls
-  it("tells the current song if the user has made it a favorite", function() {
-    spyOn(song, 'persistFavoriteStatus');
+  it("should compress the input string", function() {
+      var input = "this is a test string" ;
+      var c = new App.Store(input) ;
+      var status = false ;
+      runs( function() {
+        c.zip(function(retVal) {
+           status = retVal.status ;
+        }) ;
+      }) ;
+      waitsFor(function() { // latch function
+          return status;
+      }, "Zipping input string", 9000);
+      runs(function() {
+          expect(status).toBeTruthy() ;
+          debugger ;
+      });
 
-    player.play(song);
-    player.makeFavorite();
+  }) ;
 
-    expect(song.persistFavoriteStatus).toHaveBeenCalledWith(true);
-  });
-
-  //demonstrates use of expected exceptions
-  describe("#resume", function() {
-    it("should throw an exception if song is already playing", function() {
-      player.play(song);
-
-      expect(function() {
-        player.resume();
-      }).toThrow("song is already playing");
-    });
-  });
+  //if("should")
 });

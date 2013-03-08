@@ -8,6 +8,11 @@
   <link rel="stylesheet" type="text/css" href="lib/jasmine-1.3.1/jasmine.css">
   <script type="text/javascript" src="lib/jasmine-1.3.1/jasmine.js"></script>
   <script type="text/javascript" src="lib/jasmine-1.3.1/jasmine-html.js"></script>
+  <script src="lib/zip.js/zip.js"></script>
+  <script src="lib/zip.js/zip-fs.js"></script>
+  <script src="lib/zip.js/mime-types.js"></script>
+  <script src="lib/zip.js/inflate.js"></script>
+  <script src="lib/zip.js/deflate.js"></script>
 
   <!-- include source files here... -->
   <script>
@@ -26,7 +31,10 @@
   -->
 
   <script type="text/javascript">
-    (function() {
+      zip.useWebWorkers     = true ;
+      zip.workerScriptsPath = "lib/zip.js/" ;
+
+      (function() {
       var jasmineEnv = jasmine.getEnv();
       jasmineEnv.updateInterval = 1000;
 

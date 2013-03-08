@@ -1,4 +1,4 @@
-(function(App, $) {
+(function(App) {
 	var wsql = function(dbname, size, options) {
 		if ( !options ) options = {} ;
 
@@ -38,4 +38,4 @@
 	}
 
 	App.Wsql = wsql ;
-})(window.App, jQuery) ;
+})(window.App) ;

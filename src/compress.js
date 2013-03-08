@@ -1,6 +1,4 @@
-(function(App, $) {
-	zip.useWebWorkers = true ;
-    zip.workerScriptsPath = "../lib/zip.js/" ;
+(function(App) {
 
     defaults = {
         filename: "compressed.bin"
@@ -8,7 +6,7 @@
 
 	var dc = function(data, options) {
         this.state = "no data" ;
-        this.setData(str, options) ;
+        this.setData(data, options) ;
     }
 
 	dc.prototype = {
@@ -16,35 +14,38 @@
             if ( data ) {
                 this._zippedBlob = null ;
                 this.state = "uncompressed" ;
-                this._blob = typeof(data) == "string" ? new Blob([data], { type: "text/plain"}) : data ;
+                this._inputStr = data ;
             }
             else if ( App.DEBUG )
                 console.warn("Compress.setData() called without any data")
         },
-        getBlob: function() {
-            return this._blob || this._zippedBlob ;
-        },
         getState: function() {
             return this.state ;
         },
+        getSize: function() {
+            return (this.state == "compressed" ?
+                        new Blob([this._inputStr], { type: "text/plain"}) : this._zippedBlob
+                   ).size ;
+        },
 
 		zip: function(callback) {
-            if ( !this._blob )
-                throw new CompressException(this.state == "compressed" ? "Data already compressed" : "No Data defined")
+            if ( !this._inputStr )
+                throw new CompressException(this.state == "compressed" ? "Data already compressed" : "No string defined")
 			// use a BlobWriter to store the zip into a Blob object
             var self = this ;
 			zip.createWriter(new zip.BlobWriter(), function(writer) {
   				// use a TextReader to read the String to add
-  				//writer.add(defaults.filename, new zip.TextReader(str), function() {
-                writer.add(defaults.filename, self._blob, function() {
+  				//writer.add(defaults.filename, new zip.TextReader("bla bla"), function() {
+                //writer.add("filename.txt", new zip.TextReader("bla bla"), function() {
+                writer.add(defaults.filename, new zip.TextReader(self._inputStr) , function() {
     					// onsuccess callback
-				
     					// close the zip writer
     					writer.close(function(blob) {
       						// blob contains the zip file as a Blob object
+                            debugger ;
                             self.state = "compressed" ;
-                            this._blob = null ;
-                            this._zippedBlob = blob ;
+                            self._inputStr = null ; // cleanup
+                            self._zippedBlob = blob ;
 						    callback({status: true}) ;
     					});
   				}, function(currentIndex, totalIndex) {
@@ -58,21 +59,21 @@
 		},
 
 	    read: function(callback, start, end) {
-            if ( !this._zippedBlob )
-                throw new CompressException("No zipped data defined") ;
-
-		    unzipBlob(this._zippedBlob, function(blob){
-                blob = blob.slice(start, end, blob.type );
-                if ( blob.type == "text/plain") {
-       			    var reader = new FileReader();
-                    reader.onloadend = function(e) {
-					    callback(e.target.result) ;
-					} ;
-                    reader.readAsText(blob); //
+            if ( this._inputStr )
+                callback(this._inputStr.substring(start, end)) ;
+            else {
+                if ( ! this._zippedBlob )
+                    callback(null) ;
+                else {
+		            unzipBlob(this._zippedBlob, function(blob){
+                        blob = blob.slice(start, end, blob.type );
+                        if ( blob.type == "text/plain")
+       			           readBlobAsText(blob, callback) ;
+                        else
+                            callback(blob) ;
+			        }) ;
                 }
-                else
-                    callback(blob) ;
-			}) ;
+            }
         }
 	} ;
 
@@ -92,6 +93,14 @@
   		}, onerror);
 	}
 
+    function readBlobAsText(blob, callback) {
+        var reader = new FileReader();
+        reader.onloadend = function(e) {
+            callback(e.target.result) ;
+        } ;
+        reader.readAsText(blob);
+    }
+
 	function onerror(message) {
   		console.error(message);
 	}
@@ -101,6 +110,6 @@
         this.name = "NoDataDefinedException";
     }
 
-	App.Data = compress ;
+	App.Store = dc ;
 
-})(window.App, jQuery) ;
+})(window.App) ;
