@@ -1,0 +1,4 @@
+zipped
+======
+
+Store compressed data
