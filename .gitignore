@@ -1,1 +1,4 @@
 .idea/
+./lib/zip.js/tests/
+lib/zip.js/tests/
+*.swp

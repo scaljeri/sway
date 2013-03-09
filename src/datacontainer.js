@@ -30,7 +30,7 @@
 
 		zip: function(callback) {
             if ( !this._inputStr )
-                throw new CompressException(this.state == "compressed" ? "Data already compressed" : "No string defined")
+                throw new CompressException(this.state == "compressed" ? "Data already compressed" : "No string defined") ;
 			// use a BlobWriter to store the zip into a Blob object
             var self = this ;
 			zip.createWriter(new zip.BlobWriter(), function(writer) {
@@ -110,6 +110,6 @@
         this.name = "NoDataDefinedException";
     }
 
-	App.Store = dc ;
+	App.DataContainer = dc ;
 
 })(window.App) ;

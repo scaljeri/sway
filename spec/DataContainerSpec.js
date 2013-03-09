@@ -1,14 +1,14 @@
-describe("App.Store", function() {
+describe("App.DataContainer", function() {
 
-  // demonstrates App.Store is created/defined
+  // demonstrates App.DataContainer is created/defined
   it("should exist", function() {
-    expect(App.Store).toBeDefined() ;
+    expect(App.DataContainer).toBeDefined() ;
   });
 
   // demonstrates that the input is stored correctly, as a Blob
   it("should accept a string as input", function() {
     var input = "this is a test string" ;
-    var c = new App.Store(input) ;
+    var c = new App.DataContainer(input) ;
 
     // read back the string
     var retVal = null ;
@@ -30,7 +30,7 @@ describe("App.Store", function() {
 
   it("should compress the input string", function() {
       var input = "this is a test string" ;
-      var c = new App.Store(input) ;
+      var c = new App.DataContainer(input) ;
       var status = false ;
       runs( function() {
         c.zip(function(retVal) {
