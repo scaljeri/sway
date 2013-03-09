@@ -1,0 +1,147 @@
+{
+    "project": {},
+    "files": {
+        "src/di.js": {
+            "name": "src/di.js",
+            "modules": {},
+            "classes": {
+                "DI": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/fs.js": {
+            "name": "src/fs.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {},
+    "classes": {
+        "DI": {
+            "name": "DI",
+            "shortname": "DI",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/di.js",
+            "line": 4,
+            "description": "Manages classes and/or instances, with each being accessible by a contract. Two types of contracts are available, a contract for instances and classes\n        For registered classes, instances are created when requested (lazy initialization). Also, dependencies are injected (DI) when these instances are\n        created, facilitating loose coupling between classes.",
+            "is_constructor": 1
+        }
+    },
+    "classitems": [
+        {
+            "file": "src/di.js",
+            "line": 18,
+            "description": "Register a class and setup a contract. {{#crossLink \"ServiceLocator/getDependency:method\"}}{{/crossLink}}\t\nwill return an instance of this class. Depending on the policy, this class can be used as a singleton.",
+            "itemtype": "method",
+            "name": "registerType",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "contract",
+                    "description": "name of the contracta",
+                    "type": "String"
+                },
+                {
+                    "name": "type",
+                    "description": "class name",
+                    "type": "Class"
+                },
+                {
+                    "name": "policy",
+                    "description": "- determines if the class is a singleton (single) or not",
+                    "type": "String",
+                    "optional": true
+                }
+            ],
+            "example": [
+                " \n\tApp.locator.registerType(\"ajax\", App.AJAX) ;\n\tApp.locator.registerType(\"util\", App.Util, \"single\") ;"
+            ],
+            "class": "DI"
+        },
+        {
+            "file": "src/di.js",
+            "line": 37,
+            "description": "Register an instance and setup a contract. For this type of contract {{#crossLink \"ServiceLocator/getDependency:method\"}}{{/crossLink}}\nwill return an array of registered instances",
+            "itemtype": "method",
+            "name": "registerInstance",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "contract",
+                    "description": "- name of the contract.",
+                    "type": "String"
+                },
+                {
+                    "name": "instance",
+                    "description": "- an instance",
+                    "type": "Object"
+                }
+            ],
+            "example": [
+                "\n\tApp.locator.registerInstance(\"tile\", new App.Twitter) ;\n\tApp.locator.registerInstance(\"tile\", new App.Clock) ;"
+            ],
+            "class": "DI"
+        },
+        {
+            "file": "src/di.js",
+            "line": 59,
+            "description": "Retrieve the result of a contract. Depending on the type of contract, one instance or an array of instances is returned",
+            "itemtype": "method",
+            "name": "getDependency",
+            "params": [
+                {
+                    "name": "contract",
+                    "description": "- name of the contract.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "- instance",
+                "type": "Object|Array"
+            },
+            "example": [
+                " \n\t\t\t\tvar tiles = App.locator.getDependency(\"tile\") ;\n\t\t\t\tvar ajax = App.locator.getDependency(\"ajax\") ;"
+            ],
+            "class": "DI"
+        },
+        {
+            "file": "src/fs.js",
+            "line": 51,
+            "description": "FileEntry interface is provided for working with files:\nhttp://www.mosync.com/files/imports/doxygen/latest/html5/filewriter.md.html\nfileEntry.isFile === true\nfileEntry.isDirectory === false\nfileEntry.name\nfileEntry.fullPath\n...\n\nfileEntry.getMetadata(successCallback, opt_errorCallback);\nfileEntry.remove(successCallback, opt_errorCallback);\nfileEntry.moveTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);\nfileEntry.copyTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);\nfileEntry.getParent(successCallback, opt_errorCallback);\nfileEntry.toURI(opt_mimeType);  // Currently not implemented in Google Chrome 9.\n\nfileEntry.file(successCallback, opt_errorCallback);\nfileEntry.createWriter(successCallback, opt_errorCallback);",
+            "class": ""
+        },
+        {
+            "file": "src/fs.js",
+            "line": 84,
+            "description": "http://www.mosync.com/files/imports/doxygen/latest/html5/filereader.md.html",
+            "class": ""
+        },
+        {
+            "file": "src/fs.js",
+            "line": 169,
+            "description": "https://developer.mozilla.org/en-US/docs/DOM/File_API/File_System_API/FileError",
+            "class": ""
+        }
+    ],
+    "warnings": [
+        {
+            "message": "Missing item type\nFileEntry interface is provided for working with files:\nhttp://www.mosync.com/files/imports/doxygen/latest/html5/filewriter.md.html\nfileEntry.isFile === true\nfileEntry.isDirectory === false\nfileEntry.name\nfileEntry.fullPath\n...\n\nfileEntry.getMetadata(successCallback, opt_errorCallback);\nfileEntry.remove(successCallback, opt_errorCallback);\nfileEntry.moveTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);\nfileEntry.copyTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);\nfileEntry.getParent(successCallback, opt_errorCallback);\nfileEntry.toURI(opt_mimeType);  // Currently not implemented in Google Chrome 9.\n\nfileEntry.file(successCallback, opt_errorCallback);\nfileEntry.createWriter(successCallback, opt_errorCallback);",
+            "line": " src/fs.js:51"
+        },
+        {
+            "message": "Missing item type\nhttp://www.mosync.com/files/imports/doxygen/latest/html5/filereader.md.html",
+            "line": " src/fs.js:84"
+        },
+        {
+            "message": "Missing item type\nhttps://developer.mozilla.org/en-US/docs/DOM/File_API/File_System_API/FileError",
+            "line": " src/fs.js:169"
+        }
+    ]
+}
