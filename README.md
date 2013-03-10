@@ -1,6 +1,5 @@
-Zipped
+Zipped [![Build Status](https://travis-ci.org/saberone/javascript-utils.png)](https://travis-ci.org/saberone/javascript-utils)
 ======
 
-Stores compressed data
+Javascript utility classes
 
-[![Build Status](https://travis-ci.org/saberone/javascript-utils.png)](https://travis-ci.org/saberone/javascript-utils)
