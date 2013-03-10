@@ -1,4 +1,4 @@
-(function(App) {
+(function(Ns) {
 	var requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
 
     var defaults = {
@@ -20,7 +20,7 @@
                     dirReader.readEntries(function(entries) {
 					    callback(entries) ;
 
-						if ( App.DEBUG ) {
+						if ( Scaljeri.DEBUG ) {
                             for(var i = 0; i < entries.length; i++) {
 								/* entries[i].isFile === true
                                    entries[i].name == 'log.txt'
@@ -196,5 +196,5 @@ fs.root.getDirectory('music/genres/jazz', {}, function(dirEntry) {
   		console.error('Error: ' + msg);
 	}
 
-	window.App.Fs = fs ;
-})(App) ;
+	Ns.Fs = fs ;
+})(window.Scaljeri) ;

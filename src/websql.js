@@ -1,4 +1,4 @@
-(function(App) {
+(function(Ns) {
 	var wsql = function(dbname, size, options) {
 		if ( !options ) options = {} ;
 
@@ -37,5 +37,5 @@
 		console.dir(e) ;
 	}
 
-	App.Wsql = wsql ;
-})(window.App) ;
+	Ns.Wsql = wsql ;
+})(window.Scaljeri) ;

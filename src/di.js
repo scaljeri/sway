@@ -1,6 +1,6 @@
 "use strict" ;
 
-(function(App) {
+(function(Ns) {
 	/**
 		Manages classes and/or instances, with each being accessible by a contract. Two types of contracts are available, a contract for instances and classes
         For registered classes, instances are created when requested (lazy initialization). Also, dependencies are injected (DI) when these instances are
@@ -97,5 +97,5 @@
        	return this.types[contract].instance ;
     }
 
-	App.DI = di ;
-})(App) ;
+	Ns.DI = di ;
+})(window.Scaljeri) ;
