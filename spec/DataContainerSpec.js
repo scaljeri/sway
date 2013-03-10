@@ -28,7 +28,7 @@ describe("App.DataContainer", function() {
 
   });
 
-  /*it("should compress the input string", function() {
+  it("should compress the input string", function() {
       var input = "this is a test string" ;
       var c = new App.DataContainer(input) ;
       var status = false ;
@@ -42,11 +42,9 @@ describe("App.DataContainer", function() {
       }, "Zipping input string", 9000);
       runs(function() {
           expect(status).toBeTruthy() ;
-          debugger ;
       });
 
   }) ;
-  */
 
   //if("should")
 });
