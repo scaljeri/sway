@@ -16,18 +16,17 @@ files = [
   'lib/zip.js/inflate.js',
   'lib/zip.js/deflate.js',
 
-    'spec/AppInit.js',
-
-    'src/datacontainer.js',
-    'src/fs.js',
-    'src/websql.js',
-    'src/di.js',
-
+  'src/appinit.js',
+  'src/datacontainer.js',
+  'src/fs.js',
+  'src/websql.js',
+  'src/di.js',
 
 
-    'spec/SpecHelper.js',
-    'spec/DataContainerSpec.js',
-    'spec/DISpec.js'
+
+  'spec/SpecHelper.js',
+  'spec/DataContainerSpec.js',
+  'spec/DISpec.js'
 
 ];
 
