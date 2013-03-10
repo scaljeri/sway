@@ -1,4 +1,4 @@
-Zipped [![Build Status](https://travis-ci.org/saberone/javascript-utils.png)](https://travis-ci.org/saberone/javascript-utils)
+Zipped [![Build Status](https://travis-ci.org/scaljeri/javascript-utils.png)](https://travis-ci.org/scaljeri/javascript-utils)
 ======
 
 Javascript utility classes
