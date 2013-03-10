@@ -28,24 +28,24 @@ describe("App.DataContainer", function() {
 
   });
 
-  it("should compress the input string", function() {
-      var input = "this is a test string" ;
-      var c = new App.DataContainer(input) ;
-      var status = false ;
-      runs( function() {
-        c.zip(function(retVal) {
-           status = retVal.status ;
-        }) ;
-      }) ;
-      waitsFor(function() { // latch function
-          return status;
-      }, "Zipping input string", 9000);
-      runs(function() {
-          expect(status).toBeTruthy() ;
-          debugger ;
-      });
-
-  }) ;
+//  it("should compress the input string", function() {
+//      var input = "this is a test string" ;
+//      var c = new App.DataContainer(input) ;
+//      var status = false ;
+//      runs( function() {
+//        c.zip(function(retVal) {
+//           status = retVal.status ;
+//        }) ;
+//      }) ;
+//      waitsFor(function() { // latch function
+//          return status;
+//      }, "Zipping input string", 9000);
+//      runs(function() {
+//          expect(status).toBeTruthy() ;
+//          debugger ;
+//      });
+//
+//  }) ;
 
   //if("should")
 });
