@@ -1,0 +1,13 @@
+{
+  "name": "javascript-utils",
+  "version": "0.0.1",
+  "devDependencies": {
+        "testacular": "~0.6"
+    },
+
+    "scripts": {
+        "test": "./node_modules/.bin/testacular start --single-run --browsers PhantomJS"
+    }
+
+}
+
