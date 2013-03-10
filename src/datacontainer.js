@@ -112,4 +112,4 @@
 
 	App.DataContainer = dc ;
 
-})(window.App) ;
+})(App) ;
