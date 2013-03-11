@@ -1,0 +1,162 @@
+<!doctype html>
+
+<html>
+	<head>
+		<script src="../js/jquery.js"></script>	
+       		<script src="../js/zip.js/zip.js"></script>
+        	<script src="../js/zip.js/zip-fs.js"></script>
+        	<script src="../js/zip.js/mime-types.js"></script>
+        	<script src="../js/zip.js/inflate.js"></script>
+        	<script src="../js/zip.js/deflate.js"></script>
+
+		<script>
+			window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
+			function onInitFs(fs) {
+  				console.log('Opened file system: ' + fs.name);
+				fs.root.getDirectory('/', {}, function(dirEntry){
+  					var dirReader = dirEntry.createReader();
+  					dirReader.readEntries(function(entries) {
+    					for(var i = 0; i < entries.length; i++) {
+      						var entry = entries[i];
+      						if (entry.isDirectory){
+        						console.log('Directory: ' + entry.fullPath);
+      						}
+      						else if (entry.isFile){
+        						console.log('File: ' + entry.fullPath);
+      						}
+    					}
+
+  				}, errorHandler);
+				}, errorHandler);
+				/*
+				fs.root.getFile('log.txt', {create: true, exclusive: true}, function(fileEntry) {
+				debugger ;
+    				// fileEntry.isFile === true
+    				// fileEntry.name == 'log.txt'
+    				// fileEntry.fullPath == '/log.txt'
+				
+  				}, errorHandler);
+				*/
+			}
+
+			function errorHandler(e) {
+  				var msg = '';
+			
+  				switch (e.code) {
+    					case FileError.QUOTA_EXCEEDED_ERR:
+      					msg = 'QUOTA_EXCEEDED_ERR';
+      					break;
+    				case FileError.NOT_FOUND_ERR:
+      					msg = 'NOT_FOUND_ERR';
+      					break;
+    				case FileError.SECURITY_ERR:
+      					msg = 'SECURITY_ERR';
+      					break;
+    				case FileError.INVALID_MODIFICATION_ERR:
+      					msg = 'INVALID_MODIFICATION_ERR';
+      					break;
+    				case FileError.INVALID_STATE_ERR:
+      					msg = 'INVALID_STATE_ERR';
+      					break;
+    				default:
+      					msg = 'Unknown Error';
+      					break;
+  				};
+			
+  				console.log('Error: ' + msg);
+			}
+
+			window.requestFileSystem(window.TEMPORARY, 5*1024*1024 /*5MB*/, onInitFs, errorHandler);
+
+/*
+window.webkitStorageInfo.requestQuota(PERSISTENT, 1024*1024, function(grantedBytes) {
+  window.requestFileSystem(PERSISTENT, grantedBytes, onInitFs, errorHandler);
+}, function(e) {
+  console.log('Error', e);
+});
+*/
+
+   			//zip.useWebWorkers = false ;
+                	zip.workerScriptsPath = "../js/zip.js/" ;
+			var inputBlob = new Blob([ "Lorem ipsum dolor sit amet, consectetuer adipiscing elit..." ], {
+                        	//type : "text/plain"
+                	});
+			var str_array = []
+
+/*
+			for ( var i = 0; i < 100000; i++ )
+				str_array.push("Lorem ipsum dolor sit amet, consectetuer adipiscing elit...!") ;
+
+			// use a BlobWriter to store the zip into a Blob object
+			zip.createWriter(new zip.BlobWriter(), function(writer) {
+			
+  				// use a TextReader to read the String to add
+  				writer.add("filename.txt", new zip.TextReader(str_array.join('')), function() {
+    					// onsuccess callback
+				
+    					// close the zip writer
+    					writer.close(function(blob) {
+      						// blob contains the zip file as a Blob object
+						readBlob(blob) ;		
+					
+    					});
+  				}, function(currentIndex, totalIndex) {
+    					// onprogress callback
+  				});
+			}, function(error) {
+  				// onerror callback
+				console.log("ERROR") ;
+			});
+*/
+	                function readBlob(blob) {
+
+                        	var start = 1, end = 10, type = null ;
+
+                        	//type = type || blob.type;
+
+                        	//blob = blob.slice(start, end, type );
+                        	var reader = new FileReader();
+				console.log("compressed blob size=" + blob.size) ;
+                        	reader.onloadend = function(a) {
+					unzipBlob(blob, function(data){
+						debugger ;
+						console.log("uncompressed blob size=" + data.size) ;
+                        			var reader1 = new FileReader();
+                        			reader1.onloadend = function(b) {
+                                			$('body').html(a.target.result + "<br>" + b.target.result ) ;
+						} ;
+                        			reader1.readAsText(data); //
+					}) ;
+                        	};
+                        	reader.onerror = function(a, b,c, d) {
+                                	alert("issues") ;
+                        	};
+                        	reader.readAsText(blob); //
+                	}
+
+			function unzipBlob(blob, callback) {
+  				// use a zip.BlobReader object to read zipped data stored into blob variable
+  				zip.createReader(new zip.BlobReader(blob), function(zipReader) {
+    					// get entries from the zip file
+    					zipReader.getEntries(function(entries) {
+      						// get data from the first file
+      						entries[0].getData(new zip.BlobWriter("text/plain"), function(data) {
+        						// close the reader and calls callback function with uncompressed data as parameter
+        						zipReader.close();
+        						callback(data);
+      						});
+    					});
+  				}, onerror);
+			}
+
+			function onerror(message) {
+  				console.error(message);
+			}
+
+		</script>
+	</head>
+
+	<body>
+	</body>
+
+</html>

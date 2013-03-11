@@ -1,58 +1,12 @@
-describe("Player", function() {
-    var player;
-    var song;
+describe("Scaljeri.WebSql", function() {
 
     beforeEach(function() {
-        player = new Player();
-        song = new Song();
     });
 
-    it("should be able to play a Song", function() {
-        player.play(song);
-        expect(player.currentlyPlayingSong).toEqual(song);
-
-        //demonstrates use of custom matcher
-        expect(player).toBePlaying(song);
-    });
-
-    describe("when song has been paused", function() {
-        beforeEach(function() {
-            player.play(song);
-            player.pause();
-        });
-
-        it("should indicate that the song is currently paused", function() {
-            expect(player.isPlaying).toBeFalsy();
-
-            // demonstrates use of 'not' with a custom matcher
-            expect(player).not.toBePlaying(song);
-        });
-
-        it("should be possible to resume", function() {
-            player.resume();
-            expect(player.isPlaying).toBeTruthy();
-            expect(player.currentlyPlayingSong).toEqual(song);
-        });
-    });
-
-    // demonstrates use of spies to intercept and test method calls
-    it("tells the current song if the user has made it a favorite", function() {
-        spyOn(song, 'persistFavoriteStatus');
-
-        player.play(song);
-        player.makeFavorite();
-
-        expect(song.persistFavoriteStatus).toHaveBeenCalledWith(true);
-    });
-
-    //demonstrates use of expected exceptions
-    describe("#resume", function() {
-        it("should throw an exception if song is already playing", function() {
-            player.play(song);
-
-            expect(function() {
-                player.resume();
-            }).toThrow("song is already playing");
-        });
+    it("should be able to create a database connection", function() {
+        expect(new Scaljeri.Wsql()).toBeDefined() ;
+        expect(new Scaljeri.Wsql("test-db")).toBeDefined() ;
+        expect(new Scaljeri.Wsql("test-db", 3)).toBeDefined() ;
+        expect(new Scaljeri.Wsql("test-db", 3, { description: "a db for testing only!"})).toBeDefined() ;
     });
 });

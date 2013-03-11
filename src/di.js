@@ -57,14 +57,14 @@
        			},
 			
         	/**
-                	Retrieve the result of a contract. Depending on the type of contract, one instance or an array of instances is returned
+                Retrieve the result of a contract. Depending on the type of contract, one instance or an array of instances is returned
 
-                	@method getDependency
-                	@param {string} contract - name of the contract.
-			@return {object|Array} - instance
-			@example 
-				var tiles = App.locator.getDependency("tile") ;
-				var ajax = App.locator.getDependency("ajax") ;
+                @method getDependency
+                @param {string} contract - name of the contract.
+			    @return {object|Array} - instance
+			    @example
+				    var tiles = App.locator.getDependency("tile") ;
+				    var ajax = App.locator.getDependency("ajax") ;
         	**/
         	getDependency: function(contract)
         	{

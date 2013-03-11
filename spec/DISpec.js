@@ -1,9 +1,10 @@
-describe("The DI", function() {
+describe("Scaljeri.DI", function() {
 
   beforeEach(function() {
 	// create some resources here
 	Scaljeri.di = new Scaljeri.DI() ;
 
+    // mock some classes
 	(function() {
         	var dataInstanceCount = 0 ;
                 Scaljeri.RealDataSource = function() {

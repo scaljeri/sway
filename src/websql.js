@@ -1,8 +1,26 @@
 (function(Ns) {
+    var defaults =  {
+        dbSize: 5
+    } ;
+
 	var wsql = function(dbname, size, options) {
 		if ( !options ) options = {} ;
 
-		this.db = openDatabase(dbname, '1.0', options.description||'my first database', size * 1024 * 1024);
+        //this._size = size||5 ;
+
+        Object.defineProperty(this, '_dbSize',
+            {
+                enumerable: false
+                /*
+                set: function(value) {},
+                get: function() {}
+                */
+            }
+        ) ;
+        this._dbSize = size||defaults.dbSize ;
+        this._db = openDatabase(dbname||'ScajeriDB', '1.0', options.description||'my database', this._dbSize * 1024 * 1024);
+
+        Object.preventExtensions(this) ;
 	} ;
 
 	wsql.prototype = {

@@ -1,4 +1,4 @@
-(function(App) {
+(function(Ns) {
 
     defaults = {
         filename: "compressed.bin"
@@ -23,9 +23,13 @@
             return this.state ;
         },
         getSize: function() {
-            return (this.state == "compressed" ?
+            return this.state == "uncompressed" ? encodeURI(this._inputStr).split(/%..|./).length - 1 : this._zippedBlob.size ;
+
+            /*
+            return (this.state == "uncompressed" ?
                         new Blob([this._inputStr], { type: "text/plain"}) : this._zippedBlob
                    ).size ;
+            */
         },
 
 		zip: function(callback) {
@@ -42,7 +46,6 @@
     					// close the zip writer
     					writer.close(function(blob) {
       						// blob contains the zip file as a Blob object
-                            debugger ;
                             self.state = "compressed" ;
                             self._inputStr = null ; // cleanup
                             self._zippedBlob = blob ;
@@ -66,7 +69,8 @@
                     callback(null) ;
                 else {
 		            unzipBlob(this._zippedBlob, function(blob){
-                        blob = blob.slice(start, end, blob.type );
+                        if ( typeof(start) === "number" && typeof(end) === number )
+                            blob = blob.slice(start, end, blob.type );
                         if ( blob.type == "text/plain")
        			           readBlobAsText(blob, callback) ;
                         else
@@ -110,6 +114,6 @@
         this.name = "NoDataDefinedException";
     }
 
-	App.DataContainer = dc ;
+	Ns.DataContainer = dc ;
 
-})(window.App) ;
+})(window.Scaljeri) ;

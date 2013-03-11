@@ -1,0 +1,33 @@
+http://www.html5rocks.com/en/tutorials/file/xhr2/ :
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/path/to/image.png', true);
+    xhr.responseType = 'blob';
+
+    xhr.onload = function(e) {
+        if (this.status == 200) {
+            // Note: .response instead of .responseText
+            var blob = new Blob([this.response], {type: 'image/png'});
+            ...
+        }
+    };
+
+    xhr.send();
+
+    var xhr = new XMLHttpRequest();
+
+    xhr.open("GET", url, true);
+    xhr.responseType = "arraybuffer";
+    xhr.onload = function(e) {
+        var arraybuffer = xhr.response; // not responseText
+        /* ... */
+    }
+     xhr.send();
+
+
+cast ArrayBuffer to Blob
+
+    var dataView = new DataView(arrayBuffer);
+    var blob = new Blob([dataView], { type: mimeString });
+
+cast Blob to ArrayBuffer
