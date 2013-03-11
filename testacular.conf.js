@@ -72,7 +72,7 @@ autoWatch = true;
 // - PhantomJS
 // - IE (only Windows)
 //browsers = ['PhantomJS'];
-browsers = ['Chrome'];
+browsers = ['Safari'];
 
 
 // If browser does not capture in given timeout [ms], kill it
