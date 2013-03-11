@@ -88,8 +88,11 @@
         	}
 	} ;
 
-    //private helper
+    /* private helper
+        Create a singleton instance
+     */
     function getSingletonInstance(contract) {
+
         if (this.types[contract].instance == undefined)
             {
             	this.types[contract].instance = new this.types[contract].type(this.types.options);
