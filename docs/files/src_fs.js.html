@@ -86,7 +86,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-(function(App) {
+(function(Ns) {
 	var requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
 
     var defaults = {
@@ -108,7 +108,7 @@
                     dirReader.readEntries(function(entries) {
 					    callback(entries) ;
 
-						if ( App.DEBUG ) {
+						if ( Scaljeri.DEBUG ) {
                             for(var i = 0; i &lt; entries.length; i++) {
 								&#x2F;* entries[i].isFile === true
                                    entries[i].name == &#x27;log.txt&#x27;
@@ -284,8 +284,8 @@ fs.root.getDirectory(&#x27;music&#x2F;genres&#x2F;jazz&#x27;, {}, function(dirEn
   		console.error(&#x27;Error: &#x27; + msg);
 	}
 
-	window.App.Fs = fs ;
-})(App) ;
+	Ns.Fs = fs ;
+})(window.Scaljeri) ;
 
     </pre>
 </div>

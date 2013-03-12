@@ -88,7 +88,7 @@
     <pre class="code prettyprint linenums">
 &quot;use strict&quot; ;
 
-(function(App) {
+(function(Ns) {
 	&#x2F;**
 		Manages classes and&#x2F;or instances, with each being accessible by a contract. Two types of contracts are available, a contract for instances and classes
         For registered classes, instances are created when requested (lazy initialization). Also, dependencies are injected (DI) when these instances are
@@ -104,8 +104,8 @@
 
 	di.prototype = {
 		&#x2F;**
-			Register a class and setup a contract. {{#crossLink &quot;ServiceLocator&#x2F;getDependency:method&quot;}}{{&#x2F;crossLink}}	
-			will return an instance of this class. Depending on the policy, this class can be used as a singleton.
+			Register a class and create the contract. For this type of contract use {{#crossLink &quot;DI&#x2F;getDependency:method&quot;}}{{&#x2F;crossLink}}
+			to retrieve the instance. Depending on the policy, this class can be used as a singleton too.
 
 			@method registerType
 			@chainable 
@@ -113,71 +113,105 @@
 			@param {Class} type class name
     			@param {string} [policy] - determines if the class is a singleton (single) or not
 			@example 
-				App.locator.registerType(&quot;ajax&quot;, App.AJAX) ;
-				App.locator.registerType(&quot;util&quot;, App.Util, &quot;single&quot;) ;
+				App.di.registerType(&quot;ajax&quot;, App.AJAX) ;
+				App.di.registerType(&quot;util&quot;, App.Util, &quot;single&quot;) ;
 		**&#x2F;
-        	registerType: function(contract, type, policy, options)
-        	{
-               		this.types[contract] = { policy: policy, type: type, options: options } ;
-			return this ;
-        	},
+        registerType: function(contract, type, policy, options)
+        {
+            this.types[contract] = { policy: policy, type: type, options: options } ;
+		    return this ;
+        },
 			
 		&#x2F;**
-			Register an instance and setup a contract. For this type of contract {{#crossLink &quot;ServiceLocator&#x2F;getDependency:method&quot;}}{{&#x2F;crossLink}}
-			will return an array of registered instances
+			Register an instance and create the contract. This type of contract can hold many instances, which can be
+            retrieved using {{#crossLink &quot;DI&#x2F;getDependencies:method&quot;}}{{&#x2F;crossLink}}
 
 			@method registerInstance
 			@chainable 
 			@param {string} contract - name of the contract.
     			@param {Object} instance - an instance
 			@example
-				App.locator.registerInstance(&quot;tile&quot;, new App.Twitter) ;
-				App.locator.registerInstance(&quot;tile&quot;, new App.Clock) ;
+				App.di.registerInstance(&quot;tile&quot;, new App.Twitter) ;
+				App.di.registerInstance(&quot;tile&quot;, new App.Clock) ;
 		**&#x2F;
-        	registerInstance: function(contract, instance)
-            		{
-                 		if (this.parts[contract] == undefined)
-                		    {
-                    			this.parts[contract] = [];
-               			    }
-               			this.parts[contract].push(instance);
-				return this ;
-       			},
+        registerInstance: function(contract, instance)
+        {
+            if (this.parts[contract] == undefined)
+            {
+                this.parts[contract] = [];
+            }
+            this.parts[contract].push(instance);
+			return this ;
+       	},
 			
-        	&#x2F;**
-                	Retrieve the result of a contract. Depending on the type of contract, one instance or an array of instances is returned
+        &#x2F;**
+           Returns the results for a contract. For both contracts an array is return containing one or more instances
 
-                	@method getDependency
-                	@param {string} contract - name of the contract.
-			@return {object|Array} - instance
-			@example 
-				var tiles = App.locator.getDependency(&quot;tile&quot;) ;
-				var ajax = App.locator.getDependency(&quot;ajax&quot;) ;
-        	**&#x2F;
-        	getDependency: function(contract)
-        	{
-        		if ( this.parts[contract] instanceof Array)
-                	{
-                		&#x2F;&#x2F;instances registered
-                   		return this.parts[contract] ;
-               		}
-               		else if ( this.types[contract] )
-               		{
-               			&#x2F;&#x2F;type registered
-               			if (this.types[contract].policy == &#x27;single&#x27;)
-               			{
-               				&#x2F;&#x2F;use existing instance
-               				return getSingletonInstance.call(this, contract);
-               			} else { &#x2F;&#x2F;create a new instance every time
-               				return new this.types[contract].type(this.types.options);
-               			}
-               		}
-			return null ;
+           @method getDependencies
+           @param {string} contract - name of the contract.
+		   @return {Array} - list of instances
+		   @example
+		    var tiles = App.di.getDependencies(&quot;tile&quot;) ;
+        **&#x2F;
+        getDependencies: function(contract)
+        {
+        	if ( this.parts[contract] instanceof Array)
+           	{
+           		&#x2F;&#x2F;instances registered
+           		return this.parts[contract] ;
         	}
+        	else if ( this.types[contract] )
+        	{
+                &#x2F;&#x2F;type registered
+               	if (this.types[contract].policy == &#x27;single&#x27;)
+               	{
+                    &#x2F;&#x2F;use existing instance
+               		return getSingletonInstance.call(this, contract);
+               	} else &#x2F;&#x2F;create a new instance every time
+                {
+               	    return new this.types[contract].type(this.types.options);
+               	}
+            }
+			return null ;
+        },
+
+        &#x2F;**
+         * Returns only one result for a contract.
+         *
+         * @method getDependency
+         * @param contract
+         * @returns {Object}
+         * @example
+            var ajax = App.di.getDependency(&quot;ajax&quot;) ;
+         *&#x2F;
+        getDependency: function(contract) {
+            var result = this.getDependencies(contract) ;
+            return result &amp;&amp; Array.isArray(result) ? result[0] : result ;
+        },
+
+        &#x2F;**
+            Returns a new instance of the class matched by the contract.
+
+            @method createInstance
+            @param {string} contract - the contract name
+            @param {Array} args - parameters for the constructor
+            @returns {Object}
+        **&#x2F;
+        createInstance: function(contract, args) {
+            var constructor = this
+            function Fake(){
+                constructor.apply(this, args) ;
+            }
+            Fake.prototype = constructor.prototype &#x2F;&#x2F; Fake inhertis from classname
+            return new Fake ;
+        }
 	} ;
 
-    &#x2F;&#x2F;private helper
+    &#x2F;* private helper
+        Create a singleton instance
+     *&#x2F;
     function getSingletonInstance(contract) {
+
         if (this.types[contract].instance == undefined)
             {
             	this.types[contract].instance = new this.types[contract].type(this.types.options);
@@ -185,8 +219,8 @@
        	return this.types[contract].instance ;
     }
 
-	App.DI = di ;
-})(App) ;
+	Ns.DI = di ;
+})(window.Scaljeri) ;
 
     </pre>
 </div>

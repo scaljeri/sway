@@ -38,7 +38,7 @@
         {
             "file": "src/di.js",
             "line": 18,
-            "description": "Register a class and setup a contract. {{#crossLink \"ServiceLocator/getDependency:method\"}}{{/crossLink}}\t\nwill return an instance of this class. Depending on the policy, this class can be used as a singleton.",
+            "description": "Register a class and create the contract. For this type of contract use {{#crossLink \"DI/getDependency:method\"}}{{/crossLink}}\nto retrieve the instance. Depending on the policy, this class can be used as a singleton too.",
             "itemtype": "method",
             "name": "registerType",
             "chainable": 1,
@@ -61,14 +61,14 @@
                 }
             ],
             "example": [
-                " \n\tApp.locator.registerType(\"ajax\", App.AJAX) ;\n\tApp.locator.registerType(\"util\", App.Util, \"single\") ;"
+                " \n\tApp.di.registerType(\"ajax\", App.AJAX) ;\n\tApp.di.registerType(\"util\", App.Util, \"single\") ;"
             ],
             "class": "DI"
         },
         {
             "file": "src/di.js",
             "line": 37,
-            "description": "Register an instance and setup a contract. For this type of contract {{#crossLink \"ServiceLocator/getDependency:method\"}}{{/crossLink}}\nwill return an array of registered instances",
+            "description": "Register an instance and create the contract. This type of contract can hold many instances, which can be\n            retrieved using {{#crossLink \"DI/getDependencies:method\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "registerInstance",
             "chainable": 1,
@@ -85,16 +85,16 @@
                 }
             ],
             "example": [
-                "\n\tApp.locator.registerInstance(\"tile\", new App.Twitter) ;\n\tApp.locator.registerInstance(\"tile\", new App.Clock) ;"
+                "\n\tApp.di.registerInstance(\"tile\", new App.Twitter) ;\n\tApp.di.registerInstance(\"tile\", new App.Clock) ;"
             ],
             "class": "DI"
         },
         {
             "file": "src/di.js",
             "line": 59,
-            "description": "Retrieve the result of a contract. Depending on the type of contract, one instance or an array of instances is returned",
+            "description": "Returns the results for a contract. For both contracts an array is return containing one or more instances",
             "itemtype": "method",
-            "name": "getDependency",
+            "name": "getDependencies",
             "params": [
                 {
                     "name": "contract",
@@ -103,12 +103,57 @@
                 }
             ],
             "return": {
-                "description": "- instance",
-                "type": "Object|Array"
+                "description": "- list of instances",
+                "type": "Array"
             },
             "example": [
-                " \n\t\t\t\tvar tiles = App.locator.getDependency(\"tile\") ;\n\t\t\t\tvar ajax = App.locator.getDependency(\"ajax\") ;"
+                "\n\t\t    var tiles = App.di.getDependencies(\"tile\") ;"
             ],
+            "class": "DI"
+        },
+        {
+            "file": "src/di.js",
+            "line": 90,
+            "description": "Returns only one result for a contract.",
+            "itemtype": "method",
+            "name": "getDependency",
+            "params": [
+                {
+                    "name": "contract",
+                    "description": ""
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "example": [
+                "\n           var ajax = App.di.getDependency(\"ajax\") ;"
+            ],
+            "class": "DI"
+        },
+        {
+            "file": "src/di.js",
+            "line": 104,
+            "description": "Returns a new instance of the class matched by the contract.",
+            "itemtype": "method",
+            "name": "createInstance",
+            "params": [
+                {
+                    "name": "contract",
+                    "description": "- the contract name",
+                    "type": "String"
+                },
+                {
+                    "name": "args",
+                    "description": "- parameters for the constructor",
+                    "type": "Array"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
             "class": "DI"
         },
         {
@@ -131,6 +176,14 @@
         }
     ],
     "warnings": [
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/di.js:90"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/di.js:104"
+        },
         {
             "message": "Missing item type\nFileEntry interface is provided for working with files:\nhttp://www.mosync.com/files/imports/doxygen/latest/html5/filewriter.md.html\nfileEntry.isFile === true\nfileEntry.isDirectory === false\nfileEntry.name\nfileEntry.fullPath\n...\n\nfileEntry.getMetadata(successCallback, opt_errorCallback);\nfileEntry.remove(successCallback, opt_errorCallback);\nfileEntry.moveTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);\nfileEntry.copyTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);\nfileEntry.getParent(successCallback, opt_errorCallback);\nfileEntry.toURI(opt_mimeType);  // Currently not implemented in Google Chrome 9.\n\nfileEntry.file(successCallback, opt_errorCallback);\nfileEntry.createWriter(successCallback, opt_errorCallback);",
             "line": " src/fs.js:51"
