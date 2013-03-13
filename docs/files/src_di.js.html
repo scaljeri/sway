@@ -123,7 +123,7 @@
         },
 			
 		&#x2F;**
-			Register an instance and create the contract. This type of contract can hold many instances, which can be
+			Register an instance and adds it to the contract. This type of contract can hold many instances, which can be
             retrieved using {{#crossLink &quot;DI&#x2F;getDependencies:method&quot;}}{{&#x2F;crossLink}}
 
 			@method registerInstance
@@ -190,15 +190,26 @@
         },
 
         &#x2F;**
-            Returns a new instance of the class matched by the contract.
+            Returns a new instance of the class matched by the contract. If the contract does not exists an error is thrown.
+            If one of the dependencies does not exists, &#x27;null&#x27; is used instead.
 
             @method createInstance
             @param {string} contract - the contract name
-            @param {Array} args - parameters for the constructor
+            @param {Array} dependencies - list of contracts passed to the constructor
             @returns {Object}
+            @example
+                try {
+                    var storage = App.di.createInstance(&quot;data&quot;, [&quot;compress&quot;, &quot;websql&quot;]) ;
+                }
+                catch(e) {
+                    console.log(e.name + &#x27;: &#x27; + e.message) ;
+                }
         **&#x2F;
-        createInstance: function(contract, args) {
-            var constructor = this
+        createInstance: function(contract, dependencies) {
+            if ( !this.types[contract] )
+                throw &#x27;Unknown contract name &quot;&#x27; + contract + &#x27;&quot;&#x27; ;
+
+            var constructor = this.types[contract] ;
             function Fake(){
                 constructor.apply(this, args) ;
             }

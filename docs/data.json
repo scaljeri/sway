@@ -68,7 +68,7 @@
         {
             "file": "src/di.js",
             "line": 37,
-            "description": "Register an instance and create the contract. This type of contract can hold many instances, which can be\n            retrieved using {{#crossLink \"DI/getDependencies:method\"}}{{/crossLink}}",
+            "description": "Register an instance and adds it to the contract. This type of contract can hold many instances, which can be\n            retrieved using {{#crossLink \"DI/getDependencies:method\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "registerInstance",
             "chainable": 1,
@@ -135,7 +135,7 @@
         {
             "file": "src/di.js",
             "line": 104,
-            "description": "Returns a new instance of the class matched by the contract.",
+            "description": "Returns a new instance of the class matched by the contract. If the contract does not exists an error is thrown.\nIf one of the dependencies does not exists, 'null' is used instead.",
             "itemtype": "method",
             "name": "createInstance",
             "params": [
@@ -145,8 +145,8 @@
                     "type": "String"
                 },
                 {
-                    "name": "args",
-                    "description": "- parameters for the constructor",
+                    "name": "dependencies",
+                    "description": "- list of contracts passed to the constructor",
                     "type": "Array"
                 }
             ],
@@ -154,6 +154,9 @@
                 "description": "",
                 "type": "Object"
             },
+            "example": [
+                "\n    try {\n        var storage = App.di.createInstance(\"data\", [\"compress\", \"websql\"]) ;\n    }\n    catch(e) {\n        console.log(e.name + ': ' + e.message) ;\n    }"
+            ],
             "class": "DI"
         },
         {

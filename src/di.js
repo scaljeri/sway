@@ -102,15 +102,26 @@
         },
 
         /**
-            Returns a new instance of the class matched by the contract.
+            Returns a new instance of the class matched by the contract. If the contract does not exists an error is thrown.
+            If one of the dependencies does not exists, 'null' is used instead.
 
             @method createInstance
             @param {string} contract - the contract name
-            @param {Array} args - parameters for the constructor
+            @param {Array} dependencies - list of contracts passed to the constructor
             @returns {Object}
+            @example
+                try {
+                    var storage = App.di.createInstance("data", ["compress", "websql"]) ;
+                }
+                catch(e) {
+                    console.log(e.name + ': ' + e.message) ;
+                }
         **/
-        createInstance: function(contract, args) {
-            var constructor = this
+        createInstance: function(contract, dependencies) {
+            if ( !this.types[contract] )
+                throw 'Unknown contract name "' + contract + '"' ;
+
+            var constructor = this.types[contract] ;
             function Fake(){
                 constructor.apply(this, args) ;
             }

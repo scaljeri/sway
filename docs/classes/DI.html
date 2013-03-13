@@ -254,7 +254,7 @@
             
                 <li class="arg">
                     
-                        <code>args</code>
+                        <code>dependencies</code>
                     
                 </li>
             
@@ -302,7 +302,8 @@
     </div>
 
     <div class="description">
-        <p>Returns a new instance of the class matched by the contract.</p>
+        <p>Returns a new instance of the class matched by the contract. If the contract does not exists an error is thrown.
+If one of the dependencies does not exists, 'null' is used instead.</p>
     </div>
 
     
@@ -330,7 +331,7 @@
             
                 <li class="param">
                     
-                        <code class="param-name">args</code>
+                        <code class="param-name">dependencies</code>
                         <span class="type">Array</span>
                     
 
@@ -338,7 +339,7 @@
 
                     <div class="param-description">
                         <ul>
-<li>parameters for the constructor</li>
+<li>list of contracts passed to the constructor</li>
 </ul>
                     </div>
 
@@ -363,6 +364,20 @@
         </div>
     
 
+    
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+                <pre class="code prettyprint"><code>try {
+    var storage = App.di.createInstance("data", ["compress", "websql"]) ;
+}
+catch(e) {
+    console.log(e.name + ': ' + e.message) ;
+}
+</code></pre>
+            </div>
+        </div>
     
 </div>
 
@@ -657,7 +672,7 @@
     </div>
 
     <div class="description">
-        <p>Register an instance and create the contract. This type of contract can hold many instances, which can be
+        <p>Register an instance and adds it to the contract. This type of contract can hold many instances, which can be
             retrieved using <a href="../classes/DI.html#method_getDependencies" class="crosslink">getDependencies</a></p>
     </div>
 
