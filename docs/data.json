@@ -30,15 +30,15 @@
             "extension_for": [],
             "file": "src/di.js",
             "line": 4,
-            "description": "Manages classes and/or instances, with each being accessible by a contract. Two types of contracts are available, a contract for instances and classes\n        For registered classes, instances are created when requested (lazy initialization). Also, dependencies are injected (DI) when these instances are\n        created, facilitating loose coupling between classes.",
+            "description": "DI makes classes accessible by a contract. Instances are created when requested and dependencies are injected into the constructor,\n        facilitating lazy initialization and loose coupling between classes.",
             "is_constructor": 1
         }
     },
     "classitems": [
         {
             "file": "src/di.js",
-            "line": 18,
-            "description": "Register a class and create the contract. For this type of contract use {{#crossLink \"DI/getDependency:method\"}}{{/crossLink}}\nto retrieve the instance. Depending on the policy, this class can be used as a singleton too.",
+            "line": 16,
+            "description": "Register a class by creating a contract. Use {{#crossLink \"DI/getDependency:method\"}}{{/crossLink}} to obtain\n            an instance from this contract/class. The injected dependencies, if any, will be used as constructor parameter\n            in the order provided by the dependencies array.",
             "itemtype": "method",
             "name": "registerType",
             "chainable": 1,
@@ -49,82 +49,50 @@
                     "type": "String"
                 },
                 {
-                    "name": "type",
-                    "description": "class name",
+                    "name": "class",
+                    "description": "the class bind to this contract",
                     "type": "Class"
                 },
                 {
-                    "name": "policy",
-                    "description": "- determines if the class is a singleton (single) or not",
-                    "type": "String",
+                    "name": "dependencies",
+                    "description": "list of contracts; dependencies of this class",
+                    "type": "Array",
                     "optional": true
-                }
-            ],
-            "example": [
-                " \n\tApp.di.registerType(\"ajax\", App.AJAX) ;\n\tApp.di.registerType(\"util\", App.Util, \"single\") ;"
-            ],
-            "class": "DI"
-        },
-        {
-            "file": "src/di.js",
-            "line": 37,
-            "description": "Register an instance and adds it to the contract. This type of contract can hold many instances, which can be\n            retrieved using {{#crossLink \"DI/getDependencies:method\"}}{{/crossLink}}",
-            "itemtype": "method",
-            "name": "registerInstance",
-            "chainable": 1,
-            "params": [
-                {
-                    "name": "contract",
-                    "description": "- name of the contract.",
-                    "type": "String"
                 },
                 {
-                    "name": "instance",
-                    "description": "- an instance",
-                    "type": "Object"
+                    "name": "options",
+                    "description": "addition setting used to create the instance.",
+                    "type": "Object",
+                    "optional": true,
+                    "props": [
+                        {
+                            "name": "singleton",
+                            "description": "set to TRUE if the class should be treated as a singleton class",
+                            "type": "String"
+                        }
+                    ]
                 }
             ],
             "example": [
-                "\n\tApp.di.registerInstance(\"tile\", new App.Twitter) ;\n\tApp.di.registerInstance(\"tile\", new App.Clock) ;"
+                "\n                App.di.registerType(\"ajax\", App.AJAX) ;\n                App.di.registerType(\"ajax\", App.AJAX, [], { singleton: true }) ;\n                App.di.registerType(\"util\", App.Util, [\"compress\", \"wsql\"], { singleton: true } ) ;"
             ],
             "class": "DI"
         },
         {
             "file": "src/di.js",
-            "line": 59,
-            "description": "Returns the results for a contract. For both contracts an array is return containing one or more instances",
-            "itemtype": "method",
-            "name": "getDependencies",
-            "params": [
-                {
-                    "name": "contract",
-                    "description": "- name of the contract.",
-                    "type": "String"
-                }
-            ],
-            "return": {
-                "description": "- list of instances",
-                "type": "Array"
-            },
-            "example": [
-                "\n\t\t    var tiles = App.di.getDependencies(\"tile\") ;"
-            ],
-            "class": "DI"
-        },
-        {
-            "file": "src/di.js",
-            "line": 90,
-            "description": "Returns only one result for a contract.",
+            "line": 39,
+            "description": "Returns an instance for a contract.",
             "itemtype": "method",
             "name": "getDependency",
             "params": [
                 {
                     "name": "contract",
-                    "description": ""
+                    "description": "name",
+                    "type": "String"
                 }
             ],
             "return": {
-                "description": "",
+                "description": "Class instance",
                 "type": "Object"
             },
             "example": [
@@ -134,7 +102,7 @@
         },
         {
             "file": "src/di.js",
-            "line": 104,
+            "line": 59,
             "description": "Returns a new instance of the class matched by the contract. If the contract does not exists an error is thrown.\nIf one of the dependencies does not exists, 'null' is used instead.",
             "itemtype": "method",
             "name": "createInstance",
@@ -181,11 +149,11 @@
     "warnings": [
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/di.js:90"
+            "line": " src/di.js:39"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/di.js:104"
+            "line": " src/di.js:59"
         },
         {
             "message": "Missing item type\nFileEntry interface is provided for working with files:\nhttp://www.mosync.com/files/imports/doxygen/latest/html5/filewriter.md.html\nfileEntry.isFile === true\nfileEntry.isDirectory === false\nfileEntry.name\nfileEntry.fullPath\n...\n\nfileEntry.getMetadata(successCallback, opt_errorCallback);\nfileEntry.remove(successCallback, opt_errorCallback);\nfileEntry.moveTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);\nfileEntry.copyTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);\nfileEntry.getParent(successCallback, opt_errorCallback);\nfileEntry.toURI(opt_mimeType);  // Currently not implemented in Google Chrome 9.\n\nfileEntry.file(successCallback, opt_errorCallback);\nfileEntry.createWriter(successCallback, opt_errorCallback);",

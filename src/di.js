@@ -2,103 +2,67 @@
 
 (function(Ns) {
 	/**
-		Manages classes and/or instances, with each being accessible by a contract. Two types of contracts are available, a contract for instances and classes
-        For registered classes, instances are created when requested (lazy initialization). Also, dependencies are injected (DI) when these instances are
-        created, facilitating loose coupling between classes.
+		DI makes classes accessible by a contract. Instances are created when requested and dependencies are injected into the constructor,
+        facilitating lazy initialization and loose coupling between classes.
 
 		@class DI
 		@constructor
 	**/
 	var di = function() {
-		this.parts = []; 
-       		this.types = {} 
+        Object.defineProperty(this, '_contracts',
+            {
+                value: {},
+                enumerable: false // hide it
+            }
+        ) ;
 	} ;
 
 	di.prototype = {
 		/**
-			Register a class and create the contract. For this type of contract use {{#crossLink "DI/getDependency:method"}}{{/crossLink}}
-			to retrieve the instance. Depending on the policy, this class can be used as a singleton too.
+			Register a class by creating a contract. Use {{#crossLink "DI/getDependency:method"}}{{/crossLink}} to obtain
+            an instance from this contract/class. The injected dependencies, if any, will be used as constructor parameter
+            in the order provided by the dependencies array.
 
-			@method registerType
+			@method register
 			@chainable 
 			@param {String} contract name of the contracta
-			@param {Class} type class name
-    			@param {string} [policy] - determines if the class is a singleton (single) or not
-			@example 
-				App.di.registerType("ajax", App.AJAX) ;
-				App.di.registerType("util", App.Util, "single") ;
+			@param {Class} class the class bind to this contract
+    		@param {Array} [dependencies] list of contracts; dependencies of this class
+            @param {Object} [options] addition setting used to create the instance.
+                @param {string} options.singleton set to TRUE if the class should be treated as a singleton class
+			@example
+                App.di.registerType("ajax", App.AJAX) ;
+                App.di.registerType("ajax", App.AJAX, [], { singleton: true }) ;
+                App.di.registerType("util", App.Util, ["compress", "wsql"], { singleton: true } ) ;
 		**/
-        registerType: function(contract, type, policy, options)
+        register: function(contract, classRef, dependencies, options)
         {
-            this.types[contract] = { policy: policy, type: type, options: options } ;
+            this._contracts[contract] = { classRef: classRef, dependencies: dependencies, options: options||{} } ;
 		    return this ;
         },
 			
-		/**
-			Register an instance and adds it to the contract. This type of contract can hold many instances, which can be
-            retrieved using {{#crossLink "DI/getDependencies:method"}}{{/crossLink}}
-
-			@method registerInstance
-			@chainable 
-			@param {string} contract - name of the contract.
-    			@param {Object} instance - an instance
-			@example
-				App.di.registerInstance("tile", new App.Twitter) ;
-				App.di.registerInstance("tile", new App.Clock) ;
-		**/
-        registerInstance: function(contract, instance)
-        {
-            if (this.parts[contract] == undefined)
-            {
-                this.parts[contract] = [];
-            }
-            this.parts[contract].push(instance);
-			return this ;
-       	},
-			
         /**
-           Returns the results for a contract. For both contracts an array is return containing one or more instances
-
-           @method getDependencies
-           @param {string} contract - name of the contract.
-		   @return {Array} - list of instances
-		   @example
-		    var tiles = App.di.getDependencies("tile") ;
-        **/
-        getDependencies: function(contract)
-        {
-        	if ( this.parts[contract] instanceof Array)
-           	{
-           		//instances registered
-           		return this.parts[contract] ;
-        	}
-        	else if ( this.types[contract] )
-        	{
-                //type registered
-               	if (this.types[contract].policy == 'single')
-               	{
-                    //use existing instance
-               		return getSingletonInstance.call(this, contract);
-               	} else //create a new instance every time
-                {
-               	    return new this.types[contract].type(this.types.options);
-               	}
-            }
-			return null ;
-        },
-
-        /**
-         * Returns only one result for a contract.
+         * Returns an instance for a contract.
          *
          * @method getDependency
-         * @param contract
-         * @returns {Object}
+         * @param  {string} contract name
+         * @returns {Object} Class instance
          * @example
             var ajax = App.di.getDependency("ajax") ;
-         */
+         **/
         getDependency: function(contract) {
-            var result = this.getDependencies(contract) ;
-            return result && Array.isArray(result) ? result[0] : result ;
+            if ( !this._contracts[contract] ) {
+                return null ;
+            }
+
+            if (this._contracts[contract].options.singleton )
+            {
+                //use existing instance
+                return getSingletonInstance.call(this, contract);
+            } else //create a new instance every time
+            {
+                return this.createInstance(contract, this._contracts[contract].options) ;
+            }
         },
 
         /**
@@ -118,28 +82,28 @@
                 }
         **/
         createInstance: function(contract, dependencies) {
-            if ( !this.types[contract] )
-                throw 'Unknown contract name "' + contract + '"' ;
+            if ( !this._contracts[contract] )
+                throw this.parts[contract] ? 'Cannot create instance for this contract' : 'Unknown contract name "' + contract + '"' ;
 
-            var constructor = this.types[contract] ;
+            var cr = this._contracts[contract].classRef ;
             function Fake(){
-                constructor.apply(this, args) ;
+                cr.apply(this, dependencies) ;
             }
-            Fake.prototype = constructor.prototype // Fake inhertis from classname
+            Fake.prototype = cr.prototype // Fix instanceof
             return new Fake ;
         }
 	} ;
 
     /* private helper
-        Create a singleton instance
+        Create or reuse a singleton instance
      */
     function getSingletonInstance(contract) {
 
-        if (this.types[contract].instance == undefined)
+        if (this._contracts[contract].instance == undefined)
             {
-            	this.types[contract].instance = new this.types[contract].type(this.types.options);
+            	this._contracts[contract].instance = new this._contracts[contract]._contracts(this.types.options);
             }
-       	return this.types[contract].instance ;
+       	return this._contracts[contract].instance ;
     }
 
 	Ns.DI = di ;

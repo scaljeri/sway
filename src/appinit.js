@@ -1,4 +1,7 @@
-window.Scaljeri = {} ;  // namespace
+window.Scaljeri = {
+    VERSION: '1.0alpha'
+    , DEBUG: true
+} ;  // namespace
 
 // zip.js settings
 zip.useWebWorkers     = true ;

@@ -102,9 +102,8 @@
 
 
 <div class="box intro">
-    <p>Manages classes and/or instances, with each being accessible by a contract. Two types of contracts are available, a contract for instances and classes
-        For registered classes, instances are created when requested (lazy initialization). Also, dependencies are injected (DI) when these instances are
-        created, facilitating loose coupling between classes.</p>
+    <p>DI makes classes accessible by a contract. Instances are created when requested and dependencies are injected into the constructor,
+        facilitating lazy initialization and loose coupling between classes.</p>
 </div>
 
 
@@ -196,21 +195,7 @@
                             </li>
                         
                             <li class="index-item method">
-                                <a href="#method_getDependencies">getDependencies</a>
-
-                                
-                                
-                            </li>
-                        
-                            <li class="index-item method">
                                 <a href="#method_getDependency">getDependency</a>
-
-                                
-                                
-                            </li>
-                        
-                            <li class="index-item method">
-                                <a href="#method_registerInstance">registerInstance</a>
 
                                 
                                 
@@ -291,7 +276,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;src_di.js.html#l104"><code>src&#x2F;di.js:104</code></a>
+        <a href="..&#x2F;files&#x2F;src_di.js.html#l59"><code>src&#x2F;di.js:59</code></a>
         
         </p>
 
@@ -382,123 +367,6 @@ catch(e) {
 </div>
 
                 
-                    <div id="method_getDependencies" class="method item">
-    <h3 class="name"><code>getDependencies</code></h3>
-
-    
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        <code>contract</code>
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
-    
-
-    
-        <span class="returns-inline">
-            <span class="type">Array</span>
-        </span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="..&#x2F;files&#x2F;src_di.js.html#l59"><code>src&#x2F;di.js:59</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>Returns the results for a contract. For both contracts an array is return containing one or more instances</p>
-    </div>
-
-    
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-            
-                <li class="param">
-                    
-                        <code class="param-name">contract</code>
-                        <span class="type">String</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <ul>
-<li>name of the contract.</li>
-</ul>
-                    </div>
-
-                    
-                </li>
-            
-            </ul>
-        </div>
-    
-
-    
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                
-                    
-                        <span class="type">Array</span>:
-                    
-                    <ul>
-<li>list of instances</li>
-</ul>
-                
-            </div>
-        </div>
-    
-
-    
-        <div class="example">
-            <h4>Example:</h4>
-
-            <div class="example-content">
-                <pre class="code prettyprint"><code>        var tiles = App.di.getDependencies("tile") ;
-</code></pre>
-            </div>
-        </div>
-    
-</div>
-
-                
                     <div id="method_getDependency" class="method item">
     <h3 class="name"><code>getDependency</code></h3>
 
@@ -545,7 +413,7 @@ catch(e) {
             
         
         
-        <a href="..&#x2F;files&#x2F;src_di.js.html#l90"><code>src&#x2F;di.js:90</code></a>
+        <a href="..&#x2F;files&#x2F;src_di.js.html#l39"><code>src&#x2F;di.js:39</code></a>
         
         </p>
 
@@ -556,7 +424,7 @@ catch(e) {
     </div>
 
     <div class="description">
-        <p>Returns only one result for a contract.</p>
+        <p>Returns an instance for a contract.</p>
     </div>
 
     
@@ -568,13 +436,13 @@ catch(e) {
                 <li class="param">
                     
                         <code class="param-name">contract</code>
-                        <span class="type">Object</span>
+                        <span class="type">String</span>
                     
 
                     
 
                     <div class="param-description">
-                         
+                        <p>name</p>
                     </div>
 
                     
@@ -593,6 +461,7 @@ catch(e) {
                     
                         <span class="type">Object</span>:
                     
+                    Class instance
                 
             </div>
         </div>
@@ -604,131 +473,6 @@ catch(e) {
 
             <div class="example-content">
                 <pre class="code prettyprint"><code>       var ajax = App.di.getDependency("ajax") ;
-</code></pre>
-            </div>
-        </div>
-    
-</div>
-
-                
-                    <div id="method_registerInstance" class="method item">
-    <h3 class="name"><code>registerInstance</code></h3>
-
-    
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        <code>contract</code>
-                    
-                </li>
-            
-                <li class="arg">
-                    
-                        <code>instance</code>
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <span class="flag chainable">chainable</span>
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="..&#x2F;files&#x2F;src_di.js.html#l37"><code>src&#x2F;di.js:37</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>Register an instance and adds it to the contract. This type of contract can hold many instances, which can be
-            retrieved using <a href="../classes/DI.html#method_getDependencies" class="crosslink">getDependencies</a></p>
-    </div>
-
-    
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-            
-                <li class="param">
-                    
-                        <code class="param-name">contract</code>
-                        <span class="type">String</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <ul>
-<li>name of the contract.</li>
-</ul>
-                    </div>
-
-                    
-                </li>
-            
-                <li class="param">
-                    
-                        <code class="param-name">instance</code>
-                        <span class="type">Object</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <ul>
-<li>an instance</li>
-</ul>
-                    </div>
-
-                    
-                </li>
-            
-            </ul>
-        </div>
-    
-
-    
-
-    
-        <div class="example">
-            <h4>Example:</h4>
-
-            <div class="example-content">
-                <pre class="code prettyprint"><code>App.di.registerInstance("tile", new App.Twitter) ;
-App.di.registerInstance("tile", new App.Clock) ;
 </code></pre>
             </div>
         </div>
@@ -751,13 +495,19 @@ App.di.registerInstance("tile", new App.Clock) ;
             
                 <li class="arg">
                     
-                        <code>type</code>
+                        <code>class</code>
                     
                 </li>
             
                 <li class="arg">
                     
-                        <code class="optional">[policy]</code>
+                        <code class="optional">[dependencies]</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[options]</code>
                     
                 </li>
             
@@ -792,7 +542,7 @@ App.di.registerInstance("tile", new App.Clock) ;
             
         
         
-        <a href="..&#x2F;files&#x2F;src_di.js.html#l18"><code>src&#x2F;di.js:18</code></a>
+        <a href="..&#x2F;files&#x2F;src_di.js.html#l16"><code>src&#x2F;di.js:16</code></a>
         
         </p>
 
@@ -803,8 +553,9 @@ App.di.registerInstance("tile", new App.Clock) ;
     </div>
 
     <div class="description">
-        <p>Register a class and create the contract. For this type of contract use <a href="../classes/DI.html#method_getDependency" class="crosslink">getDependency</a>
-to retrieve the instance. Depending on the policy, this class can be used as a singleton too.</p>
+        <p>Register a class by creating a contract. Use <a href="../classes/DI.html#method_getDependency" class="crosslink">getDependency</a> to obtain
+            an instance from this contract/class. The injected dependencies, if any, will be used as constructor parameter
+            in the order provided by the dependencies array.</p>
     </div>
 
     
@@ -830,14 +581,14 @@ to retrieve the instance. Depending on the policy, this class can be used as a s
             
                 <li class="param">
                     
-                        <code class="param-name">type</code>
+                        <code class="param-name">class</code>
                         <span class="type">Class</span>
                     
 
                     
 
                     <div class="param-description">
-                        <p>class name</p>
+                        <p>the class bind to this contract</p>
                     </div>
 
                     
@@ -845,19 +596,50 @@ to retrieve the instance. Depending on the policy, this class can be used as a s
             
                 <li class="param">
                     
-                        <code class="param-name optional">[policy]</code>
-                        <span class="type">String</span>
+                        <code class="param-name optional">[dependencies]</code>
+                        <span class="type">Array</span>
                         <span class="flag optional" title="This parameter is optional.">optional</span>
                     
 
                     
 
                     <div class="param-description">
-                        <ul>
-<li>determines if the class is a singleton (single) or not</li>
-</ul>
+                        <p>list of contracts; dependencies of this class</p>
                     </div>
 
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[options]</code>
+                        <span class="type">Object</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>addition setting used to create the instance.</p>
+                    </div>
+
+                    
+                        <ul class="params-list">
+                            
+                            <li class="param">
+                                
+                                    <code class="param-name">singleton</code>
+                                    <span class="type">String</span>
+                                
+
+                                <div class="param-description">
+                                    <p>set to TRUE if the class should be treated as a singleton class</p>
+                                </div>
+
+                                
+                            </li>
+                            
+                        </ul>
                     
                 </li>
             
@@ -872,8 +654,9 @@ to retrieve the instance. Depending on the policy, this class can be used as a s
             <h4>Example:</h4>
 
             <div class="example-content">
-                <pre class="code prettyprint"><code>App.di.registerType("ajax", App.AJAX) ;
-App.di.registerType("util", App.Util, "single") ;
+                <pre class="code prettyprint"><code>            App.di.registerType("ajax", App.AJAX) ;
+            App.di.registerType("ajax", App.AJAX, [], { singleton: true }) ;
+            App.di.registerType("util", App.Util, ["compress", "wsql"], { singleton: true } ) ;
 </code></pre>
             </div>
         </div>
