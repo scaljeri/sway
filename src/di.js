@@ -19,7 +19,7 @@
 
 	di.prototype = {
 		/**
-			Register a class by creating a contract. Use {{#crossLink "DI/getDependency:method"}}{{/crossLink}} to obtain
+			Register a class by creating a contract. Use {{#crossLink "DI/getInstance:method"}}{{/crossLink}} to obtain
             an instance from this contract/class. The injected dependencies, if any, will be used as constructor parameter
             in the order provided by the dependencies array.
 
@@ -37,20 +37,24 @@
 		**/
         register: function(contract, classRef, dependencies, options)
         {
+            if ( !options && !Array.isArray(dependencies) ) { // fix input
+                options = dependencies ;
+                dependencies = [] ;
+            }
             this._contracts[contract] = { classRef: classRef, dependencies: dependencies, options: options||{} } ;
 		    return this ;
         },
 			
         /**
-         * Returns an instance for a contract.
+         * Returns an instance for the given contract.
          *
-         * @method getDependency
+         * @method geInstancet
          * @param  {string} contract name
          * @returns {Object} Class instance
          * @example
-            var ajax = App.di.getDependency("ajax") ;
+            var ajax = App.di.getInstance("ajax") ;
          **/
-        getDependency: function(contract) {
+        getInstance: function(contract) {
             if ( !this._contracts[contract] ) {
                 return null ;
             }
@@ -58,10 +62,10 @@
             if (this._contracts[contract].options.singleton )
             {
                 //use existing instance
-                return getSingletonInstance.call(this, contract);
+                return getSingletonInstance.call(this._contracts[contract]);
             } else //create a new instance every time
             {
-                return this.createInstance(contract, this._contracts[contract].options) ;
+                return this.createInstance(contract, this._contracts[contract].dependencies) ;
             }
         },
 
@@ -83,27 +87,42 @@
         **/
         createInstance: function(contract, dependencies) {
             if ( !this._contracts[contract] )
-                throw this.parts[contract] ? 'Cannot create instance for this contract' : 'Unknown contract name "' + contract + '"' ;
+                throw 'Unknown contract name "' + contract + '"' ;
 
+            var self = this ;
             var cr = this._contracts[contract].classRef ;
+
             function Fake(){
-                cr.apply(this, dependencies) ;
+                cr.apply(this, createInstanceList.call(self, dependencies)) ;
             }
             Fake.prototype = cr.prototype // Fix instanceof
             return new Fake ;
         }
 	} ;
 
-    /* private helper
-        Create or reuse a singleton instance
-     */
-    function getSingletonInstance(contract) {
+    /* ***** PRIVATE HELPERS ***** */
 
-        if (this._contracts[contract].instance == undefined)
+    /* Create or reuse a singleton instance */
+    function getSingletonInstance() {
+
+        if (this.instance == undefined)
             {
-            	this._contracts[contract].instance = new this._contracts[contract]._contracts(this.types.options);
+            	this.instance = new this.classRef(this.dependencies);
             }
-       	return this._contracts[contract].instance ;
+       	return this.instance ;
+    }
+
+    /* convert a list of contracts into a list of instances */
+    function createInstanceList(dependencies) {
+        if ( !dependencies )
+            return [] ;
+
+        var instances = [] ;
+        dependencies.forEach(function(v, i) {
+                instances.push(this.getInstance(v)) ;
+        }.bind(this)) ;
+
+        return instances ;
     }
 
 	Ns.DI = di ;

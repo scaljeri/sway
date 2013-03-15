@@ -13,16 +13,11 @@ describe("Scaljeri.DI", function() {
 
     Scaljeri.Consumer1 = function(data) {
         this.data = data ;
-        this.foo = function() {
-            alert('consumer 1: ' + this.data.getData());
-        }
     }
 
-    Scaljeri.Consumer2 = function(data) {
+    Scaljeri.Consumer2 = function(data, consumer) {
         this.data = data ;
-        this.foo = function() {
-            alert('consumer 2 ' + this.data.getData());
-        }
+        this.consumer = consumer ;
     }
 
     beforeEach(function() {
@@ -36,31 +31,34 @@ describe("Scaljeri.DI", function() {
     });
 
     it("should be able to setup a contract", function() {
-        expect(Scaljeri.di.getDependency("data")).toBeNull() ;
+        expect(Scaljeri.di.getInstance("data")).toBeNull() ;
 
-        // add data service
+        // create "data" contract
         Scaljeri.di.register("data", Scaljeri.RealDataSource) ;
-        var dataResource = Scaljeri.di.getDependency("data") ;
+        var dataResource = Scaljeri.di.getInstance("data") ;
         expect( dataResource instanceof Scaljeri.RealDataSource).toBeTruthy() ;
-        expect( dataResource ).not.toEqual(Scaljeri.di.getDependency("data")) ;
+        expect( dataResource ).not.toEqual(Scaljeri.di.getInstance("data")) ;
     });
 
     it("should provide a signleton instance", function() {
-        expect(Scaljeri.di.getDependency("data")).toBeNull() ;
+        expect(Scaljeri.di.getInstance("data")).toBeNull() ;
 
-        Scaljeri.di.register("data", Scaljeri.RealDataSource, "single") ;
-        var dataResource = Scaljeri.di.getDependency("data") ;
+        Scaljeri.di.register("data", Scaljeri.RealDataSource, { singleton: true } ) ;
+        var dataResource = Scaljeri.di.getInstance("data") ;
         expect( dataResource instanceof Scaljeri.RealDataSource).toBe(true) ;
-        expect( dataResource ).toEqual(Scaljeri.di.getDependency("data")) ;
+        expect( dataResource ).toEqual(Scaljeri.di.getInstance("data")) ;
     });
 
     // test createInstance
     it("should create an instance with given dependencies", function() {
-        Scaljeri.di.register("data", Scaljeri.RealDataSource, "single") ;
+        Scaljeri.di.register("data", Scaljeri.RealDataSource, { singleton: true } ) ;
         Scaljeri.di.register("cons1", Scaljeri.Consumer1) ;
-        //Scaljeri.di.registerInstance("cons2", new Scaljeri.Consumer2()) ;
+        Scaljeri.di.register("cons2", Scaljeri.Consumer2) ;
 
         expect(Scaljeri.di.createInstance.bind(Scaljeri.di, "unknown", ["data", "cons1"])).toThrow('Unknown contract name "unknown"') ;
-        expect(Scaljeri.di.createInstance.bind(Scaljeri.di, "cons2", ["data", "cons1"])).toThrow('Cannot create instance for this contract') ;
+        var instance = Scaljeri.di.createInstance.call(Scaljeri.di, "cons2", ["data", "cons1"]) ;
+        expect( instance.data instanceof Scaljeri.RealDataSource).toBeTruthy() ;
+        expect( instance.consumer instanceof Scaljeri.Consumer1).toBeTruthy() ;
+        expect( instance.data === Scaljeri.di.getInstance("data")).toBeTruthy() ;
     }) ;
 });
