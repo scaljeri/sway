@@ -4,9 +4,20 @@
         filename: "compressed.bin"
     }
 
-	var dc = function(data, options) {
+    /**
+     * This class manages string data, like stringified JSON. If defined, the persistance dependency can be used to persist the data somewhere.
+     * Depending on the filter, they can be applied as a before filter and/or after filter, when the data is loaded from the persistance
+     * dependency.
+     *
+     * @class Data
+     * @param {Object}[persistence] dependency which can persist the data
+     * @param {Array} [filterList] list of filter
+     */
+	var dc = function(persistance, filterList) {
+
         this.state = "no data" ;
-        this.setData(data, options) ;
+        this.persistance = persistance ;
+        this.filter = filterList ;
     }
 
 	dc.prototype = {
