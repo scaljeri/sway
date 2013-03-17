@@ -20,7 +20,7 @@
                     dirReader.readEntries(function(entries) {
 					    callback(entries) ;
 
-						if ( Scaljeri.DEBUG ) {
+						if ( Sway.DEBUG ) {
                             for(var i = 0; i < entries.length; i++) {
 								/* entries[i].isFile === true
                                    entries[i].name == 'log.txt'
@@ -197,4 +197,4 @@ fs.root.getDirectory('music/genres/jazz', {}, function(dirEntry) {
 	}
 
 	Ns.Fs = fs ;
-})(window.Scaljeri) ;
+})(window.Sway) ;

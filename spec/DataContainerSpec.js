@@ -1,15 +1,15 @@
-describe("Scaljeri.DataContainer", function() {
+describe("Sway.DataContainer", function() {
 
-  // demonstrates Scaljeri.DataContainer is created/defined
+  // demonstrates Sway.DataContainer is created/defined
   it("should exist", function() {
-    expect(Scaljeri.DataContainer).toBeDefined() ;
+    expect(Sway.DataContainer).toBeDefined() ;
   });
 
   // demonstrates that the input is stored correctly, as a Blob
   it("should accept a string as input", function() {
     var input = "this is a test string" ;
 
-    var c = new Scaljeri.DataContainer(input) ;
+    var c = new Sway.DataContainer(input) ;
     expect(c.getSize()).toEqual(21) ;
 
     // read back the string
@@ -30,7 +30,7 @@ describe("Scaljeri.DataContainer", function() {
   });
 
   it("should be able to calculate the number of bytes of the string", function() {
-       var c = new Scaljeri.DataContainer("This is a test string") ; // 21 bytes
+       var c = new Sway.DataContainer("This is a test string") ; // 21 bytes
        expect(c.getSize()).toEqual(21) ; // http://mothereff.in/byte-counter
   }) ;
 
@@ -38,7 +38,7 @@ describe("Scaljeri.DataContainer", function() {
       var input = [], i ;
       for( i = 0; i < 10000; i = i + 1 )
            input.push("this is part of a huge string!!") ;
-      var c = new Scaljeri.DataContainer(input.join('')) ;
+      var c = new Sway.DataContainer(input.join('')) ;
       var size = c.getSize() ; // size in bytes of the uncompressed string
 
       var retval = null ;
@@ -61,7 +61,7 @@ describe("Scaljeri.DataContainer", function() {
 
   it("should be able to uncompress the data", function() {
       var input = "this is a test string" ;
-      var c = new Scaljeri.DataContainer(input) ;
+      var c = new Sway.DataContainer(input) ;
 
       var retval = null ;
       runs( function() {

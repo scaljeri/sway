@@ -1,64 +1,64 @@
-describe("Scaljeri.DI", function() {
+describe("Sway.DI", function() {
     // mock some classes
     (function() {
         var dataInstanceCount = 0 ;
-        Scaljeri.RealDataSource = function() {
+        Sway.RealDataSource = function() {
             this.instanceId = ++dataInstanceCount;
         } ;
 
-        Scaljeri.RealDataSource.prototype.getData = function() {
+        Sway.RealDataSource.prototype.getData = function() {
             return "this is data coming from the realDataSource (#" + this.instanceId + ")";
         }
     })() ;
 
-    Scaljeri.Consumer1 = function(data) {
+    Sway.Consumer1 = function(data) {
         this.data = data ;
     }
 
-    Scaljeri.Consumer2 = function(data, consumer) {
+    Sway.Consumer2 = function(data, consumer) {
         this.data = data ;
         this.consumer = consumer ;
     }
 
     beforeEach(function() {
 	    // create DI
-	    Scaljeri.di = new Scaljeri.DI() ;
+	    Sway.di = new Sway.DI() ;
     });
 
     it("should exist", function() {
-        expect(Scaljeri.DI).toBeDefined() ; // the class
-        expect(Scaljeri.di).toBeDefined() ; // the instance
+        expect(Sway.DI).toBeDefined() ; // the class
+        expect(Sway.di).toBeDefined() ; // the instance
     });
 
     it("should be able to setup a contract", function() {
-        expect(Scaljeri.di.getInstance("data")).toBeNull() ;
+        expect(Sway.di.getInstance("data")).toBeNull() ;
 
         // create "data" contract
-        Scaljeri.di.register("data", Scaljeri.RealDataSource) ;
-        var dataResource = Scaljeri.di.getInstance("data") ;
-        expect( dataResource instanceof Scaljeri.RealDataSource).toBeTruthy() ;
-        expect( dataResource ).not.toEqual(Scaljeri.di.getInstance("data")) ;
+        Sway.di.register("data", Sway.RealDataSource) ;
+        var dataResource = Sway.di.getInstance("data") ;
+        expect( dataResource instanceof Sway.RealDataSource).toBeTruthy() ;
+        expect( dataResource ).not.toEqual(Sway.di.getInstance("data")) ;
     });
 
     it("should provide a signleton instance", function() {
-        expect(Scaljeri.di.getInstance("data")).toBeNull() ;
+        expect(Sway.di.getInstance("data")).toBeNull() ;
 
-        Scaljeri.di.register("data", Scaljeri.RealDataSource, { singleton: true } ) ;
-        var dataResource = Scaljeri.di.getInstance("data") ;
-        expect( dataResource instanceof Scaljeri.RealDataSource).toBe(true) ;
-        expect( dataResource ).toEqual(Scaljeri.di.getInstance("data")) ;
+        Sway.di.register("data", Sway.RealDataSource, { singleton: true } ) ;
+        var dataResource = Sway.di.getInstance("data") ;
+        expect( dataResource instanceof Sway.RealDataSource).toBe(true) ;
+        expect( dataResource ).toEqual(Sway.di.getInstance("data")) ;
     });
 
     // test createInstance
     it("should create an instance with given dependencies", function() {
-        Scaljeri.di.register("data", Scaljeri.RealDataSource, { singleton: true } ) ;
-        Scaljeri.di.register("cons1", Scaljeri.Consumer1) ;
-        Scaljeri.di.register("cons2", Scaljeri.Consumer2) ;
+        Sway.di.register("data", Sway.RealDataSource, { singleton: true } ) ;
+        Sway.di.register("cons1", Sway.Consumer1) ;
+        Sway.di.register("cons2", Sway.Consumer2) ;
 
-        expect(Scaljeri.di.createInstance.bind(Scaljeri.di, "unknown", ["data", "cons1"])).toThrow('Unknown contract name "unknown"') ;
-        var instance = Scaljeri.di.createInstance.call(Scaljeri.di, "cons2", ["data", "cons1"]) ;
-        expect( instance.data instanceof Scaljeri.RealDataSource).toBeTruthy() ;
-        expect( instance.consumer instanceof Scaljeri.Consumer1).toBeTruthy() ;
-        expect( instance.data === Scaljeri.di.getInstance("data")).toBeTruthy() ;
+        expect(Sway.di.createInstance.bind(Sway.di, "unknown", ["data", "cons1"])).toThrow('Unknown contract name "unknown"') ;
+        var instance = Sway.di.createInstance.call(Sway.di, "cons2", ["data", "cons1"]) ;
+        expect( instance.data instanceof Sway.RealDataSource).toBeTruthy() ;
+        expect( instance.consumer instanceof Sway.Consumer1).toBeTruthy() ;
+        expect( instance.data === Sway.di.getInstance("data")).toBeTruthy() ;
     }) ;
 });

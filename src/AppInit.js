@@ -1,4 +1,22 @@
-window.Scaljeri = {} ;  // namespace
+/**
+ * Namespace
+ * @class Sway
+ */
+window.Sway = window.Sway || {} ;
+
+/**
+  * Version of the framework
+  * @property VERSION
+  * @type String
+  **/
+window.Sway.VERSION = '1.0alpha'
+
+/**
+  * If TRUE, debugging is enabled. In PRODUCTION this property should be set to FALSE!!
+  * @property DEBUG
+  * @type boolean
+  **/
+window.Sway.DEBUG = true ;
 
 // zip.js settings
 zip.useWebWorkers     = true ;

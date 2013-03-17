@@ -24,9 +24,12 @@
 	} ;
 
 	wsql.prototype = {
-		createTable: function(tablename, success, error) {
+		createTable: function(tablename, fields, success, error) {
+            if ( !fields ) {
+                fields = '(key text, data blob)' ;
+            }
 			this.transaction(function(tx) {
-                                tx.executeSql('CREATE TABLE if not exists ' + tablename + '(key text, data blob)');
+                tx.executeSql('CREATE TABLE if not exists ' + tablename + ' ' + fields) ;
 			}, success, error||errorHandler ) ;
 		},
 		dropTable: function(tablename, success, error) {
@@ -35,8 +38,7 @@
 			}, callback, error||errorHandler ) ;
 		},
 		transaction: function(callback, success, error) {
-                        this.db.transaction(callback, success, error||errorHandler)
-
+            this.db.transaction(callback, success, error||errorHandler)
 		},
 		insert: function(tablename, values, callback, tx) {
 			if ( tx )
@@ -56,4 +58,4 @@
 	}
 
 	Ns.Wsql = wsql ;
-})(window.Scaljeri) ;
+})(window.Sway) ;

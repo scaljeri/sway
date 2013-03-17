@@ -33,7 +33,7 @@ files = [
 
 // list of files to exclude
 exclude = [
-    'spec/FsSpec.js',
+    'spec/FsSpec.js'
 ];
 
 

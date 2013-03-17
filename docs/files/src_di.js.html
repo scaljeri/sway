@@ -41,7 +41,19 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="..&#x2F;classes/DI.html">DI</a></li>
+                <li><a href="..&#x2F;classes/Sway.html">Sway</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.data.Field.html">Sway.data.Field</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.data.Record.html">Sway.data.Record</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.DI.html">Sway.DI</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.EventHub.html">Sway.EventHub</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.filter.Compress.html">Sway.filter.Compress</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.filter.Encrypt.html">Sway.filter.Encrypt</a></li>
             
             </ul>
 
@@ -93,20 +105,25 @@
 		DI makes classes accessible by a contract. Instances are created when requested and dependencies are injected into the constructor,
         facilitating lazy initialization and loose coupling between classes.
 
-		@class DI
+		@class Sway.DI
 		@constructor
 	**&#x2F;
 	var di = function() {
-   		this.types = {}
+        Object.defineProperty(this, &#x27;_contracts&#x27;,
+            {
+                value: {},
+                enumerable: false &#x2F;&#x2F; hide it
+            }
+        ) ;
 	} ;
 
 	di.prototype = {
 		&#x2F;**
-			Register a class by creating a contract. Use {{#crossLink &quot;DI&#x2F;getDependency:method&quot;}}{{&#x2F;crossLink}} to obtain
+			Register a class by creating a contract. Use {{#crossLink &quot;DI&#x2F;getInstance:method&quot;}}{{&#x2F;crossLink}} to obtain
             an instance from this contract&#x2F;class. The injected dependencies, if any, will be used as constructor parameter
             in the order provided by the dependencies array.
 
-			@method registerType
+			@method register
 			@chainable 
 			@param {String} contract name of the contracta
 			@param {Class} class the class bind to this contract
@@ -118,29 +135,37 @@
                 App.di.registerType(&quot;ajax&quot;, App.AJAX, [], { singleton: true }) ;
                 App.di.registerType(&quot;util&quot;, App.Util, [&quot;compress&quot;, &quot;wsql&quot;], { singleton: true } ) ;
 		**&#x2F;
-        registerType: function(contract, classRef, dependencies, options)
+        register: function(contract, classRef, dependencies, options)
         {
-            this.types[contract] = { policy: policy, className: type, options: options } ;
+            if ( !options &amp;&amp; !Array.isArray(dependencies) ) { &#x2F;&#x2F; fix input
+                options = dependencies ;
+                dependencies = [] ;
+            }
+            this._contracts[contract] = { classRef: classRef, dependencies: dependencies, options: options||{} } ;
 		    return this ;
         },
 			
         &#x2F;**
-         * Returns an instance for a contract.
+         * Returns an instance for the given contract.
          *
-         * @method getDependency
+         * @method geInstancet
          * @param  {string} contract name
          * @returns {Object} Class instance
          * @example
-            var ajax = App.di.getDependency(&quot;ajax&quot;) ;
+            var ajax = App.di.getInstance(&quot;ajax&quot;) ;
          **&#x2F;
-        getDependency: function(contract) {
-            if (this.types[contract].policy == &#x27;single&#x27;)
+        getInstance: function(contract) {
+            if ( !this._contracts[contract] ) {
+                return null ;
+            }
+
+            if (this._contracts[contract].options.singleton )
             {
                 &#x2F;&#x2F;use existing instance
-                return getSingletonInstance.call(this, contract);
+                return getSingletonInstance.call(this._contracts[contract]);
             } else &#x2F;&#x2F;create a new instance every time
             {
-                return this.createInstance(this.types[contract].type(this.types.options);
+                return this.createInstance(contract, this._contracts[contract].dependencies) ;
             }
         },
 
@@ -161,32 +186,57 @@
                 }
         **&#x2F;
         createInstance: function(contract, dependencies) {
-            if ( !this.types[contract] )
-                throw this.parts[contract] ? &#x27;Cannot create instance for this contract&#x27; : &#x27;Unknown contract name &quot;&#x27; + contract + &#x27;&quot;&#x27; ;
+            if ( !this._contracts[contract] )
+                throw &#x27;Unknown contract name &quot;&#x27; + contract + &#x27;&quot;&#x27; ;
 
-            var constructor = this.types[contract] ;
+            var self = this ;
+            var cr = this._contracts[contract].classRef ;
+
             function Fake(){
-                constructor.apply(this, args) ;
+                cr.apply(this, createInstanceList.call(self, dependencies)) ;
             }
-            Fake.prototype = constructor.prototype &#x2F;&#x2F; Fake inhertis from classname
+            Fake.prototype = cr.prototype &#x2F;&#x2F; Fix instanceof
             return new Fake ;
         }
 	} ;
 
-    &#x2F;* private helper
-        Create a singleton instance
-     *&#x2F;
-    function getSingletonInstance(contract) {
+    &#x2F;* ***** PRIVATE HELPERS ***** *&#x2F;
 
-        if (this.types[contract].instance == undefined)
+    &#x2F;* Create or reuse a singleton instance *&#x2F;
+    function getSingletonInstance() {
+
+        if (this.instance == undefined)
             {
-            	this.types[contract].instance = new this.types[contract].type(this.types.options);
+            	this.instance = new this.classRef(this.dependencies);
             }
-       	return this.types[contract].instance ;
+       	return this.instance ;
+    }
+
+    &#x2F;* convert a list of contracts into a list of instances
+    * A dependency list can contain arrays with dependencies too:
+    *    [&quot;depA&quot;, [&quot;depB&quot;, &quot;depC&quot;], &quot;depE&quot;]
+    * In this case, the constructor would, for example, look like this:
+    *    function constructor(instance, array, instance) { .. }
+    * *&#x2F;
+    function createInstanceList(dependencies) {
+        if ( !dependencies )
+            return [] ;
+
+        var instances = [] ;
+        dependencies.forEach(function(c, i) {
+            if ( Array.isArray(c)) {
+               instance.push( createInstanceList.call(this, c) ) ;
+            }
+            else {
+                instances.push(this.getInstance(c)) ;
+            }
+        }.bind(this)) ;
+
+        return instances ;
     }
 
 	Ns.DI = di ;
-})(window.Scaljeri) ;
+})(window.Sway) ;
 
     </pre>
 </div>

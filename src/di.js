@@ -5,7 +5,7 @@
 		DI makes classes accessible by a contract. Instances are created when requested and dependencies are injected into the constructor,
         facilitating lazy initialization and loose coupling between classes.
 
-		@class DI
+		@class Sway.DI
 		@constructor
 	**/
 	var di = function() {
@@ -112,18 +112,28 @@
        	return this.instance ;
     }
 
-    /* convert a list of contracts into a list of instances */
+    /* convert a list of contracts into a list of instances
+    * A dependency list can contain arrays with dependencies too:
+    *    ["depA", ["depB", "depC"], "depE"]
+    * In this case, the constructor would, for example, look like this:
+    *    function constructor(instance, array, instance) { .. }
+    * */
     function createInstanceList(dependencies) {
         if ( !dependencies )
             return [] ;
 
         var instances = [] ;
-        dependencies.forEach(function(v, i) {
-                instances.push(this.getInstance(v)) ;
+        dependencies.forEach(function(c, i) {
+            if ( Array.isArray(c)) {
+               instance.push( createInstanceList.call(this, c) ) ;
+            }
+            else {
+                instances.push(this.getInstance(c)) ;
+            }
         }.bind(this)) ;
 
         return instances ;
     }
 
 	Ns.DI = di ;
-})(window.Scaljeri) ;
+})(window.Sway) ;

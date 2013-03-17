@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>DI</title>
+    <title>Sway.EventHub</title>
     <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.8.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
     <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
@@ -41,7 +41,19 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="..&#x2F;classes/DI.html">DI</a></li>
+                <li><a href="..&#x2F;classes/Sway.html">Sway</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.data.Field.html">Sway.data.Field</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.data.Record.html">Sway.data.Record</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.DI.html">Sway.DI</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.EventHub.html">Sway.EventHub</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.filter.Compress.html">Sway.filter.Compress</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.filter.Encrypt.html">Sway.filter.Encrypt</a></li>
             
             </ul>
 
@@ -82,7 +94,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1>DI Class</h1>
+                        <h1>Sway.EventHub Class</h1>
 <div class="box meta">
     
 
@@ -90,7 +102,7 @@
 
     
         <div class="foundat">
-            Defined in: <a href="..&#x2F;files&#x2F;src_di.js.html#l4"><code>src&#x2F;di.js:4</code></a>
+            Defined in: <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l7"><code>src&#x2F;eventhub.js:7</code></a>
         </div>
     
 
@@ -102,15 +114,14 @@
 
 
 <div class="box intro">
-    <p>DI makes classes accessible by a contract. Instances are created when requested and dependencies are injected into the constructor,
-        facilitating lazy initialization and loose coupling between classes.</p>
+    <p>Manages Events in an Event-driven system.</p>
 </div>
 
 
     <div class="constructor">
         <h2>Constructor</h2>
-        <div id="method_DI" class="method item">
-    <h3 class="name"><code>DI</code></h3>
+        <div id="method_Sway.EventHub" class="method item">
+    <h3 class="name"><code>Sway.EventHub</code></h3>
 
     
         <span class="paren">()</span>
@@ -141,7 +152,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;src_di.js.html#l4"><code>src&#x2F;di.js:4</code></a>
+        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l7"><code>src&#x2F;eventhub.js:7</code></a>
         
         </p>
 
@@ -188,21 +199,28 @@
                     <ul class="index-list methods">
                         
                             <li class="index-item method">
-                                <a href="#method_createInstance">createInstance</a>
+                                <a href="#method_off">off</a>
 
                                 
                                 
                             </li>
                         
                             <li class="index-item method">
-                                <a href="#method_getDependency">getDependency</a>
+                                <a href="#method_on">on</a>
 
                                 
                                 
                             </li>
                         
                             <li class="index-item method">
-                                <a href="#method_registerType">registerType</a>
+                                <a href="#method_one">one</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_trigger">trigger</a>
 
                                 
                                 
@@ -224,8 +242,8 @@
                 <h2 class="off-left">Methods</h2>
 
                 
-                    <div id="method_createInstance" class="method item">
-    <h3 class="name"><code>createInstance</code></h3>
+                    <div id="method_off" class="method item">
+    <h3 class="name"><code>off</code></h3>
 
     
         <div class="args">
@@ -233,13 +251,7 @@
             
                 <li class="arg">
                     
-                        <code>contract</code>
-                    
-                </li>
-            
-                <li class="arg">
-                    
-                        <code>dependencies</code>
+                        <code>eventName</code>
                     
                 </li>
             
@@ -247,10 +259,6 @@
         </div>
     
 
-    
-        <span class="returns-inline">
-            <span class="type">Object</span>
-        </span>
     
 
     
@@ -276,7 +284,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;src_di.js.html#l59"><code>src&#x2F;di.js:59</code></a>
+        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l65"><code>src&#x2F;eventhub.js:65</code></a>
         
         </p>
 
@@ -287,8 +295,7 @@
     </div>
 
     <div class="description">
-        <p>Returns a new instance of the class matched by the contract. If the contract does not exists an error is thrown.
-If one of the dependencies does not exists, 'null' is used instead.</p>
+        <p>Removes the given callback for a specific event.</p>
     </div>
 
     
@@ -299,33 +306,14 @@ If one of the dependencies does not exists, 'null' is used instead.</p>
             
                 <li class="param">
                     
-                        <code class="param-name">contract</code>
+                        <code class="param-name">eventName</code>
                         <span class="type">String</span>
                     
 
                     
 
                     <div class="param-description">
-                        <ul>
-<li>the contract name</li>
-</ul>
-                    </div>
-
-                    
-                </li>
-            
-                <li class="param">
-                    
-                        <code class="param-name">dependencies</code>
-                        <span class="type">Array</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <ul>
-<li>list of contracts passed to the constructor</li>
-</ul>
+                         
                     </div>
 
                     
@@ -336,30 +324,13 @@ If one of the dependencies does not exists, 'null' is used instead.</p>
     
 
     
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                
-                    
-                        <span class="type">Object</span>:
-                    
-                
-            </div>
-        </div>
-    
 
     
         <div class="example">
             <h4>Example:</h4>
 
             <div class="example-content">
-                <pre class="code prettyprint"><code>try {
-    var storage = App.di.createInstance("data", ["compress", "websql"]) ;
-}
-catch(e) {
-    console.log(e.name + ': ' + e.message) ;
-}
+                <pre class="code prettyprint"><code>       Sway.eventHub.off('ui.update', this.update) ;
 </code></pre>
             </div>
         </div>
@@ -367,8 +338,8 @@ catch(e) {
 </div>
 
                 
-                    <div id="method_getDependency" class="method item">
-    <h3 class="name"><code>getDependency</code></h3>
+                    <div id="method_on" class="method item">
+    <h3 class="name"><code>on</code></h3>
 
     
         <div class="args">
@@ -376,7 +347,13 @@ catch(e) {
             
                 <li class="arg">
                     
-                        <code>contract</code>
+                        <code>eventName</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[prepend]</code>
                     
                 </li>
             
@@ -384,10 +361,6 @@ catch(e) {
         </div>
     
 
-    
-        <span class="returns-inline">
-            <span class="type">Object</span>
-        </span>
     
 
     
@@ -413,7 +386,7 @@ catch(e) {
             
         
         
-        <a href="..&#x2F;files&#x2F;src_di.js.html#l39"><code>src&#x2F;di.js:39</code></a>
+        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l35"><code>src&#x2F;eventhub.js:35</code></a>
         
         </p>
 
@@ -424,7 +397,9 @@ catch(e) {
     </div>
 
     <div class="description">
-        <p>Returns an instance for a contract.</p>
+        <p>Register a callback to a specific event. Callbacks are executed in the order of
+registration. Use the 'position' parameter to change this behavior. Note that "before" and "after" are just different
+stacks, executed before/after the normal execution flow.</p>
     </div>
 
     
@@ -435,145 +410,14 @@ catch(e) {
             
                 <li class="param">
                     
-                        <code class="param-name">contract</code>
+                        <code class="param-name">eventName</code>
                         <span class="type">String</span>
                     
 
                     
 
                     <div class="param-description">
-                        <p>name</p>
-                    </div>
-
-                    
-                </li>
-            
-            </ul>
-        </div>
-    
-
-    
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                
-                    
-                        <span class="type">Object</span>:
-                    
-                    Class instance
-                
-            </div>
-        </div>
-    
-
-    
-        <div class="example">
-            <h4>Example:</h4>
-
-            <div class="example-content">
-                <pre class="code prettyprint"><code>       var ajax = App.di.getDependency("ajax") ;
-</code></pre>
-            </div>
-        </div>
-    
-</div>
-
-                
-                    <div id="method_registerType" class="method item">
-    <h3 class="name"><code>registerType</code></h3>
-
-    
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        <code>contract</code>
-                    
-                </li>
-            
-                <li class="arg">
-                    
-                        <code>class</code>
-                    
-                </li>
-            
-                <li class="arg">
-                    
-                        <code class="optional">[dependencies]</code>
-                    
-                </li>
-            
-                <li class="arg">
-                    
-                        <code class="optional">[options]</code>
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <span class="flag chainable">chainable</span>
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="..&#x2F;files&#x2F;src_di.js.html#l16"><code>src&#x2F;di.js:16</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>Register a class by creating a contract. Use <a href="../classes/DI.html#method_getDependency" class="crosslink">getDependency</a> to obtain
-            an instance from this contract/class. The injected dependencies, if any, will be used as constructor parameter
-            in the order provided by the dependencies array.</p>
-    </div>
-
-    
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-            
-                <li class="param">
-                    
-                        <code class="param-name">contract</code>
-                        <span class="type">String</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>name of the contracta</p>
+                         
                     </div>
 
                     
@@ -581,30 +425,119 @@ catch(e) {
             
                 <li class="param">
                     
-                        <code class="param-name">class</code>
-                        <span class="type">Class</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>the class bind to this contract</p>
-                    </div>
-
-                    
-                </li>
-            
-                <li class="param">
-                    
-                        <code class="param-name optional">[dependencies]</code>
-                        <span class="type">Array</span>
+                        <code class="param-name optional">[prepend]</code>
+                        <span class="type">Boolean</span>
                         <span class="flag optional" title="This parameter is optional.">optional</span>
                     
 
                     
 
                     <div class="param-description">
-                        <p>list of contracts; dependencies of this class</p>
+                        <p>if true, this callback is executed first if the event is triggered</p>
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+                <pre class="code prettyprint"><code>       Sway.eventHub.on( 'ui.update', this.update.bind(this) ) ;
+       Sway.eventHub.on( 'ui.update', this.update.bind(this), true ) ;
+</code></pre>
+            </div>
+        </div>
+    
+</div>
+
+                
+                    <div id="method_one" class="method item">
+    <h3 class="name"><code>one</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>eventName</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[prepend]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l52"><code>src&#x2F;eventhub.js:52</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Register a callback to a specific event. This function is identical to <a href="../classes/Sway.EventHub.html#method_on" class="crosslink">on</a>
+except that this callback is removed from the list after it is called</p>
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">eventName</code>
+                        <span class="type">String</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
                     </div>
 
                     
@@ -612,34 +545,125 @@ catch(e) {
             
                 <li class="param">
                     
-                        <code class="param-name optional">[options]</code>
+                        <code class="param-name optional">[prepend]</code>
+                        <span class="type">Boolean</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>if true, this callback is executed first if the event is triggered</p>
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_trigger" class="method item">
+    <h3 class="name"><code>trigger</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>eventName</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>data</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l23"><code>src&#x2F;eventhub.js:23</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Trigger event</p>
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">eventName</code>
+                        <span class="type">String</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">data</code>
                         <span class="type">Object</span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
                     
 
                     
 
                     <div class="param-description">
-                        <p>addition setting used to create the instance.</p>
+                         
                     </div>
 
-                    
-                        <ul class="params-list">
-                            
-                            <li class="param">
-                                
-                                    <code class="param-name">singleton</code>
-                                    <span class="type">String</span>
-                                
-
-                                <div class="param-description">
-                                    <p>set to TRUE if the class should be treated as a singleton class</p>
-                                </div>
-
-                                
-                            </li>
-                            
-                        </ul>
                     
                 </li>
             
@@ -654,9 +678,7 @@ catch(e) {
             <h4>Example:</h4>
 
             <div class="example-content">
-                <pre class="code prettyprint"><code>            App.di.registerType("ajax", App.AJAX) ;
-            App.di.registerType("ajax", App.AJAX, [], { singleton: true }) ;
-            App.di.registerType("util", App.Util, ["compress", "wsql"], { singleton: true } ) ;
+                <pre class="code prettyprint"><code>       Sway.eventHub.trigger('ui.update', {authenticated: true} ) ;
 </code></pre>
             </div>
         </div>

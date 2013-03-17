@@ -1,28 +1,165 @@
 {
     "project": {},
     "files": {
-        "src/di.js": {
-            "name": "src/di.js",
+        "src/data/field.js": {
+            "name": "src/data/field.js",
             "modules": {},
             "classes": {
-                "DI": 1
+                "Sway.data.Field": 1
             },
             "fors": {},
             "namespaces": {}
         },
-        "src/fs.js": {
-            "name": "src/fs.js",
+        "src/data/record.js": {
+            "name": "src/data/record.js",
+            "modules": {},
+            "classes": {
+                "Sway.data.Record": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/filters/compress.js": {
+            "name": "src/filters/compress.js",
+            "modules": {},
+            "classes": {
+                "Sway.filter.Compress": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/filters/encrypt.js": {
+            "name": "src/filters/encrypt.js",
+            "modules": {},
+            "classes": {
+                "Sway.filter.Encrypt": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/persistance/fs.js": {
+            "name": "src/persistance/fs.js",
             "modules": {},
             "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/appinit.js": {
+            "name": "src/appinit.js",
+            "modules": {},
+            "classes": {
+                "Sway": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/di.js": {
+            "name": "src/di.js",
+            "modules": {},
+            "classes": {
+                "Sway.DI": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/eventhub.js": {
+            "name": "src/eventhub.js",
+            "modules": {},
+            "classes": {
+                "Sway.EventHub": 1
+            },
             "fors": {},
             "namespaces": {}
         }
     },
     "modules": {},
     "classes": {
-        "DI": {
-            "name": "DI",
-            "shortname": "DI",
+        "Sway.data.Field": {
+            "name": "Sway.data.Field",
+            "shortname": "Sway.data.Field",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/data/field.js",
+            "line": 8,
+            "params": [
+                {
+                    "name": "filters",
+                    "description": "list of filter",
+                    "type": "Array",
+                    "optional": true
+                }
+            ]
+        },
+        "Sway.data.Record": {
+            "name": "Sway.data.Record",
+            "shortname": "Sway.data.Record",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/data/record.js",
+            "line": 9,
+            "description": "This class stores a string in memory. If a persistance dependency is defined, it will use this dependency to store\nthe data. Filters are used to perform some action on the data before persisting it and on retrieval.\nAs an example, a persistance dependency could be WebSQL storage. A filter could be encryption and/or compression.\nNote that for an encryption filter, it will perform an action on the data before persisting it, and on retrieval.",
+            "params": [
+                {
+                    "name": "persistence",
+                    "description": "dependency which can persist the data",
+                    "type": "Object",
+                    "optional": true
+                },
+                {
+                    "name": "filterList",
+                    "description": "list of filters. Depending on the filter type its a before and/or after filter.",
+                    "type": "Array",
+                    "optional": true
+                }
+            ]
+        },
+        "Sway.filter.Compress": {
+            "name": "Sway.filter.Compress",
+            "shortname": "Sway.filter.Compress",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/filters/compress.js",
+            "line": 9,
+            "description": "This filter can compress a string and uncompress a Blob (the compressed string).",
+            "is_constructor": 1
+        },
+        "Sway.filter.Encrypt": {
+            "name": "Sway.filter.Encrypt",
+            "shortname": "Sway.filter.Encrypt",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/filters/encrypt.js",
+            "line": 8,
+            "description": "Encrypt and decrypt a given string",
+            "is_constructor": 1
+        },
+        "Sway": {
+            "name": "Sway",
+            "shortname": "Sway",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/appinit.js",
+            "line": 1,
+            "description": "Namespace"
+        },
+        "Sway.DI": {
+            "name": "Sway.DI",
+            "shortname": "Sway.DI",
             "classitems": [],
             "plugins": [],
             "extensions": [],
@@ -32,15 +169,64 @@
             "line": 4,
             "description": "DI makes classes accessible by a contract. Instances are created when requested and dependencies are injected into the constructor,\n        facilitating lazy initialization and loose coupling between classes.",
             "is_constructor": 1
+        },
+        "Sway.EventHub": {
+            "name": "Sway.EventHub",
+            "shortname": "Sway.EventHub",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/eventhub.js",
+            "line": 7,
+            "description": "Manages Events in an Event-driven system.",
+            "is_constructor": 1
         }
     },
     "classitems": [
         {
+            "file": "src/persistance/fs.js",
+            "line": 51,
+            "description": "FileEntry interface is provided for working with files:\nhttp://www.mosync.com/files/imports/doxygen/latest/html5/filewriter.md.html\nfileEntry.isFile === true\nfileEntry.isDirectory === false\nfileEntry.name\nfileEntry.fullPath\n...\n\nfileEntry.getMetadata(successCallback, opt_errorCallback);\nfileEntry.remove(successCallback, opt_errorCallback);\nfileEntry.moveTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);\nfileEntry.copyTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);\nfileEntry.getParent(successCallback, opt_errorCallback);\nfileEntry.toURI(opt_mimeType);  // Currently not implemented in Google Chrome 9.\n\nfileEntry.file(successCallback, opt_errorCallback);\nfileEntry.createWriter(successCallback, opt_errorCallback);",
+            "class": "Sway"
+        },
+        {
+            "file": "src/persistance/fs.js",
+            "line": 84,
+            "description": "http://www.mosync.com/files/imports/doxygen/latest/html5/filereader.md.html",
+            "class": "Sway"
+        },
+        {
+            "file": "src/persistance/fs.js",
+            "line": 169,
+            "description": "https://developer.mozilla.org/en-US/docs/DOM/File_API/File_System_API/FileError",
+            "class": "Sway"
+        },
+        {
+            "file": "src/appinit.js",
+            "line": 7,
+            "description": "Version of the framework",
+            "itemtype": "property",
+            "name": "VERSION",
+            "type": "String",
+            "class": "Sway"
+        },
+        {
+            "file": "src/appinit.js",
+            "line": 14,
+            "description": "If TRUE, debugging is enabled. In PRODUCTION this property should be set to FALSE!!",
+            "itemtype": "property",
+            "name": "DEBUG",
+            "type": "boolean",
+            "class": "Sway"
+        },
+        {
             "file": "src/di.js",
-            "line": 16,
-            "description": "Register a class by creating a contract. Use {{#crossLink \"DI/getDependency:method\"}}{{/crossLink}} to obtain\n            an instance from this contract/class. The injected dependencies, if any, will be used as constructor parameter\n            in the order provided by the dependencies array.",
+            "line": 21,
+            "description": "Register a class by creating a contract. Use {{#crossLink \"DI/getInstance:method\"}}{{/crossLink}} to obtain\n            an instance from this contract/class. The injected dependencies, if any, will be used as constructor parameter\n            in the order provided by the dependencies array.",
             "itemtype": "method",
-            "name": "registerType",
+            "name": "register",
             "chainable": 1,
             "params": [
                 {
@@ -76,14 +262,14 @@
             "example": [
                 "\n                App.di.registerType(\"ajax\", App.AJAX) ;\n                App.di.registerType(\"ajax\", App.AJAX, [], { singleton: true }) ;\n                App.di.registerType(\"util\", App.Util, [\"compress\", \"wsql\"], { singleton: true } ) ;"
             ],
-            "class": "DI"
+            "class": "Sway.DI"
         },
         {
             "file": "src/di.js",
-            "line": 39,
-            "description": "Returns an instance for a contract.",
+            "line": 48,
+            "description": "Returns an instance for the given contract.",
             "itemtype": "method",
-            "name": "getDependency",
+            "name": "geInstancet",
             "params": [
                 {
                     "name": "contract",
@@ -96,13 +282,13 @@
                 "type": "Object"
             },
             "example": [
-                "\n           var ajax = App.di.getDependency(\"ajax\") ;"
+                "\n           var ajax = App.di.getInstance(\"ajax\") ;"
             ],
-            "class": "DI"
+            "class": "Sway.DI"
         },
         {
             "file": "src/di.js",
-            "line": 59,
+            "line": 72,
             "description": "Returns a new instance of the class matched by the contract. If the contract does not exists an error is thrown.\nIf one of the dependencies does not exists, 'null' is used instead.",
             "itemtype": "method",
             "name": "createInstance",
@@ -125,47 +311,114 @@
             "example": [
                 "\n    try {\n        var storage = App.di.createInstance(\"data\", [\"compress\", \"websql\"]) ;\n    }\n    catch(e) {\n        console.log(e.name + ': ' + e.message) ;\n    }"
             ],
-            "class": "DI"
+            "class": "Sway.DI"
         },
         {
-            "file": "src/fs.js",
-            "line": 51,
-            "description": "FileEntry interface is provided for working with files:\nhttp://www.mosync.com/files/imports/doxygen/latest/html5/filewriter.md.html\nfileEntry.isFile === true\nfileEntry.isDirectory === false\nfileEntry.name\nfileEntry.fullPath\n...\n\nfileEntry.getMetadata(successCallback, opt_errorCallback);\nfileEntry.remove(successCallback, opt_errorCallback);\nfileEntry.moveTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);\nfileEntry.copyTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);\nfileEntry.getParent(successCallback, opt_errorCallback);\nfileEntry.toURI(opt_mimeType);  // Currently not implemented in Google Chrome 9.\n\nfileEntry.file(successCallback, opt_errorCallback);\nfileEntry.createWriter(successCallback, opt_errorCallback);",
-            "class": ""
+            "file": "src/eventhub.js",
+            "line": 23,
+            "description": "Trigger event",
+            "itemtype": "method",
+            "name": "trigger",
+            "params": [
+                {
+                    "name": "eventName",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "data",
+                    "description": ""
+                }
+            ],
+            "example": [
+                "\n           Sway.eventHub.trigger('ui.update', {authenticated: true} ) ;"
+            ],
+            "class": "Sway.EventHub"
         },
         {
-            "file": "src/fs.js",
-            "line": 84,
-            "description": "http://www.mosync.com/files/imports/doxygen/latest/html5/filereader.md.html",
-            "class": ""
+            "file": "src/eventhub.js",
+            "line": 35,
+            "description": "Register a callback to a specific event. Callbacks are executed in the order of\nregistration. Use the 'position' parameter to change this behavior. Note that \"before\" and \"after\" are just different\nstacks, executed before/after the normal execution flow.",
+            "itemtype": "method",
+            "name": "on",
+            "params": [
+                {
+                    "name": "eventName",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "prepend",
+                    "description": "if true, this callback is executed first if the event is triggered",
+                    "type": "Boolean",
+                    "optional": true
+                }
+            ],
+            "example": [
+                "\n           Sway.eventHub.on( 'ui.update', this.update.bind(this) ) ;\n           Sway.eventHub.on( 'ui.update', this.update.bind(this), true ) ;"
+            ],
+            "class": "Sway.EventHub"
         },
         {
-            "file": "src/fs.js",
-            "line": 169,
-            "description": "https://developer.mozilla.org/en-US/docs/DOM/File_API/File_System_API/FileError",
-            "class": ""
+            "file": "src/eventhub.js",
+            "line": 52,
+            "description": "Register a callback to a specific event. This function is identical to {{#crossLink \"Sway.EventHub/on:method\"}}{{/crossLink}}\nexcept that this callback is removed from the list after it is called",
+            "itemtype": "method",
+            "name": "one",
+            "params": [
+                {
+                    "name": "eventName",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "prepend",
+                    "description": "if true, this callback is executed first if the event is triggered",
+                    "type": "Boolean",
+                    "optional": true
+                }
+            ],
+            "class": "Sway.EventHub"
+        },
+        {
+            "file": "src/eventhub.js",
+            "line": 65,
+            "description": "Removes the given callback for a specific event.",
+            "itemtype": "method",
+            "name": "off",
+            "params": [
+                {
+                    "name": "eventName",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "example": [
+                "\n           Sway.eventHub.off('ui.update', this.update) ;"
+            ],
+            "class": "Sway.EventHub"
         }
     ],
     "warnings": [
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/di.js:39"
+            "line": " src/di.js:48"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/di.js:59"
+            "line": " src/di.js:72"
         },
         {
             "message": "Missing item type\nFileEntry interface is provided for working with files:\nhttp://www.mosync.com/files/imports/doxygen/latest/html5/filewriter.md.html\nfileEntry.isFile === true\nfileEntry.isDirectory === false\nfileEntry.name\nfileEntry.fullPath\n...\n\nfileEntry.getMetadata(successCallback, opt_errorCallback);\nfileEntry.remove(successCallback, opt_errorCallback);\nfileEntry.moveTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);\nfileEntry.copyTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);\nfileEntry.getParent(successCallback, opt_errorCallback);\nfileEntry.toURI(opt_mimeType);  // Currently not implemented in Google Chrome 9.\n\nfileEntry.file(successCallback, opt_errorCallback);\nfileEntry.createWriter(successCallback, opt_errorCallback);",
-            "line": " src/fs.js:51"
+            "line": " src/persistance/fs.js:51"
         },
         {
             "message": "Missing item type\nhttp://www.mosync.com/files/imports/doxygen/latest/html5/filereader.md.html",
-            "line": " src/fs.js:84"
+            "line": " src/persistance/fs.js:84"
         },
         {
             "message": "Missing item type\nhttps://developer.mozilla.org/en-US/docs/DOM/File_API/File_System_API/FileError",
-            "line": " src/fs.js:169"
+            "line": " src/persistance/fs.js:169"
         }
     ]
 }

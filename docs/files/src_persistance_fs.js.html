@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src&#x2F;fs.js</title>
+    <title>src&#x2F;persistance&#x2F;fs.js</title>
     <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.8.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
     <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
@@ -41,7 +41,19 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="..&#x2F;classes/DI.html">DI</a></li>
+                <li><a href="..&#x2F;classes/Sway.html">Sway</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.data.Field.html">Sway.data.Field</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.data.Record.html">Sway.data.Record</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.DI.html">Sway.DI</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.EventHub.html">Sway.EventHub</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.filter.Compress.html">Sway.filter.Compress</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.filter.Encrypt.html">Sway.filter.Encrypt</a></li>
             
             </ul>
 
@@ -82,7 +94,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: src&#x2F;fs.js</h1>
+                        <h1 class="file-heading">File: src&#x2F;persistance&#x2F;fs.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
@@ -108,7 +120,7 @@
                     dirReader.readEntries(function(entries) {
 					    callback(entries) ;
 
-						if ( Scaljeri.DEBUG ) {
+						if ( Sway.DEBUG ) {
                             for(var i = 0; i &lt; entries.length; i++) {
 								&#x2F;* entries[i].isFile === true
                                    entries[i].name == &#x27;log.txt&#x27;
@@ -285,7 +297,7 @@ fs.root.getDirectory(&#x27;music&#x2F;genres&#x2F;jazz&#x27;, {}, function(dirEn
 	}
 
 	Ns.Fs = fs ;
-})(window.Scaljeri) ;
+})(window.Sway) ;
 
     </pre>
 </div>

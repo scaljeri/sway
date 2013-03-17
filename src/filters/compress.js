@@ -1,3 +1,5 @@
+window.Sway = window.Sway || {filter: {}} ; // make sure it exists
+
 (function(Ns) {
 
     defaults = {
@@ -5,90 +7,49 @@
     }
 
     /**
-     * This class manages string data, like stringified JSON. If defined, the persistance dependency can be used to persist the data somewhere.
-     * Depending on the filter, they can be applied as a before filter and/or after filter, when the data is loaded from the persistance
-     * dependency.
+     * This filter can compress a string and uncompress a Blob (the compressed string).
      *
-     * @class Data
-     * @param {Object}[persistence] dependency which can persist the data
-     * @param {Array} [filterList] list of filter
+     * @class Sway.filter.Compress
+     * @constructor
      */
-	var dc = function(persistance, filterList) {
+	var c = function() {}
 
-        this.state = "no data" ;
-        this.persistance = persistance ;
-        this.filter = filterList ;
-    }
-
-	dc.prototype = {
-        setData: function(data, options) {
-            if ( data ) {
-                this._zippedBlob = null ;
-                this.state = "uncompressed" ;
-                this._inputStr = data ;
-            }
-            else if ( App.DEBUG )
-                console.warn("Compress.setData() called without any data")
-        },
-        getState: function() {
-            return this.state ;
-        },
-        getSize: function() {
-            return this.state == "uncompressed" ? encodeURI(this._inputStr).split(/%..|./).length - 1 : this._zippedBlob.size ;
-
-            /*
-            return (this.state == "uncompressed" ?
-                        new Blob([this._inputStr], { type: "text/plain"}) : this._zippedBlob
-                   ).size ;
-            */
-        },
-
-		zip: function(callback) {
-            if ( !this._inputStr )
-                throw new CompressException(this.state == "compressed" ? "Data already compressed" : "No string defined") ;
-			// use a BlobWriter to store the zip into a Blob object
+	c.prototype = {
+        compress: function(str, callback) {
+            // use a BlobWriter to store the zip into a Blob object
             var self = this ;
-			zip.createWriter(new zip.BlobWriter(), function(writer) {
-  				// use a TextReader to read the String to add
-  				//writer.add(defaults.filename, new zip.TextReader("bla bla"), function() {
+            zip.createWriter(new zip.BlobWriter(), function(writer) {
+                // use a TextReader to read the String to add
+                //writer.add(defaults.filename, new zip.TextReader("bla bla"), function() {
                 //writer.add("filename.txt", new zip.TextReader("bla bla"), function() {
-                writer.add(defaults.filename, new zip.TextReader(self._inputStr) , function() {
-    					// onsuccess callback
-    					// close the zip writer
-    					writer.close(function(blob) {
-      						// blob contains the zip file as a Blob object
-                            self.state = "compressed" ;
-                            self._inputStr = null ; // cleanup
-                            self._zippedBlob = blob ;
-						    callback({status: true}) ;
-    					});
-  				}, function(currentIndex, totalIndex) {
-    					// onprogress callback
-  				});
-			}, function(error) {
-  				// onerror callback
-				console.log("ERROR") ;
+                writer.add(defaults.filename, new zip.TextReader(str) , function() {
+                    // onsuccess callback
+                    // close the zip writer
+                    writer.close(function(blob) {
+                        // blob contains the zip file as a Blob object
+                        callback(blob) ;
+                    });
+                }, function(currentIndex, totalIndex) {
+                    // onprogress callback
+                });
+            }, function(error) {
+                // onerror callback
+                console.log("ERROR") ;
                 throw new CompressException("Could not compress the data")
-			});
-		},
-
-	    read: function(callback, start, end) {
-            if ( this._inputStr )
-                callback(this._inputStr.substring(start, end)) ;
-            else {
-                if ( ! this._zippedBlob )
-                    callback(null) ;
-                else {
-		            unzipBlob(this._zippedBlob, function(blob){
-                        if ( typeof(start) === "number" && typeof(end) === number )
-                            blob = blob.slice(start, end, blob.type );
-                        if ( blob.type == "text/plain")
-       			           readBlobAsText(blob, callback) ;
-                        else
-                            callback(blob) ;
-			        }) ;
+            });
+        },
+        uncompress: function(blob, callback, start, end) {
+            unzipBlob(blob, function(blob){
+                if ( typeof(start) === "number" && typeof(end) === number ) {
+                    blob = blob.slice(start, end, blob.type );
                 }
-            }
+                if ( blob.type == "text/plain") {
+       			    readBlobAsText(blob, callback) ;
+                }
+                else {
+                    callback(blob) ;
+                }
+            }) ;
         }
 	} ;
 
@@ -125,6 +86,6 @@
         this.name = "NoDataDefinedException";
     }
 
-	Ns.DataContainer = dc ;
+	Ns.Compress = dc ;
 
-})(window.Scaljeri) ;
+})(window.Sway.filter) ;
