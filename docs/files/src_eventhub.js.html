@@ -105,7 +105,9 @@ window.Sway = window.Sway || {} ; &#x2F;&#x2F; make sure it exists
             window.mozRequestAnimationFrame || function( callback ){ window.setTimeout(callback, 1000 &#x2F; 60); }
 
     &#x2F;**
-     * Manages Events in an Event-driven system.
+     * EventHub facilitates event-based communication between different parts of an application (Event driven system).
+     *
+     * &#x2F;&#x2F; TODO: tell about namespaces
      *
      * @class Sway.EventHub
      * @constructor
@@ -139,7 +141,8 @@ window.Sway = window.Sway || {} ; &#x2F;&#x2F; make sure it exists
          *
          * @method on
          * @param {string} eventName
-         * @param {boolean} [prepend] if true, this callback is executed first if the event is triggered
+         * @param {boolean} [prepend] the callback is placed before all other registered callbacks. They will be executed in this
+         * order when the event is trigger
          * @example
             Sway.eventHub.on( &#x27;ui.update&#x27;, this.update.bind(this) ) ;
             Sway.eventHub.on( &#x27;ui.update&#x27;, this.update.bind(this), true ) ;
@@ -155,7 +158,8 @@ window.Sway = window.Sway || {} ; &#x2F;&#x2F; make sure it exists
          *
          * @method one
          * @param {string} eventName
-         * @param {boolean} [prepend] if true, this callback is executed first if the event is triggered
+         * @param {boolean} [prepend] the callback is placed before all other registered callbacks. They will be executed in this
+         * order when the event is trigger
          *&#x2F;
        , one: function(eventName, callback, prepend) {
             var callbacks = registerEvent.call(this, eventName) ;
@@ -177,6 +181,9 @@ window.Sway = window.Sway || {} ; &#x2F;&#x2F; make sure it exists
 
     } ;
 
+    &#x2F;*
+        Private helper function which removes a callback function for a specific event
+     *&#x2F;
     function removeCallback(callback, callbacks) {
         var position = list.on.indexOf(callback) ;
         if ( position != -1 ) {
@@ -189,17 +196,18 @@ window.Sway = window.Sway || {} ; &#x2F;&#x2F; make sure it exists
     }
 
     &#x2F;*
-     * Returns the callbacks for an eventName. If the eventName is not registered yet, it will
-     * be added to this._events. If needed, namespaces are created too!
+     * Internally &#x27;eventName&#x27; is always a namespace. Callbacks are placed inside a special
+     * eventName called &#x27;__stack&#x27;. So, when the eventName is &#x27;doAction&#x27;, internally this will
+     * look like doAction.__stack.
+     * Furthermore, it the eventName is new, it is created
      *&#x2F;
     function getCallbacks(eventName) {
-        var parts,                  &#x2F;&#x2F; if the event is namespaced, it will hold all the namespaces
-            events = this._events,  &#x2F;&#x2F; used to create new namespaces (if needed)
+        var parts,                  &#x2F;&#x2F; hold the event namespaces
+            events = this._events,  &#x2F;&#x2F; used to create new namespaces
             i ;                     &#x2F;&#x2F; for-loop var
 
         if ( str.match(&#x2F;\.&#x2F;) ) { &#x2F;&#x2F; namespaced event?
             parts = eventName.split(&#x27;.&#x27;) ;
-            eventName = parts.pop() ;
 
             for(i = 0; i &lt; parts.length ; i++) { &#x2F;&#x2F; traverse the events object
                 if ( !events[parts[i]] ) {
@@ -209,19 +217,42 @@ window.Sway = window.Sway || {} ; &#x2F;&#x2F; make sure it exists
             }
         }
 
-        if ( events[eventName]) {
-            event[eventName] =  {
+        if ( !events.__stack) {
+            event.__stack = {
                 on: []
                 , one: []
             } ;
         }
-        return events[eventName] ;
+        return events ;
     }
 
-
     function triggerEvent(eventName, data) {
-        &#x2F;&#x2F; TODO: call all callbacks for &quot;eventName&quot;
+        var ns,
+            namespaces = getCallbacks.call(this, eventName) ;
 
+        for( ns in namespaces ) {
+            doTriggerForNS.call(this, ns) ;
+        }
+    }
+
+    &#x2F;*
+    Namespaces can in theory be many levels deep, like: &quot;aaaaa.bbbbbb.cccccc._stack&quot;
+    To traverse this namespace, this function is called recursively.
+     *&#x2F;
+    function doTriggerForNS(namespace) {
+        if ( namespace.on ) { &#x2F;&#x2F; found the callbacks
+            namespace.on.forEach( function(c, i) {
+                c(data) ;
+            }) ;
+            namespace.one.forEach(function(c, i) {
+                this.off(c) ;
+            }.bind(this)) ;
+        }
+        else { &#x2F;&#x2F; found a deeper nested namespace
+            for( ns in namespaces ) {
+                doTriggerForNS.call(this, ns) ;
+            }
+        }
     }
 
     Ns.EventHub = eh ;

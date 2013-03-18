@@ -180,7 +180,7 @@
             "extension_for": [],
             "file": "src/eventhub.js",
             "line": 7,
-            "description": "Manages Events in an Event-driven system.",
+            "description": "EventHub facilitates event-based communication between different parts of an application (Event driven system).\n\n// TODO: tell about namespaces",
             "is_constructor": 1
         }
     },
@@ -315,7 +315,7 @@
         },
         {
             "file": "src/eventhub.js",
-            "line": 23,
+            "line": 25,
             "description": "Trigger event",
             "itemtype": "method",
             "name": "trigger",
@@ -337,7 +337,7 @@
         },
         {
             "file": "src/eventhub.js",
-            "line": 35,
+            "line": 37,
             "description": "Register a callback to a specific event. Callbacks are executed in the order of\nregistration. Use the 'position' parameter to change this behavior. Note that \"before\" and \"after\" are just different\nstacks, executed before/after the normal execution flow.",
             "itemtype": "method",
             "name": "on",
@@ -349,7 +349,7 @@
                 },
                 {
                     "name": "prepend",
-                    "description": "if true, this callback is executed first if the event is triggered",
+                    "description": "the callback is placed before all other registered callbacks. They will be executed in this\norder when the event is trigger",
                     "type": "Boolean",
                     "optional": true
                 }
@@ -361,7 +361,7 @@
         },
         {
             "file": "src/eventhub.js",
-            "line": 52,
+            "line": 55,
             "description": "Register a callback to a specific event. This function is identical to {{#crossLink \"Sway.EventHub/on:method\"}}{{/crossLink}}\nexcept that this callback is removed from the list after it is called",
             "itemtype": "method",
             "name": "one",
@@ -373,7 +373,7 @@
                 },
                 {
                     "name": "prepend",
-                    "description": "if true, this callback is executed first if the event is triggered",
+                    "description": "the callback is placed before all other registered callbacks. They will be executed in this\norder when the event is trigger",
                     "type": "Boolean",
                     "optional": true
                 }
@@ -382,7 +382,7 @@
         },
         {
             "file": "src/eventhub.js",
-            "line": 65,
+            "line": 69,
             "description": "Removes the given callback for a specific event.",
             "itemtype": "method",
             "name": "off",
