@@ -179,7 +179,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/eventhub.js",
-            "line": 7,
+            "line": 4,
             "description": "EventHub facilitates event-based communication between different parts of an application (Event driven system).\n\n// TODO: tell about namespaces",
             "is_constructor": 1
         }
@@ -315,7 +315,7 @@
         },
         {
             "file": "src/eventhub.js",
-            "line": 25,
+            "line": 22,
             "description": "Trigger event",
             "itemtype": "method",
             "name": "trigger",
@@ -337,7 +337,7 @@
         },
         {
             "file": "src/eventhub.js",
-            "line": 37,
+            "line": 34,
             "description": "Register a callback to a specific event. Callbacks are executed in the order of\nregistration. Use the 'position' parameter to change this behavior. Note that \"before\" and \"after\" are just different\nstacks, executed before/after the normal execution flow.",
             "itemtype": "method",
             "name": "on",
@@ -346,6 +346,11 @@
                     "name": "eventName",
                     "description": "",
                     "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Function"
                 },
                 {
                     "name": "prepend",
@@ -361,7 +366,7 @@
         },
         {
             "file": "src/eventhub.js",
-            "line": 55,
+            "line": 53,
             "description": "Register a callback to a specific event. This function is identical to {{#crossLink \"Sway.EventHub/on:method\"}}{{/crossLink}}\nexcept that this callback is removed from the list after it is called",
             "itemtype": "method",
             "name": "one",
@@ -370,6 +375,11 @@
                     "name": "eventName",
                     "description": "",
                     "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Function"
                 },
                 {
                     "name": "prepend",
@@ -382,8 +392,8 @@
         },
         {
             "file": "src/eventhub.js",
-            "line": 69,
-            "description": "Removes the given callback for a specific event.",
+            "line": 70,
+            "description": "Removes the given callback for a specific event.\n\n// TODO: should be possible to remove namespaces too, which makes 'callback' optional!",
             "itemtype": "method",
             "name": "off",
             "params": [
@@ -391,6 +401,11 @@
                     "name": "eventName",
                     "description": "",
                     "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Function"
                 }
             ],
             "example": [

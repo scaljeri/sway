@@ -9,9 +9,17 @@
 		@constructor
 	**/
 	var di = function() {
+        // container for all registered classes
         Object.defineProperty(this, '_contracts',
             {
                 value: {},
+                enumerable: false // hide it
+            }
+        ) ;
+        // used to check for circular dependencies
+        Object.defineProperty(this, '_depCheck',
+            {
+                value:[],
                 enumerable: false // hide it
             }
         ) ;
@@ -93,7 +101,7 @@
             var cr = this._contracts[contract].classRef ;
 
             function Fake(){
-                cr.apply(this, createInstanceList.call(self, dependencies)) ;
+                cr.apply(this, createInstanceList.call(self, contract, dependencies||[])) ;
             }
             Fake.prototype = cr.prototype // Fix instanceof
             return new Fake ;
@@ -118,22 +126,30 @@
     * In this case, the constructor would, for example, look like this:
     *    function constructor(instance, array, instance) { .. }
     * */
-    function createInstanceList(dependencies) {
-        if ( !dependencies )
-            return [] ;
-
+    function createInstanceList(contract, dependencies) {
         var instances = [] ;
         dependencies.forEach(function(c, i) {
             if ( Array.isArray(c)) {
-               instance.push( createInstanceList.call(this, c) ) ;
+                instances.push( createInstanceList.call(this, contract, c) ) ;
             }
             else {
-                instances.push(this.getInstance(c)) ;
+                if ( this._depCheck.indexOf(c) === -1 ) { // check for circular dependency
+                    this._depCheck.push(c) ;
+                    instances.push(this.getInstance(c)) ;
+                    if ( !instances[instances.length-1]) {
+                        console.warn("Dependency '" + c + "' does not exist!") ;
+                    }
+                    this._depCheck.pop() ;
+                }
+                else { // fatal
+                    this._depCheck.length = 0 ;
+                    throw "Circular dependency detected for contract " + c ;
+                }
             }
         }.bind(this)) ;
-
         return instances ;
     }
 
 	Ns.DI = di ;
+
 })(window.Sway) ;

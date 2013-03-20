@@ -100,10 +100,7 @@
     <pre class="code prettyprint linenums">
 window.Sway = window.Sway || {} ; &#x2F;&#x2F; make sure it exists
 
-(function(Ns, $){
-    var requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame ||
-            window.mozRequestAnimationFrame || function( callback ){ window.setTimeout(callback, 1000 &#x2F; 60); }
-
+(function(Ns){
     &#x2F;**
      * EventHub facilitates event-based communication between different parts of an application (Event driven system).
      *
@@ -131,8 +128,8 @@ window.Sway = window.Sway || {} ; &#x2F;&#x2F; make sure it exists
          * @example
             Sway.eventHub.trigger(&#x27;ui.update&#x27;, {authenticated: true} ) ;
          *&#x2F;
-       trigger: function(eventName, data){
-            requestAnimFrame( triggerEvent.bind(this, data) ) ; &#x2F;&#x2F; yield
+        trigger: function(eventName, data){
+            triggerEvent.call(this, eventName, data ) ;
         }
         &#x2F;**
          * Register a callback to a specific event. Callbacks are executed in the order of
@@ -141,6 +138,7 @@ window.Sway = window.Sway || {} ; &#x2F;&#x2F; make sure it exists
          *
          * @method on
          * @param {string} eventName
+         * @param {function} callback
          * @param {boolean} [prepend] the callback is placed before all other registered callbacks. They will be executed in this
          * order when the event is trigger
          * @example
@@ -150,7 +148,7 @@ window.Sway = window.Sway || {} ; &#x2F;&#x2F; make sure it exists
        , on: function(eventName, callback, prepend) {
             var event = registerEvent.call(this, eventName) ;
 
-            event.on[prepend ? &#x27;unshift&#x27;:&#x27;push&#x27;](callback) ;
+            event.__stack.on[prepend ? &#x27;unshift&#x27;:&#x27;push&#x27;](callback) ;
         }
         &#x2F;**
          * Register a callback to a specific event. This function is identical to {{#crossLink &quot;Sway.EventHub&#x2F;on:method&quot;}}{{&#x2F;crossLink}}
@@ -158,19 +156,25 @@ window.Sway = window.Sway || {} ; &#x2F;&#x2F; make sure it exists
          *
          * @method one
          * @param {string} eventName
+         * @param {function} callback
          * @param {boolean} [prepend] the callback is placed before all other registered callbacks. They will be executed in this
          * order when the event is trigger
          *&#x2F;
        , one: function(eventName, callback, prepend) {
             var callbacks = registerEvent.call(this, eventName) ;
-            this.on(eventName, callback, position) ;
-            event.one[prepend ? &#x27;unshift&#x27;:&#x27;push&#x27;](callback) ;
+            callbacks.__stack.on(eventName, callback, position) ;
+
+            &#x2F;&#x2F; the &#x27;one&#x27; stack is used to determine (after a trigger) which callbacks to remove from the &#x27;on&#x27; stack
+            callbacks.__stack.one[prepend ? &#x27;unshift&#x27;:&#x27;push&#x27;](callback) ;
         }
         &#x2F;**
          * Removes the given callback for a specific event.
          *
+         * &#x2F;&#x2F; TODO: should be possible to remove namespaces too, which makes &#x27;callback&#x27; optional!
+         *
          * @method off
          * @param {string} eventName
+         * @param {function} callback
          * @example
             Sway.eventHub.off(&#x27;ui.update&#x27;, this.update) ;
          *&#x2F;
@@ -185,13 +189,13 @@ window.Sway = window.Sway || {} ; &#x2F;&#x2F; make sure it exists
         Private helper function which removes a callback function for a specific event
      *&#x2F;
     function removeCallback(callback, callbacks) {
-        var position = list.on.indexOf(callback) ;
+        var position = callbacks.__stack.on.indexOf(callback) ;
         if ( position != -1 ) {
-            list.on.before.splice(position, 1) ;
+            callbacks.__stack.on.splice(position, 1) ;
         }
-        position = list.one.indexOf(callback) ;
+        position = callbacks.__stack.one.indexOf(callback) ;
         if ( position != -1 ) {
-            list.one.before.splice(position, 1) ;
+            callbacks.__stack.one.splice(position, 1) ;
         }
     }
 
@@ -218,7 +222,7 @@ window.Sway = window.Sway || {} ; &#x2F;&#x2F; make sure it exists
         }
 
         if ( !events.__stack) {
-            event.__stack = {
+            events.__stack = {
                 on: []
                 , one: []
             } ;
@@ -231,7 +235,7 @@ window.Sway = window.Sway || {} ; &#x2F;&#x2F; make sure it exists
             namespaces = getCallbacks.call(this, eventName) ;
 
         for( ns in namespaces ) {
-            doTriggerForNS.call(this, ns) ;
+            doTriggerForNS.call(this, ns, data) ;
         }
     }
 
@@ -239,25 +243,25 @@ window.Sway = window.Sway || {} ; &#x2F;&#x2F; make sure it exists
     Namespaces can in theory be many levels deep, like: &quot;aaaaa.bbbbbb.cccccc._stack&quot;
     To traverse this namespace, this function is called recursively.
      *&#x2F;
-    function doTriggerForNS(namespace) {
-        if ( namespace.on ) { &#x2F;&#x2F; found the callbacks
-            namespace.on.forEach( function(c, i) {
+    function doTriggerForNS(namespace, data) {
+        if ( namespace.__stack ) { &#x2F;&#x2F; found the callbacks
+            namespace.__stack.on.forEach( function(c, i) {
                 c(data) ;
             }) ;
-            namespace.one.forEach(function(c, i) {
+            namespace.__stack.one.forEach(function(c, i) {
                 this.off(c) ;
             }.bind(this)) ;
         }
         else { &#x2F;&#x2F; found a deeper nested namespace
             for( ns in namespaces ) {
-                doTriggerForNS.call(this, ns) ;
+                doTriggerForNS.call(this, ns, data) ;
             }
         }
     }
 
     Ns.EventHub = eh ;
 
-})(window.Sway, jQuery) ;
+})(window.Sway) ;
     </pre>
 </div>
 

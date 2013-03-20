@@ -1,9 +1,6 @@
 window.Sway = window.Sway || {} ; // make sure it exists
 
-(function(Ns, $){
-    var requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame ||
-            window.mozRequestAnimationFrame || function( callback ){ window.setTimeout(callback, 1000 / 60); }
-
+(function(Ns){
     /**
      * EventHub facilitates event-based communication between different parts of an application (Event driven system).
      *
@@ -31,8 +28,8 @@ window.Sway = window.Sway || {} ; // make sure it exists
          * @example
             Sway.eventHub.trigger('ui.update', {authenticated: true} ) ;
          */
-       trigger: function(eventName, data){
-            requestAnimFrame( triggerEvent.bind(this, data) ) ; // yield
+        trigger: function(eventName, data){
+            triggerEvent.call(this, eventName, data ) ;
         }
         /**
          * Register a callback to a specific event. Callbacks are executed in the order of
@@ -41,6 +38,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
          *
          * @method on
          * @param {string} eventName
+         * @param {function} callback
          * @param {boolean} [prepend] the callback is placed before all other registered callbacks. They will be executed in this
          * order when the event is trigger
          * @example
@@ -50,7 +48,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
        , on: function(eventName, callback, prepend) {
             var event = registerEvent.call(this, eventName) ;
 
-            event.on[prepend ? 'unshift':'push'](callback) ;
+            event.__stack.on[prepend ? 'unshift':'push'](callback) ;
         }
         /**
          * Register a callback to a specific event. This function is identical to {{#crossLink "Sway.EventHub/on:method"}}{{/crossLink}}
@@ -58,19 +56,25 @@ window.Sway = window.Sway || {} ; // make sure it exists
          *
          * @method one
          * @param {string} eventName
+         * @param {function} callback
          * @param {boolean} [prepend] the callback is placed before all other registered callbacks. They will be executed in this
          * order when the event is trigger
          */
        , one: function(eventName, callback, prepend) {
             var callbacks = registerEvent.call(this, eventName) ;
-            this.on(eventName, callback, position) ;
-            event.one[prepend ? 'unshift':'push'](callback) ;
+            callbacks.__stack.on(eventName, callback, position) ;
+
+            // the 'one' stack is used to determine (after a trigger) which callbacks to remove from the 'on' stack
+            callbacks.__stack.one[prepend ? 'unshift':'push'](callback) ;
         }
         /**
          * Removes the given callback for a specific event.
          *
+         * // TODO: should be possible to remove namespaces too, which makes 'callback' optional!
+         *
          * @method off
          * @param {string} eventName
+         * @param {function} callback
          * @example
             Sway.eventHub.off('ui.update', this.update) ;
          */
@@ -85,19 +89,19 @@ window.Sway = window.Sway || {} ; // make sure it exists
         Private helper function which removes a callback function for a specific event
      */
     function removeCallback(callback, callbacks) {
-        var position = list.on.indexOf(callback) ;
+        var position = callbacks.__stack.on.indexOf(callback) ;
         if ( position != -1 ) {
-            list.on.before.splice(position, 1) ;
+            callbacks.__stack.on.splice(position, 1) ;
         }
-        position = list.one.indexOf(callback) ;
+        position = callbacks.__stack.one.indexOf(callback) ;
         if ( position != -1 ) {
-            list.one.before.splice(position, 1) ;
+            callbacks.__stack.one.splice(position, 1) ;
         }
     }
 
     /*
      * Internally 'eventName' is always a namespace. Callbacks are placed inside a special
-     * eventName called '__stack'. So, when the eventName is 'doAction', internally this will
+     * variable called '__stack'. So, when the eventName is 'doAction', internally this will
      * look like doAction.__stack.
      * Furthermore, it the eventName is new, it is created
      */
@@ -118,7 +122,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
         }
 
         if ( !events.__stack) {
-            event.__stack = {
+            events.__stack = {
                 on: []
                 , one: []
             } ;
@@ -131,7 +135,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
             namespaces = getCallbacks.call(this, eventName) ;
 
         for( ns in namespaces ) {
-            doTriggerForNS.call(this, ns) ;
+            doTriggerForNS.call(this, ns, data) ;
         }
     }
 
@@ -139,22 +143,22 @@ window.Sway = window.Sway || {} ; // make sure it exists
     Namespaces can in theory be many levels deep, like: "aaaaa.bbbbbb.cccccc._stack"
     To traverse this namespace, this function is called recursively.
      */
-    function doTriggerForNS(namespace) {
-        if ( namespace.on ) { // found the callbacks
-            namespace.on.forEach( function(c, i) {
+    function doTriggerForNS(namespace, data) {
+        if ( namespace.__stack ) { // found the callbacks
+            namespace.__stack.on.forEach( function(c, i) {
                 c(data) ;
             }) ;
-            namespace.one.forEach(function(c, i) {
+            namespace.__stack.one.forEach(function(c, i) {
                 this.off(c) ;
             }.bind(this)) ;
         }
         else { // found a deeper nested namespace
             for( ns in namespaces ) {
-                doTriggerForNS.call(this, ns) ;
+                doTriggerForNS.call(this, ns, data) ;
             }
         }
     }
 
     Ns.EventHub = eh ;
 
-})(window.Sway, jQuery) ;
+})(window.Sway) ;
