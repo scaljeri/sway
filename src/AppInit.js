@@ -19,5 +19,8 @@ window.Sway.VERSION = '1.0alpha'
 window.Sway.DEBUG = true ;
 
 // zip.js settings
+if ( !window.zip ){
+    window.zip = {} ;
+}
 zip.useWebWorkers     = true ;
 zip.workerScriptsPath = "lib/zip.js/" ;

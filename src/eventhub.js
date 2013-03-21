@@ -45,7 +45,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
             Sway.eventHub.on( 'ui.update', this.update.bind(this) ) ;
             Sway.eventHub.on( 'ui.update', this.update.bind(this), true ) ;
          */
-       , on: function(eventName, callback, prepend) {
+        , on: function(eventName, callback, prepend) {
             var event = registerEvent.call(this, eventName) ;
 
             event.__stack.on[prepend ? 'unshift':'push'](callback) ;
@@ -60,7 +60,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
          * @param {boolean} [prepend] the callback is placed before all other registered callbacks. They will be executed in this
          * order when the event is trigger
          */
-       , one: function(eventName, callback, prepend) {
+        , one: function(eventName, callback, prepend) {
             var callbacks = registerEvent.call(this, eventName) ;
             callbacks.__stack.on(eventName, callback, position) ;
 
@@ -70,7 +70,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
         /**
          * Removes the given callback for a specific event.
          *
-         * // TODO: should be possible to remove namespaces too, which makes 'callback' optional!
+         * // TODO: should be possible to remove namespaces too, which makes the param 'callback' optional!
          *
          * @method off
          * @param {string} eventName
@@ -78,11 +78,10 @@ window.Sway = window.Sway || {} ; // make sure it exists
          * @example
             Sway.eventHub.off('ui.update', this.update) ;
          */
-       , off: function(eventName, callback) {
+        , off: function(eventName, callback) {
             var callbacks = registerEvent.call(this, eventName) ;
             removeCallback(callback, callbacks) ;
-       }
-
+        }
     } ;
 
     /*
