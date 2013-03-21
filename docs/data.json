@@ -223,7 +223,7 @@
         },
         {
             "file": "src/di.js",
-            "line": 21,
+            "line": 29,
             "description": "Register a class by creating a contract. Use {{#crossLink \"DI/getInstance:method\"}}{{/crossLink}} to obtain\n            an instance from this contract/class. The injected dependencies, if any, will be used as constructor parameter\n            in the order provided by the dependencies array.",
             "itemtype": "method",
             "name": "register",
@@ -266,7 +266,7 @@
         },
         {
             "file": "src/di.js",
-            "line": 48,
+            "line": 56,
             "description": "Returns an instance for the given contract.",
             "itemtype": "method",
             "name": "geInstancet",
@@ -288,7 +288,7 @@
         },
         {
             "file": "src/di.js",
-            "line": 72,
+            "line": 80,
             "description": "Returns a new instance of the class matched by the contract. If the contract does not exists an error is thrown.\nIf one of the dependencies does not exists, 'null' is used instead.",
             "itemtype": "method",
             "name": "createInstance",
@@ -393,7 +393,7 @@
         {
             "file": "src/eventhub.js",
             "line": 70,
-            "description": "Removes the given callback for a specific event.\n\n// TODO: should be possible to remove namespaces too, which makes 'callback' optional!",
+            "description": "Removes the given callback for a specific event.\n\n// TODO: should be possible to remove namespaces too, which makes the param 'callback' optional!",
             "itemtype": "method",
             "name": "off",
             "params": [
@@ -417,11 +417,11 @@
     "warnings": [
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/di.js:48"
+            "line": " src/di.js:56"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/di.js:72"
+            "line": " src/di.js:80"
         },
         {
             "message": "Missing item type\nFileEntry interface is provided for working with files:\nhttp://www.mosync.com/files/imports/doxygen/latest/html5/filewriter.md.html\nfileEntry.isFile === true\nfileEntry.isDirectory === false\nfileEntry.name\nfileEntry.fullPath\n...\n\nfileEntry.getMetadata(successCallback, opt_errorCallback);\nfileEntry.remove(successCallback, opt_errorCallback);\nfileEntry.moveTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);\nfileEntry.copyTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);\nfileEntry.getParent(successCallback, opt_errorCallback);\nfileEntry.toURI(opt_mimeType);  // Currently not implemented in Google Chrome 9.\n\nfileEntry.file(successCallback, opt_errorCallback);\nfileEntry.createWriter(successCallback, opt_errorCallback);",

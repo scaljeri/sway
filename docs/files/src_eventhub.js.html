@@ -145,7 +145,7 @@ window.Sway = window.Sway || {} ; &#x2F;&#x2F; make sure it exists
             Sway.eventHub.on( &#x27;ui.update&#x27;, this.update.bind(this) ) ;
             Sway.eventHub.on( &#x27;ui.update&#x27;, this.update.bind(this), true ) ;
          *&#x2F;
-       , on: function(eventName, callback, prepend) {
+        , on: function(eventName, callback, prepend) {
             var event = registerEvent.call(this, eventName) ;
 
             event.__stack.on[prepend ? &#x27;unshift&#x27;:&#x27;push&#x27;](callback) ;
@@ -160,7 +160,7 @@ window.Sway = window.Sway || {} ; &#x2F;&#x2F; make sure it exists
          * @param {boolean} [prepend] the callback is placed before all other registered callbacks. They will be executed in this
          * order when the event is trigger
          *&#x2F;
-       , one: function(eventName, callback, prepend) {
+        , one: function(eventName, callback, prepend) {
             var callbacks = registerEvent.call(this, eventName) ;
             callbacks.__stack.on(eventName, callback, position) ;
 
@@ -170,7 +170,7 @@ window.Sway = window.Sway || {} ; &#x2F;&#x2F; make sure it exists
         &#x2F;**
          * Removes the given callback for a specific event.
          *
-         * &#x2F;&#x2F; TODO: should be possible to remove namespaces too, which makes &#x27;callback&#x27; optional!
+         * &#x2F;&#x2F; TODO: should be possible to remove namespaces too, which makes the param &#x27;callback&#x27; optional!
          *
          * @method off
          * @param {string} eventName
@@ -178,11 +178,10 @@ window.Sway = window.Sway || {} ; &#x2F;&#x2F; make sure it exists
          * @example
             Sway.eventHub.off(&#x27;ui.update&#x27;, this.update) ;
          *&#x2F;
-       , off: function(eventName, callback) {
+        , off: function(eventName, callback) {
             var callbacks = registerEvent.call(this, eventName) ;
             removeCallback(callback, callbacks) ;
-       }
-
+        }
     } ;
 
     &#x2F;*
@@ -201,7 +200,7 @@ window.Sway = window.Sway || {} ; &#x2F;&#x2F; make sure it exists
 
     &#x2F;*
      * Internally &#x27;eventName&#x27; is always a namespace. Callbacks are placed inside a special
-     * eventName called &#x27;__stack&#x27;. So, when the eventName is &#x27;doAction&#x27;, internally this will
+     * variable called &#x27;__stack&#x27;. So, when the eventName is &#x27;doAction&#x27;, internally this will
      * look like doAction.__stack.
      * Furthermore, it the eventName is new, it is created
      *&#x2F;
