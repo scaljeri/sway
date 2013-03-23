@@ -10,7 +10,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
      * @constructor
      */
     var eh = function() {
-        Object.defineProperty(this, '_events',
+        Object.defineProperty(this, '_rootStack',
             {
                 value: {},
                 enumerable: false // hide it
@@ -29,7 +29,8 @@ window.Sway = window.Sway || {} ; // make sure it exists
             Sway.eventHub.trigger('ui.update', {authenticated: true} ) ;
          */
         trigger: function(eventName, data){
-            triggerEvent.call(this, eventName, data ) ;
+            var list = getCallbackStack.call(this, eventName) ;
+            return triggerEvent.call(this, list, data) ;
         }
         /**
          * Register a callback to a specific event. Callbacks are executed in the order of
@@ -46,9 +47,9 @@ window.Sway = window.Sway || {} ; // make sure it exists
             Sway.eventHub.on( 'ui.update', this.update.bind(this), true ) ;
          */
         , on: function(eventName, callback, prepend) {
-            var event = registerEvent.call(this, eventName) ;
+            var list = createCallBackStack.call(this, eventName) ;
 
-            event.__stack.on[prepend ? 'unshift':'push'](callback) ;
+            list.__stack.on[prepend ? 'unshift':'push'](callback) ;
         }
         /**
          * Register a callback to a specific event. This function is identical to {{#crossLink "Sway.EventHub/on:method"}}{{/crossLink}}
@@ -61,11 +62,11 @@ window.Sway = window.Sway || {} ; // make sure it exists
          * order when the event is trigger
          */
         , one: function(eventName, callback, prepend) {
-            var callbacks = registerEvent.call(this, eventName) ;
-            callbacks.__stack.on(eventName, callback, position) ;
+            var list = createCallBackStack.call(this, eventName) ;
+            list.__stack.on[prepend ? 'unshift':'push'](callback) ;
 
             // the 'one' stack is used to determine (after a trigger) which callbacks to remove from the 'on' stack
-            callbacks.__stack.one[prepend ? 'unshift':'push'](callback) ;
+            list.__stack.one[prepend ? 'unshift':'push'](callback) ;
         }
         /**
          * Removes the given callback for a specific event.
@@ -79,8 +80,26 @@ window.Sway = window.Sway || {} ; // make sure it exists
             Sway.eventHub.off('ui.update', this.update) ;
          */
         , off: function(eventName, callback) {
-            var callbacks = registerEvent.call(this, eventName) ;
-            removeCallback(callback, callbacks) ;
+            var i, retVal = false
+                , list = createCallBackStack.call(this, eventName) ;
+
+            return removeCallback(callback, list) ;
+
+            /*
+            for( i = 0; i < list.length; i++ ) {
+               if ( list && list.__stack ) {
+                   if ( removeCallback.call(this, callback, list.__stack) ) {
+                       retVal = true ;
+                   }
+               }
+               else {
+
+               }
+            }
+            if ( list && list.__stack ) {
+            }
+            return false ; // could not remove callback
+            */
         }
     } ;
 
@@ -88,74 +107,90 @@ window.Sway = window.Sway || {} ; // make sure it exists
         Private helper function which removes a callback function for a specific event
      */
     function removeCallback(callback, callbacks) {
-        var position = callbacks.__stack.on.indexOf(callback) ;
-        if ( position != -1 ) {
-            callbacks.__stack.on.splice(position, 1) ;
+        var position, cb, retVal = 0 ;
+
+        if ( callbacks && callbacks.on ) {
+            position = callbacks.on.indexOf(callback) ;
+            while( position != -1 ) {
+                retVal  ++ ;
+                callbacks.on.splice(position, 1) ;
+                position = callbacks.one.indexOf(callback) ;
+                if ( position != -1 ) {
+                    callbacks.one.splice(position, 1) ;
+                }
+                position = callbacks.on.indexOf(callback) ;
+            }
         }
-        position = callbacks.__stack.one.indexOf(callback) ;
-        if ( position != -1 ) {
-            callbacks.__stack.one.splice(position, 1) ;
+        else {
+           for( cb in callbacks ) {
+               retVal += removeCallback.call(this, callback, callbacks[cb]) ;
+           }
         }
+        return retVal ;
     }
 
+    function getCallbackStack(eventName) {
+        var parts = eventName.split('.')
+            , stack = this._rootStack
+            , i ;
+
+        for( i = 0; i < parts.length; i++ ) {
+            stack = stack[parts[i]] ;
+        }
+        return stack ;
+    }
     /*
      * Internally 'eventName' is always a namespace. Callbacks are placed inside a special
      * variable called '__stack'. So, when the eventName is 'doAction', internally this will
      * look like doAction.__stack.
      * Furthermore, it the eventName is new, it is created
      */
-    function getCallbacks(eventName) {
-        var parts,                  // hold the event namespaces
-            events = this._events,  // used to create new namespaces
+    function createCallBackStack(eventName) {
+        var parts = eventName.split('.'),                  // hold the event namespaces
+            stack = this._rootStack,  // used to create new namespaces
             i ;                     // for-loop var
 
-        if ( str.match(/\./) ) { // namespaced event?
-            parts = eventName.split('.') ;
-
-            for(i = 0; i < parts.length ; i++) { // traverse the events object
-                if ( !events[parts[i]] ) {
-                    events[parts[i]] = {} ;
-                }
-                events = events[parts[i]] ;
+        for(i = 0; i < parts.length ; i++) { // traverse the events object
+            if ( !stack[parts[i]] ){
+                stack[parts[i]] = {} ;
             }
+            stack = stack[parts[i]] ;
         }
 
-        if ( !events.__stack) {
-            events.__stack = {
+        if ( !stack.__stack) {
+            stack.__stack = {
                 on: []
                 , one: []
             } ;
         }
-        return events ;
+        return stack ;
     }
 
-    function triggerEvent(eventName, data) {
-        var ns,
-            namespaces = getCallbacks.call(this, eventName) ;
 
-        for( ns in namespaces ) {
-            doTriggerForNS.call(this, ns, data) ;
-        }
-    }
 
     /*
     Namespaces can in theory be many levels deep, like: "aaaaa.bbbbbb.cccccc._stack"
     To traverse this namespace, this function is called recursively.
      */
-    function doTriggerForNS(namespace, data) {
-        if ( namespace.__stack ) { // found the callbacks
-            namespace.__stack.on.forEach( function(c, i) {
-                c(data) ;
-            }) ;
-            namespace.__stack.one.forEach(function(c, i) {
-                this.off(c) ;
-            }.bind(this)) ;
-        }
-        else { // found a deeper nested namespace
-            for( ns in namespaces ) {
-                doTriggerForNS.call(this, ns, data) ;
+    function triggerEvent(namespace, data) {
+        var retVal = 0 ;
+        if ( namespace ) {
+            if ( namespace.on ) {
+                namespace.on.forEach( function(c, i) { // trigger each callback function
+                    retVal++ ;
+                    c(data) ;
+                }) ;
+                namespace.one.forEach(function(c, i) { // remove 'one' callbacks
+                    removeCallback.call(this, c, namespace) ;
+                }.bind(this)) ;
+            }
+            else { // found a deeper nested namespace
+                for( ns in namespace ) {
+                    retVal += triggerEvent.call(this, namespace[ns], data) ;
+                }
             }
         }
+        return retVal ;
     }
 
     Ns.EventHub = eh ;
