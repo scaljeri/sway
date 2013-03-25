@@ -26,6 +26,11 @@ describe("Sway.EventHub", function() {
         expect(Sway.EventHub).toBeDefined() ; // the class
         expect(Sway.eventHub).toBeDefined() ; // the instance
     });
+    it("should handle triggers for invalid event names", function() {
+        expect(Sway.eventHub.trigger("go")).toEqual(0) ;
+        expect(Sway.eventHub.trigger("forum.go")).toEqual(0) ;
+        expect(Sway.eventHub.trigger()).toEqual(0) ;
+    }) ;
 
     describe("should handle callbacks for an event", function() {
         it("using 'on'", function() {

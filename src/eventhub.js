@@ -25,6 +25,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
          * @method trigger
          * @param {string} eventName
          * @param data
+         * @return {Number} the number called callbacks for this trigger
          * @example
             Sway.eventHub.trigger('ui.update', {authenticated: true} ) ;
          */
@@ -68,6 +69,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
             // the 'one' stack is used to determine (after a trigger) which callbacks to remove from the 'on' stack
             list.__stack.one[prepend ? 'unshift':'push'](callback) ;
         }
+
         /**
          * Removes the given callback for a specific event.
          *
@@ -76,6 +78,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
          * @method off
          * @param {string} eventName
          * @param {function} callback
+         * @return P{Boolean} If the callback exists, true is returned
          * @example
             Sway.eventHub.off('ui.update', this.update) ;
          */
@@ -84,41 +87,30 @@ window.Sway = window.Sway || {} ; // make sure it exists
                 , list = createCallBackStack.call(this, eventName) ;
 
             return removeCallback(callback, list) ;
-
-            /*
-            for( i = 0; i < list.length; i++ ) {
-               if ( list && list.__stack ) {
-                   if ( removeCallback.call(this, callback, list.__stack) ) {
-                       retVal = true ;
-                   }
-               }
-               else {
-
-               }
-            }
-            if ( list && list.__stack ) {
-            }
-            return false ; // could not remove callback
-            */
         }
     } ;
 
     /*
-        Private helper function which removes a callback function for a specific event
+        Private helper function which removes a callback function for a specific event.
      */
     function removeCallback(callback, callbacks) {
         var position, cb, retVal = 0 ;
 
         if ( callbacks && callbacks.on ) {
-            position = callbacks.on.indexOf(callback) ;
-            while( position != -1 ) {
-                retVal  ++ ;
-                callbacks.on.splice(position, 1) ;
-                position = callbacks.one.indexOf(callback) ;
-                if ( position != -1 ) {
-                    callbacks.one.splice(position, 1) ;
-                }
+            if ( callback) {
                 position = callbacks.on.indexOf(callback) ;
+                while( position != -1 ) { // the callback can be present multiple times
+                    retVal  ++ ;
+                    callbacks.on.splice(position, 1) ;
+                    position = callbacks.one.indexOf(callback) ;
+                    if ( position != -1 ) {
+                        callbacks.one.splice(position, 1) ;
+                    }
+                    position = callbacks.on.indexOf(callback) ;
+                }
+            }
+            else {
+                callbacks
             }
         }
         else {
@@ -130,14 +122,20 @@ window.Sway = window.Sway || {} ; // make sure it exists
     }
 
     function getCallbackStack(eventName) {
-        var parts = eventName.split('.')
-            , stack = this._rootStack
-            , i ;
+        if ( eventName ) {
+            var parts = eventName.split('.')
+                , stack = this._rootStack
+                , i ;
 
-        for( i = 0; i < parts.length; i++ ) {
-            stack = stack[parts[i]] ;
+            for( i = 0; i < parts.length; i++ ) {
+                if ( ! stack[parts[i]]) {
+                    return null ;
+                }
+                stack = stack[parts[i]] ;
+            }
+            return stack ;
         }
-        return stack ;
+        return null ;
     }
     /*
      * Internally 'eventName' is always a namespace. Callbacks are placed inside a special
@@ -146,11 +144,11 @@ window.Sway = window.Sway || {} ; // make sure it exists
      * Furthermore, it the eventName is new, it is created
      */
     function createCallBackStack(eventName) {
-        var parts = eventName.split('.'),                  // hold the event namespaces
-            stack = this._rootStack,  // used to create new namespaces
-            i ;                     // for-loop var
+        var parts = eventName.split('.'),       // hold the event namespaces
+            stack = this._rootStack,            // used to create new namespaces
+            i ;                                 // for-loop var
 
-        for(i = 0; i < parts.length ; i++) { // traverse the events object
+        for(i = 0; i < parts.length ; i++) {    // traverse the events object
             if ( !stack[parts[i]] ){
                 stack[parts[i]] = {} ;
             }
