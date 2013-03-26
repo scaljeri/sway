@@ -180,7 +180,7 @@
             "extension_for": [],
             "file": "src/eventhub.js",
             "line": 4,
-            "description": "EventHub facilitates event-based communication between different parts of an application (Event driven system).\n\n// TODO: tell about namespaces",
+            "description": "EventHub facilitates event-based communication between different parts of an application (Event driven system).\nEvents can be namespaced too, checkout the jQuery <a href=\"http://docs.jquery.com/Namespaced_Events \">documentation</a> on how to use these namespaces.",
             "is_constructor": 1
         }
     },
@@ -315,30 +315,36 @@
         },
         {
             "file": "src/eventhub.js",
-            "line": 22,
-            "description": "Trigger event",
+            "line": 21,
+            "description": "Trigger one or more events. One event is triggered if the 'eventName' parameter targets a specific event, but if this parameter is a namespace, all nested events and\nnamespaces will be triggered.",
             "itemtype": "method",
             "name": "trigger",
             "params": [
                 {
                     "name": "eventName",
-                    "description": "",
+                    "description": "name of the event or namespace",
                     "type": "String"
                 },
                 {
                     "name": "data",
-                    "description": ""
+                    "description": "data passed to the triggered callback function",
+                    "type": "Object|Array|Number|String|Boolean|Function",
+                    "optional": true
                 }
             ],
+            "return": {
+                "description": "the count of triggered callbacks",
+                "type": "Number"
+            },
             "example": [
-                "\n           Sway.eventHub.trigger('ui.update', {authenticated: true} ) ;"
+                "\n        Sway.eventHub.trigger('ui.update', {authenticated: true} ) ; // trigger the 'update' event inside the 'ui' namespace\n        Sway.eventHub.trigger('ui', {authenticated: true} ) ;        // trigger all nested events and namespaces inside the 'ui' namespace"
             ],
             "class": "Sway.EventHub"
         },
         {
             "file": "src/eventhub.js",
-            "line": 34,
-            "description": "Register a callback to a specific event. Callbacks are executed in the order of\nregistration. Use the 'position' parameter to change this behavior. Note that \"before\" and \"after\" are just different\nstacks, executed before/after the normal execution flow.",
+            "line": 38,
+            "description": "Register a callback to a specific event. Callbacks are executed in the order of\nregistration. Set 'prepend' to TRUE to add the callback in front of the others.",
             "itemtype": "method",
             "name": "on",
             "params": [
@@ -354,20 +360,20 @@
                 },
                 {
                     "name": "prepend",
-                    "description": "the callback is placed before all other registered callbacks. They will be executed in this\norder when the event is trigger",
+                    "description": "if TRUE, the callback is placed before all other registered callbacks.",
                     "type": "Boolean",
                     "optional": true
                 }
             ],
             "example": [
-                "\n           Sway.eventHub.on( 'ui.update', this.update.bind(this) ) ;\n           Sway.eventHub.on( 'ui.update', this.update.bind(this), true ) ;"
+                "\n        Sway.eventHub.on( 'ui.update', this.update.bind(this) ) ;\n        Sway.eventHub.on( 'ui.update', this.update.bind(this), true ) ;"
             ],
             "class": "Sway.EventHub"
         },
         {
             "file": "src/eventhub.js",
-            "line": 53,
-            "description": "Register a callback to a specific event. This function is identical to {{#crossLink \"Sway.EventHub/on:method\"}}{{/crossLink}}\nexcept that this callback is removed from the list after it is called",
+            "line": 58,
+            "description": "Register a callback to a specific event. This function is identical to {{#crossLink \"Sway.EventHub/on:method\"}}{{/crossLink}}\nexcept that this callback is removed from the list after it has been triggered.",
             "itemtype": "method",
             "name": "one",
             "params": [
@@ -383,7 +389,7 @@
                 },
                 {
                     "name": "prepend",
-                    "description": "the callback is placed before all other registered callbacks. They will be executed in this\norder when the event is trigger",
+                    "description": "if TRUE, the callback is placed before all other registered callbacks.",
                     "type": "Boolean",
                     "optional": true
                 }
@@ -392,8 +398,28 @@
         },
         {
             "file": "src/eventhub.js",
-            "line": 70,
-            "description": "Removes the given callback for a specific event.\n\n// TODO: should be possible to remove namespaces too, which makes the param 'callback' optional!",
+            "line": 77,
+            "description": "count the registered callbacks for an event or namespace",
+            "itemtype": "method",
+            "name": "count",
+            "params": [
+                {
+                    "name": "eventName",
+                    "description": "if empty all registered callbacks are counted",
+                    "type": "Sting",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "the count of callback functions inside 'eventName'",
+                "type": "Number"
+            },
+            "class": "Sway.EventHub"
+        },
+        {
+            "file": "src/eventhub.js",
+            "line": 92,
+            "description": "Removes the given callback for a specific event.",
             "itemtype": "method",
             "name": "off",
             "params": [
@@ -404,12 +430,17 @@
                 },
                 {
                     "name": "callback",
-                    "description": "",
-                    "type": "Function"
+                    "description": "the callback function to be removed. If omitted, all registered events and nested\nnamespaces inside 'eventName' are removed",
+                    "type": "Function",
+                    "optional": true
                 }
             ],
+            "return": {
+                "description": "the count of removed callback functions",
+                "type": "Number"
+            },
             "example": [
-                "\n           Sway.eventHub.off('ui.update', this.update) ;"
+                "\n        Sway.eventHub.off('ui.update', this.update) ;\n        Sway.eventHub.off('ui') ;"
             ],
             "class": "Sway.EventHub"
         }
