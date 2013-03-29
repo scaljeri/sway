@@ -34,8 +34,9 @@ describe("Sway.EventHub", function() {
 
     describe("should handle callbacks for an event", function() {
         it("using 'on'", function() {
-           Sway.eventHub.on("go", Sway.callbacks.cb1) ;
-           Sway.eventHub.trigger("go", 1 ) ;
+           expect(Sway.eventHub.on("go", Sway.callbacks.cb1)).toBeTruthy() ;
+           expect(Sway.eventHub.on("go", Sway.callbacks.cb1)).toBeFalsy() ;
+           expect(Sway.eventHub.trigger("go", 1)).toEqual(1) ;
            expect(Sway.callbacks.cb1).toHaveBeenCalled() ;
            expect(Sway.callbacks.cb1.callCount).toEqual(1) ;
            expect(Sway.callbacks.cb1).toHaveBeenCalledWith(1) ;
@@ -44,8 +45,9 @@ describe("Sway.EventHub", function() {
            expect(Sway.callbacks.cb1).toHaveBeenCalledWith(2) ;
         }) ;
         it("using 'one'", function() {
-            Sway.eventHub.one("go", Sway.callbacks.cb1) ;
-            Sway.eventHub.trigger("go", 1 ) ;
+            expect(Sway.eventHub.one("go", Sway.callbacks.cb1)).toBeTruthy() ;
+            expect(Sway.eventHub.one("go", Sway.callbacks.cb1)).toBeFalsy() ;
+            expect(Sway.eventHub.trigger("go", 1 )).toEqual(1) ;
             expect(Sway.callbacks.cb1).toHaveBeenCalled() ;
             expect(Sway.callbacks.cb1.callCount).toEqual(1) ;
             expect(Sway.callbacks.cb1).toHaveBeenCalledWith(1) ;
@@ -54,15 +56,16 @@ describe("Sway.EventHub", function() {
         }) ;
         it("using 'on' and 'one'", function() {
             Sway.eventHub.on("go", Sway.callbacks.cb1) ;
-            Sway.eventHub.one("go", Sway.callbacks.cb2) ;
-            Sway.eventHub.trigger("go", 1 ) ;
+            expect(Sway.eventHub.one("go", Sway.callbacks.cb2)).toBeTruthy() ;
+            expect(Sway.eventHub.one("go", Sway.callbacks.cb2)).toBeFalsy() ;
+            expect(Sway.eventHub.trigger("go", 1 )).toEqual(2) ;
             expect(Sway.callbacks.cb1).toHaveBeenCalled() ;
             expect(Sway.callbacks.cb2).toHaveBeenCalled() ;
             expect(Sway.callbacks.cb1.callCount).toEqual(1) ;
             expect(Sway.callbacks.cb2.callCount).toEqual(1) ;
             expect(Sway.callbacks.cb1).toHaveBeenCalledWith(1) ;
             expect(Sway.callbacks.cb2).toHaveBeenCalledWith(1) ;
-            Sway.eventHub.trigger("go", 2 ) ;
+            expect(Sway.eventHub.trigger("go", 2 )).toEqual(1) ;
             expect(Sway.callbacks.cb1.callCount).toEqual(2) ;
             expect(Sway.callbacks.cb2.callCount).toEqual(1) ;
         }) ;
@@ -73,7 +76,7 @@ describe("Sway.EventHub", function() {
             Sway.eventHub.one("go", Sway.callbacks.cb4) ;
             expect(Sway.eventHub.off("go", Sway.callbacks.cb3)).toBeTruthy() ;
             expect(Sway.eventHub.off("go", Sway.callbacks.cb4)).toBeTruthy() ;
-            Sway.eventHub.trigger("go", 2 ) ;
+            expect(Sway.eventHub.trigger("go", 2 )).toEqual(2) ;
             expect(Sway.callbacks.cb1).toHaveBeenCalled() ;
             expect(Sway.callbacks.cb2).toHaveBeenCalled() ;
             expect(Sway.callbacks.cb3).not.toHaveBeenCalled() ;
@@ -82,37 +85,45 @@ describe("Sway.EventHub", function() {
     });
     describe("should handle callbacks for a one level deep namespaced event", function() {
        it("using 'on'", function() {
-           Sway.eventHub.on("forum.go", Sway.callbacks.cb1) ;
-           Sway.eventHub.trigger("forum.go", 1 ) ;
+           expect(Sway.eventHub.on("forum.go", Sway.callbacks.cb1)).toBeTruthy() ;
+           expect(Sway.eventHub.trigger("forum.go", 1 )).toEqual(1) ;
            expect(Sway.callbacks.cb1).toHaveBeenCalled() ;
            expect(Sway.callbacks.cb1.callCount).toEqual(1) ;
            expect(Sway.callbacks.cb1).toHaveBeenCalledWith(1) ;
-           Sway.eventHub.trigger("forum.go", 2 ) ;
+           expect(Sway.eventHub.trigger("forum.go", 2 )).toEqual(1) ;
            expect(Sway.callbacks.cb1.callCount).toEqual(2) ;
            expect(Sway.callbacks.cb1).toHaveBeenCalledWith(2) ;
        }) ;
        it("using 'one'", function() {
-           Sway.eventHub.one("forum.go", Sway.callbacks.cb1) ;
-           Sway.eventHub.trigger("forum.go", 1 ) ;
+           expect(Sway.eventHub.one("forum.go", Sway.callbacks.cb1)).toBeTruthy() ;
+           expect(Sway.eventHub.one("forum.go", Sway.callbacks.cb1)).toBeFalsy() ;
+           expect(Sway.eventHub.trigger("forum.go", 1 )).toEqual(1) ;
            expect(Sway.callbacks.cb1).toHaveBeenCalled() ;
            expect(Sway.callbacks.cb1.callCount).toEqual(1) ;
            expect(Sway.callbacks.cb1).toHaveBeenCalledWith(1) ;
-           Sway.eventHub.trigger("forum.go", 2 ) ;
+           expect(Sway.eventHub.trigger("forum.go", 2)).toEqual(0) ;
            expect(Sway.callbacks.cb1.callCount).toEqual(1) ;
        }) ;
        it("using 'on' and 'one'", function() {
            Sway.eventHub.on("forum.go", Sway.callbacks.cb1) ;
            Sway.eventHub.one("forum.go", Sway.callbacks.cb2) ;
-           Sway.eventHub.trigger("forum.go", 1 ) ;
+           expect(Sway.eventHub.on("forum.go", Sway.callbacks.cb1)).toBeFalsy() ;
+           expect(Sway.eventHub.trigger("forum.go", 1 )).toEqual(2);
            expect(Sway.callbacks.cb1).toHaveBeenCalled() ;
            expect(Sway.callbacks.cb2).toHaveBeenCalled() ;
            expect(Sway.callbacks.cb1.callCount).toEqual(1) ;
            expect(Sway.callbacks.cb2.callCount).toEqual(1) ;
            expect(Sway.callbacks.cb1).toHaveBeenCalledWith(1) ;
            expect(Sway.callbacks.cb2).toHaveBeenCalledWith(1) ;
-           Sway.eventHub.trigger("forum.go", 2 ) ;
+           expect(Sway.eventHub.trigger("forum.go", 2 )).toEqual(1) ;
            expect(Sway.callbacks.cb1.callCount).toEqual(2) ;
            expect(Sway.callbacks.cb2.callCount).toEqual(1) ;
+
+           // add cb2 again, which should work because it is already removed
+           expect(Sway.eventHub.one("forum.go", Sway.callbacks.cb2)).toBeTruthy() ;
+           expect(Sway.eventHub.trigger("forum.go", 2 )).toEqual(2) ;
+           expect(Sway.callbacks.cb1.callCount).toEqual(3) ;
+           expect(Sway.callbacks.cb2.callCount).toEqual(2) ;
        }) ;
        it("using 'off'", function() {
            Sway.eventHub.on("forum.go1", Sway.callbacks.cb1) ;
@@ -121,7 +132,7 @@ describe("Sway.EventHub", function() {
            Sway.eventHub.one("forum.go1", Sway.callbacks.cb4) ;
            expect(Sway.eventHub.off("forum.go2", Sway.callbacks.cb3)).toBeTruthy() ;
            expect(Sway.eventHub.off("forum.go1", Sway.callbacks.cb4)).toBeTruthy() ;
-           Sway.eventHub.trigger("forum.go1", 2 ) ;
+           expect(Sway.eventHub.trigger("forum.go1", 2 )).toEqual(1) ;
            expect(Sway.callbacks.cb1).toHaveBeenCalled() ;
            expect(Sway.callbacks.cb2).not.toHaveBeenCalled() ;
            expect(Sway.callbacks.cb3).not.toHaveBeenCalled() ;

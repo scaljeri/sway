@@ -1,6 +1,6 @@
-"use strict" ;
 
 (function(Ns) {
+    "use strict" ;
 	/**
 		DI makes classes accessible by a contract. Instances are created when requested and dependencies are injected into the constructor,
         facilitating lazy initialization and loose coupling between classes.
@@ -27,21 +27,21 @@
 
 	di.prototype = {
 		/**
-			Register a class by creating a contract. Use {{#crossLink "DI/getInstance:method"}}{{/crossLink}} to obtain
-            an instance from this contract/class. The injected dependencies, if any, will be used as constructor parameter
-            in the order provided by the dependencies array.
-
-			@method register
-			@chainable 
-			@param {String} contract name of the contracta
-			@param {Class} class the class bind to this contract
-    		@param {Array} [dependencies] list of contracts; dependencies of this class
-            @param {Object} [options] addition setting used to create the instance.
-                @param {string} options.singleton set to TRUE if the class should be treated as a singleton class
-			@example
-                App.di.registerType("ajax", App.AJAX) ;
-                App.di.registerType("ajax", App.AJAX, [], { singleton: true }) ;
-                App.di.registerType("util", App.Util, ["compress", "wsql"], { singleton: true } ) ;
+		 * Register a class by creating a contract. Use {{#crossLink "DI/getInstance:method"}}{{/crossLink}} to obtain
+         * an instance from this contract/class. The injected dependencies, if any, will be used as constructor parameter
+         * in the order provided by the dependencies array.
+         *
+		 * @method register
+		 * @chainable
+		 * @param {String} contract name of the contracta
+		 * @param {Class} class the class bind to this contract
+         * @param {Array} [dependencies] list of contracts; dependencies of this class
+         * @param {Object} [options] addition setting used to create the instance.
+         * @param {string} options.singleton set to TRUE if the class should be treated as a singleton class
+		 * @example
+         App.di.registerType("ajax", App.AJAX) ;
+         App.di.registerType("ajax", App.AJAX, [], { singleton: true }) ;
+         App.di.registerType("util", App.Util, ["compress", "wsql"], { singleton: true } ) ;
 		**/
         register: function(contract, classRef, dependencies, options)
         {
@@ -50,9 +50,9 @@
                 dependencies = [] ;
             }
             this._contracts[contract] = { classRef: classRef, dependencies: dependencies, options: options||{} } ;
-		    return this ;
+            return this ;
         },
-			
+
         /**
          * Returns an instance for the given contract.
          *
@@ -60,7 +60,7 @@
          * @param  {string} contract name
          * @returns {Object} Class instance
          * @example
-            var ajax = App.di.getInstance("ajax") ;
+         var ajax = App.di.getInstance("ajax") ;
          **/
         getInstance: function(contract) {
             if ( !this._contracts[contract] ) {
@@ -89,13 +89,15 @@
                 try {
                     var storage = App.di.createInstance("data", ["compress", "websql"]) ;
                 }
-                catch(e) {
+                catch(e) { // will fail if contract does not exist
                     console.log(e.name + ': ' + e.message) ;
                 }
         **/
-        createInstance: function(contract, dependencies) {
-            if ( !this._contracts[contract] )
+        createInstance: function(contract, dependencies)
+        {
+            if ( !this._contracts[contract] ) {
                 throw 'Unknown contract name "' + contract + '"' ;
+            }
 
             var self = this ;
             var cr = this._contracts[contract].classRef ;
@@ -103,8 +105,8 @@
             function Fake(){
                 cr.apply(this, createInstanceList.call(self, contract, dependencies||[])) ;
             }
-            Fake.prototype = cr.prototype // Fix instanceof
-            return new Fake ;
+            Fake.prototype = cr.prototype ; // Fix instanceof
+            return new Fake() ;
         }
 	} ;
 
@@ -112,12 +114,10 @@
 
     /* Create or reuse a singleton instance */
     function getSingletonInstance() {
-
-        if (this.instance == undefined)
-            {
-            	this.instance = new this.classRef(this.dependencies);
-            }
-       	return this.instance ;
+        if (this.instance === undefined) {
+            this.instance = new this.classRef(this.dependencies);
+        }
+        return this.instance ;
     }
 
     /* convert a list of contracts into a list of instances

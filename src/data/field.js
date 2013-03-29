@@ -5,6 +5,12 @@ window.Sway = window.Sway || {data: {}} ; // make sure it exists
     defaults = {
     } ;
 
+    f.prototype = {
+        clear: function() {
+            this._value = null ;
+        }
+    } ;
+
     /**
      *
      * @class Sway.data.Field
@@ -37,12 +43,6 @@ window.Sway = window.Sway || {data: {}} ; // make sure it exists
                 , get: getFiltered
             }
         ) ;
-    } ;
-
-    f.prototype = {
-        clear: function() {
-            this._value = null ;
-        }
     } ;
 
     function getFiltered() {

@@ -9,7 +9,7 @@ window.Sway = window.Sway || {} ;
   * @property VERSION
   * @type String
   **/
-window.Sway.VERSION = '1.0alpha'
+window.Sway.VERSION = '1.0alpha' ;
 
 /**
   * If TRUE, debugging is enabled. In PRODUCTION this property should be set to FALSE!!
