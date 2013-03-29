@@ -17,9 +17,9 @@ files = [
   'lib/zip.js/deflate.js',
 
   'src/appinit.js',
-  'src/datacontainer.js',
-  'src/fs.js',
-  'src/websql.js',
+  //'src/datacontainer.js',
+  'src/persistance/fs.js',
+  'src/persistance/websql.js',
   'src/di.js',
 
 

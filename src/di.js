@@ -1,5 +1,5 @@
 
-(function(Ns) {
+(function(console, Ns) {
     "use strict" ;
 	/**
 		DI makes classes accessible by a contract. Instances are created when requested and dependencies are injected into the constructor,
@@ -128,7 +128,8 @@
     * */
     function createInstanceList(contract, dependencies) {
         var instances = [] ;
-        dependencies.forEach(function(c, i) {
+
+        dependencies.forEach( function(c) {
             if ( Array.isArray(c)) {
                 instances.push( createInstanceList.call(this, contract, c) ) ;
             }
@@ -152,4 +153,4 @@
 
 	Ns.DI = di ;
 
-})(window.Sway) ;
+})(window.console, window.Sway) ;

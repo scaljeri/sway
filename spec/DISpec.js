@@ -1,25 +1,31 @@
-describe("Sway.DI", function() {
-    // mock some classes
+window.describe("Sway.DI", function() {
+    "use strict";
 
+    var Sway            = window.Sway
+        , beforeEach    = window.beforeEach
+        , expect        = window.expect
+        , it            = window.it ;
+
+    // mock some classes
     Sway.RealDataSource = function() {
     } ;
 
     Sway.Consumer1 = function(data) {
         this.data = data ;
-    }
+    };
 
     Sway.Consumer2 = function(data, consumer) {
         this.data = data ;
         this.consumers = consumer ;
-    }
+    };
     Sway.Consumer3 = function(data, consumers) {
         this.data = data ;
         this.consumers = consumers ;
-    }
+    };
 
     beforeEach(function() {
-	    // create DI
-	    Sway.di = new Sway.DI() ;
+        // create DI
+        Sway.di = new Sway.DI() ;
     });
 
     it("should exist", function() {
