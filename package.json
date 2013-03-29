@@ -6,9 +6,9 @@
     },
 
     "scripts": {
-        //"test": "./node_modules/.bin/testacular start --single-run --browsers PhantomJS"
         "test": "./node_modules/.bin/testacular start --single-run"
-    }
+    },
+    "test": "./node_modules/.bin/testacular start --single-run --browsers PhantomJS"
 
 }
 
