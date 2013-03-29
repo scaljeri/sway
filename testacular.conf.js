@@ -33,7 +33,9 @@ files = [
 
 // list of files to exclude
 exclude = [
-    'spec/FsSpec.js'
+    'spec/DataContainerSpec.js'
+    , 'spec/FsSpec.js'
+    , 'spec/WebSqlSpec.js'
 ];
 
 
