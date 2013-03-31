@@ -2,3 +2,4 @@
 ./lib/zip.js/tests/
 lib/zip.js/tests/
 *.swp
+node_modules/

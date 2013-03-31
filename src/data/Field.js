@@ -1,8 +1,9 @@
-window.Sway = window.Sway || {data: {}} ; // make sure it exists
+window.Sway = window.Sway || {} ; // make sure it exists
+window.Sway.data = window.Sway.data || {} ;
 
 (function(Ns) {
 
-    defaults = {
+    var defaults = {
     } ;
 
     /**
@@ -10,7 +11,7 @@ window.Sway = window.Sway || {data: {}} ; // make sure it exists
      * @class Sway.data.Field
      * @param {Array} [filters] list of filter
      */
-    var f = function( filters ) {
+    var f = function( filterList ) {
         Object.defineProperty(this, '_value',
             {
                 value: null
@@ -40,19 +41,21 @@ window.Sway = window.Sway || {data: {}} ; // make sure it exists
     } ;
 
     f.prototype = {
-        clear: function() {
-            this._value = null ;
+        size: function() {
+            return this.state === "uncompressed" ? encodeURI(this._inputStr).split(/%..|./).length - 1 : this._zippedBlob.size ;
         }
+        , clear: function() {}
     } ;
 
     function getFiltered() {
         return this._filtered ;
     }
     function setFiltered(filtered, callback) {
-        if ( this._filtered != filtered ) {
+        if ( this._filtered !== filtered ) {
            // apply filters
-           if ( this._filtered != null )
+           if ( this._filtered !== null ){
                this._filters.reverse() ; // reverse the order of filters
+           }
            applyFilters.call(this, 0, (filtered === true ? 'do' : 'undo'), callback) ;
            this._filtered = filtered ;
         }
@@ -86,6 +89,9 @@ window.Sway = window.Sway || {data: {}} ; // make sure it exists
            }
        }
     }
+
+    Ns.Field = f ;
+
 })(window.Sway.data) ;
 
 
