@@ -19,6 +19,13 @@ window.Sway.data = window.Sway.data || {} ;
                 , enumerable: false // hide it
             }
         ) ;
+        Object.defineProperty(this, 'value',
+            {
+                value: null
+                , set: this.setValue
+                , get: this.getValue
+            }
+        ) ;
     } ;
 
     f.prototype = {
@@ -55,7 +62,7 @@ window.Sway.data = window.Sway.data || {} ;
         /**
          * @method size
          */
-        , size: function() {
+        , getSize: function() {
             return this.state === "uncompressed" ? encodeURI(this._inputStr).split(/%..|./).length - 1 : this._zippedBlob.size ;
         }
     } ;

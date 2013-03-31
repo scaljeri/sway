@@ -19,7 +19,7 @@ window.Sway.data = window.Sway.data || {} ;
      * @param {Object}[persistence] dependency which can persist the data
      * @param {Array} [fieldList] list of filters. Depending on the filter type its a before and/or after filter.
      */
-     , ar = function(persistance ) {
+     , ActiveRecord = function(persistance ) {
 
         /*
         AR prototype methods can be access by a BLESSED model, or simply by an ActiveRecord instance. To make these
@@ -54,7 +54,7 @@ window.Sway.data = window.Sway.data || {} ;
         ) ;
     } ;
 
-	ar.prototype = {
+	ActiveRecord.prototype = {
         /**
          * @method bless
          * @param {Object} model instance to be blessed
@@ -107,11 +107,11 @@ window.Sway.data = window.Sway.data || {} ;
          * @return {Object} Field instance
          */
         , getField: function(key) {
-            return this._ar._fields[this._ar._fieldLookup[key]].value ;
+            return this._ar._field[this._ar._fieldLookup[key]].field ;
         }
         , setField: function(key, field) {
            this._fieldLookup[key] = this._field.length ;
-            this._field.push({ key: key, value: field}) ;
+            this._field.push({ key: key, field: field}) ;
         }
         /**
          * @method getSize
@@ -120,17 +120,18 @@ window.Sway.data = window.Sway.data || {} ;
          */
         , getSize: function(key) {
             var self = this._ar
-                , arLength = 0
+                , size = 0
                 , i ;
 
             if ( key ) {
-                return self._field[self._fieldLookup[key]].size() ;
+                return self._field[self._fieldLookup[key]].getSize() ;
             }
             else {
                 for( i = 0; i < self._field.length; i++ ) {
-                    arLength += self._field[self._fieldLookup[key]].size() ;
+                    size += self._field[i].field.getSize() ;
                 }
             }
+            return size ;
             /*
             return (this.state == "uncompressed" ?
                         new Blob([this._inputStr], { type: "text/plain"}) : this._zippedBlob
@@ -155,6 +156,6 @@ window.Sway.data = window.Sway.data || {} ;
         return temp;
     }
 
-	Ns.ActiveRecord = ar ;
+	Ns.ActiveRecord = ActiveRecord ;
 
 })(window.Sway.data) ;
