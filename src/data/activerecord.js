@@ -1,10 +1,12 @@
-window.Sway = window.Sway || {data: {}} ; // make sure it exists
+// Create the namespace -> JS load order independent
+window.Sway = window.Sway || {} ;
+window.Sway.data = window.Sway.data || {} ;
 
 (function(Ns) {
 
     defaults = {
         //
-    }
+    } ;
 
     /**
      * This class stores a string in memory. If a persistance dependency is defined, it will use this dependency to store
@@ -12,11 +14,24 @@ window.Sway = window.Sway || {data: {}} ; // make sure it exists
      * As an example, a persistance dependency could be WebSQL storage. A filter could be encryption and/or compression.
      * Note that for an encryption filter, it will perform an action on the data before persisting it, and on retrieval.
      *
-     * @class Sway.data.Record
+     * @class Sway.data.ActiveRecord.
      * @param {Object}[persistence] dependency which can persist the data
-     * @param {Array} [filterList] list of filters. Depending on the filter type its a before and/or after filter.
+     * @param {Array} [fieldList] list of filters. Depending on the filter type its a before and/or after filter.
      */
-	var d = function(persistance, fieldList ) {
+	var ar = function(persistance, fieldList ) {
+
+        /*
+        AR prototype methods can be access by a BLESSED model, or simply by an ActiveRecord instance. To make these
+        function independent of this BLESSED mechanism the blow variables is used within each function
+         */
+        Object.defineProperty(this, '_ar',          // use this._ar instead of this
+            {
+                value:this
+                , configurable: false
+                , writable: false
+                , enumerable: false // hide it
+            }
+        ) ;
 
         Object.defineProperty(this, '_persist',
             {
@@ -24,7 +39,7 @@ window.Sway = window.Sway || {data: {}} ; // make sure it exists
                 , enumerable: false // hide it
             }
         ) ;
-        Object.defineProperty(this, '_fields',
+        Object.defineProperty(this, '_field',
             {
                 value: fieldList || []
                 , enumerable: false // hide it
@@ -36,23 +51,55 @@ window.Sway = window.Sway || {data: {}} ; // make sure it exists
                 , enumerable: false // hide it
             }
         ) ;
-        this._fields.forEach(function(c, i) {
+        this._fields.forEach(function(c) {
            this._fieldLookup[c.getKey()] = c ;
         }.bind(this)) ;
     } ;
 
-	d.prototype = {
-        setField: function(key, value) {
+	ar.prototype = {
+        bless: function(model) {
+            var i ;
 
+            Object.defineProperty(model, '_ar',             // create a ref to ActiveRecord instance
+                {
+                    value: this
+                    , enumerable: false // hide it
+                }
+            ) ;
+
+            for ( i in this.prototype ) {                   // add prototype functions to model, like 'save'
+                if ( !model.prototype[i] ) {                // but only if it does not exist already!
+                    model.prototype = this.prototype[i] ;
+                }
+            }
+
+        }
+        , setField: function(key, field) {
+            var self = this._ar ;
+
+            if ( typeof(field) === "string" ) {             // all AR fields should an instance of Sway.Field
+               field = new Ns.Field(field) ;
+            }
+            self._fieldLookup[key] = self._fields.length ;
+            self._field.push({key: key, field: field});
+        }
+        , getField: function(key) {
+            return this._ar._fields[this._ar._fieldLookup[key]].value ;
         },
 
-        setValue: function(key, value) {
+        getSize: function(key) {
+            var self = this._ar
+                , arLength = 0
+                , i ;
 
-        },
-
-        getSize: function() {
-            return this.state == "uncompressed" ? encodeURI(this._inputStr).split(/%..|./).length - 1 : this._zippedBlob.size ;
-
+            if ( key ) {
+                return self._field[self._fieldLookup[key]].size() ;
+            }
+            else {
+                for( i = 0; i < self._field.length; i++ ) {
+                    arLength += self._field[self._fieldLookup[key]].size() ;
+                }
+            }
             /*
             return (this.state == "uncompressed" ?
                         new Blob([this._inputStr], { type: "text/plain"}) : this._zippedBlob
@@ -72,7 +119,7 @@ window.Sway = window.Sway || {data: {}} ; // make sure it exists
             }
         }.bind(this)) ;
     }
-    function getStr(callback) {
+    function getStr (callback) {
         // load the data
         if ( this._persist ) {
            this._persist.get(function(data) {
@@ -117,6 +164,6 @@ window.Sway = window.Sway || {data: {}} ; // make sure it exists
         callback(str) ; // done
     }
 
-	Ns.Data = d ;
+	Ns.ActiveRecord = ar ;
 
 })(window.Sway.data) ;

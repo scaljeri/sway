@@ -8,7 +8,8 @@ Abelson & Sussman, SICP, preface to the first edition
 ======
 Sway - javascript utility library
 
-// TODO
+// TODO - description of the libraries
+
 
 Online documentation: http://scaljeri.github.com/sway/
 
