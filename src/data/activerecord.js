@@ -3,10 +3,11 @@ window.Sway = window.Sway || {} ;
 window.Sway.data = window.Sway.data || {} ;
 
 (function(Ns) {
+    "use strict" ;
 
-    defaults = {
+    var defaults = {
         //
-    } ;
+    }
 
     /**
      * This class stores a string in memory. If a persistance dependency is defined, it will use this dependency to store
@@ -18,7 +19,7 @@ window.Sway.data = window.Sway.data || {} ;
      * @param {Object}[persistence] dependency which can persist the data
      * @param {Array} [fieldList] list of filters. Depending on the filter type its a before and/or after filter.
      */
-	var ar = function(persistance, fieldList ) {
+     , ar = function(persistance ) {
 
         /*
         AR prototype methods can be access by a BLESSED model, or simply by an ActiveRecord instance. To make these
@@ -41,7 +42,7 @@ window.Sway.data = window.Sway.data || {} ;
         ) ;
         Object.defineProperty(this, '_field',
             {
-                value: fieldList || []
+                value: []
                 , enumerable: false // hide it
             }
         ) ;
@@ -51,14 +52,16 @@ window.Sway.data = window.Sway.data || {} ;
                 , enumerable: false // hide it
             }
         ) ;
-        this._fields.forEach(function(c) {
-           this._fieldLookup[c.getKey()] = c ;
-        }.bind(this)) ;
     } ;
 
 	ar.prototype = {
+        /**
+         * @method bless
+         * @param {Object} model instance to be blessed
+         */
         bless: function(model) {
-            var i ;
+            var i
+                , setup ;
 
             Object.defineProperty(model, '_ar',             // create a ref to ActiveRecord instance
                 {
@@ -67,27 +70,55 @@ window.Sway.data = window.Sway.data || {} ;
                 }
             ) ;
 
-            for ( i in this.prototype ) {                   // add prototype functions to model, like 'save'
-                if ( !model.prototype[i] ) {                // but only if it does not exist already!
+            for ( i in this.prototype ) {                       // add prototype functions to model, like 'save'
+                if ( !model.prototype[i] && i !== "bless" ) {   // but only if it does not exist already and not 'bless'
                     model.prototype = this.prototype[i] ;
                 }
             }
 
-        }
-        , setField: function(key, field) {
-            var self = this._ar ;
+            // clone the fields
+            if ( !model._field ) {
+                Object.defineProperty(model, '_field',             // create a ref to ActiveRecord instance
+                    {
+                        value: []
+                        , enumerable: false // hide it
+                    }
+                ) ;
+                Object.defineProperty(model, '_fieldLookup',             // create a ref to ActiveRecord instance
+                    {
+                        value:{}
+                        , enumerable: false // hide it
+                    }
+                ) ;
 
-            if ( typeof(field) === "string" ) {             // all AR fields should an instance of Sway.Field
-               field = new Ns.Field(field) ;
+                for( i = 0; i < this._field; i++ ){
+                    setup = this._field[i] ;
+                    model._fieldLookup[setup.key] = model._field.length ;
+                    model._field.push(clone(this._field[i])) ;
+                }
             }
-            self._fieldLookup[key] = self._fields.length ;
-            self._field.push({key: key, field: field});
+
+
+
         }
+        /**
+         * @method getField
+         * @param {String} key
+         * @return {Object} Field instance
+         */
         , getField: function(key) {
             return this._ar._fields[this._ar._fieldLookup[key]].value ;
-        },
-
-        getSize: function(key) {
+        }
+        , setField: function(key, field) {
+           this._fieldLookup[key] = this._field.length ;
+            this._field.push({ key: key, value: field}) ;
+        }
+        /**
+         * @method getSize
+         * @param {String} key
+         * @returns {Number}
+         */
+        , getSize: function(key) {
             var self = this._ar
                 , arLength = 0
                 , i ;
@@ -108,60 +139,20 @@ window.Sway.data = window.Sway.data || {} ;
         }
     } ;
 
-    function setStr(str) {
-        //  persist the data
-        applyPreFilters.call(this, str, 0, function(filteredStr){
-            if ( this._persist ) {
-                this.persist.set(filteredStr) ;
-            }
-            else {
-                this._str = filteredStr ;
-            }
-        }.bind(this)) ;
-    }
-    function getStr (callback) {
-        // load the data
-        if ( this._persist ) {
-           this._persist.get(function(data) {
-               applyPostFilters.call(this, data, this.filters.length, callback  )
-           }.bind(this)) ;
-        }
-        else {
-            applyPostFilters.call(this, this._str, this.filters.length, callback ) ;
-        }
-    }
+    function clone (obj){
+        var key
+            , temp ;
 
-    function applyPostFilers(data, index, callback) {
-        var self = this ;
-        // loop through all filters (NOTE that filters are asynchronous
-        if ( this.filters[index] ) { // out of bounds ?
-            if ( this.filters[index].pre ) { // is the filter a PRE filter
-                this.filters[index].pre(str, function(fstr) {
-                    applyPostFilters.call(self, fstr, --index, callback ) ;
-                }) ;
-            }
-            else {
-                applyPostFilters.call(this, --index, callback ) ;
-            }
+        if(obj === null || typeof(obj) !== 'object') {
+            return obj;
         }
-        callback(str) ; // done
 
-    }
+        temp = obj.constructor(); // changed
 
-    function applyPreFilters(str, index, callback) {
-        var self = this ;
-        // loop through all filters (NOTE that filters are asynchronous
-        if ( this.filters[index] ) { // out of bounds ?
-            if ( this.filters[index].pre ) { // is the filter a PRE filter
-                this.filters[index].pre(str, function(fstr) {
-                  applyPreFilters.call(self, fstr, ++index, callback ) ;
-                }) ;
-            }
-            else {
-               applyPreFilters.call(this, ++index, callback ) ;
-            }
+        for(key in obj) {
+            temp[key] = clone(obj[key]);
         }
-        callback(str) ; // done
+        return temp;
     }
 
 	Ns.ActiveRecord = ar ;

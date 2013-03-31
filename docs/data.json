@@ -1,20 +1,20 @@
 {
     "project": {},
     "files": {
+        "src/data/activerecord.js": {
+            "name": "src/data/activerecord.js",
+            "modules": {},
+            "classes": {
+                "Sway.data.ActiveRecord.": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "src/data/field.js": {
             "name": "src/data/field.js",
             "modules": {},
             "classes": {
                 "Sway.data.Field": 1
-            },
-            "fors": {},
-            "namespaces": {}
-        },
-        "src/data/record.js": {
-            "name": "src/data/record.js",
-            "modules": {},
-            "classes": {
-                "Sway.data.Record": 1
             },
             "fors": {},
             "namespaces": {}
@@ -74,35 +74,16 @@
     },
     "modules": {},
     "classes": {
-        "Sway.data.Field": {
-            "name": "Sway.data.Field",
-            "shortname": "Sway.data.Field",
+        "Sway.data.ActiveRecord.": {
+            "name": "Sway.data.ActiveRecord.",
+            "shortname": "Sway.data.ActiveRecord.",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "file": "src/data/field.js",
-            "line": 8,
-            "params": [
-                {
-                    "name": "filters",
-                    "description": "list of filter",
-                    "type": "Array",
-                    "optional": true
-                }
-            ]
-        },
-        "Sway.data.Record": {
-            "name": "Sway.data.Record",
-            "shortname": "Sway.data.Record",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "file": "src/data/record.js",
-            "line": 9,
+            "file": "src/data/activerecord.js",
+            "line": 12,
             "description": "This class stores a string in memory. If a persistance dependency is defined, it will use this dependency to store\nthe data. Filters are used to perform some action on the data before persisting it and on retrieval.\nAs an example, a persistance dependency could be WebSQL storage. A filter could be encryption and/or compression.\nNote that for an encryption filter, it will perform an action on the data before persisting it, and on retrieval.",
             "params": [
                 {
@@ -112,8 +93,27 @@
                     "optional": true
                 },
                 {
-                    "name": "filterList",
+                    "name": "fieldList",
                     "description": "list of filters. Depending on the filter type its a before and/or after filter.",
+                    "type": "Array",
+                    "optional": true
+                }
+            ]
+        },
+        "Sway.data.Field": {
+            "name": "Sway.data.Field",
+            "shortname": "Sway.data.Field",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/data/field.js",
+            "line": 10,
+            "params": [
+                {
+                    "name": "filters",
+                    "description": "list of filter",
                     "type": "Array",
                     "optional": true
                 }
@@ -141,7 +141,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/filters/encrypt.js",
-            "line": 8,
+            "line": 10,
             "description": "Encrypt and decrypt a given string",
             "is_constructor": 1
         },
@@ -186,6 +186,109 @@
     },
     "classitems": [
         {
+            "file": "src/data/activerecord.js",
+            "line": 61,
+            "itemtype": "method",
+            "name": "bless",
+            "params": [
+                {
+                    "name": "model",
+                    "description": "instance to be blessed",
+                    "type": "Object"
+                }
+            ],
+            "class": "Sway.data.ActiveRecord."
+        },
+        {
+            "file": "src/data/activerecord.js",
+            "line": 82,
+            "setfield": "",
+            "params": [
+                {
+                    "name": "key",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "field",
+                    "description": "Field instance",
+                    "type": "Object"
+                }
+            ],
+            "class": "Sway.data.ActiveRecord."
+        },
+        {
+            "file": "src/data/activerecord.js",
+            "line": 99,
+            "itemtype": "method",
+            "name": "getSize",
+            "params": [
+                {
+                    "name": "key",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Number"
+            },
+            "class": "Sway.data.ActiveRecord."
+        },
+        {
+            "file": "src/data/field.js",
+            "line": 25,
+            "itemtype": "method",
+            "name": "getValue",
+            "return": {
+                "description": "",
+                "type": "*"
+            },
+            "class": "Sway.data.Field"
+        },
+        {
+            "file": "src/data/field.js",
+            "line": 32,
+            "itemtype": "method",
+            "name": "getFilteredValue",
+            "class": "Sway.data.Field"
+        },
+        {
+            "file": "src/data/field.js",
+            "line": 39,
+            "itemtype": "method",
+            "name": "setValue",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "the value of the field instance",
+                    "type": "Object|String|Blob|Array"
+                }
+            ],
+            "class": "Sway.data.Field"
+        },
+        {
+            "file": "src/data/field.js",
+            "line": 47,
+            "itemtype": "method",
+            "name": "setFilteredValue",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "the filtered value of the field instance",
+                    "type": "Object|String|Blob|Array"
+                }
+            ],
+            "class": "Sway.data.Field"
+        },
+        {
+            "file": "src/data/field.js",
+            "line": 55,
+            "itemtype": "method",
+            "name": "size",
+            "class": "Sway.data.Field"
+        },
+        {
             "file": "src/persistance/fs.js",
             "line": 51,
             "description": "FileEntry interface is provided for working with files:\nhttp://www.mosync.com/files/imports/doxygen/latest/html5/filewriter.md.html\nfileEntry.isFile === true\nfileEntry.isDirectory === false\nfileEntry.name\nfileEntry.fullPath\n...\n\nfileEntry.getMetadata(successCallback, opt_errorCallback);\nfileEntry.remove(successCallback, opt_errorCallback);\nfileEntry.moveTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);\nfileEntry.copyTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);\nfileEntry.getParent(successCallback, opt_errorCallback);\nfileEntry.toURI(opt_mimeType);  // Currently not implemented in Google Chrome 9.\n\nfileEntry.file(successCallback, opt_errorCallback);\nfileEntry.createWriter(successCallback, opt_errorCallback);",
@@ -224,7 +327,7 @@
         {
             "file": "src/di.js",
             "line": 29,
-            "description": "Register a class by creating a contract. Use {{#crossLink \"DI/getInstance:method\"}}{{/crossLink}} to obtain\n            an instance from this contract/class. The injected dependencies, if any, will be used as constructor parameter\n            in the order provided by the dependencies array.",
+            "description": "Register a class by creating a contract. Use {{#crossLink \"DI/getInstance:method\"}}{{/crossLink}} to obtain\nan instance from this contract/class. The injected dependencies, if any, will be used as constructor parameter\nin the order provided by the dependencies array.",
             "itemtype": "method",
             "name": "register",
             "chainable": 1,
@@ -260,7 +363,7 @@
                 }
             ],
             "example": [
-                "\n                App.di.registerType(\"ajax\", App.AJAX) ;\n                App.di.registerType(\"ajax\", App.AJAX, [], { singleton: true }) ;\n                App.di.registerType(\"util\", App.Util, [\"compress\", \"wsql\"], { singleton: true } ) ;"
+                "\n        App.di.registerType(\"ajax\", App.AJAX) ;\n        App.di.registerType(\"ajax\", App.AJAX, [], { singleton: true }) ;\n        App.di.registerType(\"util\", App.Util, [\"compress\", \"wsql\"], { singleton: true } ) ;"
             ],
             "class": "Sway.DI"
         },
@@ -282,7 +385,7 @@
                 "type": "Object"
             },
             "example": [
-                "\n           var ajax = App.di.getInstance(\"ajax\") ;"
+                "\n        var ajax = App.di.getInstance(\"ajax\") ;"
             ],
             "class": "Sway.DI"
         },
@@ -309,7 +412,7 @@
                 "type": "Object"
             },
             "example": [
-                "\n    try {\n        var storage = App.di.createInstance(\"data\", [\"compress\", \"websql\"]) ;\n    }\n    catch(e) {\n        console.log(e.name + ': ' + e.message) ;\n    }"
+                "\n    try {\n        var storage = App.di.createInstance(\"data\", [\"compress\", \"websql\"]) ;\n    }\n    catch(e) { // will fail if contract does not exist\n        console.log(e.name + ': ' + e.message) ;\n    }"
             ],
             "class": "Sway.DI"
         },
@@ -372,7 +475,7 @@
         },
         {
             "file": "src/eventhub.js",
-            "line": 58,
+            "line": 55,
             "description": "Register a callback to a specific event. This function is identical to {{#crossLink \"Sway.EventHub/on:method\"}}{{/crossLink}}\nexcept that this callback is removed from the list after it has been triggered.",
             "itemtype": "method",
             "name": "one",
@@ -398,7 +501,7 @@
         },
         {
             "file": "src/eventhub.js",
-            "line": 77,
+            "line": 68,
             "description": "count the registered callbacks for an event or namespace",
             "itemtype": "method",
             "name": "count",
@@ -418,7 +521,7 @@
         },
         {
             "file": "src/eventhub.js",
-            "line": 92,
+            "line": 83,
             "description": "Removes the given callback for a specific event.",
             "itemtype": "method",
             "name": "off",
@@ -447,12 +550,28 @@
     ],
     "warnings": [
         {
+            "message": "unknown tag: setfield",
+            "line": " src/data/activerecord.js:82"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/data/activerecord.js:99"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/data/field.js:25"
+        },
+        {
             "message": "replacing incorrect tag: returns with return",
             "line": " src/di.js:56"
         },
         {
             "message": "replacing incorrect tag: returns with return",
             "line": " src/di.js:80"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/data/activerecord.js:82"
         },
         {
             "message": "Missing item type\nFileEntry interface is provided for working with files:\nhttp://www.mosync.com/files/imports/doxygen/latest/html5/filewriter.md.html\nfileEntry.isFile === true\nfileEntry.isDirectory === false\nfileEntry.name\nfileEntry.fullPath\n...\n\nfileEntry.getMetadata(successCallback, opt_errorCallback);\nfileEntry.remove(successCallback, opt_errorCallback);\nfileEntry.moveTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);\nfileEntry.copyTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);\nfileEntry.getParent(successCallback, opt_errorCallback);\nfileEntry.toURI(opt_mimeType);  // Currently not implemented in Google Chrome 9.\n\nfileEntry.file(successCallback, opt_errorCallback);\nfileEntry.createWriter(successCallback, opt_errorCallback);",

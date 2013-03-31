@@ -1,8 +1,10 @@
-window.Sway = window.Sway || {filter: {}} ; // make sure it exists
+window.Sway = window.Sway || {} ; // make sure it exists
+window.Sway = window.Sway.filter || {} ; // make sure it exists
 
 (function(Ns) {
+    "use strict" ;
 
-    defaults = {
+    var defaults = {
     }
 
     /**
@@ -11,7 +13,7 @@ window.Sway = window.Sway || {filter: {}} ; // make sure it exists
      * @class Sway.filter.Encrypt
      * @constructor
      */
-    var enc = function() {} ;
+     , enc = function() {} ;
 
     Ns.Encrypt = enc ;
 

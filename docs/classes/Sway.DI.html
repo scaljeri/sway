@@ -43,9 +43,9 @@
             
                 <li><a href="..&#x2F;classes/Sway.html">Sway</a></li>
             
-                <li><a href="..&#x2F;classes/Sway.data.Field.html">Sway.data.Field</a></li>
+                <li><a href="..&#x2F;classes/Sway.data.ActiveRecord..html">Sway.data.ActiveRecord.</a></li>
             
-                <li><a href="..&#x2F;classes/Sway.data.Record.html">Sway.data.Record</a></li>
+                <li><a href="..&#x2F;classes/Sway.data.Field.html">Sway.data.Field</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.DI.html">Sway.DI</a></li>
             
@@ -369,7 +369,7 @@ If one of the dependencies does not exists, 'null' is used instead.</p>
                 <pre class="code prettyprint"><code>try {
     var storage = App.di.createInstance("data", ["compress", "websql"]) ;
 }
-catch(e) {
+catch(e) { // will fail if contract does not exist
     console.log(e.name + ': ' + e.message) ;
 }
 </code></pre>
@@ -484,7 +484,7 @@ catch(e) {
             <h4>Example:</h4>
 
             <div class="example-content">
-                <pre class="code prettyprint"><code>       var ajax = App.di.getInstance("ajax") ;
+                <pre class="code prettyprint"><code>    var ajax = App.di.getInstance("ajax") ;
 </code></pre>
             </div>
         </div>
@@ -566,8 +566,8 @@ catch(e) {
 
     <div class="description">
         <p>Register a class by creating a contract. Use DI/getInstance:method to obtain
-            an instance from this contract/class. The injected dependencies, if any, will be used as constructor parameter
-            in the order provided by the dependencies array.</p>
+an instance from this contract/class. The injected dependencies, if any, will be used as constructor parameter
+in the order provided by the dependencies array.</p>
     </div>
 
     
@@ -666,9 +666,9 @@ catch(e) {
             <h4>Example:</h4>
 
             <div class="example-content">
-                <pre class="code prettyprint"><code>            App.di.registerType("ajax", App.AJAX) ;
-            App.di.registerType("ajax", App.AJAX, [], { singleton: true }) ;
-            App.di.registerType("util", App.Util, ["compress", "wsql"], { singleton: true } ) ;
+                <pre class="code prettyprint"><code>    App.di.registerType("ajax", App.AJAX) ;
+    App.di.registerType("ajax", App.AJAX, [], { singleton: true }) ;
+    App.di.registerType("util", App.Util, ["compress", "wsql"], { singleton: true } ) ;
 </code></pre>
             </div>
         </div>

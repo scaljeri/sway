@@ -1,4 +1,5 @@
-window.Sway = window.Sway || {filter: {}} ; // make sure it exists
+window.Sway = window.Sway || {filter: {}} ;     // make sure it exists
+window.Sway.filter = window.Sway.filter || {} ; // make sure it exists
 
 (function(Ns){
 
@@ -20,7 +21,6 @@ window.Sway = window.Sway || {filter: {}} ; // make sure it exists
 
         },
         apply: function(data, callback) {
-            this.
         },
 
         undo: function(data, callback) {

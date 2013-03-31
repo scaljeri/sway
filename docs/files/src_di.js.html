@@ -43,9 +43,9 @@
             
                 <li><a href="..&#x2F;classes/Sway.html">Sway</a></li>
             
-                <li><a href="..&#x2F;classes/Sway.data.Field.html">Sway.data.Field</a></li>
+                <li><a href="..&#x2F;classes/Sway.data.ActiveRecord..html">Sway.data.ActiveRecord.</a></li>
             
-                <li><a href="..&#x2F;classes/Sway.data.Record.html">Sway.data.Record</a></li>
+                <li><a href="..&#x2F;classes/Sway.data.Field.html">Sway.data.Field</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.DI.html">Sway.DI</a></li>
             
@@ -98,9 +98,9 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-&quot;use strict&quot; ;
 
-(function(Ns) {
+(function(console, Ns) {
+    &quot;use strict&quot; ;
 	&#x2F;**
 		DI makes classes accessible by a contract. Instances are created when requested and dependencies are injected into the constructor,
         facilitating lazy initialization and loose coupling between classes.
@@ -127,21 +127,21 @@
 
 	di.prototype = {
 		&#x2F;**
-			Register a class by creating a contract. Use {{#crossLink &quot;DI&#x2F;getInstance:method&quot;}}{{&#x2F;crossLink}} to obtain
-            an instance from this contract&#x2F;class. The injected dependencies, if any, will be used as constructor parameter
-            in the order provided by the dependencies array.
-
-			@method register
-			@chainable 
-			@param {String} contract name of the contracta
-			@param {Class} class the class bind to this contract
-    		@param {Array} [dependencies] list of contracts; dependencies of this class
-            @param {Object} [options] addition setting used to create the instance.
-                @param {string} options.singleton set to TRUE if the class should be treated as a singleton class
-			@example
-                App.di.registerType(&quot;ajax&quot;, App.AJAX) ;
-                App.di.registerType(&quot;ajax&quot;, App.AJAX, [], { singleton: true }) ;
-                App.di.registerType(&quot;util&quot;, App.Util, [&quot;compress&quot;, &quot;wsql&quot;], { singleton: true } ) ;
+		 * Register a class by creating a contract. Use {{#crossLink &quot;DI&#x2F;getInstance:method&quot;}}{{&#x2F;crossLink}} to obtain
+         * an instance from this contract&#x2F;class. The injected dependencies, if any, will be used as constructor parameter
+         * in the order provided by the dependencies array.
+         *
+		 * @method register
+		 * @chainable
+		 * @param {String} contract name of the contracta
+		 * @param {Class} class the class bind to this contract
+         * @param {Array} [dependencies] list of contracts; dependencies of this class
+         * @param {Object} [options] addition setting used to create the instance.
+         * @param {string} options.singleton set to TRUE if the class should be treated as a singleton class
+		 * @example
+         App.di.registerType(&quot;ajax&quot;, App.AJAX) ;
+         App.di.registerType(&quot;ajax&quot;, App.AJAX, [], { singleton: true }) ;
+         App.di.registerType(&quot;util&quot;, App.Util, [&quot;compress&quot;, &quot;wsql&quot;], { singleton: true } ) ;
 		**&#x2F;
         register: function(contract, classRef, dependencies, options)
         {
@@ -150,9 +150,9 @@
                 dependencies = [] ;
             }
             this._contracts[contract] = { classRef: classRef, dependencies: dependencies, options: options||{} } ;
-		    return this ;
+            return this ;
         },
-			
+
         &#x2F;**
          * Returns an instance for the given contract.
          *
@@ -160,7 +160,7 @@
          * @param  {string} contract name
          * @returns {Object} Class instance
          * @example
-            var ajax = App.di.getInstance(&quot;ajax&quot;) ;
+         var ajax = App.di.getInstance(&quot;ajax&quot;) ;
          **&#x2F;
         getInstance: function(contract) {
             if ( !this._contracts[contract] ) {
@@ -189,13 +189,15 @@
                 try {
                     var storage = App.di.createInstance(&quot;data&quot;, [&quot;compress&quot;, &quot;websql&quot;]) ;
                 }
-                catch(e) {
+                catch(e) { &#x2F;&#x2F; will fail if contract does not exist
                     console.log(e.name + &#x27;: &#x27; + e.message) ;
                 }
         **&#x2F;
-        createInstance: function(contract, dependencies) {
-            if ( !this._contracts[contract] )
+        createInstance: function(contract, dependencies)
+        {
+            if ( !this._contracts[contract] ) {
                 throw &#x27;Unknown contract name &quot;&#x27; + contract + &#x27;&quot;&#x27; ;
+            }
 
             var self = this ;
             var cr = this._contracts[contract].classRef ;
@@ -203,8 +205,8 @@
             function Fake(){
                 cr.apply(this, createInstanceList.call(self, contract, dependencies||[])) ;
             }
-            Fake.prototype = cr.prototype &#x2F;&#x2F; Fix instanceof
-            return new Fake ;
+            Fake.prototype = cr.prototype ; &#x2F;&#x2F; Fix instanceof
+            return new Fake() ;
         }
 	} ;
 
@@ -212,12 +214,10 @@
 
     &#x2F;* Create or reuse a singleton instance *&#x2F;
     function getSingletonInstance() {
-
-        if (this.instance == undefined)
-            {
-            	this.instance = new this.classRef(this.dependencies);
-            }
-       	return this.instance ;
+        if (this.instance === undefined) {
+            this.instance = new this.classRef(this.dependencies);
+        }
+        return this.instance ;
     }
 
     &#x2F;* convert a list of contracts into a list of instances
@@ -228,7 +228,8 @@
     * *&#x2F;
     function createInstanceList(contract, dependencies) {
         var instances = [] ;
-        dependencies.forEach(function(c, i) {
+
+        dependencies.forEach( function(c) {
             if ( Array.isArray(c)) {
                 instances.push( createInstanceList.call(this, contract, c) ) ;
             }
@@ -252,7 +253,7 @@
 
 	Ns.DI = di ;
 
-})(window.Sway) ;
+})(window.console, window.Sway) ;
 
     </pre>
 </div>

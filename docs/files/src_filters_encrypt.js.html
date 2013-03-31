@@ -43,9 +43,9 @@
             
                 <li><a href="..&#x2F;classes/Sway.html">Sway</a></li>
             
-                <li><a href="..&#x2F;classes/Sway.data.Field.html">Sway.data.Field</a></li>
+                <li><a href="..&#x2F;classes/Sway.data.ActiveRecord..html">Sway.data.ActiveRecord.</a></li>
             
-                <li><a href="..&#x2F;classes/Sway.data.Record.html">Sway.data.Record</a></li>
+                <li><a href="..&#x2F;classes/Sway.data.Field.html">Sway.data.Field</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.DI.html">Sway.DI</a></li>
             
@@ -98,11 +98,13 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-window.Sway = window.Sway || {filter: {}} ; &#x2F;&#x2F; make sure it exists
+window.Sway = window.Sway || {} ; &#x2F;&#x2F; make sure it exists
+window.Sway = window.Sway.filter || {} ; &#x2F;&#x2F; make sure it exists
 
 (function(Ns) {
+    &quot;use strict&quot; ;
 
-    defaults = {
+    var defaults = {
     }
 
     &#x2F;**
@@ -111,7 +113,7 @@ window.Sway = window.Sway || {filter: {}} ; &#x2F;&#x2F; make sure it exists
      * @class Sway.filter.Encrypt
      * @constructor
      *&#x2F;
-    var enc = function() {} ;
+     , enc = function() {} ;
 
     Ns.Encrypt = enc ;
 

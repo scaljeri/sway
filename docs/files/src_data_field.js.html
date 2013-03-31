@@ -43,9 +43,9 @@
             
                 <li><a href="..&#x2F;classes/Sway.html">Sway</a></li>
             
-                <li><a href="..&#x2F;classes/Sway.data.Field.html">Sway.data.Field</a></li>
+                <li><a href="..&#x2F;classes/Sway.data.ActiveRecord..html">Sway.data.ActiveRecord.</a></li>
             
-                <li><a href="..&#x2F;classes/Sway.data.Record.html">Sway.data.Record</a></li>
+                <li><a href="..&#x2F;classes/Sway.data.Field.html">Sway.data.Field</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.DI.html">Sway.DI</a></li>
             
@@ -98,94 +98,70 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-window.Sway = window.Sway || {data: {}} ; &#x2F;&#x2F; make sure it exists
+window.Sway = window.Sway || {} ; &#x2F;&#x2F; make sure it exists
+window.Sway.data = window.Sway.data || {} ;
 
 (function(Ns) {
+    &quot;use strict&quot; ;
 
-    defaults = {
-    } ;
+    var defaults = {
+    }
 
     &#x2F;**
      *
      * @class Sway.data.Field
      * @param {Array} [filters] list of filter
      *&#x2F;
-    var f = function( filters ) {
+     , f = function( filterList ) {
         Object.defineProperty(this, &#x27;_value&#x27;,
             {
                 value: null
                 , enumerable: false &#x2F;&#x2F; hide it
             }
         ) ;
-        Object.defineProperty(this, &#x27;value&#x27;,
-            {
-                enumerable: true
-                , set: setValue
-                , get: getValue
-            }
-        ) ;
-        Object.defineProperty(this, &#x27;_filtered&#x27;,
-            {
-                value:null          &#x2F;&#x2F; no filtered state defined yet
-                , enumerable:false
-            }
-        ) ;
-        Object.defineProperty(this, &#x27;filtered&#x27;,
-            {
-                enumerable: true
-                , set: setFiltered
-                , get: getFiltered
-            }
-        ) ;
     } ;
 
     f.prototype = {
-        clear: function() {
-            this._value = null ;
+        &#x2F;**
+         * @method getValue
+         * @returns {*}
+         *&#x2F;
+        getValue: function() {
+            return this._value ;
+        }
+        &#x2F;**
+         * @method getFilteredValue
+         *&#x2F;
+        , getFilteredValue: function() {
+            return this._value ;
+
+        }
+        &#x2F;**
+         * @method setValue
+         * @param {Object|String|Blob|Array} value the value of the field instance
+         *&#x2F;
+        , setValue: function(input) {
+            this._value = input ;
+
+        }
+        &#x2F;**
+         * @method setFilteredValue
+         * @param {Object|String|Blob|Array} value the filtered value of the field instance
+         *&#x2F;
+        , setFilteredValue: function(input) {
+            this._value = input ;
+
+        }
+        &#x2F;**
+         * @method size
+         *&#x2F;
+        , size: function() {
+            return this.state === &quot;uncompressed&quot; ? encodeURI(this._inputStr).split(&#x2F;%..|.&#x2F;).length - 1 : this._zippedBlob.size ;
         }
     } ;
 
-    function getFiltered() {
-        return this._filtered ;
-    }
-    function setFiltered(filtered, callback) {
-        if ( this._filtered != filtered ) {
-           &#x2F;&#x2F; apply filters
-           if ( this._filtered != null )
-               this._filters.reverse() ; &#x2F;&#x2F; reverse the order of filters
-           applyFilters.call(this, 0, (filtered === true ? &#x27;do&#x27; : &#x27;undo&#x27;), callback) ;
-           this._filtered = filtered ;
-        }
-        else {
-            callback() ;
-        }
-    }
+    Ns.Field = f ;
 
-    function getValue(filtered, callback) {
-       setFiltered.call(this, filtered, function() {
-          callback(this._value) ;
-       }) ;
-    }
-
-    &#x2F;*
-     * Private function
-     * This function is called recursively, while incrementing the &#x27;index&#x27;
-     *&#x2F;
-    function applyFilters(index, mtype, callback) {
-       var filter = this._filters[index] ;
-       if ( !filter )  { &#x2F;&#x2F; done - no filter defined
-           callback() ;
-       }
-       else {
-           &#x2F;&#x2F; apply filter
-           if ( filter[mtype]) { &#x2F;&#x2F; check if method is available
-                filter[mtype](this._value, applyFilters.bind(this))
-           }
-           else { &#x2F;&#x2F; skip this filter
-                applyFilters.call(this, index + 1, mtype, callback) ;
-           }
-       }
-    }
 })(window.Sway.data) ;
 
 
