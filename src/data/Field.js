@@ -2,16 +2,17 @@ window.Sway = window.Sway || {} ; // make sure it exists
 window.Sway.data = window.Sway.data || {} ;
 
 (function(Ns) {
+    "use strict" ;
 
     var defaults = {
-    } ;
+    }
 
     /**
      *
      * @class Sway.data.Field
      * @param {Array} [filters] list of filter
      */
-    var f = function( filterList ) {
+     , f = function( filterList ) {
         Object.defineProperty(this, '_value',
             {
                 value: null
@@ -20,75 +21,51 @@ window.Sway.data = window.Sway.data || {} ;
         ) ;
         Object.defineProperty(this, 'value',
             {
-                enumerable: true
-                , set: setValue
-                , get: getValue
-            }
-        ) ;
-        Object.defineProperty(this, '_filtered',
-            {
-                value:null          // no filtered state defined yet
-                , enumerable:false
-            }
-        ) ;
-        Object.defineProperty(this, 'filtered',
-            {
-                enumerable: true
-                , set: setFiltered
-                , get: getFiltered
+                value: null
+                , set: this.setValue
+                , get: this.getValue
             }
         ) ;
     } ;
 
     f.prototype = {
-        size: function() {
+        /**
+         * @method getValue
+         * @returns {*}
+         */
+        getValue: function() {
+            return this._value ;
+        }
+        /**
+         * @method getFilteredValue
+         */
+        , getFilteredValue: function() {
+            return this._value ;
+
+        }
+        /**
+         * @method setValue
+         * @param {Object|String|Blob|Array} value the value of the field instance
+         */
+        , setValue: function(input) {
+            this._value = input ;
+
+        }
+        /**
+         * @method setFilteredValue
+         * @param {Object|String|Blob|Array} value the filtered value of the field instance
+         */
+        , setFilteredValue: function(input) {
+            this._value = input ;
+
+        }
+        /**
+         * @method size
+         */
+        , getSize: function() {
             return this.state === "uncompressed" ? encodeURI(this._inputStr).split(/%..|./).length - 1 : this._zippedBlob.size ;
         }
-        , clear: function() {}
     } ;
-
-    function getFiltered() {
-        return this._filtered ;
-    }
-    function setFiltered(filtered, callback) {
-        if ( this._filtered !== filtered ) {
-           // apply filters
-           if ( this._filtered !== null ){
-               this._filters.reverse() ; // reverse the order of filters
-           }
-           applyFilters.call(this, 0, (filtered === true ? 'do' : 'undo'), callback) ;
-           this._filtered = filtered ;
-        }
-        else {
-            callback() ;
-        }
-    }
-
-    function getValue(filtered, callback) {
-       setFiltered.call(this, filtered, function() {
-          callback(this._value) ;
-       }) ;
-    }
-
-    /*
-     * Private function
-     * This function is called recursively, while incrementing the 'index'
-     */
-    function applyFilters(index, mtype, callback) {
-       var filter = this._filters[index] ;
-       if ( !filter )  { // done - no filter defined
-           callback() ;
-       }
-       else {
-           // apply filter
-           if ( filter[mtype]) { // check if method is available
-                filter[mtype](this._value, applyFilters.bind(this))
-           }
-           else { // skip this filter
-                applyFilters.call(this, index + 1, mtype, callback) ;
-           }
-       }
-    }
 
     Ns.Field = f ;
 
