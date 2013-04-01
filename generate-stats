@@ -1,0 +1,1 @@
+./jscheckstyle --html ./src/ > docs/checkstyle.html
