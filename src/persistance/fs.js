@@ -1,4 +1,3 @@
-
 (function(Ns) {
 	var requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
 
