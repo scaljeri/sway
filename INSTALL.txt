@@ -1,0 +1,12 @@
+== setup external repositories ==
+
+$> git submodule add https://github.com/yui/yuitest.git externals/yuitest
+$> git submodule add https://github.com/bitwiseshiftleft/sjcl.git externals/sjcl
+$> git submodule add git://github.com/gildas-lormeau/zip.js.git externals/sjcl
+$> git submodule add git://github.com/gildas-lormeau/zip.js.git externals/zip.js
+$> git submodule add https://github.com/pivotal/jasmine.git externals/jasmine
+$> git submodule update --init --recursive
+$> cd external/jquery
+$> npm install -g grunt-cli
+$> npm install 
+$> grunt
