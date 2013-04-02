@@ -1,0 +1,705 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en-US">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>./src/eventhub.js Report</title>
+    <style type="text/css">
+/*
+Copyright (c) 2009, Yahoo! Inc. All rights reserved.
+Code licensed under the BSD License:
+http://developer.yahoo.net/yui/license.txt
+version: 3.0.0
+build: 1549
+*/
+html{color:#000;background:#FFF;}body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td{margin:0;padding:0;}table{border-collapse:collapse;border-spacing:0;}fieldset,img{border:0;}address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal;}li{list-style:none;}caption,th{text-align:left;}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}q:before,q:after{content:'';}abbr,acronym{border:0;font-variant:normal;}sup{vertical-align:text-top;}sub{vertical-align:text-bottom;}input,textarea,select{font-family:inherit;font-size:inherit;font-weight:inherit;}input,textarea,select{*font-size:100%;}legend{color:#000;}
+body{font:13px/1.231 arial,helvetica,clean,sans-serif;*font-size:small;*font:x-small;}select,input,button,textarea{font:99% arial,helvetica,clean,sans-serif;}table{font-size:inherit;font:100%;}pre,code,kbd,samp,tt{font-family:monospace;*font-size:108%;line-height:100%;}
+h1{font-size:138.5%;}h2{font-size:123.1%;}h3{font-size:108%;}h1,h2,h3{margin:1em 0;}h1,h2,h3,h4,h5,h6,strong{font-weight:bold;}
+    </style>
+    <style type="text/css">
+
+    .page {
+        width: 63em;
+        margin: 0 auto;
+    }
+
+    .page .ft {
+        font-size: 85%;
+        margin-bottom: 1.5em;
+        padding-top: 0.3em;
+        border-top: 1px solid #d8d8d8;
+    }
+
+    .file-summary {
+        background: #f0f0f0;
+        border: 1px solid #d8d8d8;
+        margin-bottom: 1em;
+    }
+
+    .file-summary .category {
+        width: 10em;
+        border-right: 1px solid #d8d8d8;
+    }
+
+    .file-summary .results {
+        width: 4em;
+        text-align: center;
+    }
+
+    .file-summary td,
+    .file-summary th {
+        padding: 0.2em;
+    }
+
+    .file-summary td {
+        text-align: right;
+    }
+
+    .file-summary thead th {
+        font-weight: bold;
+        border-bottom: 1px solid #d8d8d8;
+    }
+
+    .source-code-sec {
+        overflow: auto;
+        border: 1px solid #d8d8d8;
+        margin-bottom: 1em;
+    }
+
+    .source-code {
+        width: 100%;
+        font-family: monospace;
+    }
+
+    .source-code .line-number {
+        text-align: right;
+        background: #f0f0f0;
+        border-right: 1px solid #d8d8d8;
+        width: 3em;
+        padding: 0 0.2em;
+    }
+
+    .source-code .line-calls {
+        text-align: right;
+        border-right: 1px solid #d8d8d8;
+        width: 3em;
+        padding: 0 0.2em;
+    }
+
+    .source-code .not-called {
+        background: #f99;
+    }
+
+    .source-code .called {
+        background: #9f9;
+    }
+    </style>
+</head>
+<body>
+    <div class="page">
+
+        <div class="hd">
+            <!-- title -->
+            <h1>./src/eventhub.js Report</h1>
+            <h2>Date Generated: Mon Apr 01 22:28:57 CEST 2013</h2>
+        </div>
+
+        <div class="bd">
+
+            <!-- summary table -->
+            <table class="file-summary">
+                <col class="category"></col>
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th class="results">Called</th>
+                        <th class="results">Total</th>
+                        <th class="results">Coverage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>Lines</th>
+                        <td class="results">72</td>
+                        <td class="results">85</td>
+                        <td class="results">84.71%</td>
+                    </tr>
+                    <tr>
+                        <th>Functions</th>
+                        <td class="results">14</td>
+                        <td class="results">16</td>
+                        <td class="results">87.5%</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- source code --->
+            <div class="source-code-sec">
+                <table class="source-code">
+                    <tr class="called">
+                        <td class="line-number">1</td><td class="line-calls">1</td><td class="line-code">window.Sway&nbsp;=&nbsp;window.Sway&nbsp;||&nbsp;{}&nbsp;;&nbsp;//&nbsp;make&nbsp;sure&nbsp;it&nbsp;exists</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">2</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">3</td><td class="line-calls">1</td><td class="line-code">(function(Ns){</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">4</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;/**</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">5</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;EventHub&nbsp;facilitates&nbsp;event-based&nbsp;communication&nbsp;between&nbsp;different&nbsp;parts&nbsp;of&nbsp;an&nbsp;application&nbsp;(Event&nbsp;driven&nbsp;system).</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">6</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Events&nbsp;can&nbsp;be&nbsp;namespaced&nbsp;too,&nbsp;checkout&nbsp;the&nbsp;jQuery&nbsp;&lt;a&nbsp;href=&quot;http://docs.jquery.com/Namespaced_Events&nbsp;&quot;&gt;documentation&lt;/a&gt;&nbsp;on&nbsp;how&nbsp;to&nbsp;use&nbsp;these&nbsp;namespaces.</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">7</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">8</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@class&nbsp;Sway.EventHub</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">9</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@constructor</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">10</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">11</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;eh&nbsp;=&nbsp;function()&nbsp;{</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">12</td><td class="line-calls">16</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Object.defineProperty(this,&nbsp;'_rootStack',</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">13</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">14</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value:&nbsp;{},</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">15</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enumerable:&nbsp;false&nbsp;//&nbsp;hide&nbsp;it</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">16</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">17</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">18</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">19</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">20</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;eh.prototype&nbsp;=&nbsp;{</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">21</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">22</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Trigger&nbsp;one&nbsp;or&nbsp;more&nbsp;events.&nbsp;One&nbsp;event&nbsp;is&nbsp;triggered&nbsp;if&nbsp;the&nbsp;'eventName'&nbsp;parameter&nbsp;targets&nbsp;a&nbsp;specific&nbsp;event,&nbsp;but&nbsp;if&nbsp;this&nbsp;parameter&nbsp;is&nbsp;a&nbsp;namespace,&nbsp;all&nbsp;nested&nbsp;events&nbsp;and</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">23</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;namespaces&nbsp;will&nbsp;be&nbsp;triggered.</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">24</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">25</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@method&nbsp;trigger</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">26</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;{string}&nbsp;eventName&nbsp;&nbsp;&nbsp;&nbsp;name&nbsp;of&nbsp;the&nbsp;event&nbsp;or&nbsp;namespace</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">27</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;{Object|Array|Number|String|Boolean|Function}&nbsp;[data]&nbsp;&nbsp;&nbsp;data&nbsp;passed&nbsp;to&nbsp;the&nbsp;triggered&nbsp;callback&nbsp;function</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">28</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;{Number}&nbsp;the&nbsp;count&nbsp;of&nbsp;triggered&nbsp;callbacks</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">29</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@example</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">30</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sway.eventHub.trigger('ui.update',&nbsp;{authenticated:&nbsp;true}&nbsp;)&nbsp;;&nbsp;//&nbsp;trigger&nbsp;the&nbsp;'update'&nbsp;event&nbsp;inside&nbsp;the&nbsp;'ui'&nbsp;namespace</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">31</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sway.eventHub.trigger('ui',&nbsp;{authenticated:&nbsp;true}&nbsp;)&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;trigger&nbsp;all&nbsp;nested&nbsp;events&nbsp;and&nbsp;namespaces&nbsp;inside&nbsp;the&nbsp;'ui'&nbsp;namespace</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">32</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">33</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;trigger:&nbsp;function(eventName,&nbsp;data){</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">34</td><td class="line-calls">29</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;list&nbsp;=&nbsp;getStack.call(this,&nbsp;eventName)&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;load&nbsp;the&nbsp;stack&nbsp;for&nbsp;this&nbsp;namespace</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">35</td><td class="line-calls">29</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;triggerEvent(list,&nbsp;data)&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;triggerEvent&nbsp;does&nbsp;the&nbsp;work&nbsp;of&nbsp;triggering&nbsp;everything&nbsp;(nested&nbsp;events&nbsp;&amp;&nbsp;namespaces)</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">36</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">37</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">38</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">39</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Register&nbsp;a&nbsp;callback&nbsp;to&nbsp;a&nbsp;specific&nbsp;event.&nbsp;Callbacks&nbsp;are&nbsp;executed&nbsp;in&nbsp;the&nbsp;order&nbsp;of</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">40</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;registration.&nbsp;Set&nbsp;'prepend'&nbsp;to&nbsp;TRUE&nbsp;to&nbsp;add&nbsp;the&nbsp;callback&nbsp;in&nbsp;front&nbsp;of&nbsp;the&nbsp;others.</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">41</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">42</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@method&nbsp;on</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">43</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;{string}&nbsp;eventName</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">44</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;{function}&nbsp;callback</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">45</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;{boolean}&nbsp;[prepend]&nbsp;if&nbsp;TRUE,&nbsp;the&nbsp;callback&nbsp;is&nbsp;placed&nbsp;before&nbsp;all&nbsp;other&nbsp;registered&nbsp;callbacks.</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">46</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@example</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">47</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sway.eventHub.on(&nbsp;'ui.update',&nbsp;this.update.bind(this)&nbsp;)&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">48</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sway.eventHub.on(&nbsp;'ui.update',&nbsp;this.update.bind(this),&nbsp;true&nbsp;)&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">49</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">50</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;on:&nbsp;function(eventName,&nbsp;callback,&nbsp;prepend)&nbsp;{</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">51</td><td class="line-calls">18</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;addCallbackToStack.call(this,&nbsp;eventName,&nbsp;callback,&nbsp;prepend)&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">52</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">53</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">54</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">55</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">56</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Register&nbsp;a&nbsp;callback&nbsp;to&nbsp;a&nbsp;specific&nbsp;event.&nbsp;This&nbsp;function&nbsp;is&nbsp;identical&nbsp;to&nbsp;{{#crossLink&nbsp;&quot;Sway.EventHub/on:method&quot;}}{{/crossLink}}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">57</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;except&nbsp;that&nbsp;this&nbsp;callback&nbsp;is&nbsp;removed&nbsp;from&nbsp;the&nbsp;list&nbsp;after&nbsp;it&nbsp;has&nbsp;been&nbsp;triggered.</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">58</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">59</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@method&nbsp;one</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">60</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;{string}&nbsp;eventName</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">61</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;{function}&nbsp;callback</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">62</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;{boolean}&nbsp;[prepend]&nbsp;if&nbsp;TRUE,&nbsp;the&nbsp;callback&nbsp;is&nbsp;placed&nbsp;before&nbsp;all&nbsp;other&nbsp;registered&nbsp;callbacks.</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">63</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">64</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;one:&nbsp;function(eventName,&nbsp;callback,&nbsp;prepend)&nbsp;{</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">65</td><td class="line-calls">20</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;addCallbackToStack.call(this,&nbsp;eventName,&nbsp;callback,&nbsp;prepend,&nbsp;true)&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">66</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">67</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">68</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">69</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;count&nbsp;the&nbsp;registered&nbsp;callbacks&nbsp;for&nbsp;an&nbsp;event&nbsp;or&nbsp;namespace</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">70</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">71</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@method&nbsp;count</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">72</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;{sting}&nbsp;[eventName]&nbsp;if&nbsp;empty&nbsp;all&nbsp;registered&nbsp;callbacks&nbsp;are&nbsp;counted</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">73</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;{Number}&nbsp;the&nbsp;count&nbsp;of&nbsp;callback&nbsp;functions&nbsp;inside&nbsp;'eventName'</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">74</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">75</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;count:&nbsp;function(eventName)&nbsp;{</td>
+                    </tr>    <tr class="not-called">
+                        <td class="line-number">76</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;list&nbsp;=&nbsp;getStack.call(this,&nbsp;eventName)</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">77</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;parts&nbsp;=&nbsp;eventName</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">78</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">79</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;TODO</td>
+                    </tr>    <tr class="not-called">
+                        <td class="line-number">80</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;10&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">81</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">82</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">83</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">84</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Removes&nbsp;the&nbsp;given&nbsp;callback&nbsp;for&nbsp;a&nbsp;specific&nbsp;event.</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">85</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">86</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@method&nbsp;off</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">87</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;{string}&nbsp;eventName</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">88</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;{function}&nbsp;[callback]&nbsp;the&nbsp;callback&nbsp;function&nbsp;to&nbsp;be&nbsp;removed.&nbsp;If&nbsp;omitted,&nbsp;all&nbsp;registered&nbsp;events&nbsp;and&nbsp;nested</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">89</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;namespaces&nbsp;inside&nbsp;'eventName'&nbsp;are&nbsp;removed</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">90</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;{Number}&nbsp;the&nbsp;count&nbsp;of&nbsp;removed&nbsp;callback&nbsp;functions</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">91</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@example</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">92</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sway.eventHub.off('ui.update',&nbsp;this.update)&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">93</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sway.eventHub.off('ui')&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">94</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">95</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;off:&nbsp;function(eventName,&nbsp;callback)&nbsp;{</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">96</td><td class="line-calls">10</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;stack&nbsp;=&nbsp;getStack.call(this,&nbsp;eventName)&nbsp;;</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">97</td><td class="line-calls">10</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;removeFromStack(stack,&nbsp;callback)&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">98</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">99</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">100</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">101</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;/*&nbsp;********&nbsp;PRIVATE&nbsp;HELPER&nbsp;FUNCTION&nbsp;***********&nbsp;*/</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">102</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">103</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;addCallbackToStack(eventName,&nbsp;callback,&nbsp;prepend,&nbsp;isOne)&nbsp;{</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">104</td><td class="line-calls">38</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(&nbsp;checkInput(eventName,&nbsp;callback))&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;validate&nbsp;input</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">105</td><td class="line-calls">38</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;list&nbsp;=&nbsp;createStack.call(this,&nbsp;eventName)&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;get&nbsp;stack&nbsp;of&nbsp;'eventName'</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">106</td><td class="line-calls">38</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(&nbsp;list.__stack.on.indexOf(callback)&nbsp;===&nbsp;-1&nbsp;)&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;check&nbsp;if&nbsp;the&nbsp;callback&nbsp;is&nbsp;not&nbsp;already&nbsp;added</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">107</td><td class="line-calls">33</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;list.__stack.on[prepend&nbsp;?&nbsp;'unshift':'push'](callback)&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;add&nbsp;callback</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">108</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">109</td><td class="line-calls">33</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(&nbsp;isOne&nbsp;)&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;if&nbsp;true,&nbsp;the&nbsp;callback&nbsp;is&nbsp;added&nbsp;to&nbsp;the&nbsp;'one'&nbsp;list</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">110</td><td class="line-calls">17</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;list.__stack.one[prepend&nbsp;?&nbsp;'unshift':'push'](callback)&nbsp;;//&nbsp;and&nbsp;only&nbsp;triggered&nbsp;once</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">111</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">112</td><td class="line-calls">33</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;true&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;callback&nbsp;is&nbsp;added</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">113</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">114</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">115</td><td class="line-calls">5</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;false&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;callback&nbsp;is&nbsp;not&nbsp;added</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">116</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">117</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">118</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">119</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;/*&nbsp;Validate&nbsp;the&nbsp;input&nbsp;for&nbsp;'on'&nbsp;and&nbsp;'one'.</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">120</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eventName:&nbsp;should&nbsp;be&nbsp;defined&nbsp;and&nbsp;of&nbsp;type&nbsp;&quot;string&quot;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">121</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;callback:&nbsp;&nbsp;should&nbsp;be&nbsp;defined&nbsp;and&nbsp;of&nbsp;type&nbsp;&quot;function&quot;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">122</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">123</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;checkInput(eventName,&nbsp;callback)&nbsp;{</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">124</td><td class="line-calls">38</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(&nbsp;typeof(eventName)&nbsp;===&nbsp;&quot;string&quot;&nbsp;&amp;&amp;&nbsp;callback&nbsp;&amp;&amp;&nbsp;typeof(callback)&nbsp;===&nbsp;&quot;function&quot;&nbsp;)&nbsp;{&nbsp;//&nbsp;OK</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">125</td><td class="line-calls">38</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;true&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">126</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="not-called">
+                        <td class="line-number">127</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;if&nbsp;(&nbsp;Ns.DEBUG&nbsp;)&nbsp;{&nbsp;//&nbsp;Wrong...</td>
+                    </tr>    <tr class="not-called">
+                        <td class="line-number">128</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;console.warn(&quot;Cannot&nbsp;bind&nbsp;the&nbsp;callback&nbsp;function&nbsp;to&nbsp;the&nbsp;event&nbsp;nam&nbsp;(&nbsp;eventName=&quot;&nbsp;+&nbsp;eventName&nbsp;+&nbsp;&quot;,&nbsp;&nbsp;callback=&quot;&nbsp;+&nbsp;callback&nbsp;+&nbsp;&quot;)&quot;)&nbsp;;</td>
+                    </tr>    <tr class="not-called">
+                        <td class="line-number">129</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;false&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">130</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">131</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">132</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">133</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">134</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">135</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;/*</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">136</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Removes&nbsp;the&nbsp;callback&nbsp;from&nbsp;the&nbsp;stack.&nbsp;However,&nbsp;a&nbsp;stack&nbsp;can&nbsp;contain&nbsp;other&nbsp;namespaces.&nbsp;And&nbsp;these&nbsp;namespaces</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">137</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;can&nbsp;contain&nbsp;the&nbsp;callback&nbsp;too.&nbsp;Furthermore,&nbsp;the&nbsp;callback&nbsp;is&nbsp;optional,&nbsp;in&nbsp;which&nbsp;case&nbsp;the&nbsp;whole&nbsp;stack</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">138</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;is&nbsp;erased.</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">139</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">140</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;removeFromStack(stack,&nbsp;callback)&nbsp;{</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">141</td><td class="line-calls">10</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;retVal&nbsp;=&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;number&nbsp;of&nbsp;removed&nbsp;callbacks</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">142</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;callbacks&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;a&nbsp;stack&nbsp;with&nbsp;'on'&nbsp;and&nbsp;'one'&nbsp;(maybe)</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">143</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;ns&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;loop&nbsp;var</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">144</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">145</td><td class="line-calls">10</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(&nbsp;!stack&nbsp;)&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;no&nbsp;data&nbsp;available&nbsp;--&gt;&nbsp;done</td>
+                    </tr>    <tr class="not-called">
+                        <td class="line-number">146</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;0&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;and&nbsp;zero&nbsp;callbacks&nbsp;removed&nbsp;(no&nbsp;actions&nbsp;taken)</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">147</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">148</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">149</td><td class="line-calls">10</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(&nbsp;callback&nbsp;)&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;remove&nbsp;a&nbsp;specific&nbsp;callback</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">150</td><td class="line-calls">10</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for(&nbsp;ns&nbsp;in&nbsp;stack)&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;so&nbsp;we&nbsp;loop&nbsp;through&nbsp;all&nbsp;namespaces&nbsp;(and&nbsp;__stack&nbsp;is&nbsp;one&nbsp;of&nbsp;them)</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">151</td><td class="line-calls">10</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;callbacks&nbsp;=&nbsp;stack[ns]&nbsp;;</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">152</td><td class="line-calls">10</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(&nbsp;callbacks.on&nbsp;)&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;are&nbsp;we&nbsp;there&nbsp;yet,&nbsp;are&nbsp;we&nbsp;there&nbsp;yet</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">153</td><td class="line-calls">10</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;retVal&nbsp;+=&nbsp;removeCallback(callbacks.on,&nbsp;&nbsp;callback)&nbsp;;&nbsp;//&nbsp;YES</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">154</td><td class="line-calls">10</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;retVal&nbsp;+=&nbsp;removeCallback(callbacks.one,&nbsp;callback)&nbsp;;&nbsp;//&nbsp;YES</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">155</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">156</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;NO,&nbsp;its&nbsp;a&nbsp;namesapace&nbsp;-&gt;&nbsp;recurstion</td>
+                    </tr>    <tr class="not-called">
+                        <td class="line-number">157</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;retVal&nbsp;+=&nbsp;removeFromStack.call(this,&nbsp;stack[callbacks],&nbsp;callback&nbsp;)&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">158</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">159</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">160</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">161</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;{&nbsp;//&nbsp;remove&nbsp;a&nbsp;whole&nbsp;namespace&nbsp;(no&nbsp;callback&nbsp;defined)</td>
+                    </tr>    <tr class="not-called">
+                        <td class="line-number">162</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;retVal&nbsp;+=&nbsp;removeNameSpace.call(this,&nbsp;stack)&nbsp;&nbsp;&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">163</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">164</td><td class="line-calls">10</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;retVal&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;a&nbsp;count&nbsp;of&nbsp;removed&nbsp;callback&nbsp;function</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">165</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">166</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">167</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;/*&nbsp;This&nbsp;function&nbsp;should&nbsp;only&nbsp;be&nbsp;called&nbsp;on&nbsp;a&nbsp;stack&nbsp;with&nbsp;the&nbsp;'on'&nbsp;and&nbsp;'one'&nbsp;lists.&nbsp;It&nbsp;will&nbsp;remove&nbsp;one&nbsp;or</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">168</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multiple&nbsp;occurrences&nbsp;of&nbsp;the&nbsp;'callback'&nbsp;function</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">169</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">170</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;removeCallback(list,&nbsp;callback){</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">171</td><td class="line-calls">30</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;position&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;position&nbsp;on&nbsp;the&nbsp;stack</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">172</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;retVal&nbsp;=&nbsp;0&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;number&nbsp;of&nbsp;removed&nbsp;callbacks</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">173</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">174</td><td class="line-calls">30</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;position&nbsp;=&nbsp;list.indexOf(callback)&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;is&nbsp;the&nbsp;callback&nbsp;in&nbsp;the&nbsp;callbacks&nbsp;list</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">175</td><td class="line-calls">30</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;while(&nbsp;position&nbsp;&gt;&nbsp;-1&nbsp;)&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;but&nbsp;the&nbsp;callback&nbsp;can&nbsp;be&nbsp;present&nbsp;multiple&nbsp;times!</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">176</td><td class="line-calls">25</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;retVal&nbsp;++&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;found&nbsp;one&nbsp;match</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">177</td><td class="line-calls">25</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;list.splice(position,&nbsp;1)&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;remove&nbsp;callback&nbsp;from&nbsp;the&nbsp;stack</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">178</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">179</td><td class="line-calls">25</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;position&nbsp;=&nbsp;list.indexOf(callback)&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;prepare&nbsp;the&nbsp;while&nbsp;check&nbsp;to&nbsp;see&nbsp;if&nbsp;more&nbsp;actions&nbsp;are&nbsp;required</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">180</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">181</td><td class="line-calls">30</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;retVal&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">182</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">183</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">184</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;/*</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">185</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Remove&nbsp;a&nbsp;whole&nbsp;namespace</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">186</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">187</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;removeNameSpace(stack)&nbsp;{</td>
+                    </tr>    <tr class="not-called">
+                        <td class="line-number">188</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;retVal&nbsp;=&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;number&nbsp;of&nbsp;removed&nbsp;callbacks</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">189</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;cb&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;loop&nbsp;var</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">190</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="not-called">
+                        <td class="line-number">191</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for(&nbsp;cb&nbsp;in&nbsp;stack&nbsp;)&nbsp;&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;delete&nbsp;all&nbsp;elements&nbsp;from&nbsp;the&nbsp;stack&nbsp;(and&nbsp;we&nbsp;cannot&nbsp;do&nbsp;stack&nbsp;=&nbsp;{}&nbsp;;)</td>
+                    </tr>    <tr class="not-called">
+                        <td class="line-number">192</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;retVal&nbsp;+=&nbsp;this.count(callbacks[cb])&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;and&nbsp;count&nbsp;all&nbsp;callbacks&nbsp;in&nbsp;this&nbsp;namespace</td>
+                    </tr>    <tr class="not-called">
+                        <td class="line-number">193</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delete&nbsp;callbacks[cb]&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;cleanup</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">194</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">195</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="not-called">
+                        <td class="line-number">196</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;retVal&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">197</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">198</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">199</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;/*</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">200</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This&nbsp;private&nbsp;function&nbsp;returns&nbsp;the&nbsp;callback&nbsp;stack&nbsp;matched&nbsp;by&nbsp;'eventName'.&nbsp;If&nbsp;the&nbsp;eventName&nbsp;does</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">201</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;not&nbsp;exist&nbsp;'null'&nbsp;is&nbsp;returned</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">202</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">203</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;getStack(namespace)&nbsp;{</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">204</td><td class="line-calls">39</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;parts&nbsp;=&nbsp;namespace&nbsp;?&nbsp;namespace.split('.')&nbsp;:&nbsp;[]&nbsp;&nbsp;&nbsp;//&nbsp;parts&nbsp;of&nbsp;the&nbsp;event&nbsp;namespaces</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">205</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;stack&nbsp;=&nbsp;this._rootStack&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;root&nbsp;of&nbsp;the&nbsp;callback&nbsp;stack</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">206</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;i&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;loop&nbsp;index</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">207</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">208</td><td class="line-calls">39</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for(&nbsp;i&nbsp;=&nbsp;0;&nbsp;i&nbsp;&lt;&nbsp;parts.length;&nbsp;i++&nbsp;)&nbsp;{</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">209</td><td class="line-calls">61</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(&nbsp;!&nbsp;stack[parts[i]])&nbsp;{</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">210</td><td class="line-calls">2</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;null&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;it&nbsp;does&nbsp;not&nbsp;exist&nbsp;-&gt;&nbsp;done</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">211</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">212</td><td class="line-calls">59</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stack&nbsp;=&nbsp;stack[parts[i]]&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;traverse&nbsp;a&nbsp;level&nbsp;deeper&nbsp;into&nbsp;the&nbsp;stack</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">213</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">214</td><td class="line-calls">37</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;stack&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;return&nbsp;the&nbsp;stack&nbsp;matched&nbsp;by&nbsp;'eventName'</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">215</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">216</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">217</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;/*</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">218</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Internally&nbsp;'eventName'&nbsp;is&nbsp;always&nbsp;a&nbsp;namespace.&nbsp;Callbacks&nbsp;are&nbsp;placed&nbsp;inside&nbsp;a&nbsp;special</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">219</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;variable&nbsp;called&nbsp;'__stack'.&nbsp;So,&nbsp;when&nbsp;the&nbsp;eventName&nbsp;is&nbsp;'doAction',&nbsp;internally&nbsp;this&nbsp;will</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">220</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;look&nbsp;like&nbsp;doAction.__stack.</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">221</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Furthermore,&nbsp;it&nbsp;the&nbsp;eventName&nbsp;is&nbsp;new,&nbsp;it&nbsp;is&nbsp;created</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">222</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">223</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;createStack(namespace)&nbsp;{</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">224</td><td class="line-calls">38</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;parts&nbsp;=&nbsp;namespace.split('.')&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;split&nbsp;the&nbsp;namespace</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">225</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;stack&nbsp;=&nbsp;this._rootStack&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;start&nbsp;at&nbsp;the&nbsp;root</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">226</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;i&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;loop&nbsp;index</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">227</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">228</td><td class="line-calls">38</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for(i&nbsp;=&nbsp;0;&nbsp;i&nbsp;&lt;&nbsp;parts.length&nbsp;;&nbsp;i++)&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;traverse&nbsp;the&nbsp;stack</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">229</td><td class="line-calls">65</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(&nbsp;!stack[parts[i]]&nbsp;){&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;if&nbsp;not&nbsp;exists</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">230</td><td class="line-calls">28</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stack[parts[i]]&nbsp;=&nbsp;{}&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;--&gt;&nbsp;create&nbsp;it</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">231</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">232</td><td class="line-calls">65</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stack&nbsp;=&nbsp;stack[parts[i]]&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;go&nbsp;into&nbsp;the&nbsp;(newly&nbsp;created)&nbsp;namespace</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">233</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">234</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">235</td><td class="line-calls">38</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(&nbsp;!stack.__stack)&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;the&nbsp;namespace&nbsp;holding&nbsp;the&nbsp;callbacks&nbsp;is&nbsp;called&nbsp;__stack</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">236</td><td class="line-calls">18</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stack.__stack&nbsp;=&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;These&nbsp;callbacks&nbsp;are&nbsp;stored&nbsp;into&nbsp;a&nbsp;list&nbsp;called</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">237</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;on:&nbsp;[]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;'on'&nbsp;and</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">238</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;one:&nbsp;[]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;'one'</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">239</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">240</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">241</td><td class="line-calls">38</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;stack&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">242</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">243</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">244</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">245</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">246</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;/*</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">247</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Namespaces&nbsp;can&nbsp;in&nbsp;theory&nbsp;be&nbsp;many&nbsp;levels&nbsp;deep,&nbsp;like:&nbsp;&quot;aaaaa.bbbbbb.cccccc._stack&quot;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">248</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;To&nbsp;traverse&nbsp;this&nbsp;namespace&nbsp;and&nbsp;trigger&nbsp;everything&nbsp;inside&nbsp;it,&nbsp;this&nbsp;function&nbsp;is&nbsp;called&nbsp;recursively.</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">249</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">250</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;triggerEvent(namespaces,&nbsp;data)&nbsp;{</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">251</td><td class="line-calls">37</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;namespace&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;current&nbsp;namespace&nbsp;in&nbsp;the&nbsp;loop</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">252</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;retVal&nbsp;=&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;the&nbsp;number&nbsp;of&nbsp;called&nbsp;callback&nbsp;function</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">253</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;ns&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;loop&nbsp;index</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">254</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">255</td><td class="line-calls">37</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for(&nbsp;ns&nbsp;in&nbsp;namespaces&nbsp;)&nbsp;{</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">256</td><td class="line-calls">38</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;namespace&nbsp;=&nbsp;namespaces[ns]&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">257</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">258</td><td class="line-calls">38</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(&nbsp;namespace.on&nbsp;)&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;special&nbsp;namespace&nbsp;(it&nbsp;hold&nbsp;'on'&nbsp;and&nbsp;'one')</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">259</td><td class="line-calls">30</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;namespace.on.forEach(&nbsp;function(c)&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;loop&nbsp;through&nbsp;all&nbsp;callbacks</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">260</td><td class="line-calls">30</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;retVal++&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;count&nbsp;this&nbsp;trigger</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">261</td><td class="line-calls">30</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c(data)&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;call&nbsp;the&nbsp;callback</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">262</td><td class="line-calls">30</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(&nbsp;namespace.one.indexOf(c)&nbsp;&gt;&nbsp;-1&nbsp;)&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;check&nbsp;if&nbsp;it&nbsp;is&nbsp;a&nbsp;'one'&nbsp;callback</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">263</td><td class="line-calls">10</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;removeCallback(namespace.on,&nbsp;c)&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;YES&nbsp;-&gt;&nbsp;remove&nbsp;it&nbsp;from&nbsp;'on'</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">264</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">265</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;})&nbsp;;</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">266</td><td class="line-calls">30</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;namespace.one.length&nbsp;=&nbsp;0&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;all&nbsp;'one'&nbsp;callbacks&nbsp;have&nbsp;been&nbsp;called&nbsp;--&gt;&nbsp;cleanup</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">267</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">268</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;found&nbsp;a&nbsp;deeper&nbsp;nested&nbsp;namespace</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">269</td><td class="line-calls">8</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;retVal&nbsp;+=&nbsp;triggerEvent(namespace,&nbsp;data)&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;nested&nbsp;namespaces</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">270</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">271</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">272</td><td class="line-calls">37</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;retVal&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">273</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">274</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">275</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;Ns.EventHub&nbsp;=&nbsp;eh&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">276</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">277</td><td class="line-calls">&nbsp;</td><td class="line-code">})(window.Sway)&nbsp;;</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- footer -->
+        <div class="ft">
+            <p>Code coverage for ./src/eventhub.js generated on Mon Apr 01 22:28:57 CEST 2013 by YUI Test.</p>
+        </div>
+    </div>
+
+</body>
+</html>
