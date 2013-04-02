@@ -1,18 +1,19 @@
-window.Sway = window.Sway || {} ; // make sure it exists
-window.Sway.data = window.Sway.data || {} ;
+window.Sway = window.Sway || {}; // make sure it exists
+window.Sway.data = window.Sway.data || {};
 
-(function(Ns) {
+(function (Ns) {
     "use strict" ;
 
-    var defaults = {
-    }
+    var defaults = {}
 
     /**
      *
      * @class Sway.data.Field
      * @param {Array} [filters] list of filter
      */
-     , f = function( filterList ) {
+     //, f = function (filterList) {
+     , f = function () {
+	defaults.x = 10 ;
         Object.defineProperty(this, '_value',
             {
                 value: null
