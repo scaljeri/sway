@@ -1,3 +1,3 @@
-jscheckstyle --html ./src/ > docs/jscheckstyle/index.html
+jscheckstyle --html ./src/ > ./info/jscheckstyle/index.html
 
 java -jar ./external/yuitest/nodejs-coverage/jar/yuitest-coverage.jar -d -o ./yuitest-coverage/src/ ./src/

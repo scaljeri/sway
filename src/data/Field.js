@@ -4,16 +4,14 @@ window.Sway.data = window.Sway.data || {};
 (function (Ns) {
     "use strict" ;
 
-    var defaults = {}
-
     /**
      *
      * @class Sway.data.Field
-     * @param {Array} [filters] list of filter
+     * @param {Array} [filters] list of filters
      */
-     //, f = function (filterList) {
-     , f = function () {
-	defaults.x = 10 ;
+     var f = function (filterList) {
+        this.filterList = filterList ;
+
         Object.defineProperty(this, '_value',
             {
                 value: null
