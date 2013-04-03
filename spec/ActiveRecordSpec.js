@@ -4,6 +4,7 @@ window.describe("Sway.data.ActiveRecord", function() {
     var Sway            = window.Sway
         , beforeEach    = window.beforeEach
         , expect        = window.expect
+        , spyOn         = window.spyOn
         , it            = window.it
         , ns
 
@@ -55,6 +56,19 @@ window.describe("Sway.data.ActiveRecord", function() {
         ns.field2.value = msg + "." ;
         expect(ns.ar.getField("id").value).toEqual(msg) ;
         expect(ns.ar.getField("id").value).not.toEqual(ns.ar.getField("data").value) ;
+        expect(ns.ar.getSize("id")).toEqual(10) ;
         expect(ns.ar.getSize()).toEqual(20) ;
+    }) ;
+
+    it("should bless objects/models", function() {
+       var model1 = Object.create(null)
+           , model2 = Object.create(null) ;
+       spyOn(ns.ar, 'save').andCallThrough() ;
+       expect(ns.ar.bless(model1) === ns.ar).toBeTruthy() ;
+       model1.save() ;
+       //expect(model1.save).toHaveBeenCalledWith(1)
+       expect(model1.save).toHaveBeenCalled() ;
+
+       // TODO - check _field and _lookupField too
     }) ;
 }) ;

@@ -57,6 +57,7 @@ window.Sway.data = window.Sway.data || {} ;
 	ActiveRecord.prototype = {
         /**
          * @method bless
+         * @chainable
          * @param {Object} model instance to be blessed
          */
         bless: function(model) {
@@ -70,11 +71,8 @@ window.Sway.data = window.Sway.data || {} ;
                 }
             ) ;
 
-            for ( i in this.prototype ) {                       // add prototype functions to model, like 'save'
-                if ( !model.prototype[i] && i !== "bless" ) {   // but only if it does not exist already and not 'bless'
-                    model.prototype = this.prototype[i] ;
-                }
-            }
+            // copy methods
+            model.save = this.save ;
 
             // clone the fields
             if ( !model._field ) {
@@ -97,9 +95,7 @@ window.Sway.data = window.Sway.data || {} ;
                     model._field.push(clone(this._field[i])) ;
                 }
             }
-
-
-
+            return this ;
         }
         /**
          * @method getField
@@ -124,7 +120,7 @@ window.Sway.data = window.Sway.data || {} ;
                 , i ;
 
             if ( key ) {
-                return self._field[self._fieldLookup[key]].getSize() ;
+                return self._field[self._fieldLookup[key]].field.getSize() ;
             }
             else {
                 for( i = 0; i < self._field.length; i++ ) {
@@ -137,6 +133,9 @@ window.Sway.data = window.Sway.data || {} ;
                         new Blob([this._inputStr], { type: "text/plain"}) : this._zippedBlob
                    ).size ;
             */
+        },
+        save: function() {
+            debugger ;
         }
     } ;
 
