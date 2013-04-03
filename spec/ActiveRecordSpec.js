@@ -11,7 +11,7 @@ window.describe("Sway.data.ActiveRecord", function() {
     // mock and stub
         , persistance = {}
 
-        , Field = function(options){
+        , Field = function(){
             this.getSize = function() { return 10; } ;
         } ;
 
@@ -61,14 +61,25 @@ window.describe("Sway.data.ActiveRecord", function() {
     }) ;
 
     it("should bless objects/models", function() {
-       var model1 = Object.create(null)
-           , model2 = Object.create(null) ;
-       spyOn(ns.ar, 'save').andCallThrough() ;
-       expect(ns.ar.bless(model1) === ns.ar).toBeTruthy() ;
-       model1.save() ;
-       //expect(model1.save).toHaveBeenCalledWith(1)
-       expect(model1.save).toHaveBeenCalled() ;
+        var model1 = Object.create(null)
+           , model2 = Object.create(null)
+           , field1 = new Field()
+           , field2 = new Field() ;
 
-       // TODO - check _field and _lookupField too
+        spyOn(ns.ar, 'save').andCallThrough() ;                     // make sure this function is called on blessed objects
+
+        // bless "model1"
+        expect(ns.ar.bless(model1) === ns.ar).toBeTruthy() ;
+        model1.save() ;
+        expect(model1.save).toHaveBeenCalled() ;                    // was ns.ar.save called ?
+
+        ns.ar.setField("id", field1) ;
+        ns.ar.setField("value", field2) ;
+
+        // bless model2 with 2 fields
+        expect(ns.ar.bless(model2) === ns.ar).toBeTruthy() ;
+        expect(model1._field.length).toEqual(0) ;                   // model1 was blessed before the fields were added to ns.ar
+        expect(model2._field.length).toEqual(2) ;                   // should have 2 fields
+        expect(model2._field[0] !== ns.ar._field[0]).toBeTruthy() ; // the fields should be different from ns.ar
     }) ;
 }) ;

@@ -5,10 +5,6 @@ window.Sway.data = window.Sway.data || {} ;
 (function(Ns) {
     "use strict" ;
 
-    var defaults = {
-        //
-    }
-
     /**
      * This class stores a string in memory. If a persistance dependency is defined, it will use this dependency to store
      * the data. Filters are used to perform some action on the data before persisting it and on retrieval.
@@ -19,7 +15,7 @@ window.Sway.data = window.Sway.data || {} ;
      * @param {Object}[persistence] dependency which can persist the data
      * @param {Array} [fieldList] list of filters. Depending on the filter type its a before and/or after filter.
      */
-     , ActiveRecord = function(persistance ) {
+     var ActiveRecord = function(persistance ) {
 
         /*
         AR prototype methods can be access by a BLESSED model, or simply by an ActiveRecord instance. To make these
@@ -89,7 +85,7 @@ window.Sway.data = window.Sway.data || {} ;
                     }
                 ) ;
 
-                for( i = 0; i < this._field; i++ ){
+                for( i = 0; i < this._field.length; i++ ){
                     setup = this._field[i] ;
                     model._fieldLookup[setup.key] = model._field.length ;
                     model._field.push(clone(this._field[i])) ;
@@ -103,7 +99,7 @@ window.Sway.data = window.Sway.data || {} ;
          * @return {Object} Field instance
          */
         , getField: function(key) {
-            return this._ar._field[this._ar._fieldLookup[key]].field ;
+            return this._field[this._fieldLookup[key]].field ;
         }
         , setField: function(key, field) {
            this._fieldLookup[key] = this._field.length ;
@@ -135,7 +131,6 @@ window.Sway.data = window.Sway.data || {} ;
             */
         },
         save: function() {
-            debugger ;
         }
     } ;
 
@@ -147,10 +142,10 @@ window.Sway.data = window.Sway.data || {} ;
             return obj;
         }
 
-        temp = obj.constructor(); // changed
+        temp = obj.constructor();                           // changed
 
-        for(key in obj) {
-            temp[key] = clone(obj[key]);
+        for(key in obj) {                                   // copy every attribute
+            temp[key] = obj[key] ;
         }
         return temp;
     }
