@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>src&#x2F;eventhub.js</title>
+    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.8.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="..&#x2F;assets/favicon.png">
+    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.8.0&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            
+                <h1><img src="..&#x2F;assets/css/logo.png" title=""></h1>
+            
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a href="..&#x2F;classes/Sway.html">Sway</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.data.ActiveRecord..html">Sway.data.ActiveRecord.</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.data.Field.html">Sway.data.Field</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.DI.html">Sway.DI</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.EventHub.html">Sway.EventHub</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.filter.Compress.html">Sway.filter.Compress</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.filter.Encrypt.html">Sway.filter.Encrypt</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1 class="file-heading">File: src&#x2F;eventhub.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+window.Sway = window.Sway || {} ; &#x2F;&#x2F; make sure it exists
+
+(function(Ns){
+    &#x2F;**
+     * EventHub facilitates event-based communication between different parts of an application (Event driven system).
+     * Events can be namespaced too, checkout the jQuery &lt;a href=&quot;http:&#x2F;&#x2F;docs.jquery.com&#x2F;Namespaced_Events &quot;&gt;documentation&lt;&#x2F;a&gt; on how to use these namespaces.
+     *
+     * @class Sway.EventHub
+     * @constructor
+     *&#x2F;
+    var eh = function() {
+        Object.defineProperty(this, &#x27;_rootStack&#x27;,
+            {
+                value: {},
+                enumerable: false &#x2F;&#x2F; hide it
+            }
+        ) ;
+    }
+
+    eh.prototype = {
+        &#x2F;**
+         * Trigger one or more events. One event is triggered if the &#x27;eventName&#x27; parameter targets a specific event, but if this parameter is a namespace, all nested events and
+         * namespaces will be triggered.
+         *
+         * @method trigger
+         * @param {string} eventName    name of the event or namespace
+         * @param {Object|Array|Number|String|Boolean|Function} [data]   data passed to the triggered callback function
+         * @return {Number} the count of triggered callbacks
+         * @example
+         Sway.eventHub.trigger(&#x27;ui.update&#x27;, {authenticated: true} ) ; &#x2F;&#x2F; trigger the &#x27;update&#x27; event inside the &#x27;ui&#x27; namespace
+         Sway.eventHub.trigger(&#x27;ui&#x27;, {authenticated: true} ) ;        &#x2F;&#x2F; trigger all nested events and namespaces inside the &#x27;ui&#x27; namespace
+         *&#x2F;
+        trigger: function(eventName, data){
+            var list = getStack.call(this, eventName) ;                 &#x2F;&#x2F; load the stack for this namespace
+            return triggerEvent(list, data) ;                &#x2F;&#x2F; triggerEvent does the work of triggering everything (nested events &amp; namespaces)
+        }
+
+        &#x2F;**
+         * Register a callback to a specific event. Callbacks are executed in the order of
+         * registration. Set &#x27;prepend&#x27; to TRUE to add the callback in front of the others.
+         *
+         * @method on
+         * @param {string} eventName
+         * @param {function} callback
+         * @param {boolean} [prepend] if TRUE, the callback is placed before all other registered callbacks.
+         * @example
+         Sway.eventHub.on( &#x27;ui.update&#x27;, this.update.bind(this) ) ;
+         Sway.eventHub.on( &#x27;ui.update&#x27;, this.update.bind(this), true ) ;
+         *&#x2F;
+        , on: function(eventName, callback, prepend) {
+            return addCallbackToStack.call(this, eventName, callback, prepend) ;
+        }
+
+
+        &#x2F;**
+         * Register a callback to a specific event. This function is identical to {{#crossLink &quot;Sway.EventHub&#x2F;on:method&quot;}}{{&#x2F;crossLink}}
+         * except that this callback is removed from the list after it has been triggered.
+         *
+         * @method one
+         * @param {string} eventName
+         * @param {function} callback
+         * @param {boolean} [prepend] if TRUE, the callback is placed before all other registered callbacks.
+         *&#x2F;
+        , one: function(eventName, callback, prepend) {
+            return addCallbackToStack.call(this, eventName, callback, prepend, true) ;
+        }
+
+        &#x2F;**
+         * count the registered callbacks for an event or namespace
+         *
+         * @method count
+         * @param {sting} [eventName] if empty all registered callbacks are counted
+         * @return {Number} the count of callback functions inside &#x27;eventName&#x27;
+         *&#x2F;
+        , count: function(eventName) {
+            var list = getStack.call(this, eventName)
+                , parts = eventName
+
+            &#x2F;&#x2F; TODO
+            return 10 ;
+        }
+
+        &#x2F;**
+         * Removes the given callback for a specific event.
+         *
+         * @method off
+         * @param {string} eventName
+         * @param {function} [callback] the callback function to be removed. If omitted, all registered events and nested
+         * namespaces inside &#x27;eventName&#x27; are removed
+         * @return {Number} the count of removed callback functions
+         * @example
+         Sway.eventHub.off(&#x27;ui.update&#x27;, this.update) ;
+         Sway.eventHub.off(&#x27;ui&#x27;) ;
+         *&#x2F;
+        , off: function(eventName, callback) {
+            var stack = getStack.call(this, eventName) ;
+            return removeFromStack(stack, callback) ;
+        }
+    } ;
+
+    &#x2F;* ******** PRIVATE HELPER FUNCTION *********** *&#x2F;
+
+    function addCallbackToStack(eventName, callback, prepend, isOne) {
+        if ( checkInput(eventName, callback)) {                             &#x2F;&#x2F; validate input
+            var list = createStack.call(this, eventName) ;                  &#x2F;&#x2F; get stack of &#x27;eventName&#x27;
+            if ( list.__stack.on.indexOf(callback) === -1 ) {                 &#x2F;&#x2F; check if the callback is not already added
+                list.__stack.on[prepend ? &#x27;unshift&#x27;:&#x27;push&#x27;](callback) ;     &#x2F;&#x2F; add callback
+
+                if ( isOne ) {                                              &#x2F;&#x2F; if true, the callback is added to the &#x27;one&#x27; list
+                    list.__stack.one[prepend ? &#x27;unshift&#x27;:&#x27;push&#x27;](callback) ;&#x2F;&#x2F; and only triggered once
+                }
+                return true ;                                               &#x2F;&#x2F; callback is added
+            }
+        }
+        return false ;                                                      &#x2F;&#x2F; callback is not added
+    }
+
+
+    &#x2F;* Validate the input for &#x27;on&#x27; and &#x27;one&#x27;.
+        eventName: should be defined and of type &quot;string&quot;
+        callback:  should be defined and of type &quot;function&quot;
+     *&#x2F;
+    function checkInput(eventName, callback) {
+        if ( typeof(eventName) === &quot;string&quot; &amp;&amp; callback &amp;&amp; typeof(callback) === &quot;function&quot; ) { &#x2F;&#x2F; OK
+            return true ;
+        }
+        else if ( Ns.DEBUG ) { &#x2F;&#x2F; Wrong...
+            console.warn(&quot;Cannot bind the callback function to the event nam ( eventName=&quot; + eventName + &quot;,  callback=&quot; + callback + &quot;)&quot;) ;
+            return false ;
+        }
+    }
+
+
+
+    &#x2F;*
+        Removes the callback from the stack. However, a stack can contain other namespaces. And these namespaces
+        can contain the callback too. Furthermore, the callback is optional, in which case the whole stack
+        is erased.
+     *&#x2F;
+    function removeFromStack(stack, callback) {
+        var retVal = 0                                              &#x2F;&#x2F; number of removed callbacks
+            , callbacks                                             &#x2F;&#x2F; a stack with &#x27;on&#x27; and &#x27;one&#x27; (maybe)
+            , ns ;                                                  &#x2F;&#x2F; loop var
+
+        if ( !stack ) {                                             &#x2F;&#x2F; no data available --&gt; done
+            return 0 ;                                              &#x2F;&#x2F; and zero callbacks removed (no actions taken)
+        }
+
+        if ( callback ) {                                           &#x2F;&#x2F; remove a specific callback
+            for( ns in stack) {                                     &#x2F;&#x2F; so we loop through all namespaces (and __stack is one of them)
+                callbacks = stack[ns] ;
+                if ( callbacks.on ) {                               &#x2F;&#x2F; are we there yet, are we there yet
+                    retVal += removeCallback(callbacks.on,  callback) ; &#x2F;&#x2F; YES
+                    retVal += removeCallback(callbacks.one, callback) ; &#x2F;&#x2F; YES
+                }
+                else {                                              &#x2F;&#x2F; NO, its a namesapace -&gt; recurstion
+                   retVal += removeFromStack.call(this, stack[callbacks], callback ) ;
+                }
+            }
+        }
+        else { &#x2F;&#x2F; remove a whole namespace (no callback defined)
+            retVal += removeNameSpace.call(this, stack)   ;
+        }
+        return retVal ;                                         &#x2F;&#x2F; a count of removed callback function
+    }
+
+    &#x2F;* This function should only be called on a stack with the &#x27;on&#x27; and &#x27;one&#x27; lists. It will remove one or
+       multiple occurrences of the &#x27;callback&#x27; function
+     *&#x2F;
+    function removeCallback(list, callback){
+        var position                                            &#x2F;&#x2F; position on the stack
+            , retVal = 0 ;                                      &#x2F;&#x2F; number of removed callbacks
+
+        position = list.indexOf(callback) ;         &#x2F;&#x2F; is the callback in the callbacks list
+        while( position &gt; -1 ) {                        &#x2F;&#x2F; but the callback can be present multiple times!
+            retVal ++ ;                                &#x2F;&#x2F; found one match
+            list.splice(position, 1) ;              &#x2F;&#x2F; remove callback from the stack
+
+            position = list.indexOf(callback) ;     &#x2F;&#x2F; prepare the while check to see if more actions are required
+        }
+        return retVal ;
+    }
+
+    &#x2F;*
+       Remove a whole namespace
+     *&#x2F;
+    function removeNameSpace(stack) {
+        var retVal = 0                                      &#x2F;&#x2F; number of removed callbacks
+            , cb                                            &#x2F;&#x2F; loop var
+
+        for( cb in stack )  {                               &#x2F;&#x2F; delete all elements from the stack (and we cannot do stack = {} ;)
+            retVal += this.count(callbacks[cb]) ;           &#x2F;&#x2F; and count all callbacks in this namespace
+            delete callbacks[cb] ;                          &#x2F;&#x2F; cleanup
+        }
+
+        return retVal ;
+    }
+
+    &#x2F;*
+        This private function returns the callback stack matched by &#x27;eventName&#x27;. If the eventName does
+        not exist &#x27;null&#x27; is returned
+     *&#x2F;
+    function getStack(namespace) {
+        var parts = namespace ? namespace.split(&#x27;.&#x27;) : []   &#x2F;&#x2F; parts of the event namespaces
+                , stack = this._rootStack                   &#x2F;&#x2F; root of the callback stack
+                , i ;                                       &#x2F;&#x2F; loop index
+
+        for( i = 0; i &lt; parts.length; i++ ) {
+            if ( ! stack[parts[i]]) {
+                return null ;                               &#x2F;&#x2F; it does not exist -&gt; done
+            }
+            stack = stack[parts[i]] ;                       &#x2F;&#x2F; traverse a level deeper into the stack
+        }
+        return stack ;                                      &#x2F;&#x2F; return the stack matched by &#x27;eventName&#x27;
+    }
+
+    &#x2F;*
+     * Internally &#x27;eventName&#x27; is always a namespace. Callbacks are placed inside a special
+     * variable called &#x27;__stack&#x27;. So, when the eventName is &#x27;doAction&#x27;, internally this will
+     * look like doAction.__stack.
+     * Furthermore, it the eventName is new, it is created
+     *&#x2F;
+    function createStack(namespace) {
+        var parts = namespace.split(&#x27;.&#x27;)                    &#x2F;&#x2F; split the namespace
+            , stack = this._rootStack                       &#x2F;&#x2F; start at the root
+            , i ;                                           &#x2F;&#x2F; loop index
+
+        for(i = 0; i &lt; parts.length ; i++) {                &#x2F;&#x2F; traverse the stack
+            if ( !stack[parts[i]] ){                        &#x2F;&#x2F; if not exists
+                stack[parts[i]] = {} ;                      &#x2F;&#x2F; --&gt; create it
+            }
+            stack = stack[parts[i]] ;                       &#x2F;&#x2F; go into the (newly created) namespace
+        }
+
+        if ( !stack.__stack) {                              &#x2F;&#x2F; the namespace holding the callbacks is called __stack
+            stack.__stack = {                               &#x2F;&#x2F; These callbacks are stored into a list called
+                on: []                                      &#x2F;&#x2F; &#x27;on&#x27; and
+                , one: []                                   &#x2F;&#x2F; &#x27;one&#x27;
+            } ;
+        }
+        return stack ;
+    }
+
+
+
+    &#x2F;*
+     * Namespaces can in theory be many levels deep, like: &quot;aaaaa.bbbbbb.cccccc._stack&quot;
+     * To traverse this namespace and trigger everything inside it, this function is called recursively.
+     *&#x2F;
+    function triggerEvent(namespaces, data) {
+        var namespace                                           &#x2F;&#x2F; current namespace in the loop
+            , retVal = 0                                        &#x2F;&#x2F; the number of called callback function
+            , ns ;                                              &#x2F;&#x2F; loop index
+
+        for( ns in namespaces ) {
+            namespace = namespaces[ns] ;
+
+           if ( namespace.on ) {                                &#x2F;&#x2F; special namespace (it hold &#x27;on&#x27; and &#x27;one&#x27;)
+               namespace.on.forEach( function(c) {              &#x2F;&#x2F; loop through all callbacks
+                   retVal++ ;                                   &#x2F;&#x2F; count this trigger
+                   c(data) ;                                    &#x2F;&#x2F; call the callback
+                   if ( namespace.one.indexOf(c) &gt; -1 ) {       &#x2F;&#x2F; check if it is a &#x27;one&#x27; callback
+                       removeCallback(namespace.on, c) ;        &#x2F;&#x2F; YES -&gt; remove it from &#x27;on&#x27;
+                   }
+               }) ;
+               namespace.one.length = 0 ;                       &#x2F;&#x2F; all &#x27;one&#x27; callbacks have been called --&gt; cleanup
+           }
+           else {                                               &#x2F;&#x2F; found a deeper nested namespace
+                retVal += triggerEvent(namespace, data) ;       &#x2F;&#x2F; nested namespaces
+           }
+        }
+        return retVal ;
+    }
+
+    Ns.EventHub = eh ;
+
+})(window.Sway) ;
+    </pre>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="..&#x2F;assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="..&#x2F;assets/js/yui-prettify.js"></script>
+<script src="..&#x2F;assets/../api.js"></script>
+<script src="..&#x2F;assets/js/api-filter.js"></script>
+<script src="..&#x2F;assets/js/api-list.js"></script>
+<script src="..&#x2F;assets/js/api-search.js"></script>
+<script src="..&#x2F;assets/js/apidocs.js"></script>
+</body>
+</html>

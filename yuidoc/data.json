@@ -1,0 +1,589 @@
+{
+    "project": {},
+    "files": {
+        "src/data/activerecord.js": {
+            "name": "src/data/activerecord.js",
+            "modules": {},
+            "classes": {
+                "Sway.data.ActiveRecord.": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/data/field.js": {
+            "name": "src/data/field.js",
+            "modules": {},
+            "classes": {
+                "Sway.data.Field": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/filters/compress.js": {
+            "name": "src/filters/compress.js",
+            "modules": {},
+            "classes": {
+                "Sway.filter.Compress": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/filters/encrypt.js": {
+            "name": "src/filters/encrypt.js",
+            "modules": {},
+            "classes": {
+                "Sway.filter.Encrypt": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/persistance/fs.js": {
+            "name": "src/persistance/fs.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/appinit.js": {
+            "name": "src/appinit.js",
+            "modules": {},
+            "classes": {
+                "Sway": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/di.js": {
+            "name": "src/di.js",
+            "modules": {},
+            "classes": {
+                "Sway.DI": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/eventhub.js": {
+            "name": "src/eventhub.js",
+            "modules": {},
+            "classes": {
+                "Sway.EventHub": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {},
+    "classes": {
+        "Sway.data.ActiveRecord.": {
+            "name": "Sway.data.ActiveRecord.",
+            "shortname": "Sway.data.ActiveRecord.",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/data/activerecord.js",
+            "line": 12,
+            "description": "This class stores a string in memory. If a persistance dependency is defined, it will use this dependency to store\nthe data. Filters are used to perform some action on the data before persisting it and on retrieval.\nAs an example, a persistance dependency could be WebSQL storage. A filter could be encryption and/or compression.\nNote that for an encryption filter, it will perform an action on the data before persisting it, and on retrieval.",
+            "params": [
+                {
+                    "name": "persistence",
+                    "description": "dependency which can persist the data",
+                    "type": "Object",
+                    "optional": true
+                },
+                {
+                    "name": "fieldList",
+                    "description": "list of filters. Depending on the filter type its a before and/or after filter.",
+                    "type": "Array",
+                    "optional": true
+                }
+            ]
+        },
+        "Sway.data.Field": {
+            "name": "Sway.data.Field",
+            "shortname": "Sway.data.Field",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/data/field.js",
+            "line": 10,
+            "params": [
+                {
+                    "name": "filters",
+                    "description": "list of filter",
+                    "type": "Array",
+                    "optional": true
+                }
+            ]
+        },
+        "Sway.filter.Compress": {
+            "name": "Sway.filter.Compress",
+            "shortname": "Sway.filter.Compress",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/filters/compress.js",
+            "line": 9,
+            "description": "This filter can compress a string and uncompress a Blob (the compressed string).",
+            "is_constructor": 1
+        },
+        "Sway.filter.Encrypt": {
+            "name": "Sway.filter.Encrypt",
+            "shortname": "Sway.filter.Encrypt",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/filters/encrypt.js",
+            "line": 10,
+            "description": "Encrypt and decrypt a given string",
+            "is_constructor": 1
+        },
+        "Sway": {
+            "name": "Sway",
+            "shortname": "Sway",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/appinit.js",
+            "line": 1,
+            "description": "Namespace"
+        },
+        "Sway.DI": {
+            "name": "Sway.DI",
+            "shortname": "Sway.DI",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/di.js",
+            "line": 4,
+            "description": "DI makes classes accessible by a contract. Instances are created when requested and dependencies are injected into the constructor,\n        facilitating lazy initialization and loose coupling between classes.",
+            "is_constructor": 1
+        },
+        "Sway.EventHub": {
+            "name": "Sway.EventHub",
+            "shortname": "Sway.EventHub",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/eventhub.js",
+            "line": 4,
+            "description": "EventHub facilitates event-based communication between different parts of an application (Event driven system).\nEvents can be namespaced too, checkout the jQuery <a href=\"http://docs.jquery.com/Namespaced_Events \">documentation</a> on how to use these namespaces.",
+            "is_constructor": 1
+        }
+    },
+    "classitems": [
+        {
+            "file": "src/data/activerecord.js",
+            "line": 61,
+            "itemtype": "method",
+            "name": "bless",
+            "params": [
+                {
+                    "name": "model",
+                    "description": "instance to be blessed",
+                    "type": "Object"
+                }
+            ],
+            "class": "Sway.data.ActiveRecord."
+        },
+        {
+            "file": "src/data/activerecord.js",
+            "line": 82,
+            "setfield": "",
+            "params": [
+                {
+                    "name": "key",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "field",
+                    "description": "Field instance",
+                    "type": "Object"
+                }
+            ],
+            "class": "Sway.data.ActiveRecord."
+        },
+        {
+            "file": "src/data/activerecord.js",
+            "line": 99,
+            "itemtype": "method",
+            "name": "getSize",
+            "params": [
+                {
+                    "name": "key",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Number"
+            },
+            "class": "Sway.data.ActiveRecord."
+        },
+        {
+            "file": "src/data/field.js",
+            "line": 25,
+            "itemtype": "method",
+            "name": "getValue",
+            "return": {
+                "description": "",
+                "type": "*"
+            },
+            "class": "Sway.data.Field"
+        },
+        {
+            "file": "src/data/field.js",
+            "line": 32,
+            "itemtype": "method",
+            "name": "getFilteredValue",
+            "class": "Sway.data.Field"
+        },
+        {
+            "file": "src/data/field.js",
+            "line": 39,
+            "itemtype": "method",
+            "name": "setValue",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "the value of the field instance",
+                    "type": "Object|String|Blob|Array"
+                }
+            ],
+            "class": "Sway.data.Field"
+        },
+        {
+            "file": "src/data/field.js",
+            "line": 47,
+            "itemtype": "method",
+            "name": "setFilteredValue",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "the filtered value of the field instance",
+                    "type": "Object|String|Blob|Array"
+                }
+            ],
+            "class": "Sway.data.Field"
+        },
+        {
+            "file": "src/data/field.js",
+            "line": 55,
+            "itemtype": "method",
+            "name": "size",
+            "class": "Sway.data.Field"
+        },
+        {
+            "file": "src/persistance/fs.js",
+            "line": 51,
+            "description": "FileEntry interface is provided for working with files:\nhttp://www.mosync.com/files/imports/doxygen/latest/html5/filewriter.md.html\nfileEntry.isFile === true\nfileEntry.isDirectory === false\nfileEntry.name\nfileEntry.fullPath\n...\n\nfileEntry.getMetadata(successCallback, opt_errorCallback);\nfileEntry.remove(successCallback, opt_errorCallback);\nfileEntry.moveTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);\nfileEntry.copyTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);\nfileEntry.getParent(successCallback, opt_errorCallback);\nfileEntry.toURI(opt_mimeType);  // Currently not implemented in Google Chrome 9.\n\nfileEntry.file(successCallback, opt_errorCallback);\nfileEntry.createWriter(successCallback, opt_errorCallback);",
+            "class": "Sway"
+        },
+        {
+            "file": "src/persistance/fs.js",
+            "line": 84,
+            "description": "http://www.mosync.com/files/imports/doxygen/latest/html5/filereader.md.html",
+            "class": "Sway"
+        },
+        {
+            "file": "src/persistance/fs.js",
+            "line": 169,
+            "description": "https://developer.mozilla.org/en-US/docs/DOM/File_API/File_System_API/FileError",
+            "class": "Sway"
+        },
+        {
+            "file": "src/appinit.js",
+            "line": 7,
+            "description": "Version of the framework",
+            "itemtype": "property",
+            "name": "VERSION",
+            "type": "String",
+            "class": "Sway"
+        },
+        {
+            "file": "src/appinit.js",
+            "line": 14,
+            "description": "If TRUE, debugging is enabled. In PRODUCTION this property should be set to FALSE!!",
+            "itemtype": "property",
+            "name": "DEBUG",
+            "type": "boolean",
+            "class": "Sway"
+        },
+        {
+            "file": "src/di.js",
+            "line": 29,
+            "description": "Register a class by creating a contract. Use {{#crossLink \"DI/getInstance:method\"}}{{/crossLink}} to obtain\nan instance from this contract/class. The injected dependencies, if any, will be used as constructor parameter\nin the order provided by the dependencies array.",
+            "itemtype": "method",
+            "name": "register",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "contract",
+                    "description": "name of the contracta",
+                    "type": "String"
+                },
+                {
+                    "name": "class",
+                    "description": "the class bind to this contract",
+                    "type": "Class"
+                },
+                {
+                    "name": "dependencies",
+                    "description": "list of contracts; dependencies of this class",
+                    "type": "Array",
+                    "optional": true
+                },
+                {
+                    "name": "options",
+                    "description": "addition setting used to create the instance.",
+                    "type": "Object",
+                    "optional": true,
+                    "props": [
+                        {
+                            "name": "singleton",
+                            "description": "set to TRUE if the class should be treated as a singleton class",
+                            "type": "String"
+                        }
+                    ]
+                }
+            ],
+            "example": [
+                "\n        App.di.registerType(\"ajax\", App.AJAX) ;\n        App.di.registerType(\"ajax\", App.AJAX, [], { singleton: true }) ;\n        App.di.registerType(\"util\", App.Util, [\"compress\", \"wsql\"], { singleton: true } ) ;"
+            ],
+            "class": "Sway.DI"
+        },
+        {
+            "file": "src/di.js",
+            "line": 56,
+            "description": "Returns an instance for the given contract.",
+            "itemtype": "method",
+            "name": "geInstancet",
+            "params": [
+                {
+                    "name": "contract",
+                    "description": "name",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Class instance",
+                "type": "Object"
+            },
+            "example": [
+                "\n        var ajax = App.di.getInstance(\"ajax\") ;"
+            ],
+            "class": "Sway.DI"
+        },
+        {
+            "file": "src/di.js",
+            "line": 80,
+            "description": "Returns a new instance of the class matched by the contract. If the contract does not exists an error is thrown.\nIf one of the dependencies does not exists, 'null' is used instead.",
+            "itemtype": "method",
+            "name": "createInstance",
+            "params": [
+                {
+                    "name": "contract",
+                    "description": "- the contract name",
+                    "type": "String"
+                },
+                {
+                    "name": "dependencies",
+                    "description": "- list of contracts passed to the constructor",
+                    "type": "Array"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "example": [
+                "\n    try {\n        var storage = App.di.createInstance(\"data\", [\"compress\", \"websql\"]) ;\n    }\n    catch(e) { // will fail if contract does not exist\n        console.log(e.name + ': ' + e.message) ;\n    }"
+            ],
+            "class": "Sway.DI"
+        },
+        {
+            "file": "src/eventhub.js",
+            "line": 21,
+            "description": "Trigger one or more events. One event is triggered if the 'eventName' parameter targets a specific event, but if this parameter is a namespace, all nested events and\nnamespaces will be triggered.",
+            "itemtype": "method",
+            "name": "trigger",
+            "params": [
+                {
+                    "name": "eventName",
+                    "description": "name of the event or namespace",
+                    "type": "String"
+                },
+                {
+                    "name": "data",
+                    "description": "data passed to the triggered callback function",
+                    "type": "Object|Array|Number|String|Boolean|Function",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "the count of triggered callbacks",
+                "type": "Number"
+            },
+            "example": [
+                "\n        Sway.eventHub.trigger('ui.update', {authenticated: true} ) ; // trigger the 'update' event inside the 'ui' namespace\n        Sway.eventHub.trigger('ui', {authenticated: true} ) ;        // trigger all nested events and namespaces inside the 'ui' namespace"
+            ],
+            "class": "Sway.EventHub"
+        },
+        {
+            "file": "src/eventhub.js",
+            "line": 38,
+            "description": "Register a callback to a specific event. Callbacks are executed in the order of\nregistration. Set 'prepend' to TRUE to add the callback in front of the others.",
+            "itemtype": "method",
+            "name": "on",
+            "params": [
+                {
+                    "name": "eventName",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Function"
+                },
+                {
+                    "name": "prepend",
+                    "description": "if TRUE, the callback is placed before all other registered callbacks.",
+                    "type": "Boolean",
+                    "optional": true
+                }
+            ],
+            "example": [
+                "\n        Sway.eventHub.on( 'ui.update', this.update.bind(this) ) ;\n        Sway.eventHub.on( 'ui.update', this.update.bind(this), true ) ;"
+            ],
+            "class": "Sway.EventHub"
+        },
+        {
+            "file": "src/eventhub.js",
+            "line": 55,
+            "description": "Register a callback to a specific event. This function is identical to {{#crossLink \"Sway.EventHub/on:method\"}}{{/crossLink}}\nexcept that this callback is removed from the list after it has been triggered.",
+            "itemtype": "method",
+            "name": "one",
+            "params": [
+                {
+                    "name": "eventName",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Function"
+                },
+                {
+                    "name": "prepend",
+                    "description": "if TRUE, the callback is placed before all other registered callbacks.",
+                    "type": "Boolean",
+                    "optional": true
+                }
+            ],
+            "class": "Sway.EventHub"
+        },
+        {
+            "file": "src/eventhub.js",
+            "line": 68,
+            "description": "count the registered callbacks for an event or namespace",
+            "itemtype": "method",
+            "name": "count",
+            "params": [
+                {
+                    "name": "eventName",
+                    "description": "if empty all registered callbacks are counted",
+                    "type": "Sting",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "the count of callback functions inside 'eventName'",
+                "type": "Number"
+            },
+            "class": "Sway.EventHub"
+        },
+        {
+            "file": "src/eventhub.js",
+            "line": 83,
+            "description": "Removes the given callback for a specific event.",
+            "itemtype": "method",
+            "name": "off",
+            "params": [
+                {
+                    "name": "eventName",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "the callback function to be removed. If omitted, all registered events and nested\nnamespaces inside 'eventName' are removed",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "the count of removed callback functions",
+                "type": "Number"
+            },
+            "example": [
+                "\n        Sway.eventHub.off('ui.update', this.update) ;\n        Sway.eventHub.off('ui') ;"
+            ],
+            "class": "Sway.EventHub"
+        }
+    ],
+    "warnings": [
+        {
+            "message": "unknown tag: setfield",
+            "line": " src/data/activerecord.js:82"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/data/activerecord.js:99"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/data/field.js:25"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/di.js:56"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/di.js:80"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/data/activerecord.js:82"
+        },
+        {
+            "message": "Missing item type\nFileEntry interface is provided for working with files:\nhttp://www.mosync.com/files/imports/doxygen/latest/html5/filewriter.md.html\nfileEntry.isFile === true\nfileEntry.isDirectory === false\nfileEntry.name\nfileEntry.fullPath\n...\n\nfileEntry.getMetadata(successCallback, opt_errorCallback);\nfileEntry.remove(successCallback, opt_errorCallback);\nfileEntry.moveTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);\nfileEntry.copyTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);\nfileEntry.getParent(successCallback, opt_errorCallback);\nfileEntry.toURI(opt_mimeType);  // Currently not implemented in Google Chrome 9.\n\nfileEntry.file(successCallback, opt_errorCallback);\nfileEntry.createWriter(successCallback, opt_errorCallback);",
+            "line": " src/persistance/fs.js:51"
+        },
+        {
+            "message": "Missing item type\nhttp://www.mosync.com/files/imports/doxygen/latest/html5/filereader.md.html",
+            "line": " src/persistance/fs.js:84"
+        },
+        {
+            "message": "Missing item type\nhttps://developer.mozilla.org/en-US/docs/DOM/File_API/File_System_API/FileError",
+            "line": " src/persistance/fs.js:169"
+        }
+    ]
+}
