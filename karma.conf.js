@@ -11,17 +11,15 @@ files = [
   JASMINE,
   JASMINE_ADAPTER,
   'src/appinit.js',
-  //'src/datacontainer.js',
-  'src/persistance/fs.js',
-  'src/persistance/websql.js',
   'src/di.js',
-
-
+  'src/eventhub.js',
+  'src/data/activerecord.js',
+  'src/data/field',
 
   'spec/SpecHelper.js',
-  'spec/DataContainerSpec.js',
-  'spec/DISpec.js'
-
+  'spec/DISpec.js',
+  'spec/EventHubSpec.js',
+  'spec/ActiveRecordSpec.js'
 ];
 
 
