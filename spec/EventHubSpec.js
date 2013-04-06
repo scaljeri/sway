@@ -255,6 +255,7 @@ window.describe("Sway.EventHub", function() {
             Sway.eventHub.on("go", Sway.callbacks.cb3) ;
             Sway.eventHub.one("go", Sway.callbacks.cb4) ;
             expect(Sway.eventHub.count("go")).toEqual(4) ;
+            expect(1).toEqual(2) ;
         }) ;
     }) ;
 });
