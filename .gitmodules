@@ -1,6 +1,3 @@
-[submodule "external/zip.js"]
-	path = external/zip.js
-	url = git://github.com/gildas-lormeau/zip.js
 [submodule "external/sjcl"]
 	path = external/sjcl
 	url = https://github.com/bitwiseshiftleft/sjcl.git
@@ -10,3 +7,6 @@
 [submodule "external/jasmine"]
 	path = external/jasmine
 	url = https://github.com/pivotal/jasmine.git
+[submodule "external/zip.js"]
+	path = external/zip.js
+	url = git://github.com/gildas-lormeau/zip.js
