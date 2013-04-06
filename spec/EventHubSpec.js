@@ -1,8 +1,17 @@
-describe("Sway.EventHub", function() {
+window.describe("Sway.EventHub", function() {
+    "use strict" ;
+
+    var beforeEach = window.beforeEach
+        , describe = window.describe
+        , it = window.it
+        , expect = window.expect
+        , spyOn = window.spyOn
+        , Sway = window.Sway ;
+
     // mock some classes
     beforeEach(function() {
-	    // create DI
-	    Sway.eventHub = new Sway.EventHub() ;
+        // create DI
+        Sway.eventHub = new Sway.EventHub() ;
 
         Sway.callbacks = {
             cb1: function(data) {
@@ -82,6 +91,16 @@ describe("Sway.EventHub", function() {
             expect(Sway.callbacks.cb3).not.toHaveBeenCalled() ;
             expect(Sway.callbacks.cb4).not.toHaveBeenCalled() ;
         }) ;
+        it("should be able to count the registered callbacks", function() {
+            Sway.eventHub.on("go", Sway.callbacks.cb1) ;
+            debugger ;
+            Sway.eventHub.one("go", Sway.callbacks.cb2) ;
+            Sway.eventHub.on("go", Sway.callbacks.cb3) ;
+            Sway.eventHub.one("go", Sway.callbacks.cb4) ;
+            expect(Sway.eventHub.count("go")).toEqual(4) ;
+            expect(Sway.eventHub.trigger("go")).toEqual(4) ;
+            //expect(Sway.eventHub.count("go")).toEqual(4) ;
+        }) ;
     });
     describe("should handle callbacks for a one level deep namespaced event", function() {
        it("using 'on'", function() {
@@ -156,6 +175,13 @@ describe("Sway.EventHub", function() {
            expect(Sway.callbacks.cb1.callCount).toEqual(2) ;
            expect(Sway.callbacks.cb2.callCount).toEqual(1) ;
        }) ;
+       it("should be able to count the registered callbacks", function() {
+            Sway.eventHub.on("go", Sway.callbacks.cb1) ;
+            Sway.eventHub.one("go", Sway.callbacks.cb2) ;
+            Sway.eventHub.on("go", Sway.callbacks.cb3) ;
+            Sway.eventHub.one("go", Sway.callbacks.cb4) ;
+            expect(Sway.eventHub.count("go")).toEqual(4) ;
+        }) ;
     }) ;
 
     describe("should handle callbacks for a two level deep namespaced event", function() {
@@ -222,6 +248,13 @@ describe("Sway.EventHub", function() {
             expect(Sway.eventHub.trigger("forum", 2 )).toEqual(1) ;
             expect(Sway.callbacks.cb1.callCount).toEqual(2) ;
             expect(Sway.callbacks.cb2.callCount).toEqual(1) ;
+        }) ;
+        it("should be able to count the registered callbacks", function() {
+            Sway.eventHub.on("go", Sway.callbacks.cb1) ;
+            Sway.eventHub.one("go", Sway.callbacks.cb2) ;
+            Sway.eventHub.on("go", Sway.callbacks.cb3) ;
+            Sway.eventHub.one("go", Sway.callbacks.cb4) ;
+            expect(Sway.eventHub.count("go")).toEqual(4) ;
         }) ;
     }) ;
 });
