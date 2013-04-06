@@ -1,12 +1,12 @@
 {
-  "name": "javascript-utils",
-  "version": "0.0.1",
+  "name": "Sway",
+  "version": "0.0.2",
   "devDependencies": {
-        "testacular": "~0.6"
+        "karma": "~0.8"
     },
 
     "scripts": {
-        "test": "./node_modules/.bin/testacular start --single-run"
+        "test": "./node_modules/.bin/karma run"
     }
 }
 
