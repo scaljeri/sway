@@ -1,33 +1,12 @@
-[submodule "externals/jquery"]
-	path = externals/jquery
-	url = git://github.com/jquery/jquery.git
-[submodule "externals/yuitest"]
-	path = externals/yuitest
-	url = https://github.com/yui/yuitest.git
-[submodule "externals/sjcl"]
-	path = externals/sjcl
-	url = https://github.com/bitwiseshiftleft/sjcl.git
-[submodule "externals/zip.js"]
-	path = externals/zip.js
-	url = git://github.com/gildas-lormeau/zip.js.git
-[submodule "externals/jasmine"]
-	path = externals/jasmine
-	url = https://github.com/pivotal/jasmine.git
-[submodule "external/jquery"]
-	path = external/jquery
-	url = git://github.com/jquery/jquery.git
-[submodule "yuitest"]
-	path = yuitest
-	url = https://github.com/yui/yuitest.git
-[submodule "sjcl"]
-	path = sjcl
-	url = https://github.com/bitwiseshiftleft/sjcl.git
 [submodule "external/sjcl"]
 	path = external/sjcl
 	url = https://github.com/bitwiseshiftleft/sjcl.git
-[submodule "external/yuitest"]
-	path = external/yuitest
-	url = https://github.com/yui/yuitest.git
+[submodule "external/jquery"]
+	path = external/jquery
+	url = https://github.com/jquery/jquery.git
 [submodule "external/jasmine"]
 	path = external/jasmine
 	url = https://github.com/pivotal/jasmine.git
+[submodule "external/zip.js"]
+	path = external/zip.js
+	url = git://github.com/gildas-lormeau/zip.js
