@@ -103,19 +103,17 @@ window.Sway = window.Sway || {} ; // make sure it exists
     /* ******** PRIVATE HELPER FUNCTION *********** */
 
     function addCallbackToStack(eventName, callback, prepend) {
-        if ( !checkInput(eventName, callback)) {                       // validate input
-            return null ;
+        if ( checkInput(eventName, callback)) {                             // validate input
+            var list = createStack.call(this, eventName) ;                      // get stack of 'eventName'
+            if ( list.__stack.on.indexOf(callback) === -1 ) {               // check if the callback is not already added
+                list.__stack.on[prepend ? 'unshift':'push'](callback) ;     // add callback
+                return list ;
+            }
+            else {                                                          // callback was already added but is counted
+                removeFromStack.call(this, list, function(){}) ;            // so we remove something so it will subtract 1 from count
+            }
         }
-
-        var list = createStack.call(this, eventName) ;                  // get stack of 'eventName'
-        if ( list.__stack.on.indexOf(callback) === -1 ) {               // check if the callback is not already added
-             list.__stack.on[prepend ? 'unshift':'push'](callback) ;    // add callback
-             return list ;
-        }
-        else {
-            // TODO: subtrect the 1 from count for all namespaces of 'eventName'
-            return null ;
-        }
+        return null ;
     }
 
 
@@ -145,10 +143,6 @@ window.Sway = window.Sway || {} ; // make sure it exists
             , callbacks                                             // a stack with 'on' and 'one' (maybe)
             , ns ;                                                  // loop var
 
-        if ( !stack ) {                                             // no data available --> done
-            return 0 ;                                              // and zero callbacks removed (no actions taken)
-        }
-
         if ( callback ) {                                           // remove a specific callback
             for( ns in stack) {                                     // so we loop through all namespaces (and __stack is one of them)
                 callbacks = stack[ns] ;
@@ -164,7 +158,25 @@ window.Sway = window.Sway || {} ; // make sure it exists
         else { // remove a whole namespace (no callback defined)
             retVal += removeNameSpace.call(this, stack)   ;
         }
+
+        removeFromCallbackCount(stack, retVal) ;
         return retVal ;                                         // a count of removed callback function
+    }
+
+    /*
+     * Update the count for all parent namespaces
+     */
+    function removeFromCallbackCount(namespace, total) {
+        if ( namespace && namespace.__stack) {
+            while( namespace.__stack.parent && (namespace = namespace.__stack.parent) ) {
+                if ( namespace.__stack ) {
+                    namespace.__stack.count -= total ;
+                }
+                else {
+                    break ;
+                }
+            }
+        }
     }
 
     /* This function should only be called on a stack with the 'on' and 'one' lists. It will remove one or
@@ -185,7 +197,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
     }
 
     /*
-       Remove a whole namespace
+       Remove a whole namespace.
      */
     function removeNameSpace(stack) {
         var retVal = 0                                      // number of removed callbacks
@@ -220,8 +232,9 @@ window.Sway = window.Sway || {} ; // make sure it exists
     /*
      * Internally 'eventName' is always a namespace. Callbacks are placed inside a special
      * variable called '__stack'. So, when the eventName is 'doAction', internally this will
-     * look like doAction.__stack.
-     * Furthermore, it the eventName is new, it is created
+     * look like doAction.__stack. This function always increases the count for each namespace
+     * because this function is only called when adding a new callback. Finally, if the namespace
+     * does not exist, it is created.
      */
     function createStack(namespace) {
         var parts = namespace.split('.')                    // split the namespace
@@ -231,10 +244,12 @@ window.Sway = window.Sway || {} ; // make sure it exists
         for(i = 0; i < parts.length ; i++) {                // traverse the stack
             if ( !stack[parts[i]] ){                        // if not exists --> create it
                 stack[parts[i]] = {
-                    __stack: {
-                        count: 0
-                        , on: []
-                        , one: []
+                    __stack: {                              // holds all info for this namespace (not the child namespaces)
+                        on: []                              // callback stack
+                        , one: []                           // callbacks which are triggered only once
+                        , parent: stack                     // parent namespace/object
+                        , count: 0                          // count callbacks in this namespace
+                        , triggered: 0                      // count triggers
                     }
                 } ;
             }
@@ -273,7 +288,24 @@ window.Sway = window.Sway || {} ; // make sure it exists
                 retVal += triggerEvent(namespace, data) ;           // nested namespaces
            }
         }
+        updateTriggerCount(namespaces) ;
         return retVal ;
+    }
+
+    /*
+     * Count the trigger also for parent namespaces. Each namespace has a property called 'parent' (linked list)
+     */
+    function updateTriggerCount(namespace) {
+        if ( namespace && namespace.__stack) {
+            while( namespace.__stack.parent && (namespace = namespace.__stack.parent) ) {
+                if ( namespace.__stack ) {
+                    namespace.__stack.triggered ++ ;
+                }
+                else {
+                    break ;
+                }
+            }
+        }
     }
 
     Ns.EventHub = eh ;

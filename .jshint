@@ -28,7 +28,7 @@
     "laxcomma": true,
     "newcap": true,
     "noarg": true,
-    "noempty": true,
+    "noempty": false,
     "nonew": false,
     "nomen": false,
     "onevar": true,

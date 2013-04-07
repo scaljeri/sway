@@ -1,3 +1,5 @@
+echo generate checkstyle - Cyclomatic Complexity
 jscheckstyle --html ./src/ > ./info/jscheckstyle/index.html
 
+echo generate code coverage sources in ./yuitest-coverage/src
 java -jar ./external/yuitest/nodejs-coverage/jar/yuitest-coverage.jar -d -o ./yuitest-coverage/src/ ./src/

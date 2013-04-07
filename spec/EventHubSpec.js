@@ -93,7 +93,6 @@ window.describe("Sway.EventHub", function() {
         }) ;
         it("should be able to count the registered callbacks", function() {
             Sway.eventHub.on("go", Sway.callbacks.cb1) ;
-            debugger ;
             Sway.eventHub.one("go", Sway.callbacks.cb2) ;
             Sway.eventHub.on("go", Sway.callbacks.cb3) ;
             Sway.eventHub.one("go", Sway.callbacks.cb4) ;
