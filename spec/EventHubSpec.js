@@ -41,8 +41,9 @@ window.describe("Sway.EventHub", function() {
         expect(Sway.eventHub.trigger()).toEqual(0) ;
     }) ;
 
-    describe("should handle callbacks for an event", function() {
-        it("using 'on'", function() {
+    // events withput a namespace
+    describe("should handle normal events", function() {
+        it("for callbacks registered with 'on'", function() {
            expect(Sway.eventHub.on("go", Sway.callbacks.cb1)).toBeTruthy() ;
            expect(Sway.eventHub.on("go", Sway.callbacks.cb1)).toBeFalsy() ;
            expect(Sway.eventHub.trigger("go", 1)).toEqual(1) ;
@@ -53,7 +54,7 @@ window.describe("Sway.EventHub", function() {
            expect(Sway.callbacks.cb1.callCount).toEqual(2) ;
            expect(Sway.callbacks.cb1).toHaveBeenCalledWith(2) ;
         }) ;
-        it("using 'one'", function() {
+        it("for callbacks registered with 'one'", function() {
             expect(Sway.eventHub.one("go", Sway.callbacks.cb1)).toBeTruthy() ;
             expect(Sway.eventHub.one("go", Sway.callbacks.cb1)).toBeFalsy() ;
             expect(Sway.eventHub.trigger("go", 1 )).toEqual(1) ;
@@ -63,7 +64,7 @@ window.describe("Sway.EventHub", function() {
             Sway.eventHub.trigger("go", 2 ) ;
             expect(Sway.callbacks.cb1.callCount).toEqual(1) ;
         }) ;
-        it("using 'on' and 'one'", function() {
+        it("for callbacks registered with both, 'on' and 'one'", function() {
             Sway.eventHub.on("go", Sway.callbacks.cb1) ;
             expect(Sway.eventHub.one("go", Sway.callbacks.cb2)).toBeTruthy() ;
             expect(Sway.eventHub.one("go", Sway.callbacks.cb2)).toBeFalsy() ;
@@ -78,7 +79,7 @@ window.describe("Sway.EventHub", function() {
             expect(Sway.callbacks.cb1.callCount).toEqual(2) ;
             expect(Sway.callbacks.cb2.callCount).toEqual(1) ;
         }) ;
-        it("using 'off'", function() {
+        it("for callbacks removed using 'off'", function() {
             Sway.eventHub.on("go", Sway.callbacks.cb1) ;
             Sway.eventHub.one("go", Sway.callbacks.cb2) ;
             Sway.eventHub.on("go", Sway.callbacks.cb3) ;
@@ -91,18 +92,30 @@ window.describe("Sway.EventHub", function() {
             expect(Sway.callbacks.cb3).not.toHaveBeenCalled() ;
             expect(Sway.callbacks.cb4).not.toHaveBeenCalled() ;
         }) ;
-        it("should be able to count the registered callbacks", function() {
+        it("with a correct callback/trigger count", function() {
             Sway.eventHub.on("go", Sway.callbacks.cb1) ;
             Sway.eventHub.one("go", Sway.callbacks.cb2) ;
             Sway.eventHub.on("go", Sway.callbacks.cb3) ;
             Sway.eventHub.one("go", Sway.callbacks.cb4) ;
+            expect(Sway.eventHub.triggerCount("go")).toEqual(0) ;
+            expect(Sway.eventHub.triggerCount()).toEqual(0) ;
             expect(Sway.eventHub.count("go")).toEqual(4) ;
+            expect(Sway.eventHub.count()).toEqual(4) ;
+            /*
             expect(Sway.eventHub.trigger("go")).toEqual(4) ;
-            //expect(Sway.eventHub.count("go")).toEqual(4) ;
+            expect(Sway.eventHub.count("go")).toEqual(2) ;
+            expect(Sway.eventHub.triggerCount("go")).toEqual(1) ;
+            expect(Sway.eventHub.triggerCount()).toEqual(1) ;
+            */
+        }) ;
+        it("with a correct trigger count", function() {
+
         }) ;
     });
-    describe("should handle callbacks for a one level deep namespaced event", function() {
-       it("using 'on'", function() {
+
+    // events with a namespace
+    describe("should handle one level deep namespaced events", function() {
+       it("for callbacks registered with 'on'", function() {
            expect(Sway.eventHub.on("forum.go", Sway.callbacks.cb1)).toBeTruthy() ;
            expect(Sway.eventHub.trigger("forum.go", 1 )).toEqual(1) ;
            expect(Sway.callbacks.cb1).toHaveBeenCalled() ;
@@ -112,7 +125,7 @@ window.describe("Sway.EventHub", function() {
            expect(Sway.callbacks.cb1.callCount).toEqual(2) ;
            expect(Sway.callbacks.cb1).toHaveBeenCalledWith(2) ;
        }) ;
-       it("using 'one'", function() {
+       it("for callbacks registered with 'one'", function() {
            expect(Sway.eventHub.one("forum.go", Sway.callbacks.cb1)).toBeTruthy() ;
            expect(Sway.eventHub.one("forum.go", Sway.callbacks.cb1)).toBeFalsy() ;
            expect(Sway.eventHub.trigger("forum.go", 1 )).toEqual(1) ;
@@ -122,7 +135,7 @@ window.describe("Sway.EventHub", function() {
            expect(Sway.eventHub.trigger("forum.go", 2)).toEqual(0) ;
            expect(Sway.callbacks.cb1.callCount).toEqual(1) ;
        }) ;
-       it("using 'on' and 'one'", function() {
+       it("for callbacks registered with both, 'on' and 'one'", function() {
            Sway.eventHub.on("forum.go", Sway.callbacks.cb1) ;
            Sway.eventHub.one("forum.go", Sway.callbacks.cb2) ;
            expect(Sway.eventHub.on("forum.go", Sway.callbacks.cb1)).toBeFalsy() ;
@@ -143,7 +156,7 @@ window.describe("Sway.EventHub", function() {
            expect(Sway.callbacks.cb1.callCount).toEqual(3) ;
            expect(Sway.callbacks.cb2.callCount).toEqual(2) ;
        }) ;
-       it("using 'off'", function() {
+       it("for callbacks removed with 'off'", function() {
            Sway.eventHub.on("forum.go1", Sway.callbacks.cb1) ;
            Sway.eventHub.one("forum.go2", Sway.callbacks.cb2) ;
            Sway.eventHub.on("forum.go2", Sway.callbacks.cb3) ;
@@ -157,7 +170,7 @@ window.describe("Sway.EventHub", function() {
            expect(Sway.callbacks.cb4).not.toHaveBeenCalled() ;
        }) ;
 
-       it("should trigger by namespaces", function() {
+       it("for triggers by namespace", function() {
            Sway.eventHub.on("forum.go1", Sway.callbacks.cb1) ;
            Sway.eventHub.one("forum.go2", Sway.callbacks.cb2) ;
            Sway.eventHub.on("forum.go2", Sway.callbacks.cb3) ;
@@ -174,17 +187,20 @@ window.describe("Sway.EventHub", function() {
            expect(Sway.callbacks.cb1.callCount).toEqual(2) ;
            expect(Sway.callbacks.cb2.callCount).toEqual(1) ;
        }) ;
-       it("should be able to count the registered callbacks", function() {
+       it("with a correct callback count", function() {
             Sway.eventHub.on("go", Sway.callbacks.cb1) ;
             Sway.eventHub.one("go", Sway.callbacks.cb2) ;
             Sway.eventHub.on("go", Sway.callbacks.cb3) ;
             Sway.eventHub.one("go", Sway.callbacks.cb4) ;
             expect(Sway.eventHub.count("go")).toEqual(4) ;
         }) ;
+        it("with a correct trigger count", function() {
+
+        }) ;
     }) ;
 
-    describe("should handle callbacks for a two level deep namespaced event", function() {
-        it("using 'on'", function() {
+    describe("should handle two level deep namespaced event", function() {
+        it("for callbacks registered with 'on'", function() {
             Sway.eventHub.on("forum.go", Sway.callbacks.cb1) ;
             Sway.eventHub.trigger("forum.go", 1 ) ;
             expect(Sway.callbacks.cb1).toHaveBeenCalled() ;
@@ -194,7 +210,7 @@ window.describe("Sway.EventHub", function() {
             expect(Sway.callbacks.cb1.callCount).toEqual(2) ;
             expect(Sway.callbacks.cb1).toHaveBeenCalledWith(2) ;
         }) ;
-        it("using 'one'", function() {
+        it("for callbacks registered with 'one'", function() {
             Sway.eventHub.one("forum.go", Sway.callbacks.cb1) ;
             Sway.eventHub.trigger("forum.go", 1 ) ;
             expect(Sway.callbacks.cb1).toHaveBeenCalled() ;
@@ -203,7 +219,7 @@ window.describe("Sway.EventHub", function() {
             Sway.eventHub.trigger("forum.go", 2 ) ;
             expect(Sway.callbacks.cb1.callCount).toEqual(1) ;
         }) ;
-        it("using 'on' and 'one'", function() {
+        it("for callbacks registered using both, 'on' and 'one'", function() {
             Sway.eventHub.on("forum.go", Sway.callbacks.cb1) ;
             Sway.eventHub.one("forum.go", Sway.callbacks.cb2) ;
             Sway.eventHub.trigger("forum.go", 1 ) ;
@@ -217,7 +233,7 @@ window.describe("Sway.EventHub", function() {
             expect(Sway.callbacks.cb1.callCount).toEqual(2) ;
             expect(Sway.callbacks.cb2.callCount).toEqual(1) ;
         }) ;
-        it("using 'off'", function() {
+        it("for callbacks removed with 'off'", function() {
             Sway.eventHub.on("forum.go1", Sway.callbacks.cb1) ;
             Sway.eventHub.one("forum.go2", Sway.callbacks.cb2) ;
             Sway.eventHub.on("forum.go2", Sway.callbacks.cb3) ;
@@ -231,7 +247,7 @@ window.describe("Sway.EventHub", function() {
             expect(Sway.callbacks.cb4).not.toHaveBeenCalled() ;
         }) ;
 
-        it("should trigger by namespaces", function() {
+        it("for triggers by namespace", function() {
             Sway.eventHub.on("forum.go1", Sway.callbacks.cb1) ;
             Sway.eventHub.one("forum.go2", Sway.callbacks.cb2) ;
             Sway.eventHub.on("forum.go2", Sway.callbacks.cb3) ;
@@ -248,12 +264,15 @@ window.describe("Sway.EventHub", function() {
             expect(Sway.callbacks.cb1.callCount).toEqual(2) ;
             expect(Sway.callbacks.cb2.callCount).toEqual(1) ;
         }) ;
-        it("should be able to count the registered callbacks", function() {
+        it("with a correct callback count", function() {
             Sway.eventHub.on("go", Sway.callbacks.cb1) ;
             Sway.eventHub.one("go", Sway.callbacks.cb2) ;
             Sway.eventHub.on("go", Sway.callbacks.cb3) ;
             Sway.eventHub.one("go", Sway.callbacks.cb4) ;
             expect(Sway.eventHub.count("go")).toEqual(4) ;
+        }) ;
+        it("with a correct trigger count", function() {
+
         }) ;
     }) ;
 });

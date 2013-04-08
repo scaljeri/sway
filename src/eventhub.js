@@ -11,7 +11,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
     var eh = function() {
         Object.defineProperty(this, '_rootStack',
             {
-                value: { count: 0 },
+                value: { __stack: {count: 0, triggers: 0} },
                 enumerable: false // hide it
             }
         ) ;
@@ -98,6 +98,17 @@ window.Sway = window.Sway || {} ; // make sure it exists
             var stack = getStack.call(this, eventName) ;
             return removeFromStack(stack, callback) ;
         }
+
+        /**
+         * returns the the trigger count for this event
+         * @method triggerCount
+         * @param {sting} [eventName] the event name
+         * @return {Number} trigger count. -1 is returned if the event name does not exist
+         */
+        , triggerCount: function(eventName) {
+            var stack = getStack.call(this, eventName) ;
+            return stack.__stack ? stack.__stack.triggers : -1 ;
+        }
     } ;
 
     /* ******** PRIVATE HELPER FUNCTION *********** */
@@ -148,7 +159,8 @@ window.Sway = window.Sway || {} ; // make sure it exists
                 callbacks = stack[ns] ;
                 if ( callbacks.on ) {                               // are we there yet, are we there yet
                     retVal += removeCallback(callbacks.on,  callback) ; // YES
-                    retVal += removeCallback(callbacks.one, callback) ; // YES
+                    callbacks.count -= retVal ;
+                    removeCallback(callbacks.one, callback) ; // YES
                 }
                 else {                                              // NO, its a namesapace -> recurstion
                    retVal += removeFromStack.call(this, stack[callbacks], callback ) ;
@@ -158,40 +170,22 @@ window.Sway = window.Sway || {} ; // make sure it exists
         else { // remove a whole namespace (no callback defined)
             retVal += removeNameSpace.call(this, stack)   ;
         }
-
-        removeFromCallbackCount(stack, retVal) ;
         return retVal ;                                         // a count of removed callback function
-    }
-
-    /*
-     * Update the count for all parent namespaces
-     */
-    function removeFromCallbackCount(namespace, total) {
-        if ( namespace && namespace.__stack) {
-            while( namespace.__stack.parent && (namespace = namespace.__stack.parent) ) {
-                if ( namespace.__stack ) {
-                    namespace.__stack.count -= total ;
-                }
-                else {
-                    break ;
-                }
-            }
-        }
     }
 
     /* This function should only be called on a stack with the 'on' and 'one' lists. It will remove one or
        multiple occurrences of the 'callback' function
      */
     function removeCallback(list, callback){
-        var position                                            // position on the stack
-            , retVal = 0 ;                                      // number of removed callbacks
+        var position                                        // position on the stack
+            , retVal = 0 ;                                  // number of removed callbacks
 
-        position = list.indexOf(callback) ;         // is the callback in the callbacks list
-        while( position > -1 ) {                        // but the callback can be present multiple times!
-            retVal ++ ;                                // found one match
-            list.splice(position, 1) ;              // remove callback from the stack
+        position = list.indexOf(callback) ;                 // is the callback in the callbacks list
+        while( position > -1 ) {                            // but the callback can be present multiple times!
+            retVal ++ ;                                     // found one match
+            list.splice(position, 1) ;                      // remove callback from the stack
 
-            position = list.indexOf(callback) ;     // prepare the while check to see if more actions are required
+            position = list.indexOf(callback) ;             // prepare the while check to see if more actions are required
         }
         return retVal ;
     }
@@ -241,6 +235,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
             , stack = this._rootStack                       // start at the root
             , i ;                                           // loop index
 
+        stack.__stack.count ++ ;                            // also count for the root-stack
         for(i = 0; i < parts.length ; i++) {                // traverse the stack
             if ( !stack[parts[i]] ){                        // if not exists --> create it
                 stack[parts[i]] = {
@@ -249,7 +244,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
                         , one: []                           // callbacks which are triggered only once
                         , parent: stack                     // parent namespace/object
                         , count: 0                          // count callbacks in this namespace
-                        , triggered: 0                      // count triggers
+                        , triggers: 0                      // count triggers
                     }
                 } ;
             }
@@ -274,12 +269,13 @@ window.Sway = window.Sway || {} ; // make sure it exists
             namespace = namespaces[ns] ;
 
            if ( namespace.on ) {                                    // special namespace (it hold 'on' and 'one')
+               namespace.triggers ++ ;
                for( i = namespace.on.length -1; i >= 0; i-- ) {     // loop through all callbacks
                   callback = namespace.on[i] ;
                   retVal ++ ;                                       // count this trigger
                   callback(data) ;                                  // call the callback
                    if ( namespace.one.indexOf(callback) > -1 ) {    // check if it is a 'one' callback
-                       removeCallback(namespace.on, callback) ;     // YES -> remove it from 'on'
+                       namespace.count -= removeCallback(namespace.on, callback) ;     // YES -> remove it from 'on'
                    }
                }
                namespace.one.length = 0 ;                           // all 'one' callbacks have been called --> cleanup
@@ -288,24 +284,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
                 retVal += triggerEvent(namespace, data) ;           // nested namespaces
            }
         }
-        updateTriggerCount(namespaces) ;
         return retVal ;
-    }
-
-    /*
-     * Count the trigger also for parent namespaces. Each namespace has a property called 'parent' (linked list)
-     */
-    function updateTriggerCount(namespace) {
-        if ( namespace && namespace.__stack) {
-            while( namespace.__stack.parent && (namespace = namespace.__stack.parent) ) {
-                if ( namespace.__stack ) {
-                    namespace.__stack.triggered ++ ;
-                }
-                else {
-                    break ;
-                }
-            }
-        }
     }
 
     Ns.EventHub = eh ;
