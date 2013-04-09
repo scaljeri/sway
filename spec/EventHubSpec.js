@@ -101,12 +101,10 @@ window.describe("Sway.EventHub", function() {
             expect(Sway.eventHub.triggerCount()).toEqual(0) ;
             expect(Sway.eventHub.count("go")).toEqual(4) ;
             expect(Sway.eventHub.count()).toEqual(4) ;
-            /*
             expect(Sway.eventHub.trigger("go")).toEqual(4) ;
             expect(Sway.eventHub.count("go")).toEqual(2) ;
             expect(Sway.eventHub.triggerCount("go")).toEqual(1) ;
             expect(Sway.eventHub.triggerCount()).toEqual(1) ;
-            */
         }) ;
         it("with a correct trigger count", function() {
 

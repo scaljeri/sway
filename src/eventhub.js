@@ -78,8 +78,8 @@ window.Sway = window.Sway || {} ; // make sure it exists
          * @return {Number} the number of callback functions inside 'eventName'. Returns -1 if the event or namespace does not exists
          */
         , count: function(eventName) {
-            var list = getStack.call(this, eventName) ;
-            return (list ? list.__stack.count : -1) ;
+            var stack = getStack.call(this, eventName) ;
+            return sumPropertyInNamespace(stack, 'count') ;
         }
 
         /**
@@ -107,21 +107,36 @@ window.Sway = window.Sway || {} ; // make sure it exists
          */
         , triggerCount: function(eventName) {
             var stack = getStack.call(this, eventName) ;
-            return stack.__stack ? stack.__stack.triggers : -1 ;
+            return sumPropertyInNamespace(stack, 'triggers') ;
         }
     } ;
 
     /* ******** PRIVATE HELPER FUNCTION *********** */
 
-    function addCallbackToStack(eventName, callback, prepend) {
-        if ( checkInput(eventName, callback)) {                             // validate input
-            var list = createStack.call(this, eventName) ;                      // get stack of 'eventName'
-            if ( list.__stack.on.indexOf(callback) === -1 ) {               // check if the callback is not already added
-                list.__stack.on[prepend ? 'unshift':'push'](callback) ;     // add callback
-                return list ;
+    function sumPropertyInNamespace(stack, property) {
+        var i
+            , sum = 0 ;
+
+        for( i in stack ) {
+            if ( i === "__stack" ) {
+                sum += stack[i][property] ;
             }
-            else {                                                          // callback was already added but is counted
-                removeFromStack.call(this, list, function(){}) ;            // so we remove something so it will subtract 1 from count
+            else {
+                sum += sumPropertyInNamespace(stack[i], property) ;
+            }
+        }
+        return sum ;
+    }
+
+    function addCallbackToStack(eventName, callback, prepend) {
+        var stack ;
+
+        if ( checkInput(eventName, callback)) {                             // validate input
+            stack = createStack.call(this, eventName) ;                      // get stack of 'eventName'
+            if ( stack.__stack.on.indexOf(callback) === -1 ) {               // check if the callback is not already added
+                stack.__stack.on[prepend ? 'unshift':'push'](callback) ;     // add callback
+                stack.__stack.count ++ ;
+                return stack ;
             }
         }
         return null ;
@@ -201,7 +216,6 @@ window.Sway = window.Sway || {} ; // make sure it exists
             retVal += stack[i].count ;
             delete stack[i] ;                               // cleanup
         }
-
         return retVal ;
     }
 
@@ -235,7 +249,6 @@ window.Sway = window.Sway || {} ; // make sure it exists
             , stack = this._rootStack                       // start at the root
             , i ;                                           // loop index
 
-        stack.__stack.count ++ ;                            // also count for the root-stack
         for(i = 0; i < parts.length ; i++) {                // traverse the stack
             if ( !stack[parts[i]] ){                        // if not exists --> create it
                 stack[parts[i]] = {
@@ -249,7 +262,6 @@ window.Sway = window.Sway || {} ; // make sure it exists
                 } ;
             }
             stack = stack[parts[i]] ;                       // go into the (newly created) namespace
-            stack.__stack.count ++ ;
         }
         return stack ;
     }
