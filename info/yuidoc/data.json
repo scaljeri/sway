@@ -83,7 +83,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/data/activerecord.js",
-            "line": 12,
+            "line": 8,
             "description": "This class stores a string in memory. If a persistance dependency is defined, it will use this dependency to store\nthe data. Filters are used to perform some action on the data before persisting it and on retrieval.\nAs an example, a persistance dependency could be WebSQL storage. A filter could be encryption and/or compression.\nNote that for an encryption filter, it will perform an action on the data before persisting it, and on retrieval.",
             "params": [
                 {
@@ -109,11 +109,11 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/data/field.js",
-            "line": 10,
+            "line": 7,
             "params": [
                 {
                     "name": "filters",
-                    "description": "list of filter",
+                    "description": "list of filters",
                     "type": "Array",
                     "optional": true
                 }
@@ -187,9 +187,10 @@
     "classitems": [
         {
             "file": "src/data/activerecord.js",
-            "line": 61,
+            "line": 54,
             "itemtype": "method",
             "name": "bless",
+            "chainable": 1,
             "params": [
                 {
                     "name": "model",
@@ -201,25 +202,25 @@
         },
         {
             "file": "src/data/activerecord.js",
-            "line": 82,
-            "setfield": "",
+            "line": 96,
+            "itemtype": "method",
+            "name": "getField",
             "params": [
                 {
                     "name": "key",
                     "description": "",
                     "type": "String"
-                },
-                {
-                    "name": "field",
-                    "description": "Field instance",
-                    "type": "Object"
                 }
             ],
+            "return": {
+                "description": "Field instance",
+                "type": "Object"
+            },
             "class": "Sway.data.ActiveRecord."
         },
         {
             "file": "src/data/activerecord.js",
-            "line": 99,
+            "line": 108,
             "itemtype": "method",
             "name": "getSize",
             "params": [
@@ -237,7 +238,7 @@
         },
         {
             "file": "src/data/field.js",
-            "line": 25,
+            "line": 31,
             "itemtype": "method",
             "name": "getValue",
             "return": {
@@ -248,14 +249,14 @@
         },
         {
             "file": "src/data/field.js",
-            "line": 32,
+            "line": 38,
             "itemtype": "method",
             "name": "getFilteredValue",
             "class": "Sway.data.Field"
         },
         {
             "file": "src/data/field.js",
-            "line": 39,
+            "line": 45,
             "itemtype": "method",
             "name": "setValue",
             "params": [
@@ -269,7 +270,7 @@
         },
         {
             "file": "src/data/field.js",
-            "line": 47,
+            "line": 53,
             "itemtype": "method",
             "name": "setFilteredValue",
             "params": [
@@ -283,7 +284,7 @@
         },
         {
             "file": "src/data/field.js",
-            "line": 55,
+            "line": 61,
             "itemtype": "method",
             "name": "size",
             "class": "Sway.data.Field"
@@ -391,7 +392,7 @@
         },
         {
             "file": "src/di.js",
-            "line": 80,
+            "line": 79,
             "description": "Returns a new instance of the class matched by the contract. If the contract does not exists an error is thrown.\nIf one of the dependencies does not exists, 'null' is used instead.",
             "itemtype": "method",
             "name": "createInstance",
@@ -501,7 +502,7 @@
         },
         {
             "file": "src/eventhub.js",
-            "line": 68,
+            "line": 73,
             "description": "count the registered callbacks for an event or namespace",
             "itemtype": "method",
             "name": "count",
@@ -514,14 +515,14 @@
                 }
             ],
             "return": {
-                "description": "the count of callback functions inside 'eventName'",
+                "description": "the number of callback functions inside 'eventName'. Returns -1 if the event or namespace does not exists",
                 "type": "Number"
             },
             "class": "Sway.EventHub"
         },
         {
             "file": "src/eventhub.js",
-            "line": 83,
+            "line": 85,
             "description": "Removes the given callback for a specific event.",
             "itemtype": "method",
             "name": "off",
@@ -546,20 +547,36 @@
                 "\n        Sway.eventHub.off('ui.update', this.update) ;\n        Sway.eventHub.off('ui') ;"
             ],
             "class": "Sway.EventHub"
+        },
+        {
+            "file": "src/eventhub.js",
+            "line": 102,
+            "description": "returns the the trigger count for this event",
+            "itemtype": "method",
+            "name": "triggerCount",
+            "params": [
+                {
+                    "name": "eventName",
+                    "description": "the event name",
+                    "type": "Sting",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "trigger count. -1 is returned if the event name does not exist",
+                "type": "Number"
+            },
+            "class": "Sway.EventHub"
         }
     ],
     "warnings": [
         {
-            "message": "unknown tag: setfield",
-            "line": " src/data/activerecord.js:82"
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/data/activerecord.js:108"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/data/activerecord.js:99"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " src/data/field.js:25"
+            "line": " src/data/field.js:31"
         },
         {
             "message": "replacing incorrect tag: returns with return",
@@ -567,11 +584,7 @@
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/di.js:80"
-        },
-        {
-            "message": "Missing item type",
-            "line": " src/data/activerecord.js:82"
+            "line": " src/di.js:79"
         },
         {
             "message": "Missing item type\nFileEntry interface is provided for working with files:\nhttp://www.mosync.com/files/imports/doxygen/latest/html5/filewriter.md.html\nfileEntry.isFile === true\nfileEntry.isDirectory === false\nfileEntry.name\nfileEntry.fullPath\n...\n\nfileEntry.getMetadata(successCallback, opt_errorCallback);\nfileEntry.remove(successCallback, opt_errorCallback);\nfileEntry.moveTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);\nfileEntry.copyTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);\nfileEntry.getParent(successCallback, opt_errorCallback);\nfileEntry.toURI(opt_mimeType);  // Currently not implemented in Google Chrome 9.\n\nfileEntry.file(successCallback, opt_errorCallback);\nfileEntry.createWriter(successCallback, opt_errorCallback);",

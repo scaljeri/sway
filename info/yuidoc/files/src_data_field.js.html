@@ -98,25 +98,31 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-window.Sway = window.Sway || {} ; &#x2F;&#x2F; make sure it exists
-window.Sway.data = window.Sway.data || {} ;
+window.Sway = window.Sway || {}; &#x2F;&#x2F; make sure it exists
+window.Sway.data = window.Sway.data || {};
 
-(function(Ns) {
+(function (Ns) {
     &quot;use strict&quot; ;
-
-    var defaults = {
-    }
 
     &#x2F;**
      *
      * @class Sway.data.Field
-     * @param {Array} [filters] list of filter
+     * @param {Array} [filters] list of filters
      *&#x2F;
-     , f = function( filterList ) {
+     var f = function (filterList) {
+        this.filterList = filterList ;
+
         Object.defineProperty(this, &#x27;_value&#x27;,
             {
                 value: null
                 , enumerable: false &#x2F;&#x2F; hide it
+            }
+        ) ;
+        Object.defineProperty(this, &#x27;value&#x27;,
+            {
+                value: null
+                , set: this.setValue
+                , get: this.getValue
             }
         ) ;
     } ;
@@ -155,7 +161,7 @@ window.Sway.data = window.Sway.data || {} ;
         &#x2F;**
          * @method size
          *&#x2F;
-        , size: function() {
+        , getSize: function() {
             return this.state === &quot;uncompressed&quot; ? encodeURI(this._inputStr).split(&#x2F;%..|.&#x2F;).length - 1 : this._zippedBlob.size ;
         }
     } ;

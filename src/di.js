@@ -63,18 +63,17 @@
          var ajax = App.di.getInstance("ajax") ;
          **/
         getInstance: function(contract) {
-            if ( !this._contracts[contract] ) {
-                return null ;
+            var instance = null ;
+            if ( this._contracts[contract] ) {
+                if (this._contracts[contract].options.singleton )
+                {
+                    instance = getSingletonInstance.call(this._contracts[contract]);
+                } else //create a new instance every time
+                {
+                    instance = this.createInstance(contract, this._contracts[contract].dependencies) ;
+                }
             }
-
-            if (this._contracts[contract].options.singleton )
-            {
-                //use existing instance
-                return getSingletonInstance.call(this._contracts[contract]);
-            } else //create a new instance every time
-            {
-                return this.createInstance(contract, this._contracts[contract].dependencies) ;
-            }
+            return instance ;
         },
 
         /**

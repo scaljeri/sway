@@ -11,7 +11,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
     var eh = function() {
         Object.defineProperty(this, '_rootStack',
             {
-                value: {},
+                value: { __stack: {count: 0, triggers: 0} },
                 enumerable: false // hide it
             }
         ) ;
@@ -48,7 +48,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
          Sway.eventHub.on( 'ui.update', this.update.bind(this), true ) ;
          */
         , on: function(eventName, callback, prepend) {
-            return addCallbackToStack.call(this, eventName, callback, prepend) ;
+            return addCallbackToStack.call(this, eventName, callback, prepend) !== null ;
         }
 
 
@@ -62,7 +62,12 @@ window.Sway = window.Sway || {} ; // make sure it exists
          * @param {boolean} [prepend] if TRUE, the callback is placed before all other registered callbacks.
          */
         , one: function(eventName, callback, prepend) {
-            return addCallbackToStack.call(this, eventName, callback, prepend, true) ;
+            var stack = addCallbackToStack.call(this, eventName, callback, prepend) ;
+            if ( stack ) { // if the stack exists, the callback was added to the 'on' list
+                stack.__stack.one[prepend ? 'unshift':'push'](callback) ;   // and it should of course also be added to the 'one' list
+                return true ;
+            }
+            return false ;
         }
 
         /**
@@ -70,14 +75,11 @@ window.Sway = window.Sway || {} ; // make sure it exists
          *
          * @method count
          * @param {sting} [eventName] if empty all registered callbacks are counted
-         * @return {Number} the count of callback functions inside 'eventName'
+         * @return {Number} the number of callback functions inside 'eventName'. Returns -1 if the event or namespace does not exists
          */
         , count: function(eventName) {
-            var list = getStack.call(this, eventName)
-                , parts = eventName
-
-            // TODO
-            return 10 ;
+            var stack = getStack.call(this, eventName) ;
+            return sumPropertyInNamespace(stack, 'count') ;
         }
 
         /**
@@ -96,23 +98,48 @@ window.Sway = window.Sway || {} ; // make sure it exists
             var stack = getStack.call(this, eventName) ;
             return removeFromStack(stack, callback) ;
         }
+
+        /**
+         * returns the the trigger count for this event
+         * @method triggerCount
+         * @param {sting} [eventName] the event name
+         * @return {Number} trigger count. -1 is returned if the event name does not exist
+         */
+        , triggerCount: function(eventName) {
+            var stack = getStack.call(this, eventName) ;
+            return sumPropertyInNamespace(stack, 'triggers') ;
+        }
     } ;
 
     /* ******** PRIVATE HELPER FUNCTION *********** */
 
-    function addCallbackToStack(eventName, callback, prepend, isOne) {
-        if ( checkInput(eventName, callback)) {                             // validate input
-            var list = createStack.call(this, eventName) ;                  // get stack of 'eventName'
-            if ( list.__stack.on.indexOf(callback) === -1 ) {                 // check if the callback is not already added
-                list.__stack.on[prepend ? 'unshift':'push'](callback) ;     // add callback
+    function sumPropertyInNamespace(stack, property) {
+        var i
+            , sum = 0 ;
 
-                if ( isOne ) {                                              // if true, the callback is added to the 'one' list
-                    list.__stack.one[prepend ? 'unshift':'push'](callback) ;// and only triggered once
-                }
-                return true ;                                               // callback is added
+        for( i in stack ) {
+            if ( i === "__stack" ) {
+                sum += stack[i][property] ;
+            }
+            else {
+                sum += sumPropertyInNamespace(stack[i], property) ;
             }
         }
-        return false ;                                                      // callback is not added
+        return sum ;
+    }
+
+    function addCallbackToStack(eventName, callback, prepend) {
+        var stack ;
+
+        if ( checkInput(eventName, callback)) {                             // validate input
+            stack = createStack.call(this, eventName) ;                      // get stack of 'eventName'
+            if ( stack.__stack.on.indexOf(callback) === -1 ) {               // check if the callback is not already added
+                stack.__stack.on[prepend ? 'unshift':'push'](callback) ;     // add callback
+                stack.__stack.count ++ ;
+                return stack ;
+            }
+        }
+        return null ;
     }
 
 
@@ -142,16 +169,13 @@ window.Sway = window.Sway || {} ; // make sure it exists
             , callbacks                                             // a stack with 'on' and 'one' (maybe)
             , ns ;                                                  // loop var
 
-        if ( !stack ) {                                             // no data available --> done
-            return 0 ;                                              // and zero callbacks removed (no actions taken)
-        }
-
         if ( callback ) {                                           // remove a specific callback
             for( ns in stack) {                                     // so we loop through all namespaces (and __stack is one of them)
                 callbacks = stack[ns] ;
                 if ( callbacks.on ) {                               // are we there yet, are we there yet
                     retVal += removeCallback(callbacks.on,  callback) ; // YES
-                    retVal += removeCallback(callbacks.one, callback) ; // YES
+                    callbacks.count -= retVal ;
+                    removeCallback(callbacks.one, callback) ; // YES
                 }
                 else {                                              // NO, its a namesapace -> recurstion
                    retVal += removeFromStack.call(this, stack[callbacks], callback ) ;
@@ -168,31 +192,30 @@ window.Sway = window.Sway || {} ; // make sure it exists
        multiple occurrences of the 'callback' function
      */
     function removeCallback(list, callback){
-        var position                                            // position on the stack
-            , retVal = 0 ;                                      // number of removed callbacks
+        var position                                        // position on the stack
+            , retVal = 0 ;                                  // number of removed callbacks
 
-        position = list.indexOf(callback) ;         // is the callback in the callbacks list
-        while( position > -1 ) {                        // but the callback can be present multiple times!
-            retVal ++ ;                                // found one match
-            list.splice(position, 1) ;              // remove callback from the stack
+        position = list.indexOf(callback) ;                 // is the callback in the callbacks list
+        while( position > -1 ) {                            // but the callback can be present multiple times!
+            retVal ++ ;                                     // found one match
+            list.splice(position, 1) ;                      // remove callback from the stack
 
-            position = list.indexOf(callback) ;     // prepare the while check to see if more actions are required
+            position = list.indexOf(callback) ;             // prepare the while check to see if more actions are required
         }
         return retVal ;
     }
 
     /*
-       Remove a whole namespace
+       Remove a whole namespace.
      */
     function removeNameSpace(stack) {
         var retVal = 0                                      // number of removed callbacks
-            , cb                                            // loop var
+            , i ;                                           // loop var
 
-        for( cb in stack )  {                               // delete all elements from the stack (and we cannot do stack = {} ;)
-            retVal += this.count(callbacks[cb]) ;           // and count all callbacks in this namespace
-            delete callbacks[cb] ;                          // cleanup
+        for( i in stack )  {                                // delete all elements from the stack (and we cannot do stack = {} ;)
+            retVal += stack[i].count ;
+            delete stack[i] ;                               // cleanup
         }
-
         return retVal ;
     }
 
@@ -217,8 +240,9 @@ window.Sway = window.Sway || {} ; // make sure it exists
     /*
      * Internally 'eventName' is always a namespace. Callbacks are placed inside a special
      * variable called '__stack'. So, when the eventName is 'doAction', internally this will
-     * look like doAction.__stack.
-     * Furthermore, it the eventName is new, it is created
+     * look like doAction.__stack. This function always increases the count for each namespace
+     * because this function is only called when adding a new callback. Finally, if the namespace
+     * does not exist, it is created.
      */
     function createStack(namespace) {
         var parts = namespace.split('.')                    // split the namespace
@@ -226,47 +250,50 @@ window.Sway = window.Sway || {} ; // make sure it exists
             , i ;                                           // loop index
 
         for(i = 0; i < parts.length ; i++) {                // traverse the stack
-            if ( !stack[parts[i]] ){                        // if not exists
-                stack[parts[i]] = {} ;                      // --> create it
+            if ( !stack[parts[i]] ){                        // if not exists --> create it
+                stack[parts[i]] = {
+                    __stack: {                              // holds all info for this namespace (not the child namespaces)
+                        on: []                              // callback stack
+                        , one: []                           // callbacks which are triggered only once
+                        , parent: stack                     // parent namespace/object
+                        , count: 0                          // count callbacks in this namespace
+                        , triggers: 0                      // count triggers
+                    }
+                } ;
             }
             stack = stack[parts[i]] ;                       // go into the (newly created) namespace
         }
-
-        if ( !stack.__stack) {                              // the namespace holding the callbacks is called __stack
-            stack.__stack = {                               // These callbacks are stored into a list called
-                on: []                                      // 'on' and
-                , one: []                                   // 'one'
-            } ;
-        }
         return stack ;
     }
-
-
 
     /*
      * Namespaces can in theory be many levels deep, like: "aaaaa.bbbbbb.cccccc._stack"
      * To traverse this namespace and trigger everything inside it, this function is called recursively.
      */
     function triggerEvent(namespaces, data) {
-        var namespace                                           // current namespace in the loop
-            , retVal = 0                                        // the number of called callback function
-            , ns ;                                              // loop index
+        var namespace                                               // current namespace in the loop
+            , retVal = 0                                            // the number of called callback function
+            , ns                                                    // loop index
+            , i                                                     // loop index
+            , callback ;                                            // callback from the on list
 
         for( ns in namespaces ) {
             namespace = namespaces[ns] ;
 
-           if ( namespace.on ) {                                // special namespace (it hold 'on' and 'one')
-               namespace.on.forEach( function(c) {              // loop through all callbacks
-                   retVal++ ;                                   // count this trigger
-                   c(data) ;                                    // call the callback
-                   if ( namespace.one.indexOf(c) > -1 ) {       // check if it is a 'one' callback
-                       removeCallback(namespace.on, c) ;        // YES -> remove it from 'on'
+           if ( namespace.on ) {                                    // special namespace (it hold 'on' and 'one')
+               namespace.triggers ++ ;
+               for( i = namespace.on.length -1; i >= 0; i-- ) {     // loop through all callbacks
+                  callback = namespace.on[i] ;
+                  retVal ++ ;                                       // count this trigger
+                  callback(data) ;                                  // call the callback
+                   if ( namespace.one.indexOf(callback) > -1 ) {    // check if it is a 'one' callback
+                       namespace.count -= removeCallback(namespace.on, callback) ;     // YES -> remove it from 'on'
                    }
-               }) ;
-               namespace.one.length = 0 ;                       // all 'one' callbacks have been called --> cleanup
+               }
+               namespace.one.length = 0 ;                           // all 'one' callbacks have been called --> cleanup
            }
-           else {                                               // found a deeper nested namespace
-                retVal += triggerEvent(namespace, data) ;       // nested namespaces
+           else {                                                   // found a deeper nested namespace
+                retVal += triggerEvent(namespace, data) ;           // nested namespaces
            }
         }
         return retVal ;
