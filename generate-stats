@@ -1,3 +1,6 @@
+echo generate yuidoc documentation
+yuidoc -o info/yuidoc src/
+
 echo generate checkstyle - Cyclomatic Complexity
 jscheckstyle --html ./src/ > ./info/jscheckstyle/index.html
 

@@ -105,10 +105,6 @@ window.Sway.data = window.Sway.data || {} ;
 (function(Ns) {
     &quot;use strict&quot; ;
 
-    var defaults = {
-        &#x2F;&#x2F;
-    }
-
     &#x2F;**
      * This class stores a string in memory. If a persistance dependency is defined, it will use this dependency to store
      * the data. Filters are used to perform some action on the data before persisting it and on retrieval.
@@ -119,7 +115,7 @@ window.Sway.data = window.Sway.data || {} ;
      * @param {Object}[persistence] dependency which can persist the data
      * @param {Array} [fieldList] list of filters. Depending on the filter type its a before and&#x2F;or after filter.
      *&#x2F;
-     , ar = function(persistance, fieldList ) {
+     var ActiveRecord = function(persistance ) {
 
         &#x2F;*
         AR prototype methods can be access by a BLESSED model, or simply by an ActiveRecord instance. To make these
@@ -142,7 +138,7 @@ window.Sway.data = window.Sway.data || {} ;
         ) ;
         Object.defineProperty(this, &#x27;_field&#x27;,
             {
-                value: fieldList || []
+                value: []
                 , enumerable: false &#x2F;&#x2F; hide it
             }
         ) ;
@@ -152,18 +148,17 @@ window.Sway.data = window.Sway.data || {} ;
                 , enumerable: false &#x2F;&#x2F; hide it
             }
         ) ;
-        this._fields.forEach(function(c) {
-           this._fieldLookup[c.getKey()] = c ;
-        }.bind(this)) ;
     } ;
 
-	ar.prototype = {
+	ActiveRecord.prototype = {
         &#x2F;**
          * @method bless
+         * @chainable
          * @param {Object} model instance to be blessed
          *&#x2F;
         bless: function(model) {
-            var i ;
+            var i
+                , setup ;
 
             Object.defineProperty(model, &#x27;_ar&#x27;,             &#x2F;&#x2F; create a ref to ActiveRecord instance
                 {
@@ -172,29 +167,43 @@ window.Sway.data = window.Sway.data || {} ;
                 }
             ) ;
 
-            for ( i in this.prototype ) {                   &#x2F;&#x2F; add prototype functions to model, like &#x27;save&#x27;
-                if ( !model.prototype[i] ) {                &#x2F;&#x2F; but only if it does not exist already!
-                    model.prototype = this.prototype[i] ;
+            &#x2F;&#x2F; copy methods
+            model.save = this.save ;
+
+            &#x2F;&#x2F; clone the fields
+            if ( !model._field ) {
+                Object.defineProperty(model, &#x27;_field&#x27;,             &#x2F;&#x2F; create a ref to ActiveRecord instance
+                    {
+                        value: []
+                        , enumerable: false &#x2F;&#x2F; hide it
+                    }
+                ) ;
+                Object.defineProperty(model, &#x27;_fieldLookup&#x27;,             &#x2F;&#x2F; create a ref to ActiveRecord instance
+                    {
+                        value:{}
+                        , enumerable: false &#x2F;&#x2F; hide it
+                    }
+                ) ;
+
+                for( i = 0; i &lt; this._field.length; i++ ){
+                    setup = this._field[i] ;
+                    model._fieldLookup[setup.key] = model._field.length ;
+                    model._field.push(clone(this._field[i])) ;
                 }
             }
-
+            return this ;
         }
         &#x2F;**
-         * @setField
+         * @method getField
          * @param {String} key
-         * @param {Object} field Field instance
+         * @return {Object} Field instance
          *&#x2F;
-        , setField: function(key, field) {
-            var self = this._ar ;
-
-            if ( typeof(field) === &quot;string&quot; ) {             &#x2F;&#x2F; all AR fields should an instance of Sway.Field
-               field = new Ns.Field(field) ;
-            }
-            self._fieldLookup[key] = self._fields.length ;
-            self._field.push({key: key, field: field});
-        }
         , getField: function(key) {
-            return this._ar._fields[this._ar._fieldLookup[key]].value ;
+            return this._field[this._fieldLookup[key]].field ;
+        }
+        , setField: function(key, field) {
+           this._fieldLookup[key] = this._field.length ;
+            this._field.push({ key: key, field: field}) ;
         }
         &#x2F;**
          * @method getSize
@@ -203,26 +212,45 @@ window.Sway.data = window.Sway.data || {} ;
          *&#x2F;
         , getSize: function(key) {
             var self = this._ar
-                , arLength = 0
+                , size = 0
                 , i ;
 
             if ( key ) {
-                return self._field[self._fieldLookup[key]].size() ;
+                return self._field[self._fieldLookup[key]].field.getSize() ;
             }
             else {
                 for( i = 0; i &lt; self._field.length; i++ ) {
-                    arLength += self._field[self._fieldLookup[key]].size() ;
+                    size += self._field[i].field.getSize() ;
                 }
             }
+            return size ;
             &#x2F;*
             return (this.state == &quot;uncompressed&quot; ?
                         new Blob([this._inputStr], { type: &quot;text&#x2F;plain&quot;}) : this._zippedBlob
                    ).size ;
             *&#x2F;
+        },
+        save: function() {
         }
     } ;
 
-	Ns.ActiveRecord = ar ;
+    function clone (obj){
+        var key
+            , temp ;
+
+        if(obj === null || typeof(obj) !== &#x27;object&#x27;) {
+            return obj;
+        }
+
+        temp = obj.constructor();                           &#x2F;&#x2F; changed
+
+        for(key in obj) {                                   &#x2F;&#x2F; copy every attribute
+            temp[key] = obj[key] ;
+        }
+        return temp;
+    }
+
+	Ns.ActiveRecord = ActiveRecord ;
 
 })(window.Sway.data) ;
 

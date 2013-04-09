@@ -234,6 +234,13 @@ Events can be namespaced too, checkout the jQuery <a href="http://docs.jquery.co
                                 
                             </li>
                         
+                            <li class="index-item method">
+                                <a href="#method_triggerCount">triggerCount</a>
+
+                                
+                                
+                            </li>
+                        
                     </ul>
                 </div>
             
@@ -296,7 +303,7 @@ Events can be namespaced too, checkout the jQuery <a href="http://docs.jquery.co
             
         
         
-        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l68"><code>src&#x2F;eventhub.js:68</code></a>
+        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l73"><code>src&#x2F;eventhub.js:73</code></a>
         
         </p>
 
@@ -345,7 +352,7 @@ Events can be namespaced too, checkout the jQuery <a href="http://docs.jquery.co
                     
                         <span class="type">Number</span>:
                     
-                    the count of callback functions inside 'eventName'
+                    the number of callback functions inside 'eventName'. Returns -1 if the event or namespace does not exists
                 
             </div>
         </div>
@@ -407,7 +414,7 @@ Events can be namespaced too, checkout the jQuery <a href="http://docs.jquery.co
             
         
         
-        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l83"><code>src&#x2F;eventhub.js:83</code></a>
+        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l85"><code>src&#x2F;eventhub.js:85</code></a>
         
         </p>
 
@@ -698,7 +705,7 @@ registration. Set 'prepend' to TRUE to add the callback in front of the others.<
     </div>
 
     <div class="description">
-        <p>Register a callback to a specific event. This function is identical to <a href="/Sway.EventHub.html#method_on" class="crosslink">on</a>
+        <p>Register a callback to a specific event. This function is identical to <a href="../classes/Sway.EventHub.html#method_on" class="crosslink">on</a>
 except that this callback is removed from the list after it has been triggered.</p>
     </div>
 
@@ -897,6 +904,111 @@ namespaces will be triggered.</p>
 </code></pre>
             </div>
         </div>
+    
+</div>
+
+                
+                    <div id="method_triggerCount" class="method item">
+    <h3 class="name"><code>triggerCount</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code class="optional">[eventName]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">Number</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l102"><code>src&#x2F;eventhub.js:102</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>returns the the trigger count for this event</p>
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[eventName]</code>
+                        <span class="type">Sting</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>the event name</p>
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">Number</span>:
+                    
+                    trigger count. -1 is returned if the event name does not exist
+                
+            </div>
+        </div>
+    
+
     
 </div>
 
