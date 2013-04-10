@@ -179,7 +179,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/eventhub.js",
-            "line": 4,
+            "line": 8,
             "description": "EventHub facilitates event-based communication between different parts of an application (Event driven system).\nEvents can be namespaced too, checkout the jQuery <a href=\"http://docs.jquery.com/Namespaced_Events \">documentation</a> on how to use these namespaces.",
             "is_constructor": 1
         }
@@ -419,7 +419,25 @@
         },
         {
             "file": "src/eventhub.js",
-            "line": 21,
+            "line": 31,
+            "description": "Change the behavior of an event. By default, only the callbacks registered to an event are triggered. But the event can\nalso be set to 'capturing' or 'bubbling' mode. Bubbling means the trigger starts at the root of the namespaces and bubbles\nup to the event in question. Capturing does the opposite.",
+            "itemtype": "method",
+            "name": "defineEvent",
+            "params": [
+                {
+                    "name": "eventName",
+                    "description": "name of the event"
+                },
+                {
+                    "name": "etype",
+                    "description": "event type. Supported options are: 'capturing' and 'bubbling'"
+                }
+            ],
+            "class": "Sway.EventHub"
+        },
+        {
+            "file": "src/eventhub.js",
+            "line": 49,
             "description": "Trigger one or more events. One event is triggered if the 'eventName' parameter targets a specific event, but if this parameter is a namespace, all nested events and\nnamespaces will be triggered.",
             "itemtype": "method",
             "name": "trigger",
@@ -447,7 +465,7 @@
         },
         {
             "file": "src/eventhub.js",
-            "line": 38,
+            "line": 66,
             "description": "Register a callback to a specific event. Callbacks are executed in the order of\nregistration. Set 'prepend' to TRUE to add the callback in front of the others.",
             "itemtype": "method",
             "name": "on",
@@ -476,7 +494,7 @@
         },
         {
             "file": "src/eventhub.js",
-            "line": 55,
+            "line": 83,
             "description": "Register a callback to a specific event. This function is identical to {{#crossLink \"Sway.EventHub/on:method\"}}{{/crossLink}}\nexcept that this callback is removed from the list after it has been triggered.",
             "itemtype": "method",
             "name": "one",
@@ -502,7 +520,7 @@
         },
         {
             "file": "src/eventhub.js",
-            "line": 73,
+            "line": 101,
             "description": "count the registered callbacks for an event or namespace",
             "itemtype": "method",
             "name": "count",
@@ -522,7 +540,7 @@
         },
         {
             "file": "src/eventhub.js",
-            "line": 85,
+            "line": 113,
             "description": "Removes the given callback for a specific event.",
             "itemtype": "method",
             "name": "off",
@@ -550,7 +568,7 @@
         },
         {
             "file": "src/eventhub.js",
-            "line": 102,
+            "line": 130,
             "description": "returns the the trigger count for this event",
             "itemtype": "method",
             "name": "triggerCount",

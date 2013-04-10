@@ -101,6 +101,10 @@
 window.Sway = window.Sway || {} ; &#x2F;&#x2F; make sure it exists
 
 (function(Ns){
+    var DEFAULTS = {
+        CAPTURING:  &#x27;capturing&#x27;             &#x2F;&#x2F; event goes from top to bottom
+        , BUBBLING: &#x27;bubbling&#x27;              &#x2F;&#x2F; event goes from bottom to top
+    }
     &#x2F;**
      * EventHub facilitates event-based communication between different parts of an application (Event driven system).
      * Events can be namespaced too, checkout the jQuery &lt;a href=&quot;http:&#x2F;&#x2F;docs.jquery.com&#x2F;Namespaced_Events &quot;&gt;documentation&lt;&#x2F;a&gt; on how to use these namespaces.
@@ -108,16 +112,40 @@ window.Sway = window.Sway || {} ; &#x2F;&#x2F; make sure it exists
      * @class Sway.EventHub
      * @constructor
      *&#x2F;
-    var eh = function() {
-        Object.defineProperty(this, &#x27;_rootStack&#x27;,
-            {
-                value: { __stack: {count: 0, triggers: 0} },
-                enumerable: false &#x2F;&#x2F; hide it
-            }
-        ) ;
-    }
+        , eh = function() {
+            Object.defineProperty(this, &#x27;_rootStack&#x27;,
+                {
+                    value: { __stack: {count: 0, triggers: 0} }
+                    , enumerable: false &#x2F;&#x2F; hide it
+                }
+            ) ;
+            Object.defineProperty(this, &#x27;_eventType&#x27;,
+                {
+                    value: {}
+                    , enumerable: false &#x2F;&#x2F; hide it
+                }
+            ) ;
+        } ;
 
     eh.prototype = {
+        &#x2F;**
+         * Change the behavior of an event. By default, only the callbacks registered to an event are triggered. But the event can
+         * also be set to &#x27;capturing&#x27; or &#x27;bubbling&#x27; mode. Bubbling means the trigger starts at the root of the namespaces and bubbles
+         * up to the event in question. Capturing does the opposite.
+         *
+         * @method defineEvent
+         * @param eventName name of the event
+         * @param etype event type. Supported options are: &#x27;capturing&#x27; and &#x27;bubbling&#x27;
+         *&#x2F;
+        defineEvent: function(eventName, etype) {
+            if ( DEFAULTS.CAPTURING === etype || DEFAULTS.BUBBLING === etype ) {
+                this._eventType[eventName] = etype ;
+            }
+            else {
+                console.warn(&quot;Event type &#x27;&quot; + etype + &quot;&#x27; for &#x27;&quot; + eventName + &quot;&#x27; does not exist!&quot;) ;
+            }
+        }
+        
         &#x2F;**
          * Trigger one or more events. One event is triggered if the &#x27;eventName&#x27; parameter targets a specific event, but if this parameter is a namespace, all nested events and
          * namespaces will be triggered.
@@ -130,7 +158,7 @@ window.Sway = window.Sway || {} ; &#x2F;&#x2F; make sure it exists
          Sway.eventHub.trigger(&#x27;ui.update&#x27;, {authenticated: true} ) ; &#x2F;&#x2F; trigger the &#x27;update&#x27; event inside the &#x27;ui&#x27; namespace
          Sway.eventHub.trigger(&#x27;ui&#x27;, {authenticated: true} ) ;        &#x2F;&#x2F; trigger all nested events and namespaces inside the &#x27;ui&#x27; namespace
          *&#x2F;
-        trigger: function(eventName, data){
+        , trigger: function(eventName, data){
             var list = getStack.call(this, eventName) ;                 &#x2F;&#x2F; load the stack for this namespace
             return triggerEvent(list, data) ;                &#x2F;&#x2F; triggerEvent does the work of triggering everything (nested events &amp; namespaces)
         }
