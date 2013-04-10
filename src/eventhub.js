@@ -35,7 +35,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
          *
          * @method defineEvent
          * @param eventName name of the event
-         * @param etype event type. Supported options are: 'capturing' and 'bubbling'
+         * @param etype event type. Supported modes are: 'capture' and 'bubble'
          */
         defineEvent: function(eventName, etype) {
             if ( DEFAULTS.CAPTURING === etype || DEFAULTS.BUBBLING === etype ) {
@@ -70,13 +70,15 @@ window.Sway = window.Sway || {} ; // make sure it exists
          * @method on
          * @param {string} eventName
          * @param {function} callback
-         * @param {boolean} [prepend] if TRUE, the callback is placed before all other registered callbacks.
+         * @param {Object} [options] configuration
+         *      @param {boolean} [prepend] if TRUE, the callback is placed before all other registered callbacks.
+         *      @param {String} [etype] the event mode for which the callback is triggered too
          * @example
          Sway.eventHub.on( 'ui.update', this.update.bind(this) ) ;
-         Sway.eventHub.on( 'ui.update', this.update.bind(this), true ) ;
+         Sway.eventHub.on( 'ui.update', this.update.bind(this), { prepend: true, etype: 'capture' ) ;
          */
-        , on: function(eventName, callback, prepend) {
-            return addCallbackToStack.call(this, eventName, callback, prepend) !== null ;
+        , on: function(eventName, callback, options) {
+            return addCallbackToStack.call(this, eventName, callback, options) !== null ;
         }
 
 
@@ -156,13 +158,16 @@ window.Sway = window.Sway || {} ; // make sure it exists
         return sum ;
     }
 
-    function addCallbackToStack(eventName, callback, prepend) {
+    function addCallbackToStack(eventName, callback, options) {
         var stack ;
+        if ( !options ) {
+            options = {} ;
+        }
 
         if ( checkInput(eventName, callback)) {                             // validate input
             stack = createStack.call(this, eventName) ;                      // get stack of 'eventName'
             if ( stack.__stack.on.indexOf(callback) === -1 ) {               // check if the callback is not already added
-                stack.__stack.on[prepend ? 'unshift':'push'](callback) ;     // add callback
+                stack.__stack.on[options.prepend ? 'unshift':'push'](callback) ;     // add callback
                 stack.__stack.count ++ ;
                 return stack ;
             }
