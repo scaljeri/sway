@@ -4,7 +4,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
     var DEFAULTS = {
         CAPTURING:  'capturing'
         , BUBBLING: 'bubbling'
-    } ;
+    }
     /**
      * EventHub facilitates event-based communication between different parts of an application (Event driven system).
      * Events can be namespaced too, checkout the jQuery <a href="http://docs.jquery.com/Namespaced_Events ">documentation</a> on how to use these namespaces.
@@ -12,20 +12,20 @@ window.Sway = window.Sway || {} ; // make sure it exists
      * @class Sway.EventHub
      * @constructor
      */
-    var eh = function() {
-        Object.defineProperty(this, '_rootStack',
-            {
-                value: { __stack: {count: 0, triggers: 0} }
-                , enumerable: false // hide it
-            }
-        ) ;
-        Object.defineProperty(this, '_eventType',
-            {
-                value: {}
-                , enumerable: false // hide it
-            }
-        ) ;
-    } ;
+        , eh = function() {
+            Object.defineProperty(this, '_rootStack',
+                {
+                    value: { __stack: {count: 0, triggers: 0} }
+                    , enumerable: false // hide it
+                }
+            ) ;
+            Object.defineProperty(this, '_eventType',
+                {
+                    value: {}
+                    , enumerable: false // hide it
+                }
+            ) ;
+        } ;
 
     eh.prototype = {
         /**
