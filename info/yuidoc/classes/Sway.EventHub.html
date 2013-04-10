@@ -102,7 +102,7 @@
 
     
         <div class="foundat">
-            Defined in: <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l4"><code>src&#x2F;eventhub.js:4</code></a>
+            Defined in: <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l8"><code>src&#x2F;eventhub.js:8</code></a>
         </div>
     
 
@@ -153,7 +153,7 @@ Events can be namespaced too, checkout the jQuery <a href="http://docs.jquery.co
             
         
         
-        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l4"><code>src&#x2F;eventhub.js:4</code></a>
+        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l8"><code>src&#x2F;eventhub.js:8</code></a>
         
         </p>
 
@@ -201,6 +201,13 @@ Events can be namespaced too, checkout the jQuery <a href="http://docs.jquery.co
                         
                             <li class="index-item method">
                                 <a href="#method_count">count</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_defineEvent">defineEvent</a>
 
                                 
                                 
@@ -303,7 +310,7 @@ Events can be namespaced too, checkout the jQuery <a href="http://docs.jquery.co
             
         
         
-        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l73"><code>src&#x2F;eventhub.js:73</code></a>
+        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l101"><code>src&#x2F;eventhub.js:101</code></a>
         
         </p>
 
@@ -362,6 +369,116 @@ Events can be namespaced too, checkout the jQuery <a href="http://docs.jquery.co
 </div>
 
                 
+                    <div id="method_defineEvent" class="method item">
+    <h3 class="name"><code>defineEvent</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>eventName</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>etype</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l31"><code>src&#x2F;eventhub.js:31</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Change the behavior of an event. By default, only the callbacks registered to an event are triggered. But the event can
+also be set to 'capturing' or 'bubbling' mode. Bubbling means the trigger starts at the root of the namespaces and bubbles
+up to the event in question. Capturing does the opposite.</p>
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">eventName</code>
+                        <span class="type">Object</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>name of the event</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">etype</code>
+                        <span class="type">Object</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>event type. Supported options are: 'capturing' and 'bubbling'</p>
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
                     <div id="method_off" class="method item">
     <h3 class="name"><code>off</code></h3>
 
@@ -414,7 +531,7 @@ Events can be namespaced too, checkout the jQuery <a href="http://docs.jquery.co
             
         
         
-        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l85"><code>src&#x2F;eventhub.js:85</code></a>
+        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l113"><code>src&#x2F;eventhub.js:113</code></a>
         
         </p>
 
@@ -553,7 +670,7 @@ namespaces inside 'eventName' are removed</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l38"><code>src&#x2F;eventhub.js:38</code></a>
+        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l66"><code>src&#x2F;eventhub.js:66</code></a>
         
         </p>
 
@@ -694,7 +811,7 @@ registration. Set 'prepend' to TRUE to add the callback in front of the others.<
             
         
         
-        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l55"><code>src&#x2F;eventhub.js:55</code></a>
+        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l83"><code>src&#x2F;eventhub.js:83</code></a>
         
         </p>
 
@@ -823,7 +940,7 @@ except that this callback is removed from the list after it has been triggered.<
             
         
         
-        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l21"><code>src&#x2F;eventhub.js:21</code></a>
+        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l49"><code>src&#x2F;eventhub.js:49</code></a>
         
         </p>
 
@@ -954,7 +1071,7 @@ namespaces will be triggered.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l102"><code>src&#x2F;eventhub.js:102</code></a>
+        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l130"><code>src&#x2F;eventhub.js:130</code></a>
         
         </p>
 

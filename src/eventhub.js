@@ -2,8 +2,8 @@ window.Sway = window.Sway || {} ; // make sure it exists
 
 (function(Ns){
     var DEFAULTS = {
-        CAPTURING:  'capturing'
-        , BUBBLING: 'bubbling'
+        CAPTURING:  'capturing'             // event goes from top to bottom
+        , BUBBLING: 'bubbling'              // event goes from bottom to top
     }
     /**
      * EventHub facilitates event-based communication between different parts of an application (Event driven system).
@@ -45,6 +45,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
                 console.warn("Event type '" + etype + "' for '" + eventName + "' does not exist!") ;
             }
         }
+
         /**
          * Trigger one or more events. One event is triggered if the 'eventName' parameter targets a specific event, but if this parameter is a namespace, all nested events and
          * namespaces will be triggered.
