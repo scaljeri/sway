@@ -2,9 +2,9 @@ window.Sway = window.Sway || {} ; // make sure it exists
 
 (function(Ns){
     var DEFAULTS = {
-        CAPTURING: 'capturing'
+        CAPTURING:  'capturing'
         , BUBBLING: 'bubbling'
-    }
+    } ;
     /**
      * EventHub facilitates event-based communication between different parts of an application (Event driven system).
      * Events can be namespaced too, checkout the jQuery <a href="http://docs.jquery.com/Namespaced_Events ">documentation</a> on how to use these namespaces.
