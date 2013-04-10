@@ -1,6 +1,10 @@
 window.Sway = window.Sway || {} ; // make sure it exists
 
 (function(Ns){
+    var DEFAULTS = {
+        CAPTURING: 'capturing'
+        , BUBBLING: 'bubbling'
+    }
     /**
      * EventHub facilitates event-based communication between different parts of an application (Event driven system).
      * Events can be namespaced too, checkout the jQuery <a href="http://docs.jquery.com/Namespaced_Events ">documentation</a> on how to use these namespaces.
@@ -11,13 +15,36 @@ window.Sway = window.Sway || {} ; // make sure it exists
     var eh = function() {
         Object.defineProperty(this, '_rootStack',
             {
-                value: { __stack: {count: 0, triggers: 0} },
-                enumerable: false // hide it
+                value: { __stack: {count: 0, triggers: 0} }
+                , enumerable: false // hide it
             }
         ) ;
-    }
+        Object.defineProperty(this, '_eventType',
+            {
+                value: {}
+                , enumerable: false // hide it
+            }
+        ) ;
+    } ;
 
     eh.prototype = {
+        /**
+         * Change the behavior of an event. By default, only the callbacks registered to an event are triggered. But the event can
+         * also be set to 'capturing' or 'bubbling' mode. Bubbling means the trigger starts at the root of the namespaces and bubbles
+         * up to the event in question. Capturing does the opposite.
+         *
+         * @method defineEvent
+         * @param eventName name of the event
+         * @param etype event type. Supported options are: 'capturing' and 'bubbling'
+         */
+        defineEvent: function(eventName, etype) {
+            if ( DEFAULTS.CAPTURING === etype || DEFAULTS.BUBBLING === etype ) {
+                this._eventType[eventName] = etype ;
+            }
+            else {
+                console.warn("Event type '" + etype + "' for '" + eventName + "' does not exist!") ;
+            }
+        }
         /**
          * Trigger one or more events. One event is triggered if the 'eventName' parameter targets a specific event, but if this parameter is a namespace, all nested events and
          * namespaces will be triggered.
@@ -30,7 +57,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
          Sway.eventHub.trigger('ui.update', {authenticated: true} ) ; // trigger the 'update' event inside the 'ui' namespace
          Sway.eventHub.trigger('ui', {authenticated: true} ) ;        // trigger all nested events and namespaces inside the 'ui' namespace
          */
-        trigger: function(eventName, data){
+        , trigger: function(eventName, data){
             var list = getStack.call(this, eventName) ;                 // load the stack for this namespace
             return triggerEvent(list, data) ;                // triggerEvent does the work of triggering everything (nested events & namespaces)
         }
