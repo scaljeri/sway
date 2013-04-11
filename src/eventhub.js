@@ -1,9 +1,11 @@
 window.Sway = window.Sway || {} ; // make sure it exists
 
-(function(Ns){
+(function(ns){
     var DEFAULTS = {
-        CAPTURING:  'capturing'             // event goes from top to bottom
-        , BUBBLING: 'bubbling'              // event goes from bottom to top
+        EVENT_MODE: {
+            CAPTURING:  'capture'             // event goes from top to bottom
+            , BUBBLING: 'bubble'              // event goes from bottom to top
+        }
     }
     /**
      * EventHub facilitates event-based communication between different parts of an application (Event driven system).
@@ -15,7 +17,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
         , eh = function() {
             Object.defineProperty(this, '_rootStack',
                 {
-                    value: { __stack: {count: 0, triggers: 0} }
+                    value: { __stack: {count: 0, triggers: 0, on:[], one:[]} }
                     , enumerable: false // hide it
                 }
             ) ;
@@ -29,24 +31,6 @@ window.Sway = window.Sway || {} ; // make sure it exists
 
     eh.prototype = {
         /**
-         * Change the behavior of an event. By default, only the callbacks registered to an event are triggered. But the event can
-         * also be set to 'capturing' or 'bubbling' mode. Bubbling means the trigger starts at the root of the namespaces and bubbles
-         * up to the event in question. Capturing does the opposite.
-         *
-         * @method defineEvent
-         * @param eventName name of the event
-         * @param etype event type. Supported modes are: 'capture' and 'bubble'
-         */
-        defineEvent: function(eventName, etype) {
-            if ( DEFAULTS.CAPTURING === etype || DEFAULTS.BUBBLING === etype ) {
-                this._eventType[eventName] = etype ;
-            }
-            else {
-                console.warn("Event type '" + etype + "' for '" + eventName + "' does not exist!") ;
-            }
-        }
-
-        /**
          * Trigger one or more events. One event is triggered if the 'eventName' parameter targets a specific event, but if this parameter is a namespace, all nested events and
          * namespaces will be triggered.
          *
@@ -58,9 +42,16 @@ window.Sway = window.Sway || {} ; // make sure it exists
          Sway.eventHub.trigger('ui.update', {authenticated: true} ) ; // trigger the 'update' event inside the 'ui' namespace
          Sway.eventHub.trigger('ui', {authenticated: true} ) ;        // trigger all nested events and namespaces inside the 'ui' namespace
          */
-        , trigger: function(eventName, data){
-            var list = getStack.call(this, eventName) ;                 // load the stack for this namespace
-            return triggerEvent(list, data) ;                // triggerEvent does the work of triggering everything (nested events & namespaces)
+        trigger: function(eventName, data){
+            var retVal = 0
+                , namespace ;
+            if ( (namespace = getStack.call(this, eventName)) ) {       // check if the eventName exists
+                retVal = triggerEventCapture.call(this, eventName||'', data) +     // NOTE that eventName can be empty!
+                         triggerEvent(namespace, data) +
+                         triggerEventBubble(namespace, data) ;
+                namespace.__stack.triggers ++ ;
+            }
+            return retVal ;                                             // return the number of triggered callback functions
         }
 
         /**
@@ -159,17 +150,18 @@ window.Sway = window.Sway || {} ; // make sure it exists
     }
 
     function addCallbackToStack(eventName, callback, options) {
-        var stack ;
+        var namespace ;
         if ( !options ) {
             options = {} ;
         }
 
-        if ( checkInput(eventName, callback)) {                             // validate input
-            stack = createStack.call(this, eventName) ;                      // get stack of 'eventName'
-            if ( stack.__stack.on.indexOf(callback) === -1 ) {               // check if the callback is not already added
-                stack.__stack.on[options.prepend ? 'unshift':'push'](callback) ;     // add callback
-                stack.__stack.count ++ ;
-                return stack ;
+        if ( checkInput(eventName, callback)) {                                         // validate input
+            namespace = createStack.call(this, eventName) ;                             // get stack of 'eventName'
+            if ( namespace.__stack.on.indexOf(callback) === -1 ) {                      // check if the callback is not already added
+                namespace.__stack.on[options.prepend ? 'unshift':'push'](callback) ;    // add callback
+                namespace.__stack.eventMode = options.eventMode ;                       // the event-mode for which this callback should be triggered
+                namespace.__stack.count ++ ;
+                return namespace ;
             }
         }
         return null ;
@@ -184,7 +176,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
         if ( typeof(eventName) === "string" && callback && typeof(callback) === "function" ) { // OK
             return true ;
         }
-        else if ( Ns.DEBUG ) { // Wrong...
+        else if ( ns.DEBUG ) { // Wrong...
             console.warn("Cannot bind the callback function to the event nam ( eventName=" + eventName + ",  callback=" + callback + ")") ;
             return false ;
         }
@@ -290,7 +282,8 @@ window.Sway = window.Sway || {} ; // make sure it exists
                         , one: []                           // callbacks which are triggered only once
                         , parent: stack                     // parent namespace/object
                         , count: 0                          // count callbacks in this namespace
-                        , triggers: 0                      // count triggers
+                        , triggers: 0                       // count triggers
+                        , eventMode: null                   // define
                     }
                 } ;
             }
@@ -299,39 +292,78 @@ window.Sway = window.Sway || {} ; // make sure it exists
         return stack ;
     }
 
+    function triggerEventCapture(eventName, data) {
+        var i
+            , namespace = this._rootStack
+            , parts = eventName.split('.') || []
+            , eventMode = DEFAULTS.EVENT_MODE.CAPTURING
+            , retVal = callCallbacks(namespace, eventMode) ;
+
+        for( i = 0; i < parts.length -1; i++ ) { // loop through namespace (not the last part)
+           namespace = namespace[parts[i]] ;
+           callCallbacks(namespace, data, eventMode) ;
+        }
+        return retVal ;
+    }
+
+    function triggerEventBubble(namespace, data) {
+        //var namespace = namespaces.__stack.parent ;
+        var eventMode = DEFAULTS.EVENT_MODE.BUBBLING
+            , retVal = 0 ;
+
+        while( namespace.__stack.parent ) {
+            namespace = namespace.__stack.parent ;
+            retVal += callCallbacks(namespace, data, eventMode) ;
+        }
+        return retVal ;
+    }
+
     /*
      * Namespaces can in theory be many levels deep, like: "aaaaa.bbbbbb.cccccc._stack"
      * To traverse this namespace and trigger everything inside it, this function is called recursively.
+     * TODO: first start capturing then bubbling (from this.__rootStack to namespaces and back)
      */
-    function triggerEvent(namespaces, data) {
-        var namespace                                               // current namespace in the loop
-            , retVal = 0                                            // the number of called callback function
-            , ns                                                    // loop index
-            , i                                                     // loop index
-            , callback ;                                            // callback from the on list
+    function triggerEvent(stack, data) {
+        var  retVal = 0
+            , ns ;                                                  // loop index
 
-        for( ns in namespaces ) {
-            namespace = namespaces[ns] ;
-
-           if ( namespace.on ) {                                    // special namespace (it hold 'on' and 'one')
-               namespace.triggers ++ ;
-               for( i = namespace.on.length -1; i >= 0; i-- ) {     // loop through all callbacks
-                  callback = namespace.on[i] ;
-                  retVal ++ ;                                       // count this trigger
-                  callback(data) ;                                  // call the callback
-                   if ( namespace.one.indexOf(callback) > -1 ) {    // check if it is a 'one' callback
-                       namespace.count -= removeCallback(namespace.on, callback) ;     // YES -> remove it from 'on'
-                   }
-               }
-               namespace.one.length = 0 ;                           // all 'one' callbacks have been called --> cleanup
+        for( ns in stack ) {
+            if ( ns === "__stack" ) {
+               retVal += callCallbacks(stack, data) ;
            }
            else {                                                   // found a deeper nested namespace
-                retVal += triggerEvent(namespace, data) ;           // nested namespaces
+                retVal += triggerEvent(stack[ns], data) ;               // nested namespaces. NOTE that the 'eventName' is omitted!!
            }
         }
         return retVal ;
     }
 
-    Ns.EventHub = eh ;
+    /*
+        This method triggers the callback for a given namespace. It does not traverse the namespaces, it only loops through
+        the 'on' list and afterwards checks if there are callbacks which should be removed (checking the 'one' list)
+        If the 'eventMode' is defined, it only triggers callbacks which accept the eventMode.
+        @param {Object} namespace
+        @param {Anything} data
+        @param {String} eventMode accepted values
+     */
+    function callCallbacks(namespace, data, eventMode) {
+        var i
+            , retVal = 0
+            , callback ;
+
+        for( i = namespace.__stack.on.length -1; i >= 0; i-- ) {                                    // loop through all callbacks
+            callback = namespace.__stack.on[i] ;
+            if ( !eventMode || namespace.__stack.eventMode === eventMode ) {                        // trigger callbacks depending on their event-mode
+                retVal ++ ;                                                                         // count this trigger
+                callback(data) ;                                                                    // call the callback
+                if ( removeCallback(namespace.__stack.one, callback) > 0 ) {                        // remove callback from the 'one' list
+                    namespace.__stack.count -= removeCallback(namespace.__stack.on, callback) ;     // and if it exists, remove it from 'on' too
+                }
+            }
+        }
+        return retVal ;
+    }
+
+    ns.EventHub = eh ;
 
 })(window.Sway) ;
