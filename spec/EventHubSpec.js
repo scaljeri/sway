@@ -1,3 +1,6 @@
+/*
+    TODO: test for 'prepend'
+ */
 window.describe("Sway.EventHub", function() {
     "use strict" ;
 
@@ -109,6 +112,8 @@ window.describe("Sway.EventHub", function() {
         it("with a correct trigger count", function() {
 
         }) ;
+        it("with correct capturing and bubbling behavior", function(){
+        }) ;
     });
 
     // events with a namespace
@@ -195,6 +200,9 @@ window.describe("Sway.EventHub", function() {
         it("with a correct trigger count", function() {
 
         }) ;
+        it("with correct capturing and bubbling behavior", function(){
+
+        }) ;
     }) ;
 
     describe("should handle two level deep namespaced event", function() {
@@ -270,6 +278,9 @@ window.describe("Sway.EventHub", function() {
             expect(Sway.eventHub.count("go")).toEqual(4) ;
         }) ;
         it("with a correct trigger count", function() {
+
+        }) ;
+        it("with correct capturing and bubbling behavior", function(){
 
         }) ;
     }) ;

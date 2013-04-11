@@ -55,8 +55,9 @@ window.Sway = window.Sway || {} ; // make sure it exists
         }
 
         /**
-         * Register a callback to a specific event. Callbacks are executed in the order of
-         * registration. Set 'prepend' to TRUE to add the callback in front of the others.
+         * Register a callback for a specific event. Callbacks are executed in the order of
+         * registration. Set 'prepend' to TRUE to add the callback in front of the others. With the 'options'
+         * parameter it is also possible to execute the callback in a capturing or bubbling phase.
          *
          * @method on
          * @param {string} eventName
@@ -69,6 +70,9 @@ window.Sway = window.Sway || {} ; // make sure it exists
          Sway.eventHub.on( 'ui.update', this.update.bind(this), { prepend: true, etype: 'capture' ) ;
          */
         , on: function(eventName, callback, options) {
+            if ( !options ) {
+                options = {} ;
+            }
             return addCallbackToStack.call(this, eventName, callback, options) !== null ;
         }
 
@@ -80,12 +84,18 @@ window.Sway = window.Sway || {} ; // make sure it exists
          * @method one
          * @param {string} eventName
          * @param {function} callback
-         * @param {boolean} [prepend] if TRUE, the callback is placed before all other registered callbacks.
+         * @param {Object} [options] configuration
+         *      @param {boolean} [prepend] if TRUE, the callback is placed before all other registered callbacks.
+         *      @param {String} [etype] the event mode for which the callback is triggered too
          */
-        , one: function(eventName, callback, prepend) {
-            var stack = addCallbackToStack.call(this, eventName, callback, prepend) ;
+        , one: function(eventName, callback, options) {
+            if ( !options ) {
+                options = {} ;
+            }
+            var stack = addCallbackToStack.call(this, eventName, callback, options) ;
             if ( stack ) { // if the stack exists, the callback was added to the 'on' list
-                stack.__stack.one[prepend ? 'unshift':'push'](callback) ;   // and it should of course also be added to the 'one' list
+                stack.__stack.one[options.prepend ? 'unshift':'push'](callback) ;   // and it should of course also be added to the 'one' list
+                stack.__stack.eventMode = options.etype ;
                 return true ;
             }
             return false ;
@@ -151,10 +161,6 @@ window.Sway = window.Sway || {} ; // make sure it exists
 
     function addCallbackToStack(eventName, callback, options) {
         var namespace ;
-        if ( !options ) {
-            options = {} ;
-        }
-
         if ( checkInput(eventName, callback)) {                                         // validate input
             namespace = createStack.call(this, eventName) ;                             // get stack of 'eventName'
             if ( namespace.__stack.on.indexOf(callback) === -1 ) {                      // check if the callback is not already added
@@ -321,7 +327,6 @@ window.Sway = window.Sway || {} ; // make sure it exists
     /*
      * Namespaces can in theory be many levels deep, like: "aaaaa.bbbbbb.cccccc._stack"
      * To traverse this namespace and trigger everything inside it, this function is called recursively.
-     * TODO: first start capturing then bubbling (from this.__rootStack to namespaces and back)
      */
     function triggerEvent(stack, data) {
         var  retVal = 0
