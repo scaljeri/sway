@@ -27,9 +27,23 @@ window.Sway = window.Sway || {} ; // make sure it exists
                     , enumerable: false // hide it
                 }
             ) ;
+            Object.defineProperty(this, '_eventNameIndex',
+                {
+                    value: 0
+                    , enumerable: false // hide it
+                }
+            ) ;
         } ;
 
     eh.prototype = {
+        /**
+         * Generates an unique event name
+         * @method generateUniqueEventName
+         * @returns {string}
+         */
+        generateUniqueEventName: function() {
+            return '--eh--' + this._eventNameIndex++ ;
+        }
         /**
          * Trigger one or more events. One event is triggered if the 'eventName' parameter targets a specific event, but if this parameter is a namespace, all nested events and
          * namespaces will be triggered.
@@ -42,7 +56,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
          Sway.eventHub.trigger('ui.update', {authenticated: true} ) ; // trigger the 'update' event inside the 'ui' namespace
          Sway.eventHub.trigger('ui', {authenticated: true} ) ;        // trigger all nested events and namespaces inside the 'ui' namespace
          */
-        trigger: function(eventName, data){
+        , trigger: function(eventName, data){
             var retVal = 0
                 , namespace ;
             if ( (namespace = getStack.call(this, eventName)) ) {       // check if the eventName exists
