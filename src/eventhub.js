@@ -53,19 +53,19 @@ window.Sway = window.Sway || {} ; // make sure it exists
          * @param {Object|Array|Number|String|Boolean|Function} [data]   data passed to the triggered callback function
          * @return {Number} the count of triggered callbacks
          * @example
-         Sway.eventHub.trigger('ui.update', {authenticated: true} ) ; // trigger the 'update' event inside the 'ui' namespace
-         Sway.eventHub.trigger('ui', {authenticated: true} ) ;        // trigger all nested events and namespaces inside the 'ui' namespace
+         Sway.eventHub.trigger('ui.update', {authenticated: true} ) ;   // trigger the 'update' event inside the 'ui' namespace
+         Sway.eventHub.trigger('ui', {authenticated: true} ) ;          // trigger all nested events and namespaces inside the 'ui' namespace
          */
         , trigger: function(eventName, data){
             var retVal = 0
                 , namespace ;
-            if ( (namespace = getStack.call(this, eventName)) ) {       // check if the eventName exists
-                retVal = triggerEventCapture.call(this, eventName||'', data) +     // NOTE that eventName can be empty!
+            if ( (namespace = getStack.call(this, eventName)) ) {                   // check if the eventName exists
+                retVal = triggerEventCapture.call(this, eventName||'', data) +      // NOTE that eventName can be empty!
                          triggerEvent(namespace, data) +
                          triggerEventBubble(namespace, data) ;
                 namespace.__stack.triggers ++ ;
             }
-            return retVal ;                                             // return the number of triggered callback functions
+            return retVal ;                                                         // return the number of triggered callback functions
         }
 
         /**
@@ -74,11 +74,12 @@ window.Sway = window.Sway || {} ; // make sure it exists
          * parameter it is also possible to execute the callback in a capturing or bubbling phase.
          *
          * @method on
-         * @param {string} eventName
-         * @param {function} callback
+         * @param {String} eventName
+         * @param {Function} callback
          * @param {Object} [options] configuration
-         *      @param {boolean} [prepend] if TRUE, the callback is placed before all other registered callbacks.
-         *      @param {String} [etype] the event mode for which the callback is triggered too
+         *      @param {Boolean} [options.prepend] if TRUE, the callback is placed before all other registered callbacks.
+         *      @param {String} [options.etype] the event mode for which the callback is triggered too. Available modes are
+         *          <tt>capture</tt> and <tt>bubble</tt>
          * @example
          Sway.eventHub.on( 'ui.update', this.update.bind(this) ) ;
          Sway.eventHub.on( 'ui.update', this.update.bind(this), { prepend: true, etype: 'capture' ) ;
