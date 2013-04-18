@@ -43,6 +43,9 @@ window.describe("Sway.EventHub", function() {
         expect(Sway.eventHub.trigger("forum.go")).toEqual(0) ;
         expect(Sway.eventHub.trigger()).toEqual(0) ;
     }) ;
+    it("should generate unique event names", function() {
+
+    }) ;
 
     // events withput a namespace
     describe("should handle normal events", function() {
