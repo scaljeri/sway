@@ -9,7 +9,25 @@ window.Sway = window.Sway || {} ; // make sure it exists
     }
     /**
      * EventHub facilitates event-based communication between different parts of an application (Event driven system).
-     * Events can be namespaced too, checkout the jQuery <a href="http://docs.jquery.com/Namespaced_Events ">documentation</a> on how to use these namespaces.
+     * Events can be namespaced too.
+     *
+     * Namespaces are separated by a dot, like
+     *
+     *     bar.foo1
+     *     bar.foo2
+     *     bar.bar1.foo1
+     *
+     * A Namespace and an Eventname are actually more or less the same thing:
+     *
+     *     eventHub.on('bar', myFunc1) ;
+     *     eventHub.on('bar.foo1', myFunc2) ;
+     *     eventHub.on('bar.bar1', myFunc3) ;
+     *     eventHub.on('bar.bar1.foo1', myFunc4) ;
+     *
+     * The advantage of namespaced events is that it facilitates triggering groups of events
+     *
+     *     eventHub.trigger('bar') ;        // --> triggers: myFunc1, myFunc2, myFunc3 and myFunc4
+     *     eventHub.trigger('bar.bar1');    // --> triggers: myFunc3 and myFunc4
      *
      * @class Sway.EventHub
      * @constructor
@@ -21,16 +39,11 @@ window.Sway = window.Sway || {} ; // make sure it exists
                     , enumerable: false // hide it
                 }
             ) ;
-            Object.defineProperty(this, '_eventType',
-                {
-                    value: {}
-                    , enumerable: false // hide it
-                }
-            ) ;
             Object.defineProperty(this, '_eventNameIndex',
                 {
                     value: 0
                     , enumerable: false // hide it
+                    , writable: true    // otherwise ++ will not work
                 }
             ) ;
         } ;
@@ -39,11 +52,12 @@ window.Sway = window.Sway || {} ; // make sure it exists
         /**
          * Generates an unique event name
          * @method generateUniqueEventName
-         * @returns {string}
+         * @return {String}
          */
         generateUniqueEventName: function() {
-            return '--eh--' + this._eventNameIndex++ ;
+            return '--eh--' + this._eventNameIndex++ ;                              // first event-name will be: --eh--0
         }
+
         /**
          * Trigger one or more events. One event is triggered if the 'eventName' parameter targets a specific event, but if this parameter is a namespace, all nested events and
          * namespaces will be triggered.
@@ -53,8 +67,8 @@ window.Sway = window.Sway || {} ; // make sure it exists
          * @param {Object|Array|Number|String|Boolean|Function} [data]   data passed to the triggered callback function
          * @return {Number} the count of triggered callbacks
          * @example
-         Sway.eventHub.trigger('ui.update', {authenticated: true} ) ;   // trigger the 'update' event inside the 'ui' namespace
-         Sway.eventHub.trigger('ui', {authenticated: true} ) ;          // trigger all nested events and namespaces inside the 'ui' namespace
+         Sway.eventHub.trigger('ui.update', {authenticated: true} ) ;               // trigger the 'update' event inside the 'ui' namespace
+         Sway.eventHub.trigger('ui', {authenticated: true} ) ;                      // trigger all nested events and namespaces inside the 'ui' namespace
          */
         , trigger: function(eventName, data){
             var retVal = 0
@@ -80,28 +94,28 @@ window.Sway = window.Sway || {} ; // make sure it exists
          *      @param {Boolean} [options.prepend] if TRUE, the callback is placed before all other registered callbacks.
          *      @param {String} [options.etype] the event mode for which the callback is triggered too. Available modes are
          *          <tt>capture</tt> and <tt>bubble</tt>
+         * @return {Boolean} TRUE if the callback is registered successfully. It will fail if the callback was already registered
          * @example
          Sway.eventHub.on( 'ui.update', this.update.bind(this) ) ;
          Sway.eventHub.on( 'ui.update', this.update.bind(this), { prepend: true, etype: 'capture' ) ;
          */
         , on: function(eventName, callback, options) {
-            if ( !options ) {
-                options = {} ;
-            }
-            return addCallbackToStack.call(this, eventName, callback, options) !== null ;
+            return addCallbackToStack.call(this, eventName, callback, options||{}) !== null ;
         }
 
 
         /**
-         * Register a callback to a specific event. This function is identical to {{#crossLink "Sway.EventHub/on:method"}}{{/crossLink}}
+         * Register a callback for a specific event. This function is identical to {{#crossLink "Sway.EventHub/on:method"}}{{/crossLink}}
          * except that this callback is removed from the list after it has been triggered.
          *
          * @method one
          * @param {string} eventName
          * @param {function} callback
          * @param {Object} [options] configuration
-         *      @param {boolean} [prepend] if TRUE, the callback is placed before all other registered callbacks.
-         *      @param {String} [etype] the event mode for which the callback is triggered too
+         *      @param {Boolean} [options.prepend] if TRUE, the callback is placed before all other registered callbacks.
+         *      @param {String} [options.etype] the event mode for which the callback is triggered too. Available modes are
+         *          <tt>capture</tt> and <tt>bubble</tt>
+         * @return {Boolean} TRUE if the callback is registered successfully. It will fail if the callback was already registered
          */
         , one: function(eventName, callback, options) {
             if ( !options ) {
@@ -120,7 +134,8 @@ window.Sway = window.Sway || {} ; // make sure it exists
          * count the registered callbacks for an event or namespace
          *
          * @method count
-         * @param {sting} [eventName] if empty all registered callbacks are counted
+         * @param {sting} [eventName] the event name for which all registered callbacks are counted (including nested event names). If this value is not set
+         * all registered callbacks are counted
          * @return {Number} the number of callback functions inside 'eventName'. Returns -1 if the event or namespace does not exists
          */
         , count: function(eventName) {
@@ -352,7 +367,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
                retVal += callCallbacks(stack, data) ;
            }
            else {                                                   // found a deeper nested namespace
-                retVal += triggerEvent(stack[ns], data) ;               // nested namespaces. NOTE that the 'eventName' is omitted!!
+                retVal += triggerEvent(stack[ns], data) ;           // nested namespaces. NOTE that the 'eventName' is omitted!!
            }
         }
         return retVal ;

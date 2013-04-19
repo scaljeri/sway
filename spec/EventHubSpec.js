@@ -44,7 +44,9 @@ window.describe("Sway.EventHub", function() {
         expect(Sway.eventHub.trigger()).toEqual(0) ;
     }) ;
     it("should generate unique event names", function() {
-
+        expect(Sway.eventHub.generateUniqueEventName()).toEqual('--eh--0') ;
+        expect(Sway.eventHub.generateUniqueEventName()).toEqual('--eh--1') ;
+        expect(Sway.eventHub.generateUniqueEventName()).toEqual('--eh--2') ;
     }) ;
 
     // events withput a namespace
