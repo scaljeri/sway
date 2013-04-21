@@ -177,12 +177,17 @@ window.Sway = window.Sway || {} ; // make sure it exists
          * @return {Boolean} TRUE if the callback is registered successfully. It will fail if the callback was already registered
          */
         , one: function(eventName, callback, options) {
+            var obj
+                , stack ;
+
             if ( !options ) {
                 options = {} ;
             }
-            var stack = addCallbackToStack.call(this, eventName, callback, options) ;
-            if ( stack ) { // if the stack exists, the callback was added to the 'on' list
-                stack.__stack.one[options.prepend ? 'unshift':'push'](callback) ;   // and it should of course also be added to the 'one' list
+
+            obj = addCallbackToStack.call(this, eventName, callback, options) ;
+            if ( obj ) { // if the stack exists, the callback was added to the 'on' list
+                stack = getStack.call(this, eventName) ;
+                stack.__stack.one.push(obj) ;
                 return true ;
             }
             return false ;
@@ -200,9 +205,9 @@ window.Sway = window.Sway || {} ; // make sure it exists
          Sway.eventHub.off('ui.update', this.update) ;
          Sway.eventHub.off('ui') ;
          */
-        , off: function(eventName, callback) {
+        , off: function(eventName, callback, recursive) {
             var stack = getStack.call(this, eventName) ;
-            return removeFromStack(stack, callback) ;
+            return removeFromNamespace(stack, callback) ;
         }
 
         /**
@@ -266,15 +271,14 @@ window.Sway = window.Sway || {} ; // make sure it exists
     }
 
     function addCallbackToStack(eventName, callback, options) {
-        var stack ;
+        var obj
+            , stack ;
         if ( checkInput(eventName, callback)) {                                     // validate input
             stack = createStack.call(this, eventName) ;                             // get stack of 'eventName'
             if ( canAddCallback.call(this, stack.__stack.on, callback) === true ) {                       // check if the callback is not already added
-                stack.__stack.on[options.prepend ? 'unshift':'push']( {
-                    fn: callback
-                    , eventMode: options.eventMode
-                }) ;
-                return stack ;
+                obj = { fn: callback, eventMode: options.eventMode } ;
+                stack.__stack.on[options.prepend ? 'unshift':'push'](obj) ;
+                return obj ;
             }
         }
         return null ;
@@ -313,50 +317,50 @@ window.Sway = window.Sway || {} ; // make sure it exists
         }
     }
 
-
-
     /*
         Removes the callback from the stack. However, a stack can contain other namespaces. And these namespaces
         can contain the callback too. Furthermore, the callback is optional, in which case the whole stack
         is erased.
      */
-    function removeFromStack(stack, callback) {
-        var retVal = 0                                              // number of removed callbacks
-            , callbacks                                             // a stack with 'on' and 'one' (maybe)
-            , ns                                                   // loop var
-            , position ;
+    function removeFromNamespace(namespaces, callback) {
+        var retVal = 0                                          // number of removed callbacks
+            , namespace
+            , i ;                                                   // loop var
 
         if ( callback ) {                                           // remove a specific callback
-            for( ns in stack) {                                     // so we loop through all namespaces (and __stack is one of them)
-                callbacks = stack[ns] ;
-                if ( callbacks.on ) {                               // are we there yet, are we there yet
-                    retVal += removeCallback(callbacks.on,  callback) ; // YES
-                    position = callbacks.one.indexOf(callback) ;
-                    removeCallback(callbacks.one, callback) ; // YES
+            for( i in namespaces) {                                 // so we loop through all namespaces (and __stack is one of them)
+                namespace = namespaces[i] ;
+                if ( i === '__stack') {
+                    retVal += removeCallback(namespace.on, callback ) ;
+                    removeCallback(namespace.one, callback ) ;
+
                 }
                 else {                                              // NO, its a namesapace -> recurstion
-                   retVal += removeFromStack.call(this, stack[callbacks], callback ) ;
+                   retVal += removeFromNamespace.call(this, namespace, callback ) ;
                 }
             }
         }
         else { // remove a whole namespace (no callback defined)
-            retVal += removeNameSpace.call(this, stack)   ;
+            retVal += removeNameSpace.call(this, namespaces)   ;
         }
-        return retVal ;                                         // a count of removed callback function
+        return retVal ;                                             // a count of removed callback function
     }
 
     /* This function should only be called on a stack with the 'on' and 'one' lists. It will remove one or
        multiple occurrences of the 'callback' function
      */
     function removeCallback(list, callback){
-        var i ;                                              // position on the stack
+        var i                                             // position on the stack
+            , retVal = 0 ;
 
-        for( i = 0; i < list.length; i++ ){
-            if ( list[i].fn === callback.fn ) {
+        for( i = list.length-1; i >= 0; i-- ){
+            if ( list[i].fn === callback ) {
                 list.splice(i, 1) ;
+                retVal ++ ;
                 // TODO: implement a check on this.allowMultiple and stop the loop if possible
             }
         }
+        return retVal ;
     }
 
     /*
@@ -479,7 +483,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
             if ( !eventMode || callback.eventMode === eventMode ) {                        // trigger callbacks depending on their event-mode
                 retVal ++ ;                                                                // count this trigger
                 callback.fn(data) ;                                                        // call the callback
-                if ( namespace.__stack.one.indexOf(callback.fn) >= 0 ) {                   // remove callback from the 'one' list
+                if ( namespace.__stack.one.indexOf(callback) >= 0 ) {                   // remove callback from the 'one' list
                     removeCallback(namespace.__stack.on, callback) ;                       // and if it exists, remove it from 'on' too
                 }
             }

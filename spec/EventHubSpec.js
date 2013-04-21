@@ -83,7 +83,6 @@ window.describe("Sway.EventHub", function() {
         it("for callbacks registered with both, 'on' and 'one'", function() {
             Sway.eventHub.on("go", Sway.callbacks.cb1) ;
             expect(Sway.eventHub.one("go", Sway.callbacks.cb2)).toBeTruthy() ;
-            expect(Sway.eventHub.one("go", Sway.callbacks.cb2)).toBeFalsy() ;
             expect(Sway.eventHub.trigger("go", 1 )).toEqual(2) ;
             expect(Sway.callbacks.cb1).toHaveBeenCalled() ;
             expect(Sway.callbacks.cb2).toHaveBeenCalled() ;
@@ -100,7 +99,8 @@ window.describe("Sway.EventHub", function() {
             Sway.eventHub.one("go", Sway.callbacks.cb2) ;
             Sway.eventHub.on("go", Sway.callbacks.cb3) ;
             Sway.eventHub.one("go", Sway.callbacks.cb4) ;
-            expect(Sway.eventHub.off("go", Sway.callbacks.cb3)).toBeTruthy() ;
+            debugger ;
+            expect(Sway.eventHub.off("go", Sway.callbacks.cb3)).toEqual(1) ;
             expect(Sway.eventHub.off("go", Sway.callbacks.cb4)).toBeTruthy() ;
             expect(Sway.eventHub.trigger("go", 2 )).toEqual(2) ;
             expect(Sway.callbacks.cb1).toHaveBeenCalled() ;
