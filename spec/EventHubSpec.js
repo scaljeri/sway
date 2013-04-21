@@ -62,7 +62,6 @@ window.describe("Sway.EventHub", function() {
     describe("should handle normal events", function() {
         it("for callbacks registered with 'on'", function() {
            expect(Sway.eventHub.on("go", Sway.callbacks.cb1)).toBeTruthy() ;
-           expect(Sway.eventHub.on("go", Sway.callbacks.cb1)).toBeFalsy() ;
            expect(Sway.eventHub.trigger("go", 1)).toEqual(1) ;
            expect(Sway.callbacks.cb1).toHaveBeenCalled() ;
            expect(Sway.callbacks.cb1.callCount).toEqual(1) ;
@@ -73,7 +72,7 @@ window.describe("Sway.EventHub", function() {
         }) ;
         it("for callbacks registered with 'one'", function() {
             expect(Sway.eventHub.one("go", Sway.callbacks.cb1)).toBeTruthy() ;
-            expect(Sway.eventHub.one("go", Sway.callbacks.cb1)).toBeFalsy() ;
+            debugger ;
             expect(Sway.eventHub.trigger("go", 1 )).toEqual(1) ;
             expect(Sway.callbacks.cb1).toHaveBeenCalled() ;
             expect(Sway.callbacks.cb1.callCount).toEqual(1) ;
@@ -128,7 +127,6 @@ window.describe("Sway.EventHub", function() {
             Sway.eventHub.one("bar", Sway.callbacks.cb2, { etype: 'capture'}) ;
             Sway.eventHub.one("bar", Sway.callbacks.cb3, { etype: 'bubble'}) ;
             Sway.eventHub.on("bar.foo", Sway.callbacks.cb4) ;
-            debugger ;
             expect(Sway.eventHub.trigger("bar.foo", { order: 1 })).toEqual(2) ;
             expect(Sway.callbacks.cb1).not.toHaveBeenCalled() ;
 
@@ -160,7 +158,6 @@ window.describe("Sway.EventHub", function() {
        it("for callbacks registered with both, 'on' and 'one'", function() {
            Sway.eventHub.on("forum.go", Sway.callbacks.cb1) ;
            Sway.eventHub.one("forum.go", Sway.callbacks.cb2) ;
-           expect(Sway.eventHub.on("forum.go", Sway.callbacks.cb1)).toBeFalsy() ;
            expect(Sway.eventHub.trigger("forum.go", 1 )).toEqual(2);
            expect(Sway.callbacks.cb1).toHaveBeenCalled() ;
            expect(Sway.callbacks.cb2).toHaveBeenCalled() ;

@@ -11,7 +11,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
          *     |   -----------| |-----------     |     |   -----------| |-----------     |
          *     |   |bar.foo   \ /          |     |     |   |bar.foo   | |          |     |
          *     |   -------------------------     |     |   -------------------------     |
-         *     |        Event BUBBLING           |     |        Event CAPTURING          |
+         *     |        Event CAPTURING          |     |        Event BUBBLING           |
          *     -----------------------------------     -----------------------------------
          *
          * The event model implemented in this class does both, going from <tt>bubbling</tt> to the execution of all callbacks in <tt>bar.foo</tt>, then back in <tt>capturing</tt> mode
@@ -55,7 +55,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
              */
             , BOTH: 'both'
         }
-        /*
+        /* PRIVATE PROPERTY
          * Default setting, to allow the same callback to be registered multiple times to the same event
          */
         , ALLOW_MULTIPLE: true
@@ -90,7 +90,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
         , eh = function(options) {
             Object.defineProperty(this, '_rootStack',
                 {
-                    value: { __stack: {count: 0, triggers: 0, on:[], one:[]} }
+                    value: { __stack: { triggers: 0, on:[], one:[]} }
                     , enumerable: false // hide it
                 }
             ) ;
@@ -104,7 +104,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
             this.allowMultiple = options && typeof(options.allowMultiple) === 'boolean' ? options.allowMultiple : DEFAULTS.ALLOW_MULTIPLE ;
         } ;
 
-    eh.EVENT_MODE = DEFAULTS.EVENT_MODE ;
+    eh.EVENT_MODE = DEFAULTS.EVENT_MODE ;                   // set static properies
 
     eh.prototype = {
         /**
@@ -113,11 +113,11 @@ window.Sway = window.Sway || {} ; // make sure it exists
          * @return {String}
          */
         generateUniqueEventName: function() {
-            return '--eh--' + this._eventNameIndex++ ;                              // first event-name will be: --eh--0
+            return '--eh--' + this._eventNameIndex++ ;     // first event-name will be: --eh--0
         }
 
         /**
-         * Trigger one or more events. One event is triggered if the 'eventName' parameter targets a specific event, but if this parameter is a namespace, all nested events and
+         * Triggers one or more events. One event is triggered if the 'eventName' parameter targets a specific event, but if this parameter is a namespace, all nested events and
          * namespaces will be triggered.
          *
          * @method trigger
@@ -135,7 +135,8 @@ window.Sway = window.Sway || {} ; // make sure it exists
                 retVal = triggerEventCapture.call(this, eventName||'', data) +      // NOTE that eventName can be empty!
                          triggerEvent(namespace, data) +
                          triggerEventBubble(namespace, data) ;
-                namespace.__stack.triggers ++ ;
+                namespace.__stack.triggers ++ ;                                     // count the trigger
+                namespace.__stack.one = [] ;                                        // cleanup
             }
             return retVal ;                                                         // return the number of triggered callback functions
         }
@@ -150,12 +151,12 @@ window.Sway = window.Sway || {} ; // make sure it exists
          * @param {Function} callback
          * @param {Object} [options] configuration
          *      @param {Boolean} [options.prepend] if TRUE, the callback is placed before all other registered callbacks.
-         *      @param {String} [options.etype] the event mode for which the callback is triggered too. Available modes are
+         *      @param {String} [options.eventMode] the event mode for which the callback is triggered too. Available modes are
          *          <tt>capture</tt> and <tt>bubble</tt>
          * @return {Boolean} TRUE if the callback is registered successfully. It will fail if the callback was already registered
          * @example
          Sway.eventHub.on( 'ui.update', this.update.bind(this) ) ;
-         Sway.eventHub.on( 'ui.update', this.update.bind(this), { prepend: true, etype: 'capture' ) ;
+         Sway.eventHub.on( 'ui.update', this.update.bind(this), { prepend: true, eventMode: 'capture' ) ;
          */
         , on: function(eventName, callback, options) {
             return addCallbackToStack.call(this, eventName, callback, options||{}) !== null ;
@@ -171,7 +172,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
          * @param {function} callback
          * @param {Object} [options] configuration
          *      @param {Boolean} [options.prepend] if TRUE, the callback is placed before all other registered callbacks.
-         *      @param {String} [options.etype] the event mode for which the callback is triggered too. Available modes are
+         *      @param {String} [options.eventMode] the event mode for which the callback is triggered too. Available modes are
          *          <tt>capture</tt> and <tt>bubble</tt>
          * @return {Boolean} TRUE if the callback is registered successfully. It will fail if the callback was already registered
          */
@@ -182,23 +183,9 @@ window.Sway = window.Sway || {} ; // make sure it exists
             var stack = addCallbackToStack.call(this, eventName, callback, options) ;
             if ( stack ) { // if the stack exists, the callback was added to the 'on' list
                 stack.__stack.one[options.prepend ? 'unshift':'push'](callback) ;   // and it should of course also be added to the 'one' list
-                stack.__stack.eventMode = options.etype ;
                 return true ;
             }
             return false ;
-        }
-
-        /**
-         * count the registered callbacks for an event or namespace
-         *
-         * @method countCallbacks
-         * @param {Sting} eventName the event name for which all registered callbacks are counted (including nested event names).
-         * @param {String} [etype] the event mode; Sway.EventHub.CAPTURING or Sway.EventHub.BUBBLE
-         * @return {Number} the number of callback functions inside 'eventName'. Returns -1 if the event or namespace does not exists
-         */
-        , countCallbacks: function(eventName, etype) {
-            var stack = getStack.call(this, eventName) ;
-            return sumPropertyInNamespace(stack, 'count', etype) ;
         }
 
         /**
@@ -219,6 +206,20 @@ window.Sway = window.Sway || {} ; // make sure it exists
         }
 
         /**
+         * count the registered callbacks for an event or namespace
+         *
+         * @method countCallbacks
+         * @param {Sting} eventName the event name for which all registered callbacks are counted (including nested event names).
+         * @param {String} [etype] the event mode; Sway.EventHub.CAPTURING or Sway.EventHub.BUBBLE
+         * @return {Number} the number of callback functions inside 'eventName'. Returns -1 if the event or namespace does not exists
+         * TODO: etype is not used
+         */
+        , countCallbacks: function(eventName, etype) {
+            var namespace = getStack.call(this, eventName) ;
+            return sumPropertyInNamespace(namespace, getCallbackCount) ;
+        }
+
+        /**
          * returns the the trigger count for this event
          * @method countTrigger
          * @param {sting} [eventName] the event name
@@ -226,39 +227,75 @@ window.Sway = window.Sway || {} ; // make sure it exists
          */
         , countTriggers: function(eventName) {
             var stack = getStack.call(this, eventName) ;
-            return sumPropertyInNamespace(stack, 'triggers') ;
+            return sumPropertyInNamespace(stack, getTriggerCount) ;
         }
     } ;
 
     /* ******** PRIVATE HELPER FUNCTION *********** */
 
-    function sumPropertyInNamespace(stack, property, etype) {
+    /*
+        Returns the sum of a stack property. The specific property is implemented in propertyFunc
+     */
+    function sumPropertyInNamespace(namespace, propertyFunc) {
         var i
-            , sum = 0 ;
+            , retVal = 0 ;
 
-        for( i in stack ) {
-            if ( i === "__stack" ) {
-                sum += stack[i][property] ;
+        for( i in namespace ) {
+            if ( i === '__stack' ) {
+                retVal += propertyFunc(namespace.__stack) ;
             }
             else {
-                sum += sumPropertyInNamespace(stack[i], property) ;
+                retVal += sumPropertyInNamespace(namespace[i], propertyFunc) ;
             }
         }
-        return sum ;
+        return retVal ;
+    }
+
+    /*
+        Returns the number of callback function present in this stack
+     */
+    function getCallbackCount(stack) {
+        return stack.on.length ;
+    }
+
+    /*
+        Returns the trigger count of this stack
+     */
+    function getTriggerCount(stack) {
+        return stack.triggers ;
     }
 
     function addCallbackToStack(eventName, callback, options) {
-        var namespace ;
-        if ( checkInput(eventName, callback)) {                                         // validate input
-            namespace = createStack.call(this, eventName) ;                             // get stack of 'eventName'
-            if ( namespace.__stack.on.indexOf(callback) === -1 ) {                      // check if the callback is not already added
-                namespace.__stack.on[options.prepend ? 'unshift':'push'](callback) ;    // add callback
-                namespace.__stack.eventMode = options.eventMode ;                       // the event-mode for which this callback should be triggered
-                namespace.__stack.count ++ ;
-                return namespace ;
+        var stack ;
+        if ( checkInput(eventName, callback)) {                                     // validate input
+            stack = createStack.call(this, eventName) ;                             // get stack of 'eventName'
+            if ( canAddCallback.call(this, stack.__stack.on, callback) === true ) {                       // check if the callback is not already added
+                stack.__stack.on[options.prepend ? 'unshift':'push']( {
+                    fn: callback
+                    , eventMode: options.eventMode
+                }) ;
+                return stack ;
             }
         }
         return null ;
+    }
+
+    /*
+        determines if a callback can be added to a stack. If this.allowMultiple === true, it will always return true
+     */
+    function canAddCallback(callbacks, callback) {
+        var i
+            , retVal = true ;
+
+        if (this.allowMultiple === false ) {
+            for( i = 0; i < callbacks.length; i++ ) {
+                if ( callbacks[i].fn === callback) {
+                    retVal = false ;
+                    break ;
+                }
+            }
+        }
+        return retVal ;
     }
 
 
@@ -286,14 +323,15 @@ window.Sway = window.Sway || {} ; // make sure it exists
     function removeFromStack(stack, callback) {
         var retVal = 0                                              // number of removed callbacks
             , callbacks                                             // a stack with 'on' and 'one' (maybe)
-            , ns ;                                                  // loop var
+            , ns                                                   // loop var
+            , position ;
 
         if ( callback ) {                                           // remove a specific callback
             for( ns in stack) {                                     // so we loop through all namespaces (and __stack is one of them)
                 callbacks = stack[ns] ;
                 if ( callbacks.on ) {                               // are we there yet, are we there yet
                     retVal += removeCallback(callbacks.on,  callback) ; // YES
-                    callbacks.count -= retVal ;
+                    position = callbacks.one.indexOf(callback) ;
                     removeCallback(callbacks.one, callback) ; // YES
                 }
                 else {                                              // NO, its a namesapace -> recurstion
@@ -311,31 +349,25 @@ window.Sway = window.Sway || {} ; // make sure it exists
        multiple occurrences of the 'callback' function
      */
     function removeCallback(list, callback){
-        var position                                        // position on the stack
-            , retVal = 0 ;                                  // number of removed callbacks
+        var i ;                                              // position on the stack
 
-        position = list.indexOf(callback) ;                 // is the callback in the callbacks list
-        while( position > -1 ) {                            // but the callback can be present multiple times!
-            retVal ++ ;                                     // found one match
-            list.splice(position, 1) ;                      // remove callback from the stack
-
-            position = list.indexOf(callback) ;             // prepare the while check to see if more actions are required
+        for( i = 0; i < list.length; i++ ){
+            if ( list[i].fn === callback.fn ) {
+                list.splice(i, 1) ;
+                // TODO: implement a check on this.allowMultiple and stop the loop if possible
+            }
         }
-        return retVal ;
     }
 
     /*
        Remove a whole namespace.
      */
     function removeNameSpace(stack) {
-        var retVal = 0                                      // number of removed callbacks
-            , i ;                                           // loop var
+        var  i ;                                           // loop var
 
         for( i in stack )  {                                // delete all elements from the stack (and we cannot do stack = {} ;)
-            retVal += stack[i].count ;
             delete stack[i] ;                               // cleanup
         }
-        return retVal ;
     }
 
     /*
@@ -375,9 +407,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
                         on: []                              // callback stack
                         , one: []                           // callbacks which are triggered only once
                         , parent: stack                     // parent namespace/object
-                        , count: 0                          // count callbacks in this namespace
                         , triggers: 0                       // count triggers
-                        , eventMode: null                   // define
                     }
                 } ;
             }
@@ -444,13 +474,13 @@ window.Sway = window.Sway || {} ; // make sure it exists
             , retVal = 0
             , callback ;
 
-        for( i = namespace.__stack.on.length -1; i >= 0; i-- ) {                                    // loop through all callbacks
+        for( i = namespace.__stack.on.length -1; i >= 0; i-- ) {                           // loop through all callbacks
             callback = namespace.__stack.on[i] ;
-            if ( !eventMode || namespace.__stack.eventMode === eventMode ) {                        // trigger callbacks depending on their event-mode
-                retVal ++ ;                                                                         // count this trigger
-                callback(data) ;                                                                    // call the callback
-                if ( removeCallback(namespace.__stack.one, callback) > 0 ) {                        // remove callback from the 'one' list
-                    namespace.__stack.count -= removeCallback(namespace.__stack.on, callback) ;     // and if it exists, remove it from 'on' too
+            if ( !eventMode || callback.eventMode === eventMode ) {                        // trigger callbacks depending on their event-mode
+                retVal ++ ;                                                                // count this trigger
+                callback.fn(data) ;                                                        // call the callback
+                if ( namespace.__stack.one.indexOf(callback.fn) >= 0 ) {                   // remove callback from the 'one' list
+                    removeCallback(namespace.__stack.on, callback) ;                       // and if it exists, remove it from 'on' too
                 }
             }
         }
