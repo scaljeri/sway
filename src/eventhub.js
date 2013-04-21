@@ -2,10 +2,63 @@ window.Sway = window.Sway || {} ; // make sure it exists
 
 (function(ns){
     var DEFAULTS = {
+        /**
+         * Contains available event modes. For example, if <tt>bar.foo</tt> is triggered, both event modes do the opposite
+         *
+         *                    | |                                     / \
+         *     ---------------| |-----------------     ---------------| |-----------------
+         *     | bar          | |                |     | bar          | |                |
+         *     |   -----------| |-----------     |     |   -----------| |-----------     |
+         *     |   |bar.foo   \ /          |     |     |   |bar.foo   | |          |     |
+         *     |   -------------------------     |     |   -------------------------     |
+         *     |        Event BUBBLING           |     |        Event CAPTURING          |
+         *     -----------------------------------     -----------------------------------
+         *
+         * The event model implemented in this class does both, going from <tt>bubbling</tt> to the execution of all callbacks in <tt>bar.foo</tt>, then back in <tt>capturing</tt> mode
+         *
+         *                                   | |  / \
+         *                  -----------------| |--| |-----------------
+         *                  | bar            | |  | |                |
+         *                  |   -------------| |--| |-----------     |
+         *                  |   |bar.foo     \ /  | |          |     |
+         *                  |   --------------------------------     |
+         *                  |               event model              |
+         *                  ------------------------------------------
+         *
+         *     eventHub.on('bar.foo', myFunc1) ;
+         *     eventHub.on('bar', myFunc2, Sway.EventHub.EVENT_MODE.CAPTURING) ;
+         *     eventHub.on('bar', myFunc3, Sway.EventHub.EVENT_MODE.BUBBLING) ;
+         *     eventHub.on('bar', myFunc4, Sway.EventHub.EVENT_MODE.BOTH) ;
+         *     eventHub.trigger('bar.foo') ; // -> callback execution order: myFunc3, myFunc4, myFunc1, myFunc2 and myFunc4
+         *
+         * @property {Object} EVENT_MODE
+         * @static
+         * @example
+         */
         EVENT_MODE: {
-            CAPTURING:  'capture'             // event goes from top to bottom
-            , BUBBLING: 'bubble'              // event goes from bottom to top
+            /**
+             * Defines the capturing event mode
+             * @property {String} EVENT_MODE.CAPTURING
+             * @static
+             */
+            CAPTURING:  'capture'           // event goes from root to target
+            /**
+             * Defines the bubbling event mode
+             * @property {String} EVENT_MODE.BUBBLING
+             * @static
+             */
+            , BUBBLING: 'bubble'            // event goes from target to root
+            /**
+             * Represent both capturing and bubbling event modes
+             * @property {String} EVENT_MODE.ALL
+             * @static
+             */
+            , BOTH: 'both'
         }
+        /*
+         * Default setting, to allow the same callback to be registered multiple times to the same event
+         */
+        , ALLOW_MULTIPLE: true
     }
     /**
      * EventHub facilitates event-based communication between different parts of an application (Event driven system).
@@ -31,8 +84,10 @@ window.Sway = window.Sway || {} ; // make sure it exists
      *
      * @class Sway.EventHub
      * @constructor
+     * @param {Object} [options] configuration parameters
+     *      @param {Boolean} [options.allowMultiple] accept multiple registrations of a function for the same event name
      */
-        , eh = function() {
+        , eh = function(options) {
             Object.defineProperty(this, '_rootStack',
                 {
                     value: { __stack: {count: 0, triggers: 0, on:[], one:[]} }
@@ -46,7 +101,10 @@ window.Sway = window.Sway || {} ; // make sure it exists
                     , writable: true    // otherwise ++ will not work
                 }
             ) ;
+            this.allowMultiple = options && typeof(options.allowMultiple) === 'boolean' ? options.allowMultiple : DEFAULTS.ALLOW_MULTIPLE ;
         } ;
+
+    eh.EVENT_MODE = DEFAULTS.EVENT_MODE ;
 
     eh.prototype = {
         /**
@@ -133,14 +191,14 @@ window.Sway = window.Sway || {} ; // make sure it exists
         /**
          * count the registered callbacks for an event or namespace
          *
-         * @method count
-         * @param {sting} [eventName] the event name for which all registered callbacks are counted (including nested event names). If this value is not set
-         * all registered callbacks are counted
+         * @method countCallbacks
+         * @param {Sting} eventName the event name for which all registered callbacks are counted (including nested event names).
+         * @param {String} [etype] the event mode; Sway.EventHub.CAPTURING or Sway.EventHub.BUBBLE
          * @return {Number} the number of callback functions inside 'eventName'. Returns -1 if the event or namespace does not exists
          */
-        , count: function(eventName) {
+        , countCallbacks: function(eventName, etype) {
             var stack = getStack.call(this, eventName) ;
-            return sumPropertyInNamespace(stack, 'count') ;
+            return sumPropertyInNamespace(stack, 'count', etype) ;
         }
 
         /**
@@ -162,11 +220,11 @@ window.Sway = window.Sway || {} ; // make sure it exists
 
         /**
          * returns the the trigger count for this event
-         * @method triggerCount
+         * @method countTrigger
          * @param {sting} [eventName] the event name
          * @return {Number} trigger count. -1 is returned if the event name does not exist
          */
-        , triggerCount: function(eventName) {
+        , countTriggers: function(eventName) {
             var stack = getStack.call(this, eventName) ;
             return sumPropertyInNamespace(stack, 'triggers') ;
         }
@@ -174,7 +232,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
 
     /* ******** PRIVATE HELPER FUNCTION *********** */
 
-    function sumPropertyInNamespace(stack, property) {
+    function sumPropertyInNamespace(stack, property, etype) {
         var i
             , sum = 0 ;
 
