@@ -6,6 +6,24 @@
 
   <meta charset='utf-8'>
 
+  <style>
+        #msg {
+            position: absolute ;
+            left: 50px ;
+            top: 60px ;
+            right: 50px ;
+            background-color: rgba(255, 255, 255, .9) ;
+            padding: 20px ;
+            border: 2px solid black ;
+            font-size: 1em ;
+        }
+        #help {
+            font-size: 1.5em ;
+            font-weight: bold ;
+            margin-bottom: 10px ;
+        }
+  </style>
+
   <link rel="shortcut icon" type="image/png" href="./external/jasmine/images/jasmine_favicon.png">
   <link rel="stylesheet" type="text/css" href="./lib/jasmine-1.3.1/jasmine.css">
   <script type="text/javascript" src="./lib/jasmine-1.3.1/jasmine.js"></script>
@@ -32,10 +50,10 @@
   <script type="text/javascript" src="./yuitest-coverage/src/data/activerecord.js"></script>
   -->
 
-  <script type="text/javascript" src="./src/di.js"></script>
-  <script type="text/javascript" src="./src/eventhub.js"></script>
-  <script type="text/javascript" src="./src/data/field.js"></script>
-  <script type="text/javascript" src="./src/data/activerecord.js"></script>
+  <script type="text/javascript" src="./yuitest-coverage/src/di.js"></script>
+  <script type="text/javascript" src="./yuitest-coverage/src/eventhub.js"></script>
+  <script type="text/javascript" src="./yuitest-coverage/src/data/field.js"></script>
+  <script type="text/javascript" src="./yuitest-coverage/src/data/activerecord.js"></script>
 
   <!-- include spec files here... -->
   <script type="text/javascript" src="spec/SpecHelper.js"></script>
@@ -60,6 +78,8 @@
       var jasmineEnv = jasmine.getEnv();
       jasmineEnv.updateInterval = 1000;
 
+      hack(jasmineEnv) ;
+
       var htmlReporter = new jasmine.HtmlReporter();
 
       jasmineEnv.addReporter(htmlReporter);
@@ -81,6 +101,38 @@
         jasmineEnv.execute();
       }
 
+      function hack(jasmineEnv) {
+            var finishCallback = jasmineEnv.currentRunner_.finishCallback.bind(jasmineEnv.currentRunner_) ;
+            jasmineEnv.currentRunner_.finishCallback = function() {
+              if ( window._yuitest_coverage) { // does not exist on test failures
+                finishCallback() ;
+                var msg = document.createElement('div') ;
+                msg.id = 'msg' ;
+
+                var help = document.createElement('div') ;
+                help.id = 'help' ;
+                help.appendChild(document.createTextNode('Copy the below JSON into "yuitest-coverage/coverage-data.json" and run "./yuitest-coverage/generate-stats"')) ;
+                msg.appendChild(help) ;
+
+                var json = document.createElement('div') ;
+                json.id = 'json' ;
+                json.appendChild(document.createTextNode(JSON.stringify(_yuitest_coverage))) ;
+                msg.appendChild(json) ;
+                document.body.appendChild(msg) ;
+                console.log(JSON.stringify(_yuitest_coverage)) ;
+
+                if (document.selection) {
+                    var range = document.body.createTextRange();
+                    range.moveToElementText(document.getElementById('json'));
+                    range.select();
+                } else if (window.getSelection) {
+                    var range = document.createRange();
+                    range.selectNode(document.getElementById('json'));
+                    window.getSelection().addRange(range);
+                }
+                }
+            }
+        }
     })();
   </script>
 
