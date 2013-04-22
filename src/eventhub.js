@@ -177,20 +177,11 @@ window.Sway = window.Sway || {} ; // make sure it exists
          * @return {Boolean} TRUE if the callback is registered successfully. It will fail if the callback was already registered
          */
         , one: function(eventName, callback, options) {
-            var obj
-                , stack ;
-
-            if ( !options ) {
-                options = {} ;
+            var obj = addCallbackToStack.call(this, eventName, callback, options||{}) ;
+            if ( obj ) { // if obj exists, the callback was added.
+                obj.isOne = true ;
             }
-
-            obj = addCallbackToStack.call(this, eventName, callback, options) ;
-            if ( obj ) { // if the stack exists, the callback was added to the 'on' list
-                stack = getStack.call(this, eventName) ;
-                stack.__stack.one.push(obj) ;
-                return true ;
-            }
-            return false ;
+            return obj !== null ;
         }
 
         /**
@@ -332,8 +323,6 @@ window.Sway = window.Sway || {} ; // make sure it exists
                 namespace = namespaces[i] ;
                 if ( i === '__stack') {
                     retVal += removeCallback(namespace.on, callback ) ;
-                    removeCallback(namespace.one, callback ) ;
-
                 }
                 else {                                              // NO, its a namesapace -> recurstion
                    retVal += removeFromNamespace.call(this, namespace, callback ) ;
@@ -409,7 +398,6 @@ window.Sway = window.Sway || {} ; // make sure it exists
                 stack[parts[i]] = {
                     __stack: {                              // holds all info for this namespace (not the child namespaces)
                         on: []                              // callback stack
-                        , one: []                           // callbacks which are triggered only once
                         , parent: stack                     // parent namespace/object
                         , triggers: 0                       // count triggers
                     }
@@ -425,11 +413,11 @@ window.Sway = window.Sway || {} ; // make sure it exists
             , namespace = this._rootStack
             , parts = eventName.split('.') || []
             , eventMode = DEFAULTS.EVENT_MODE.CAPTURING
-            , retVal = callCallbacks(namespace, eventMode) ;
+            , retVal = 0 ; // callCallbacks(namespace, eventMode) ; -> because you cannot bind callbacks to the root
 
         for( i = 0; i < parts.length -1; i++ ) { // loop through namespace (not the last part)
            namespace = namespace[parts[i]] ;
-           callCallbacks(namespace, data, eventMode) ;
+           retVal += callCallbacks(namespace, data, eventMode) ;
         }
         return retVal ;
     }
@@ -483,8 +471,8 @@ window.Sway = window.Sway || {} ; // make sure it exists
             if ( !eventMode || callback.eventMode === eventMode ) {                        // trigger callbacks depending on their event-mode
                 retVal ++ ;                                                                // count this trigger
                 callback.fn(data) ;                                                        // call the callback
-                if ( namespace.__stack.one.indexOf(callback) >= 0 ) {                   // remove callback from the 'one' list
-                    removeCallback(namespace.__stack.on, callback) ;                       // and if it exists, remove it from 'on' too
+                if ( callback.isOne ) {
+                    namespace.__stack.on.splice(i, 1) ;
                 }
             }
         }

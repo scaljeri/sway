@@ -1,15 +1,7 @@
 /*
     TODO: test for 'prepend'
  */
-window.describe("Sway.EventHub", function() {
-    "use strict" ;
-
-    var beforeEach = window.beforeEach
-        , describe = window.describe
-        , it = window.it
-        , expect = window.expect
-        , spyOn = window.spyOn
-        , Sway = window.Sway ;
+describe("Sway.EventHub", function() {
 
     // mock some classes
     beforeEach(function() {
@@ -19,27 +11,27 @@ window.describe("Sway.EventHub", function() {
         // The callbacks modify the data parameter, which is used to determine the order in which they are executed
         Sway.callbacks = {
             cb1: function(data) {
-                if ( data && data.order )
-                    data.order *= 10 ;
+                if ( data && Array.isArray(data)  )
+                    data.push('cb1') ;
             },
             cb2: function(data) {
-                if ( data && data.order )
-                    data.order *= 10 ;
+                if ( data && Array.isArray(data)  )
+                    data.push('cb2') ;
             },
             cb3: function(data) {
-                if ( data && data.order )
-                    data.order *= 10 ;
+                if ( data && Array.isArray(data)  )
+                    data.push('cb3') ;
             },
             cb4: function(data) {
-                if ( data && data.order )
-                    data.order *= 10 ;
+                if ( data && Array.isArray(data)  )
+                    data.push('cb4') ;
             }
         };
 
-        spyOn(Sway.callbacks, 'cb1') ;
-        spyOn(Sway.callbacks, 'cb2') ;
-        spyOn(Sway.callbacks, 'cb3') ;
-        spyOn(Sway.callbacks, 'cb4') ;
+        spyOn(Sway.callbacks, 'cb1').andCallThrough() ;
+        spyOn(Sway.callbacks, 'cb2').andCallThrough() ;
+        spyOn(Sway.callbacks, 'cb3').andCallThrough() ;
+        spyOn(Sway.callbacks, 'cb4').andCallThrough() ;
     });
 
     // javascript should work (syntax check)
@@ -72,7 +64,6 @@ window.describe("Sway.EventHub", function() {
         }) ;
         it("for callbacks registered with 'one'", function() {
             expect(Sway.eventHub.one("go", Sway.callbacks.cb1)).toBeTruthy() ;
-            debugger ;
             expect(Sway.eventHub.trigger("go", 1 )).toEqual(1) ;
             expect(Sway.callbacks.cb1).toHaveBeenCalled() ;
             expect(Sway.callbacks.cb1.callCount).toEqual(1) ;
@@ -99,7 +90,6 @@ window.describe("Sway.EventHub", function() {
             Sway.eventHub.one("go", Sway.callbacks.cb2) ;
             Sway.eventHub.on("go", Sway.callbacks.cb3) ;
             Sway.eventHub.one("go", Sway.callbacks.cb4) ;
-            debugger ;
             expect(Sway.eventHub.off("go", Sway.callbacks.cb3)).toEqual(1) ;
             expect(Sway.eventHub.off("go", Sway.callbacks.cb4)).toBeTruthy() ;
             expect(Sway.eventHub.trigger("go", 2 )).toEqual(2) ;
@@ -124,12 +114,12 @@ window.describe("Sway.EventHub", function() {
         }) ;
         it("with correct capturing and bubbling behavior", function(){
             Sway.eventHub.on("bar", Sway.callbacks.cb1) ;
-            Sway.eventHub.one("bar", Sway.callbacks.cb2, { etype: 'capture'}) ;
-            Sway.eventHub.one("bar", Sway.callbacks.cb3, { etype: 'bubble'}) ;
+            Sway.eventHub.one("bar", Sway.callbacks.cb2, { eventMode: 'capture'}) ;
+            Sway.eventHub.one("bar", Sway.callbacks.cb3, { eventMode: 'bubble'}) ;
             Sway.eventHub.on("bar.foo", Sway.callbacks.cb4) ;
-            expect(Sway.eventHub.trigger("bar.foo", { order: 1 })).toEqual(2) ;
+            expect(Sway.eventHub.trigger("bar.foo", [])).toEqual(3) ;
             expect(Sway.callbacks.cb1).not.toHaveBeenCalled() ;
-
+            expect(Sway.callbacks.cb2).toHaveBeenCalledWith(['cb2','cb4', 'cb3' ]) ;
         }) ;
     });
 
@@ -147,7 +137,6 @@ window.describe("Sway.EventHub", function() {
        }) ;
        it("for callbacks registered with 'one'", function() {
            expect(Sway.eventHub.one("forum.go", Sway.callbacks.cb1)).toBeTruthy() ;
-           expect(Sway.eventHub.one("forum.go", Sway.callbacks.cb1)).toBeFalsy() ;
            expect(Sway.eventHub.trigger("forum.go", 1 )).toEqual(1) ;
            expect(Sway.callbacks.cb1).toHaveBeenCalled() ;
            expect(Sway.callbacks.cb1.callCount).toEqual(1) ;
