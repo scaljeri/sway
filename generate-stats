@@ -6,3 +6,7 @@ jscheckstyle --html ./src/ > ./info/jscheckstyle/index.html
 
 echo generate code coverage sources in ./yuitest-coverage/src
 java -jar ./external/yuitest/nodejs-coverage/jar/yuitest-coverage.jar -d -o ./yuitest-coverage/src/ ./src/
+
+echo generate code coverage data
+phantomjs yuitest-coverage/generate > ./yuitest-coverage/coverage-data.json
+java -jar ./external/yuitest/nodejs-coverage/jar/yuitest-coverage-report.jar -o ./info/coverage/ yuitest-coverage/coverage-data.json
