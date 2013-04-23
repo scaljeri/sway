@@ -196,7 +196,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
          Sway.eventHub.off('ui.update', this.update) ;
          Sway.eventHub.off('ui') ;
          */
-        , off: function(eventName, callback, recursive) {
+        , off: function(eventName, callback) {
             var stack = getStack.call(this, eventName) ;
             return removeFromNamespace(stack, callback) ;
         }
@@ -206,24 +206,34 @@ window.Sway = window.Sway || {} ; // make sure it exists
          *
          * @method countCallbacks
          * @param {Sting} eventName the event name for which all registered callbacks are counted (including nested event names).
-         * @param {String} [etype] the event mode; Sway.EventHub.CAPTURING or Sway.EventHub.BUBBLE
+         * @param {Object} [options] determine the count behavior
+         *      @param {String} [eventMode] the event mode; Sway.EventHub.CAPTURING or Sway.EventHub.BUBBLE
+         *      @param {Boolean} [traverse=false] traverse all nested namepsaces
          * @return {Number} the number of callback functions inside 'eventName'. Returns -1 if the event or namespace does not exists
          * TODO: etype is not used
          */
-        , countCallbacks: function(eventName, etype) {
+        , countCallbacks: function(eventName, options) {
+            if ( !eventName ) { // => count all callback function within this namespace
+                (options = options||{}).traverse = true ;
+            }
             var namespace = getStack.call(this, eventName) ;
-            return sumPropertyInNamespace(namespace, getCallbackCount) ;
+            return sumPropertyInNamespace(namespace, getCallbackCount, options||{}) ;
         }
 
         /**
          * returns the the trigger count for this event
          * @method countTrigger
          * @param {sting} [eventName] the event name
+         * @param {Object} [options]
+         *      @param {Boolean} [traverse=false] traverse all nested namepsaces
          * @return {Number} trigger count. -1 is returned if the event name does not exist
          */
-        , countTriggers: function(eventName) {
+        , countTriggers: function(eventName, options) {
+            if ( !eventName ) { // => count all triggers
+                (options = options||{}).traverse = true ;
+            }
             var stack = getStack.call(this, eventName) ;
-            return sumPropertyInNamespace(stack, getTriggerCount) ;
+            return sumPropertyInNamespace(stack, getTriggerCount, options||{}) ;
         }
     } ;
 
@@ -232,16 +242,16 @@ window.Sway = window.Sway || {} ; // make sure it exists
     /*
         Returns the sum of a stack property. The specific property is implemented in propertyFunc
      */
-    function sumPropertyInNamespace(namespace, propertyFunc) {
+    function sumPropertyInNamespace(namespace, propertyFunc, options) {
         var i
             , retVal = 0 ;
 
         for( i in namespace ) {
             if ( i === '__stack' ) {
-                retVal += propertyFunc(namespace.__stack) ;
+                retVal += propertyFunc(namespace.__stack, options) ;
             }
-            else {
-                retVal += sumPropertyInNamespace(namespace[i], propertyFunc) ;
+            else if ( options.traverse === true  ) {
+                retVal += sumPropertyInNamespace(namespace[i], propertyFunc, options) ;
             }
         }
         return retVal ;
@@ -250,14 +260,26 @@ window.Sway = window.Sway || {} ; // make sure it exists
     /*
         Returns the number of callback function present in this stack
      */
-    function getCallbackCount(stack) {
-        return stack.on.length ;
+    function getCallbackCount(stack, options) {
+        var i
+            , retVal = 0 ;
+        if ( !options.eventMode ) {
+            retVal = stack.on.length ;
+        }
+        else {
+            for ( i in stack.on ) {
+                if ( stack.on[i].eventMode && stack.on[i].eventMode === options.eventMode ) {
+                    retVal ++ ;
+                }
+            }
+        }
+        return retVal ;
     }
 
     /*
         Returns the trigger count of this stack
      */
-    function getTriggerCount(stack) {
+    function getTriggerCount(stack, options) {
         return stack.triggers ;
     }
 

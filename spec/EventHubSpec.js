@@ -99,17 +99,17 @@ describe("Sway.EventHub", function() {
             expect(Sway.callbacks.cb4).not.toHaveBeenCalled() ;
         }) ;
         it("with a correct callback/trigger count", function() {
-            Sway.eventHub.on("go", Sway.callbacks.cb1) ;
+            Sway.eventHub.on( "go", Sway.callbacks.cb1) ;
             Sway.eventHub.one("go", Sway.callbacks.cb2) ;
-            Sway.eventHub.on("go", Sway.callbacks.cb3) ;
+            Sway.eventHub.on( "go", Sway.callbacks.cb3) ;
             Sway.eventHub.one("go", Sway.callbacks.cb4) ;
+
             expect(Sway.eventHub.countTriggers("go")).toEqual(0) ;
             expect(Sway.eventHub.countTriggers()).toEqual(0) ;
             expect(Sway.eventHub.countCallbacks("go")).toEqual(4) ;
             expect(Sway.eventHub.countCallbacks()).toEqual(4) ;
             expect(Sway.eventHub.trigger("go")).toEqual(4) ;
             expect(Sway.eventHub.countCallbacks("go")).toEqual(2) ;
-            expect(Sway.eventHub.countTriggers("go")).toEqual(1) ;
             expect(Sway.eventHub.countTriggers()).toEqual(1) ;
         }) ;
         it("with correct capturing and bubbling behavior", function(){
@@ -199,12 +199,21 @@ describe("Sway.EventHub", function() {
             Sway.eventHub.on("go", Sway.callbacks.cb1) ;
             Sway.eventHub.one("go", Sway.callbacks.cb2) ;
             Sway.eventHub.on("go", Sway.callbacks.cb3) ;
-            Sway.eventHub.one("go", Sway.callbacks.cb4) ;
-            expect(Sway.eventHub.countCallbacks("go")).toEqual(4) ;
-           // TODO: trigger count
+            Sway.eventHub.one("go.now", Sway.callbacks.cb4) ;
+            expect(Sway.eventHub.countCallbacks("go")).toEqual(3) ;
+            expect(Sway.eventHub.countCallbacks("go", {traverse: true})).toEqual(4) ;
+            Sway.eventHub.trigger('go') ;
+            Sway.eventHub.trigger('go.now') ;
+            Sway.eventHub.trigger('go') ;
+            expect(Sway.eventHub.countCallbacks("go")).toEqual(2) ;
+            expect(Sway.eventHub.countCallbacks("go", {traverse: true})).toEqual(2) ;
+            expect(Sway.eventHub.countCallbacks("go.now")).toEqual(0) ;
+            expect(Sway.eventHub.countTriggers('go')).toEqual(2) ;
+            expect(Sway.eventHub.countTriggers('go', {traverse: true})).toEqual(3) ;
+            expect(Sway.eventHub.countTriggers('go.now')).toEqual(1) ;
         }) ;
         it("with correct capturing and bubbling behavior", function(){
-
+            // TODO
         }) ;
     }) ;
 
