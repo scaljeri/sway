@@ -1,0 +1,13 @@
+var page = require('webpage').create()
+    , file = "http://192.168.2.4/~QNH/zipped" + "/SpecRunnerCoverage.html" ;
+
+page.open(file, function (status) {
+    setTimeout(function() {
+        var json = page.evaluate(function () {
+            return window._yuitest_coverage;
+        });
+
+        console.log(JSON.stringify(json));
+        phantom.exit();
+    }, 2000) ;
+});
