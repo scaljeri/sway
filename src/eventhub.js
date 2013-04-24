@@ -290,17 +290,16 @@ window.Sway = window.Sway || {} ; // make sure it exists
     }
 
     function addCallbackToStack(eventName, callback, options) {
-        var obj
+        var obj = null
             , stack ;
         if ( checkInput(eventName, callback)) {                                     // validate input
             stack = createStack.call(this, eventName) ;                             // get stack of 'eventName'
             if ( canAddCallback.call(this, stack.__stack.on, callback, options) === true ) {                       // check if the callback is not already added
                 obj = { fn: callback, eventMode: options.eventMode } ;
                 stack.__stack.on[options.prepend ? 'unshift':'push'](obj) ;
-                return obj ;
             }
         }
-        return null ;
+        return obj ;
     }
 
     /*
