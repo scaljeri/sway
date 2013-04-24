@@ -389,7 +389,7 @@
             "line": 56,
             "description": "Returns an instance for the given contract.",
             "itemtype": "method",
-            "name": "geInstancet",
+            "name": "getInstancet",
             "params": [
                 {
                     "name": "contract",
@@ -490,7 +490,7 @@
         },
         {
             "file": "src/eventhub.js",
-            "line": 119,
+            "line": 122,
             "description": "Triggers one or more events. One event is triggered if the 'eventName' parameter targets a specific event, but if this parameter is a namespace, all nested events and\nnamespaces will be triggered.",
             "itemtype": "method",
             "name": "trigger",
@@ -505,6 +505,21 @@
                     "description": "data passed to the triggered callback function",
                     "type": "Object|Array|Number|String|Boolean|Function",
                     "optional": true
+                },
+                {
+                    "name": "options",
+                    "description": "configuration",
+                    "type": "Opbject",
+                    "optional": true,
+                    "props": [
+                        {
+                            "name": "traverse",
+                            "description": "trigger all callbacks in nested namespaces",
+                            "type": "String",
+                            "optional": true,
+                            "optdefault": "false"
+                        }
+                    ]
                 }
             ],
             "return": {
@@ -518,7 +533,7 @@
         },
         {
             "file": "src/eventhub.js",
-            "line": 144,
+            "line": 150,
             "description": "Register a callback for a specific event. Callbacks are executed in the order of\nregistration. Set 'prepend' to TRUE to add the callback in front of the others. With the 'options'\nparameter it is also possible to execute the callback in a capturing or bubbling phase.",
             "itemtype": "method",
             "name": "on",
@@ -559,13 +574,13 @@
                 "type": "Boolean"
             },
             "example": [
-                "\n        Sway.eventHub.on( 'ui.update', this.update.bind(this) ) ;\n        Sway.eventHub.on( 'ui.update', this.update.bind(this), { prepend: true, eventMode: 'capture' ) ;"
+                "\n        Sway.eventHub.on( 'ui.update', this.update.bind(this) ) ;\n        Sway.eventHub.on( 'ui.update', this.update.bind(this), {prepend: true, eventMode: Sway.EventHub.EVENT_MODE.CAPTURING} ) ;"
             ],
             "class": "Sway.EventHub"
         },
         {
             "file": "src/eventhub.js",
-            "line": 166,
+            "line": 172,
             "description": "Register a callback for a specific event. This function is identical to {{#crossLink \"Sway.EventHub/on:method\"}}{{/crossLink}}\nexcept that this callback is removed from the list after it has been triggered.",
             "itemtype": "method",
             "name": "one",
@@ -596,7 +611,8 @@
                             "name": "eventMode",
                             "description": "the event mode for which the callback is triggered too. Available modes are\n         <tt>capture</tt> and <tt>bubble</tt>",
                             "type": "String",
-                            "optional": true
+                            "optional": true,
+                            "optdefault": "null"
                         }
                     ]
                 }
@@ -609,8 +625,8 @@
         },
         {
             "file": "src/eventhub.js",
-            "line": 187,
-            "description": "Removes the given callback for a specific event.",
+            "line": 193,
+            "description": "Removes the given callback for a specific event. However, if a callback is registered with an 'eventMode', the\ncallback can only be removed if that eventMode is specified too!",
             "itemtype": "method",
             "name": "off",
             "params": [
@@ -624,6 +640,25 @@
                     "description": "the callback function to be removed. If omitted, all registered events and nested\nnamespaces inside 'eventName' are removed",
                     "type": "Function",
                     "optional": true
+                },
+                {
+                    "name": "UNKNOWN",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "traverse",
+                    "description": "traverse all nested namespaces",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": "false"
+                },
+                {
+                    "name": "options.eventMode",
+                    "description": "the event mode for which the callback is triggered too. Available modes are",
+                    "type": "String",
+                    "optional": true,
+                    "optdefault": "null"
                 }
             ],
             "return": {
@@ -631,13 +666,13 @@
                 "type": "Number"
             },
             "example": [
-                "\n        Sway.eventHub.off('ui.update', this.update) ;\n        Sway.eventHub.off('ui') ;"
+                "\n        Sway.eventHub.off('ui.update', this.update) ;\n        Sway.eventHub.off('ui.update', this.update, {eventMode: Sway.EventHub.EVENT_MODE.CAPTURING}) ;\n        Sway.eventHub.off('ui') ;"
             ],
             "class": "Sway.EventHub"
         },
         {
             "file": "src/eventhub.js",
-            "line": 204,
+            "line": 215,
             "description": "count the registered callbacks for an event or namespace",
             "itemtype": "method",
             "name": "countCallbacks",
@@ -648,10 +683,23 @@
                     "type": "Sting"
                 },
                 {
-                    "name": "etype",
+                    "name": "options",
+                    "description": "determine the count behavior",
+                    "type": "Object",
+                    "optional": true
+                },
+                {
+                    "name": "eventMode",
                     "description": "the event mode; Sway.EventHub.CAPTURING or Sway.EventHub.BUBBLE",
                     "type": "String",
                     "optional": true
+                },
+                {
+                    "name": "traverse",
+                    "description": "traverse all nested namepsaces",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": "false"
                 }
             ],
             "return": {
@@ -662,7 +710,7 @@
         },
         {
             "file": "src/eventhub.js",
-            "line": 218,
+            "line": 234,
             "description": "returns the the trigger count for this event",
             "itemtype": "method",
             "name": "countTrigger",
@@ -672,6 +720,19 @@
                     "description": "the event name",
                     "type": "Sting",
                     "optional": true
+                },
+                {
+                    "name": "options",
+                    "description": "",
+                    "type": "Object",
+                    "optional": true
+                },
+                {
+                    "name": "traverse",
+                    "description": "traverse all nested namepsaces",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": "false"
                 }
             ],
             "return": {
@@ -697,6 +758,10 @@
         {
             "message": "replacing incorrect tag: returns with return",
             "line": " src/di.js:79"
+        },
+        {
+            "message": "param name missing: {Object}",
+            "line": " src/eventhub.js:193"
         },
         {
             "message": "Missing item type\nFileEntry interface is provided for working with files:\nhttp://www.mosync.com/files/imports/doxygen/latest/html5/filewriter.md.html\nfileEntry.isFile === true\nfileEntry.isDirectory === false\nfileEntry.name\nfileEntry.fullPath\n...\n\nfileEntry.getMetadata(successCallback, opt_errorCallback);\nfileEntry.remove(successCallback, opt_errorCallback);\nfileEntry.moveTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);\nfileEntry.copyTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);\nfileEntry.getParent(successCallback, opt_errorCallback);\nfileEntry.toURI(opt_mimeType);  // Currently not implemented in Google Chrome 9.\n\nfileEntry.file(successCallback, opt_errorCallback);\nfileEntry.createWriter(successCallback, opt_errorCallback);",

@@ -74,47 +74,74 @@
       zip.useWebWorkers     = true ;
       zip.workerScriptsPath = "lib/zip.js/" ;
 
-      (function() {
-      var jasmineEnv = jasmine.getEnv();
-      jasmineEnv.updateInterval = 1000;
-
-      hack(jasmineEnv) ;
-
-      var htmlReporter = new jasmine.HtmlReporter();
-
-      jasmineEnv.addReporter(htmlReporter);
-
-      jasmineEnv.specFilter = function(spec) {
-        return htmlReporter.specFilter(spec);
-      };
-
-      var currentWindowOnload = window.onload;
-
-      window.onload = function() {
-        if (currentWindowOnload) {
-          currentWindowOnload();
-        }
-        execJasmine();
-      };
-
-      function execJasmine() {
-        jasmineEnv.execute();
+      // http://stackoverflow.com/questions/13366318/how-to-return-jasmine-unit-test-results-as-a-string
+      function TextReporter() {
+          this.textResult = "";
       }
 
-      function hack(jasmineEnv) {
-            var finishCallback = jasmineEnv.currentRunner_.finishCallback.bind(jasmineEnv.currentRunner_) ;
-            jasmineEnv.currentRunner_.finishCallback = function() {
-              if ( window._yuitest_coverage) { // does not exist on test failures
-                finishCallback() ;
+      TextReporter.prototype = new jasmine.Reporter();
+
+      TextReporter.prototype.onRunnerFinished = function (callback) {
+          this.callbackEnd = callback;
+      };
+
+      TextReporter.prototype.reportRunnerResults = function (runner) {
+          // When all the spec are finished //
+          var result = runner.results();
+
+          this.textResult += "Test results :: (" + result.passedCount + "/" + result.totalCount + ") :: " + (result.passed() ? "passed" : "failed");
+          this.textResult += "\r\n";
+
+          if (this.callbackEnd) {
+              this.callbackEnd(this.textResult);
+          }
+      };
+
+      TextReporter.prototype.reportSuiteResults = function (suite) {
+          // When a group of spec has finished running //
+          var result = suite.results();
+          var description = suite.description;
+      }
+
+      TextReporter.prototype.reportSpecResults = function(spec) {
+          // When a single spec has finished running //
+          var result = spec.results();
+
+          this.textResult += "Spec :: " + spec.description + " :: " + (result.passed() ? "passed" : "failed");
+          this.textResult += "\r\n";
+      };
+
+      (function() {
+        var jasmineEnv = jasmine.getEnv();
+        jasmineEnv.updateInterval = 1000;
+
+        var txtReporter = new TextReporter();
+        txtReporter.onRunnerFinished(function (text) {
+            hack() ;
+        });
+
+        jasmineEnv.addReporter(txtReporter);
+        //hack(jasmineEnv) ;
+
+        window.onload = function() {
+                jasmineEnv.execute();
+        };
+
+        function hack() {
+            var msg             // container
+                , help          // helper text
+                , range ;       // used to select the coverage report json data
+
+            if ( window._yuitest_coverage) { // does not exist on test failures
                 var msg = document.createElement('div') ;
                 msg.id = 'msg' ;
 
-                var help = document.createElement('div') ;
+                help = document.createElement('div') ;
                 help.id = 'help' ;
                 help.appendChild(document.createTextNode('Copy the below JSON into "yuitest-coverage/coverage-data.json" and run "./yuitest-coverage/generate-stats"')) ;
                 msg.appendChild(help) ;
 
-                var json = document.createElement('div') ;
+                json = document.createElement('div') ;
                 json.id = 'json' ;
                 json.appendChild(document.createTextNode(JSON.stringify(_yuitest_coverage))) ;
                 msg.appendChild(json) ;
@@ -122,14 +149,13 @@
                 console.log(JSON.stringify(_yuitest_coverage)) ;
 
                 if (document.selection) {
-                    var range = document.body.createTextRange();
+                    range = document.body.createTextRange();
                     range.moveToElementText(document.getElementById('json'));
                     range.select();
                 } else if (window.getSelection) {
-                    var range = document.createRange();
+                    range = document.createRange();
                     range.selectNode(document.getElementById('json'));
                     window.getSelection().addRange(range);
-                }
                 }
             }
         }

@@ -56,7 +56,7 @@
         /**
          * Returns an instance for the given contract.
          *
-         * @method geInstancet
+         * @method getInstancet
          * @param  {string} contract name
          * @returns {Object} Class instance
          * @example
