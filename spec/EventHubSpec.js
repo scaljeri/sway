@@ -60,7 +60,6 @@ describe("Sway.EventHub", function() {
         expect(Sway.eventHub.on( "bar", Sway.callbacks.cb1, {eventMode: Sway.EventHub.EVENT_MODE.CAPTURE})).toBeFalsy() ;
         expect(Sway.eventHub.on( "bar", Sway.callbacks.cb1, {eventMode: Sway.EventHub.EVENT_MODE.BUBBLING})).toBeTruthy() ;
 
-        debugger ;
         expect(Sway.eventHub.on( "bar", Sway.callbacks.cb2, {eventMode: Sway.EventHub.EVENT_MODE.BOTH})).toBeTruthy() ;
         expect(Sway.eventHub.on( "bar", Sway.callbacks.cb2, {eventMode: Sway.EventHub.EVENT_MODE.CAPTURING})).toBeFalsy() ;
         expect(Sway.eventHub.on( "bar", Sway.callbacks.cb2)).toBeTruthy() ;
@@ -130,15 +129,15 @@ describe("Sway.EventHub", function() {
         }) ;
         it("with correct capturing and bubbling behavior", function(){
             Sway.eventHub.on( "bar", Sway.callbacks.cb1) ;
-            Sway.eventHub.one("bar", Sway.callbacks.cb2, { eventMode: 'capture'}) ;
-            Sway.eventHub.one("bar", Sway.callbacks.cb3, { eventMode: 'bubble' }) ;
-            Sway.eventHub.one("bar", Sway.callbacks.cb3, { eventMode: 'capture'}) ;
-            Sway.eventHub.on( "bar", Sway.callbacks.cb4, { eventMode: 'bubble' }) ;
+            Sway.eventHub.one("bar", Sway.callbacks.cb2, { eventMode: Sway.EventHub.EVENT_MODE.CAPTURING}) ;
+            Sway.eventHub.one("bar", Sway.callbacks.cb3, { eventMode: Sway.EventHub.EVENT_MODE.BUBBLING}) ;
+            Sway.eventHub.one("bar", Sway.callbacks.cb3, { eventMode: Sway.EventHub.EVENT_MODE.CAPTURING}) ;
+            Sway.eventHub.on( "bar", Sway.callbacks.cb4, { eventMode: Sway.EventHub.EVENT_MODE.BUBBLING }) ;
             Sway.eventHub.on( "bar", Sway.callbacks.cb4) ;
 
-            expect(Sway.eventHub.trigger("bar.foo", [])).toEqual(3) ;
-            expect(Sway.callbacks.cb1).not.toHaveBeenCalled() ;
-            expect(Sway.callbacks.cb2).toHaveBeenCalledWith(['cb2','cb4', 'cb3' ]) ;
+            expect(Sway.eventHub.trigger("bar", [])).toEqual(2) ;
+            expect(Sway.callbacks.cb1).toHaveBeenCalledWith(['cb1','cb4']) ;
+            expect(Sway.callbacks.cb1).toHaveBeenCalled() ;
         }) ;
     });
 

@@ -137,7 +137,8 @@ window.Sway = window.Sway || {} ; // make sure it exists
             if ( (namespace = getStack.call(this, eventName)) ) {                   // check if the eventName exists
                 retVal = triggerEventCapture.call(this, eventName||'', data) +      // NOTE that eventName can be empty!
                          triggerEvent(namespace, data) +
-                         triggerEventBubble(namespace, data) ;
+                        ((eventName||'').match(/\./) !== null ? triggerEventBubble(namespace, data) : 0) ;
+
                 namespace.__stack.triggers ++ ;                                     // count the trigger
                 namespace.__stack.one = [] ;                                        // cleanup
             }
@@ -445,9 +446,11 @@ window.Sway = window.Sway || {} ; // make sure it exists
             , eventMode = DEFAULTS.EVENT_MODE.CAPTURING
             , retVal = 0 ; // callCallbacks(namespace, eventMode) ; -> because you cannot bind callbacks to the root
 
-        for( i = 0; i < parts.length -1; i++ ) { // loop through namespace (not the last part)
-           namespace = namespace[parts[i]] ;
-           retVal += callCallbacks(namespace, data, eventMode) ;
+        if ( parts.length > 1 ) {
+            for( i = 0; i < parts.length -1; i++ ) { // loop through namespace (not the last part)
+                namespace = namespace[parts[i]] ;
+                retVal += callCallbacks(namespace, data, eventMode) ;
+            }
         }
         return retVal ;
     }
@@ -496,13 +499,13 @@ window.Sway = window.Sway || {} ; // make sure it exists
             , retVal = 0
             , callback ;
 
-        for( i = namespace.__stack.on.length -1; i >= 0; i-- ) {                           // loop through all callbacks
+        for( i = 0; i < namespace.__stack.on.length ; i++ ) {           // loop through all callbacks
             callback = namespace.__stack.on[i] ;
-            if ( !eventMode || callback.eventMode === eventMode ) {                        // trigger callbacks depending on their event-mode
-                retVal ++ ;                                                                // count this trigger
-                callback.fn(data) ;                                                        // call the callback
+            if ( callback.eventMode === eventMode ) {                   // trigger callbacks depending on their event-mode
+                retVal ++ ;                                             // count this trigger
+                callback.fn(data) ;                                     // call the callback
                 if ( callback.isOne ) {
-                    namespace.__stack.on.splice(i, 1) ;
+                    namespace.__stack.on.splice(i--, 1) ;               // remove callback for index is i, and afterwards fix loop index with i--
                 }
             }
         }
