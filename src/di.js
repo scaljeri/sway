@@ -98,8 +98,8 @@
                 throw 'Unknown contract name "' + contract + '"' ;
             }
 
-            var self = this ;
-            var cr = this._contracts[contract].classRef ;
+            var self = this
+                , cr = this._contracts[contract].classRef ;
 
             function Fake(){
                 cr.apply(this, createInstanceList.call(self, contract, dependencies||[])) ;
@@ -136,12 +136,9 @@
                 if ( this._depCheck.indexOf(c) === -1 ) { // check for circular dependency
                     this._depCheck.push(c) ;
                     instances.push(this.getInstance(c)) ;
-                    if ( !instances[instances.length-1]) {
-                        console.warn("Dependency '" + c + "' does not exist!") ;
-                    }
                     this._depCheck.pop() ;
                 }
-                else { // fatal
+                else { // circular dependency detected!! --> STOP
                     this._depCheck.length = 0 ;
                     throw "Circular dependency detected for contract " + c ;
                 }
