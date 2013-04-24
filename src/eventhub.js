@@ -126,17 +126,19 @@ window.Sway = window.Sway || {} ; // make sure it exists
          * @method trigger
          * @param {string} eventName    name of the event or namespace
          * @param {Object|Array|Number|String|Boolean|Function} [data]   data passed to the triggered callback function
+         * @param {Opbject} [options] configuration
+         *      @param {String} [options.traverse=false] trigger all callbacks in nested namespaces
          * @return {Number} the count of triggered callbacks
          * @example
          Sway.eventHub.trigger('ui.update', {authenticated: true} ) ;               // trigger the 'update' event inside the 'ui' namespace
          Sway.eventHub.trigger('ui', {authenticated: true} ) ;                      // trigger all nested events and namespaces inside the 'ui' namespace
          */
-        , trigger: function(eventName, data){
+        , trigger: function(eventName, data, options){
             var retVal = 0
                 , namespace ;
             if ( (namespace = getStack.call(this, eventName)) ) {                   // check if the eventName exists
                 retVal = triggerEventCapture.call(this, eventName||'', data) +      // NOTE that eventName can be empty!
-                         triggerEvent(namespace, data) +
+                         triggerEvent(namespace, data, options||{}) +
                         ((eventName||'').match(/\./) !== null ? triggerEventBubble(namespace, data) : 0) ;
 
                 namespace.__stack.triggers ++ ;                                     // count the trigger
@@ -160,7 +162,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
          * @return {Boolean} TRUE if the callback is registered successfully. It will fail if the callback was already registered
          * @example
          Sway.eventHub.on( 'ui.update', this.update.bind(this) ) ;
-         Sway.eventHub.on( 'ui.update', this.update.bind(this), { prepend: true, eventMode: 'capture' ) ;
+         Sway.eventHub.on( 'ui.update', this.update.bind(this), {prepend: true, eventMode: Sway.EventHub.EVENT_MODE.CAPTURING} ) ;
          */
         , on: function(eventName, callback, options) {
             return addCallbackToStack.call(this, eventName, callback, options||{}) !== null ;
@@ -176,7 +178,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
          * @param {function} callback
          * @param {Object} [options] configuration
          *      @param {Boolean} [options.prepend] if TRUE, the callback is placed before all other registered callbacks.
-         *      @param {String} [options.eventMode] the event mode for which the callback is triggered too. Available modes are
+         *      @param {String} [options.eventMode=null] the event mode for which the callback is triggered too. Available modes are
          *          <tt>capture</tt> and <tt>bubble</tt>
          * @return {Boolean} TRUE if the callback is registered successfully. It will fail if the callback was already registered
          */
@@ -189,20 +191,25 @@ window.Sway = window.Sway || {} ; // make sure it exists
         }
 
         /**
-         * Removes the given callback for a specific event.
+         * Removes the given callback for a specific event. However, if a callback is registered with an 'eventMode', the
+         * callback can only be removed if that eventMode is specified too!
          *
          * @method off
          * @param {string} eventName
          * @param {function} [callback] the callback function to be removed. If omitted, all registered events and nested
          * namespaces inside 'eventName' are removed
+         * @param {Object}
+         *      @param {Boolean} [traverse=false] traverse all nested namespaces
+         *      @param {String} [options.eventMode=null] the event mode for which the callback is triggered too. Available modes are
          * @return {Number} the count of removed callback functions
          * @example
          Sway.eventHub.off('ui.update', this.update) ;
+         Sway.eventHub.off('ui.update', this.update, {eventMode: Sway.EventHub.EVENT_MODE.CAPTURING}) ;
          Sway.eventHub.off('ui') ;
          */
-        , off: function(eventName, callback) {
+        , off: function(eventName, callback, options) {
             var stack = getStack.call(this, eventName) ;
-            return removeFromNamespace(stack, callback) ;
+            return removeFromNamespace(stack, callback, options||{}) ;
         }
 
         /**
@@ -267,14 +274,9 @@ window.Sway = window.Sway || {} ; // make sure it exists
     function getCallbackCount(stack, options) {
         var i
             , retVal = 0 ;
-        if ( !options.eventMode ) {
-            retVal = stack.on.length ;
-        }
-        else {
-            for ( i in stack.on ) {
-                if ( stack.on[i].eventMode && stack.on[i].eventMode === options.eventMode ) {
-                    retVal ++ ;
-                }
+        for ( i in stack.on ) {
+            if ( stack.on[i].eventMode === options.eventMode ) {
+                retVal ++ ;
             }
         }
         return retVal ;
@@ -330,13 +332,14 @@ window.Sway = window.Sway || {} ; // make sure it exists
         callback:  should be defined and of type "function"
      */
     function checkInput(eventName, callback) {
+        var retVal = false ;
         if ( typeof(eventName) === "string" && callback && typeof(callback) === "function" ) { // OK
-            return true ;
+            retVal = true ;
         }
         else if ( ns.DEBUG ) { // Wrong...
             console.warn("Cannot bind the callback function to the event nam ( eventName=" + eventName + ",  callback=" + callback + ")") ;
-            return false ;
         }
+        return retVal ;
     }
 
     /*
@@ -344,24 +347,19 @@ window.Sway = window.Sway || {} ; // make sure it exists
         can contain the callback too. Furthermore, the callback is optional, in which case the whole stack
         is erased.
      */
-    function removeFromNamespace(namespaces, callback) {
-        var retVal = 0                                          // number of removed callbacks
+    function removeFromNamespace(namespaces, callback, options) {
+            var retVal = 0                                              // number of removed callbacks
             , namespace
-            , i ;                                                   // loop var
+            , i ;                                                       // loop var
 
-        if ( callback ) {                                           // remove a specific callback
-            for( i in namespaces) {                                 // so we loop through all namespaces (and __stack is one of them)
-                namespace = namespaces[i] ;
-                if ( i === '__stack') {
-                    retVal += removeCallback(namespace.on, callback ) ;
-                }
-                else {                                              // NO, its a namesapace -> recurstion
-                   retVal += removeFromNamespace.call(this, namespace, callback ) ;
-                }
+        for( i in namespaces) {                                         // so we loop through all namespaces (and __stack is one of them)
+            namespace = namespaces[i] ;
+            if ( i === '__stack') {
+                    retVal += removeCallback(namespace.on, callback, options) ;
             }
-        }
-        else { // remove a whole namespace (no callback defined)
-            retVal += removeNameSpace.call(this, namespaces)   ;
+            else if ( options.traverse ) {                              // NO, its a namesapace -> recursion
+               retVal += removeFromNamespace.call(this, namespace, callback, options ) ;
+            }
         }
         return retVal ;                                             // a count of removed callback function
     }
@@ -369,29 +367,17 @@ window.Sway = window.Sway || {} ; // make sure it exists
     /* This function should only be called on a stack with the 'on' and 'one' lists. It will remove one or
        multiple occurrences of the 'callback' function
      */
-    function removeCallback(list, callback){
+    function removeCallback(list, callback, options){
         var i                                             // position on the stack
             , retVal = 0 ;
 
         for( i = list.length-1; i >= 0; i-- ){
-            if ( list[i].fn === callback ) {
+            if ( (list[i].fn === callback || !callback) && list[i].eventMode === options.eventMode ) {
                 list.splice(i, 1) ;
                 retVal ++ ;
-                // TODO: implement a check on this.allowMultiple and stop the loop if possible
             }
         }
         return retVal ;
-    }
-
-    /*
-       Remove a whole namespace.
-     */
-    function removeNameSpace(stack) {
-        var  i ;                                           // loop var
-
-        for( i in stack )  {                                // delete all elements from the stack (and we cannot do stack = {} ;)
-            delete stack[i] ;                               // cleanup
-        }
     }
 
     /*
@@ -469,9 +455,9 @@ window.Sway = window.Sway || {} ; // make sure it exists
 
     /*
      * Namespaces can in theory be many levels deep, like: "aaaaa.bbbbbb.cccccc._stack"
-     * To traverse this namespace and trigger everything inside it, this function is called recursively.
+     * To traverse this namespace and trigger everything inside it, this function is called recursively (only if options.traverse === true).
      */
-    function triggerEvent(stack, data) {
+    function triggerEvent(stack, data, options) {
         var  retVal = 0
             , ns ;                                                  // loop index
 
@@ -479,8 +465,8 @@ window.Sway = window.Sway || {} ; // make sure it exists
             if ( ns === "__stack" ) {
                retVal += callCallbacks(stack, data) ;
            }
-           else {                                                   // found a deeper nested namespace
-                retVal += triggerEvent(stack[ns], data) ;           // nested namespaces. NOTE that the 'eventName' is omitted!!
+           else if ( options.traverse ) {                           // found a deeper nested namespace
+                retVal += triggerEvent(stack[ns], data, options) ;  // nested namespaces. NOTE that the 'eventName' is omitted!!
            }
         }
         return retVal ;

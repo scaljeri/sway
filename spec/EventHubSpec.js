@@ -1,6 +1,3 @@
-/*
-    TODO: test for 'prepend'
- */
 describe("Sway.EventHub", function() {
 
     // mock some classes
@@ -77,6 +74,15 @@ describe("Sway.EventHub", function() {
            expect(Sway.callbacks.cb1.callCount).toEqual(2) ;
            expect(Sway.callbacks.cb1).toHaveBeenCalledWith(2) ;
         }) ;
+        it("for callbacks registered with 'on' and the 'prepend' option", function() {
+            expect(Sway.eventHub.on("go", Sway.callbacks.cb1)).toBeTruthy() ;
+            expect(Sway.eventHub.on("go", Sway.callbacks.cb2)).toBeTruthy() ;
+            expect(Sway.eventHub.on("go", Sway.callbacks.cb3)).toBeTruthy() ;
+            expect(Sway.eventHub.on("go", Sway.callbacks.cb4, { prepend: true})).toBeTruthy() ;
+
+            expect(Sway.eventHub.trigger('go', [])).toEqual(4) ;
+            expect(Sway.callbacks.cb1).toHaveBeenCalledWith(['cb4', 'cb1','cb2', 'cb3']) ;
+        }) ;
         it("for callbacks registered with 'one'", function() {
             expect(Sway.eventHub.one("go", Sway.callbacks.cb1)).toBeTruthy() ;
             expect(Sway.eventHub.trigger("go", 1 )).toEqual(1) ;
@@ -114,18 +120,22 @@ describe("Sway.EventHub", function() {
             expect(Sway.callbacks.cb4).not.toHaveBeenCalled() ;
         }) ;
         it("with a correct callback/trigger count", function() {
-            Sway.eventHub.on( "go", Sway.callbacks.cb1) ;
-            Sway.eventHub.one("go", Sway.callbacks.cb2) ;
-            Sway.eventHub.on( "go", Sway.callbacks.cb3) ;
-            Sway.eventHub.one("go", Sway.callbacks.cb4) ;
+            Sway.eventHub.on("go", Sway.callbacks.cb1) ;
+            Sway.eventHub.on("go", Sway.callbacks.cb2, { eventMode: Sway.EventHub.EVENT_MODE.CAPTURING}) ;
+            Sway.eventHub.on("go", Sway.callbacks.cb2, { eventMode: Sway.EventHub.EVENT_MODE.BUBBLING}) ;
+            Sway.eventHub.on("go", Sway.callbacks.cb3) ;
+            Sway.eventHub.on("go", Sway.callbacks.cb4) ;
 
-            expect(Sway.eventHub.countTriggers("go")).toEqual(0) ;
-            expect(Sway.eventHub.countTriggers()).toEqual(0) ;
-            expect(Sway.eventHub.countCallbacks("go")).toEqual(4) ;
-            expect(Sway.eventHub.countCallbacks()).toEqual(4) ;
-            expect(Sway.eventHub.trigger("go")).toEqual(4) ;
-            expect(Sway.eventHub.countCallbacks("go")).toEqual(2) ;
+            expect(Sway.eventHub.countCallbacks()).toEqual(3) ;
+            expect(Sway.eventHub.countCallbacks("go")).toEqual(3) ;
+            expect(Sway.eventHub.countCallbacks("", { eventMode: Sway.EventHub.EVENT_MODE.CAPTURING})).toEqual(1) ;
+            expect(Sway.eventHub.countCallbacks("go", { eventMode: Sway.EventHub.EVENT_MODE.CAPTURING})).toEqual(1) ;
+            expect(Sway.eventHub.countCallbacks("", { eventMode: Sway.EventHub.EVENT_MODE.BUBBLING})).toEqual(1) ;
+            expect(Sway.eventHub.countCallbacks("go", { eventMode: Sway.EventHub.EVENT_MODE.BUBBLING})).toEqual(1) ;
+
+            expect(Sway.eventHub.trigger("go")).toEqual(3) ;
             expect(Sway.eventHub.countTriggers()).toEqual(1) ;
+            expect(Sway.eventHub.countTriggers("go")).toEqual(1) ;
         }) ;
         it("with correct capturing and bubbling behavior", function(){
             Sway.eventHub.on( "bar", Sway.callbacks.cb1) ;
@@ -203,17 +213,18 @@ describe("Sway.EventHub", function() {
            Sway.eventHub.one("forum.go1", Sway.callbacks.cb4) ;
            expect(Sway.eventHub.off("forum.go2", Sway.callbacks.cb3)).toBeTruthy() ;
            expect(Sway.eventHub.off("forum.go1", Sway.callbacks.cb4)).toBeTruthy() ;
-           expect(Sway.eventHub.trigger("forum", 2 )).toEqual(2) ;
+           expect(Sway.eventHub.trigger("forum", 2, {traverse: true} )).toEqual(2) ;
            expect(Sway.callbacks.cb1).toHaveBeenCalled() ;
            expect(Sway.callbacks.cb2).toHaveBeenCalled() ;
            expect(Sway.callbacks.cb3).not.toHaveBeenCalled() ;
            expect(Sway.callbacks.cb4).not.toHaveBeenCalled() ;
 
-           expect(Sway.eventHub.trigger("forum", 2 )).toEqual(1) ;
+           expect(Sway.eventHub.trigger("forum", 2, {traverse: true} )).toEqual(1) ;
            expect(Sway.callbacks.cb1.callCount).toEqual(2) ;
            expect(Sway.callbacks.cb2.callCount).toEqual(1) ;
        }) ;
        it("with a correct callback / trigger count", function() {
+           // TODO: count for specific event-modes
             Sway.eventHub.on("go", Sway.callbacks.cb1) ;
             Sway.eventHub.one("go", Sway.callbacks.cb2) ;
             Sway.eventHub.on("go", Sway.callbacks.cb3) ;
@@ -231,14 +242,19 @@ describe("Sway.EventHub", function() {
             expect(Sway.eventHub.countTriggers('go.now')).toEqual(1) ;
         }) ;
         it("with correct capturing and bubbling behavior", function(){
-            // TODO
-            Sway.eventHub.on("bar", Sway.callbacks.cb1) ;
-            Sway.eventHub.one("bar", Sway.callbacks.cb2, { eventMode: 'capture'}) ;
-            Sway.eventHub.one("bar", Sway.callbacks.cb3, { eventMode: 'bubble'}) ;
-            Sway.eventHub.on("bar.foo", Sway.callbacks.cb4) ;
-            expect(Sway.eventHub.trigger("bar.foo", [])).toEqual(3) ;
-            expect(Sway.callbacks.cb1).not.toHaveBeenCalled() ;
-            expect(Sway.callbacks.cb2).toHaveBeenCalledWith(['cb2','cb4', 'cb3' ]) ;
+            Sway.eventHub.on("bar", Sway.callbacks.cb1) ;                                                       // not called
+            Sway.eventHub.on("bar", Sway.callbacks.cb1) ;                                                       // not called
+            Sway.eventHub.one("bar", Sway.callbacks.cb1, { eventMode: Sway.EventHub.EVENT_MODE.CAPTURING}) ;    // called
+            Sway.eventHub.one("bar", Sway.callbacks.cb3, { eventMode: Sway.EventHub.EVENT_MODE.BUBBLING}) ;     // called
+            Sway.eventHub.on("bar.foo", Sway.callbacks.cb4) ;                                                   // called
+            Sway.eventHub.on("bar.foo", Sway.callbacks.cb4) ;                                                   // called
+            Sway.eventHub.on("bar.foo", Sway.callbacks.cb4, { eventMode: Sway.EventHub.EVENT_MODE.CAPTURING}) ; // not called
+            Sway.eventHub.on("bar.foo", Sway.callbacks.cb4, { eventMode: Sway.EventHub.EVENT_MODE.BUBBLING}) ;  // not called
+            expect(Sway.eventHub.trigger("bar.foo", [])).toEqual(4) ;
+            expect(Sway.callbacks.cb1.calls.length).toEqual(1) ;        // only in capturing phase
+            expect(Sway.callbacks.cb3.calls.length).toEqual(1) ;        // only in capturing phase
+            expect(Sway.callbacks.cb4.calls.length).toEqual(2) ;        // only in capturing phase
+            expect(Sway.callbacks.cb1).toHaveBeenCalledWith(['cb1','cb4', 'cb4', 'cb3']) ;
         }) ;
     }) ;
 
@@ -278,16 +294,21 @@ describe("Sway.EventHub", function() {
         }) ;
         it("for callbacks removed with 'off'", function() {
             Sway.eventHub.on("forum.go1", Sway.callbacks.cb1) ;
-            Sway.eventHub.one("forum.go2", Sway.callbacks.cb2) ;
+            Sway.eventHub.one("forum.go1", Sway.callbacks.cb1) ;
+            Sway.eventHub.on("forum.go1.now", Sway.callbacks.cb2) ;
+
             Sway.eventHub.on("forum.go2", Sway.callbacks.cb3) ;
-            Sway.eventHub.one("forum.go1", Sway.callbacks.cb4) ;
-            expect(Sway.eventHub.off("forum.go2", Sway.callbacks.cb3)).toBeTruthy() ;
-            expect(Sway.eventHub.off("forum.go1", Sway.callbacks.cb4)).toBeTruthy() ;
-            Sway.eventHub.trigger("forum.go1", 2 ) ;
-            expect(Sway.callbacks.cb1).toHaveBeenCalled() ;
-            expect(Sway.callbacks.cb2).not.toHaveBeenCalled() ;
-            expect(Sway.callbacks.cb3).not.toHaveBeenCalled() ;
-            expect(Sway.callbacks.cb4).not.toHaveBeenCalled() ;
+            Sway.eventHub.one("forum.go2", Sway.callbacks.cb4) ;
+
+            expect(Sway.eventHub.off("forum.go1", Sway.callbacks.cb1)).toEqual(2) ;
+            expect(Sway.eventHub.off("forum.go2", Sway.callbacks.cb3)).toEqual(1) ;
+
+            expect(Sway.eventHub._rootStack['forum']['go1']['__stack']['on'].length).toEqual(0) ;
+            expect(Sway.eventHub._rootStack['forum']['go2']['__stack']['on'].length).toEqual(1) ;
+            expect(Sway.eventHub._rootStack['forum']['go2']['__stack']['on'].length).toEqual(1) ;
+
+            expect(Sway.eventHub.off("forum.go1", null, {traverse:true})).toEqual(1) ;
+
         }) ;
 
         it("for triggers by namespace", function() {
@@ -297,26 +318,89 @@ describe("Sway.EventHub", function() {
             Sway.eventHub.one("forum.go1", Sway.callbacks.cb4) ;
             expect(Sway.eventHub.off("forum.go2", Sway.callbacks.cb3)).toBeTruthy() ;
             expect(Sway.eventHub.off("forum.go1", Sway.callbacks.cb4)).toBeTruthy() ;
-            expect(Sway.eventHub.trigger("forum", 2 )).toEqual(2) ;
+            expect(Sway.eventHub.trigger("forum", 2, {traverse:true})).toEqual(2) ;
             expect(Sway.callbacks.cb1).toHaveBeenCalled() ;
             expect(Sway.callbacks.cb2).toHaveBeenCalled() ;
             expect(Sway.callbacks.cb3).not.toHaveBeenCalled() ;
             expect(Sway.callbacks.cb4).not.toHaveBeenCalled() ;
 
-            expect(Sway.eventHub.trigger("forum", 2 )).toEqual(1) ;
+            expect(Sway.eventHub.trigger("forum", 2, {traverse:true} )).toEqual(1) ;
             expect(Sway.callbacks.cb1.callCount).toEqual(2) ;
             expect(Sway.callbacks.cb2.callCount).toEqual(1) ;
         }) ;
         it("with a correct callback / trigger count", function() {
-            Sway.eventHub.on("go", Sway.callbacks.cb1) ;
-            Sway.eventHub.one("go", Sway.callbacks.cb2) ;
-            Sway.eventHub.on("go", Sway.callbacks.cb3) ;
-            Sway.eventHub.one("go", Sway.callbacks.cb4) ;
-            expect(Sway.eventHub.countCallbacks("go")).toEqual(4) ;
-            // TODO: trigger count
+            // TODO: count for specific event-modes
+            Sway.eventHub.on("lets", Sway.callbacks.cb1) ;
+            Sway.eventHub.on("lets.go", Sway.callbacks.cb2) ;
+            Sway.eventHub.on("lets.go.now", Sway.callbacks.cb3) ;
+            Sway.eventHub.on("lets.go.now", Sway.callbacks.cb4) ;
+            Sway.eventHub.on("lets.go.now", Sway.callbacks.cb4) ;
+            Sway.eventHub.on("lets.go.for", Sway.callbacks.cb4) ;
+
+            // count callbacks
+            expect(Sway.eventHub.countCallbacks()).toEqual(6) ;
+            expect(Sway.eventHub.countCallbacks('lets')).toEqual(1) ;
+            expect(Sway.eventHub.countCallbacks('lets.go')).toEqual(1) ;
+            expect(Sway.eventHub.countCallbacks('lets.go.now')).toEqual(3) ;
+            expect(Sway.eventHub.countCallbacks('lets.go.for')).toEqual(1) ;
+
+            expect(Sway.eventHub.countCallbacks('', {traverse: true})).toEqual(6) ;
+            expect(Sway.eventHub.countCallbacks(null, {traverse: true})).toEqual(6) ;
+            expect(Sway.eventHub.countCallbacks('lets', {traverse: true})).toEqual(6) ;
+            expect(Sway.eventHub.countCallbacks('lets.go', {traverse: true})).toEqual(5) ;
+            expect(Sway.eventHub.countCallbacks('lets.go.now', {traverse: true})).toEqual(3) ;
+            expect(Sway.eventHub.countCallbacks('lets.go.for', {traverse: true})).toEqual(1) ;
+
+            // count triggers
+            Sway.eventHub.trigger('lets') ;
+            Sway.eventHub.trigger('lets.go') ;
+            Sway.eventHub.trigger('lets.go') ;
+            Sway.eventHub.trigger('lets.go.now') ;
+            Sway.eventHub.trigger('lets.go.for') ;
+
+            expect(Sway.eventHub.countTriggers()).toEqual(5) ;
+            expect(Sway.eventHub.countTriggers('lets')).toEqual(1) ;
+            expect(Sway.eventHub.countTriggers('lets.go')).toEqual(2) ;
+            expect(Sway.eventHub.countTriggers('lets.go.now')).toEqual(1) ;
+            expect(Sway.eventHub.countTriggers('lets.go.for')).toEqual(1) ;
+
+            expect(Sway.eventHub.countTriggers(null, {traverse: true})).toEqual(5) ;
+            expect(Sway.eventHub.countTriggers('', {traverse: true})).toEqual(5) ;
+            expect(Sway.eventHub.countTriggers('lets', {traverse: true})).toEqual(5) ;
+            expect(Sway.eventHub.countTriggers('lets.go', {traverse: true})).toEqual(4) ;
+            expect(Sway.eventHub.countTriggers('lets.go.now', {traverse: true})).toEqual(1) ;
+            expect(Sway.eventHub.countTriggers('lets.go.for', {traverse: true})).toEqual(1) ;
         }) ;
         it("with correct capturing and bubbling behavior", function(){
+            Sway.eventHub.on("bar", Sway.callbacks.cb1) ;
+            Sway.eventHub.on("bar", Sway.callbacks.cb1) ;
+            Sway.eventHub.on("bar", Sway.callbacks.cb1, { eventMode: Sway.EventHub.EVENT_MODE.CAPTURING}) ;
+            Sway.eventHub.on("bar", Sway.callbacks.cb1, { eventMode: Sway.EventHub.EVENT_MODE.BUBBLING}) ;
+            Sway.eventHub.on("bar.foo", Sway.callbacks.cb2) ;
+            Sway.eventHub.on("bar.foo", Sway.callbacks.cb2) ;
+            Sway.eventHub.on("bar.foo", Sway.callbacks.cb2, { eventMode: Sway.EventHub.EVENT_MODE.CAPTURING}) ;
+            Sway.eventHub.on("bar.foo", Sway.callbacks.cb2, { eventMode: Sway.EventHub.EVENT_MODE.BUBBLING}) ;
+            Sway.eventHub.on("bar.foo.bar", Sway.callbacks.cb3) ;
+            Sway.eventHub.on("bar.foo.bar", Sway.callbacks.cb3) ;
+            Sway.eventHub.on("bar.foo.bar", Sway.callbacks.cb3, { eventMode: Sway.EventHub.EVENT_MODE.CAPTURING}) ;
+            Sway.eventHub.on("bar.foo.bar", Sway.callbacks.cb3, { eventMode: Sway.EventHub.EVENT_MODE.BUBBLING}) ;
 
+            expect(Sway.eventHub.trigger("bar", [])).toEqual(2) ;
+            expect(Sway.callbacks.cb1.calls.length).toEqual(2) ;
+            expect(Sway.callbacks.cb2).not.toHaveBeenCalled() ;
+            expect(Sway.callbacks.cb3).not.toHaveBeenCalled() ;
+
+            expect(Sway.eventHub.trigger("bar.foo", [])).toEqual(4) ;
+            expect(Sway.callbacks.cb1.calls.length).toEqual(4) ;
+            expect(Sway.callbacks.cb2.calls.length).toEqual(2) ;
+            expect(Sway.callbacks.cb2).toHaveBeenCalledWith(['cb1','cb2', 'cb2', 'cb1']) ;
+            expect(Sway.callbacks.cb3).not.toHaveBeenCalled() ;
+
+            expect(Sway.eventHub.trigger("bar.foo.bar", [])).toEqual(6) ;
+            expect(Sway.callbacks.cb1.calls.length).toEqual(6) ;
+            expect(Sway.callbacks.cb2.calls.length).toEqual(4) ;
+            expect(Sway.callbacks.cb3.calls.length).toEqual(2) ;
+            expect(Sway.callbacks.cb3).toHaveBeenCalledWith(['cb1','cb2', 'cb3', 'cb3', 'cb2', 'cb1']) ;
         }) ;
     }) ;
 });
