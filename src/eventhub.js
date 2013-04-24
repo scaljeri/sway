@@ -116,6 +116,9 @@ window.Sway = window.Sway || {} ; // make sure it exists
             return '--eh--' + this._eventNameIndex++ ;     // first event-name will be: --eh--0
         }
 
+        , setAllowMultiple: function(state) {
+            this.allowMultiple = state ;
+        }
         /**
          * Triggers one or more events. One event is triggered if the 'eventName' parameter targets a specific event, but if this parameter is a namespace, all nested events and
          * namespaces will be triggered.
@@ -288,7 +291,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
             , stack ;
         if ( checkInput(eventName, callback)) {                                     // validate input
             stack = createStack.call(this, eventName) ;                             // get stack of 'eventName'
-            if ( canAddCallback.call(this, stack.__stack.on, callback) === true ) {                       // check if the callback is not already added
+            if ( canAddCallback.call(this, stack.__stack.on, callback, options) === true ) {                       // check if the callback is not already added
                 obj = { fn: callback, eventMode: options.eventMode } ;
                 stack.__stack.on[options.prepend ? 'unshift':'push'](obj) ;
                 return obj ;
@@ -300,15 +303,20 @@ window.Sway = window.Sway || {} ; // make sure it exists
     /*
         determines if a callback can be added to a stack. If this.allowMultiple === true, it will always return true
      */
-    function canAddCallback(callbacks, callback) {
+    function canAddCallback(callbacks, callback, options) {
         var i
-            , retVal = true ;
+            , retVal = true
+            , eventMode = options.eventMode ;//|| undefined ;
 
         if (this.allowMultiple === false ) {
             for( i = 0; i < callbacks.length; i++ ) {
-                if ( callbacks[i].fn === callback) {
-                    retVal = false ;
-                    break ;
+                if ( callbacks[i].fn === callback && (
+                        callbacks[i].eventMode === eventMode ||                                 // they are identical
+                        callbacks[i].eventMode && eventMode === DEFAULTS.EVENT_MODE.BOTH ||     // both defined and one set to 'BOTH'
+                        eventMode && callbacks[i].eventMode === DEFAULTS.EVENT_MODE.BOTH )      // idem (switched)
+                    ) {
+                        retVal = false ;
+                        break ;
                 }
             }
         }

@@ -6,7 +6,7 @@ describe("Sway.EventHub", function() {
     // mock some classes
     beforeEach(function() {
         // create DI
-        Sway.eventHub = new Sway.EventHub() ;
+        Sway.eventHub = new Sway.EventHub() ; // allowMultiple === true
 
         // The callbacks modify the data parameter, which is used to determine the order in which they are executed
         Sway.callbacks = {
@@ -48,6 +48,22 @@ describe("Sway.EventHub", function() {
         expect(Sway.eventHub.generateUniqueEventName()).toEqual('--eh--0') ;
         expect(Sway.eventHub.generateUniqueEventName()).toEqual('--eh--1') ;
         expect(Sway.eventHub.generateUniqueEventName()).toEqual('--eh--2') ;
+    }) ;
+    it("should be able to not allow the registration of the same callback for the same event", function() {
+        Sway.eventHub.setAllowMultiple(false) ;
+
+        expect(Sway.eventHub.on( "bar", Sway.callbacks.cb1)).toBeTruthy() ;
+        expect(Sway.eventHub.on( "bar", Sway.callbacks.cb1)).toBeFalsy() ;
+        expect(Sway.eventHub.on( "bar", Sway.callbacks.cb1, {})).toBeFalsy() ;
+        expect(Sway.eventHub.on( "bar", Sway.callbacks.cb1, {eventMode: Sway.EventHub.EVENT_MODE.CAPTURING})).toBeTruthy() ;
+        expect(Sway.eventHub.on( "bar", Sway.callbacks.cb1, {eventMode: Sway.EventHub.EVENT_MODE.BOTH})).toBeFalsy() ;
+        expect(Sway.eventHub.on( "bar", Sway.callbacks.cb1, {eventMode: Sway.EventHub.EVENT_MODE.CAPTURE})).toBeFalsy() ;
+        expect(Sway.eventHub.on( "bar", Sway.callbacks.cb1, {eventMode: Sway.EventHub.EVENT_MODE.BUBBLING})).toBeTruthy() ;
+
+        debugger ;
+        expect(Sway.eventHub.on( "bar", Sway.callbacks.cb2, {eventMode: Sway.EventHub.EVENT_MODE.BOTH})).toBeTruthy() ;
+        expect(Sway.eventHub.on( "bar", Sway.callbacks.cb2, {eventMode: Sway.EventHub.EVENT_MODE.CAPTURING})).toBeFalsy() ;
+        expect(Sway.eventHub.on( "bar", Sway.callbacks.cb2)).toBeTruthy() ;
     }) ;
 
     // events withput a namespace
@@ -113,10 +129,13 @@ describe("Sway.EventHub", function() {
             expect(Sway.eventHub.countTriggers()).toEqual(1) ;
         }) ;
         it("with correct capturing and bubbling behavior", function(){
-            Sway.eventHub.on("bar", Sway.callbacks.cb1) ;
+            Sway.eventHub.on( "bar", Sway.callbacks.cb1) ;
             Sway.eventHub.one("bar", Sway.callbacks.cb2, { eventMode: 'capture'}) ;
-            Sway.eventHub.one("bar", Sway.callbacks.cb3, { eventMode: 'bubble'}) ;
-            Sway.eventHub.on("bar.foo", Sway.callbacks.cb4) ;
+            Sway.eventHub.one("bar", Sway.callbacks.cb3, { eventMode: 'bubble' }) ;
+            Sway.eventHub.one("bar", Sway.callbacks.cb3, { eventMode: 'capture'}) ;
+            Sway.eventHub.on( "bar", Sway.callbacks.cb4, { eventMode: 'bubble' }) ;
+            Sway.eventHub.on( "bar", Sway.callbacks.cb4) ;
+
             expect(Sway.eventHub.trigger("bar.foo", [])).toEqual(3) ;
             expect(Sway.callbacks.cb1).not.toHaveBeenCalled() ;
             expect(Sway.callbacks.cb2).toHaveBeenCalledWith(['cb2','cb4', 'cb3' ]) ;
@@ -214,6 +233,13 @@ describe("Sway.EventHub", function() {
         }) ;
         it("with correct capturing and bubbling behavior", function(){
             // TODO
+            Sway.eventHub.on("bar", Sway.callbacks.cb1) ;
+            Sway.eventHub.one("bar", Sway.callbacks.cb2, { eventMode: 'capture'}) ;
+            Sway.eventHub.one("bar", Sway.callbacks.cb3, { eventMode: 'bubble'}) ;
+            Sway.eventHub.on("bar.foo", Sway.callbacks.cb4) ;
+            expect(Sway.eventHub.trigger("bar.foo", [])).toEqual(3) ;
+            expect(Sway.callbacks.cb1).not.toHaveBeenCalled() ;
+            expect(Sway.callbacks.cb2).toHaveBeenCalledWith(['cb2','cb4', 'cb3' ]) ;
         }) ;
     }) ;
 
