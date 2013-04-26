@@ -123,23 +123,24 @@
     <p>DI makes classes accessible by a contract. Instances are created when requested and dependencies are injected into the constructor,
  facilitating lazy initialization and loose coupling between classes.</p>
 
-<pre class="code prettyprint"><code> Sway.di.register( 'user'
-                   , Sway.data.ActiveRecord
-                   , [ 'User', 'webSql', ['username', 'password', 'accountInfo'], 'websql' ]
-                   , { singleton: TRUE }
-                 )
-        .register( 'userNameField'
-                   , Sway.data.Field
-                   , [{ type: 'TEXT',  key: 'username', friendlyName: 'User name' }]
-                   , {singleton: TRUE}
-                 )
-        .register( 'accountInfoField',
-                   , Sway.data.Field
-                   , [ { type: 'TEXT',  key: 'username', friendlyName: 'User name' }
-                       , ['encryptFilter', 'compressFilter']
-                     ]
-                   , { singleton: TRUE}
-                 ) ;
+<pre class="code prettyprint"><code> var di = new Sway.DI() ;
+ di.register( 'user'                                                                     // contract name
+              , Sway.data.ActiveRecord                                                   // class definiton
+              , [ 'User', 'webSql', ['username', 'password', 'accountInfo'], 'websql' ]  // constructor parameters
+              , { singleton: TRUE }                                                      // configuration: create a singleton
+            )
+   .register( 'userNameField'
+              , Sway.data.Field
+              , [{ type: 'TEXT',  key: 'username', friendlyName: 'User name' }]
+              , {singleton: TRUE}
+            )
+   .register( 'accountInfoField',
+              , Sway.data.Field
+              , [ { type: 'TEXT',  key: 'username', friendlyName: 'User name' }
+                   , ['encryptFilter', 'compressFilter']
+                ]
+              , { singleton: TRUE}
+            ) ;
 </code></pre>
 
 <p>Now, everywhere in the application where a User model is required simply do</p>
@@ -147,16 +148,13 @@
 <pre class="code prettyprint"><code>  var User = Sway.di.getInstance('user') ;
 </code></pre>
 
-<p>Doing the same without Sway.DI, you will have to keep track of a lot more variables</p>
+<p>To give an idea of what this is doing, below is an example doing the same as above but without using Sway.DI</p>
 
 <pre class="code prettyprint"><code>  var userNameField    = new Sway.data.Field( { type: 'TEXT',  key: 'username', friendlyName: 'User name' }] ) ;
   var accountInfoField = new Sway.data.Field( { type: 'TEXT',  key: 'username', friendlyName: 'User name' }
                                               , [encryptFilterInstance, compressFilterInstance] ) ;
-</code></pre>
 
-<p>And finally, to create a User model</p>
-
-<pre class="code prettyprint"><code>  var User = new Sway.data.ActiveRecord( 'User', webSqlInstance, [userNameField, accountInfoField] ) ;
+  var User = new Sway.data.ActiveRecord( 'User', webSqlInstance, [userNameField, accountInfoField] ) ;
 </code></pre>
 </div>
 
@@ -293,7 +291,7 @@
             
                 <li class="arg">
                     
-                        <code>dependencies</code>
+                        <code>params</code>
                     
                 </li>
             
@@ -330,7 +328,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;src_di.js.html#l110"><code>src&#x2F;di.js:110</code></a>
+        <a href="..&#x2F;files&#x2F;src_di.js.html#l109"><code>src&#x2F;di.js:109</code></a>
         
         </p>
 
@@ -341,8 +339,7 @@
     </div>
 
     <div class="description">
-        <p>Returns a new instance of the class matched by the contract. If the contract does not exists an error is thrown.
-If one of the dependencies does not exists, 'null' is used instead.</p>
+        <p>Returns a new instance of the class matched by the contract. If the contract does not exists an error is thrown.</p>
     </div>
 
     
@@ -370,7 +367,7 @@ If one of the dependencies does not exists, 'null' is used instead.</p>
             
                 <li class="param">
                     
-                        <code class="param-name">dependencies</code>
+                        <code class="param-name">params</code>
                         <span class="type">Array</span>
                     
 
@@ -378,7 +375,8 @@ If one of the dependencies does not exists, 'null' is used instead.</p>
 
                     <div class="param-description">
                         <ul>
-<li>list of contracts passed to the constructor</li>
+<li>list of contracts passed to the constructor. Each parameter which is not a string or
+an unknown contract, is passed as-is to the constructor</li>
 </ul>
                     </div>
 
@@ -409,7 +407,7 @@ If one of the dependencies does not exists, 'null' is used instead.</p>
 
             <div class="example-content">
                 <pre class="code prettyprint"><code>    try {
-        var storage = App.di.createInstance("data", ["compress", "websql"]) ;
+        var storage = App.di.createInstance("data", ["compress", true, "websql"]) ;
     }
     catch(e) { // will fail if contract does not exist
         console.log(e.name + ': ' + e.message) ;
@@ -467,7 +465,7 @@ If one of the dependencies does not exists, 'null' is used instead.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;src_di.js.html#l87"><code>src&#x2F;di.js:87</code></a>
+        <a href="..&#x2F;files&#x2F;src_di.js.html#l86"><code>src&#x2F;di.js:86</code></a>
         
         </p>
 
@@ -596,7 +594,7 @@ If one of the dependencies does not exists, 'null' is used instead.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;src_di.js.html#l59"><code>src&#x2F;di.js:59</code></a>
+        <a href="..&#x2F;files&#x2F;src_di.js.html#l58"><code>src&#x2F;di.js:58</code></a>
         
         </p>
 

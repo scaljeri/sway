@@ -7,9 +7,9 @@ window.Sway.data = window.Sway.data || {} ;
 
     /**
      * The ActiveRecord class represents data-structures, like a database table. An instance represents a single record.
-     * It is a blue print for all models it creates, providing them with functionality needed to perform CRUD-like taks
+     * It is a blue print for all models it creates, providing them with functionality needed to perform CRUD-like tasks
      *
-     * For example, to create a User model do
+     * For example, to create a User model, do
      *
      *      var User = new ActiveRecord( 'User', new WebSqlPersistance('user-table'), [
      *                new Field( {type: 'TEXT', key: 'username', friendlyName: 'User name'}) )

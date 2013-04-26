@@ -12,7 +12,7 @@ window.Sway.data = window.Sway.data || {};
     }
 
     /**
-     * A Field represent a single value of an ActiveRecord model.
+     * A Field represents a single value of an ActiveRecord model.
      *
      *     var username = new Field({ type: 'TEXT', key: 'username', friendlyName: 'User name' }) ;
      *

@@ -109,35 +109,34 @@
      * DI makes classes accessible by a contract. Instances are created when requested and dependencies are injected into the constructor,
      *  facilitating lazy initialization and loose coupling between classes.
      *
-     *      Sway.di.register( &#x27;user&#x27;
-     *                        , Sway.data.ActiveRecord
-     *                        , [ &#x27;User&#x27;, &#x27;webSql&#x27;, [&#x27;username&#x27;, &#x27;password&#x27;, &#x27;accountInfo&#x27;], &#x27;websql&#x27; ]
-     *                        , { singleton: TRUE }
-     *                      )
-     *             .register( &#x27;userNameField&#x27;
-     *                        , Sway.data.Field
-     *                        , [{ type: &#x27;TEXT&#x27;,  key: &#x27;username&#x27;, friendlyName: &#x27;User name&#x27; }]
-     *                        , {singleton: TRUE}
-     *                      )
-     *             .register( &#x27;accountInfoField&#x27;,
-     *                        , Sway.data.Field
-     *                        , [ { type: &#x27;TEXT&#x27;,  key: &#x27;username&#x27;, friendlyName: &#x27;User name&#x27; }
-     *                            , [&#x27;encryptFilter&#x27;, &#x27;compressFilter&#x27;]
-     *                          ]
-     *                        , { singleton: TRUE}
-     *                      ) ;
+     *      var di = new Sway.DI() ;
+     *      di.register( &#x27;user&#x27;                                                                     &#x2F;&#x2F; contract name
+     *                   , Sway.data.ActiveRecord                                                   &#x2F;&#x2F; class definiton
+     *                   , [ &#x27;User&#x27;, &#x27;webSql&#x27;, [&#x27;username&#x27;, &#x27;password&#x27;, &#x27;accountInfo&#x27;], &#x27;websql&#x27; ]  &#x2F;&#x2F; constructor parameters
+     *                   , { singleton: TRUE }                                                      &#x2F;&#x2F; configuration: create a singleton
+     *                 )
+     *        .register( &#x27;userNameField&#x27;
+     *                   , Sway.data.Field
+     *                   , [{ type: &#x27;TEXT&#x27;,  key: &#x27;username&#x27;, friendlyName: &#x27;User name&#x27; }]
+     *                   , {singleton: TRUE}
+     *                 )
+     *        .register( &#x27;accountInfoField&#x27;,
+     *                   , Sway.data.Field
+     *                   , [ { type: &#x27;TEXT&#x27;,  key: &#x27;username&#x27;, friendlyName: &#x27;User name&#x27; }
+     *                        , [&#x27;encryptFilter&#x27;, &#x27;compressFilter&#x27;]
+     *                     ]
+     *                   , { singleton: TRUE}
+     *                 ) ;
      *
      * Now, everywhere in the application where a User model is required simply do
      *
      *       var User = Sway.di.getInstance(&#x27;user&#x27;) ;
      *
-     * Doing the same without Sway.DI, you will have to keep track of a lot more variables
+     * To give an idea of what this is doing, below is an example doing the same as above but without using Sway.DI
      *
      *       var userNameField    = new Sway.data.Field( { type: &#x27;TEXT&#x27;,  key: &#x27;username&#x27;, friendlyName: &#x27;User name&#x27; }] ) ;
      *       var accountInfoField = new Sway.data.Field( { type: &#x27;TEXT&#x27;,  key: &#x27;username&#x27;, friendlyName: &#x27;User name&#x27; }
      *                                                   , [encryptFilterInstance, compressFilterInstance] ) ;
-     *
-     * And finally, to create a User model
      *
      *       var User = new Sway.data.ActiveRecord( &#x27;User&#x27;, webSqlInstance, [userNameField, accountInfoField] ) ;
      *
@@ -215,15 +214,16 @@
 
         &#x2F;**
          * Returns a new instance of the class matched by the contract. If the contract does not exists an error is thrown.
-         * If one of the dependencies does not exists, &#x27;null&#x27; is used instead.
          *
          * @method createInstance
          * @param {string} contract - the contract name
-         * @param {Array} dependencies - list of contracts passed to the constructor
+         * @param {Array} params - list of contracts passed to the constructor. Each parameter which is not a string or
+         * an unknown contract, is passed as-is to the constructor
+         *
          * @returns {Object}
          * @example
          try {
-             var storage = App.di.createInstance(&quot;data&quot;, [&quot;compress&quot;, &quot;websql&quot;]) ;
+             var storage = App.di.createInstance(&quot;data&quot;, [&quot;compress&quot;, true, &quot;websql&quot;]) ;
          }
          catch(e) { &#x2F;&#x2F; will fail if contract does not exist
              console.log(e.name + &#x27;: &#x27; + e.message) ;
