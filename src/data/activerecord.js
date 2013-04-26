@@ -6,16 +6,38 @@ window.Sway.data = window.Sway.data || {} ;
     "use strict" ;
 
     /**
-     * This class stores a string in memory. If a persistance dependency is defined, it will use this dependency to store
-     * the data. Filters are used to perform some action on the data before persisting it and on retrieval.
-     * As an example, a persistance dependency could be WebSQL storage. A filter could be encryption and/or compression.
-     * Note that for an encryption filter, it will perform an action on the data before persisting it, and on retrieval.
+     * The ActiveRecord class represents data-structures, like a database table. An instance represents a single record.
+     * It is a blue print for all models it creates, providing them with functionality needed to perform CRUD-like taks
+     *
+     * For example, to create a User model do
+     *
+     *      var User = new ActiveRecord( 'User', new WebSqlPersistance('user-table'), [
+     *                new Field( {type: 'TEXT', key: 'username', friendlyName: 'User name'}) )
+     *              , new Field( [encryptFilter], {type: 'TEXT', key: 'password', friendlyName: 'Password'}) )
+     *              , new Field( {type: 'DATE', key: 'birthday', friendlyName: 'Birthday'} )
+     *          ]) ;
+     *
+     *      ) ; // create a new model class with WebSQL persistance and three fields
+     *
+     *      User.find( // asynchronious call
+     *         {
+     *               'username':   'John'
+     *             , 'password': 'Secret'
+     *         }, function(user) {
+     *             alert('Welcome ' + user.username + '! Your birthday is ' + user.birthday) ;
+     *             var cloneUser = new User(user) ;
+     *             cloneUser.birthDay = new Date() ;
+     *             newUser.save() ;
+     *         }
+     *      ) ;
      *
      * @class Sway.data.ActiveRecord
-     * @param {Object}[persistence] dependency which can persist the data
-     * @param {Array} [fieldList] list of filters. Depending on the filter type its a before and/or after filter.
+     * @constructor
+     * @param {String} modelName name of the model
+     * @param {Object}[persistence] object used for data persistance and lookups
+     * @param {Array} [fieldList] list of fields
      */
-     var ActiveRecord = function(persistance ) {
+     var ActiveRecord = function(modelName, persistance, fieldList ) {
 
         /*
         AR prototype methods can be access by a BLESSED model, or simply by an ActiveRecord instance. To make these
@@ -52,7 +74,6 @@ window.Sway.data = window.Sway.data || {} ;
 
 	ActiveRecord.prototype = {
         /**
-         * @method bless
          * @chainable
          * @param {Object} model instance to be blessed
          */
@@ -94,7 +115,6 @@ window.Sway.data = window.Sway.data || {} ;
             return this ;
         }
         /**
-         * @method getField
          * @param {String} key
          * @return {Object} Field instance
          */
@@ -102,7 +122,6 @@ window.Sway.data = window.Sway.data || {} ;
             return this._field[this._fieldLookup[key]].field ;
         }
         /**
-         * @method setFile
          * @param {String} key
          * @param {Object} field Field instance
          */
@@ -111,7 +130,6 @@ window.Sway.data = window.Sway.data || {} ;
             this._field.push({ key: key, field: field}) ;
         }
         /**
-         * @method getSize
          * @param {String} key
          * @returns {Number}
          */

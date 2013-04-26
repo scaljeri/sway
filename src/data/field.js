@@ -12,6 +12,13 @@ window.Sway.data = window.Sway.data || {};
     }
 
     /**
+     * A Field represent a single value of an ActiveRecord model.
+     *
+     *     var username = new Field({ type: 'TEXT', key: 'username', friendlyName: 'User name' }) ;
+     *
+     * Or if it the field holds data which should be encrypted and compressed
+     *
+     *     var accountInfo = new Field( { type: 'BLOB', key: 'accountInfo', friendLyName: 'Account info'}, [encryptFilter, compressFilter] ) ;
      *
      * @class Sway.data.Field
      * @param {Array} [filters] list of filters
