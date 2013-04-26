@@ -250,7 +250,7 @@
             "extension_for": [],
             "file": "src/di.js",
             "line": 2,
-            "description": "DI makes classes accessible by a contract. Instances are created when requested and dependencies are injected into the constructor,\n facilitating lazy initialization and loose coupling between classes.\n\n     Sway.di.register( 'user'\n                       , Sway.data.ActiveRecord\n                       , [ 'User', 'webSql', ['username', 'password', 'accountInfo'], 'websql' ]\n                       , { singleton: TRUE }\n                     )\n            .register( 'userNameField'\n                       , Sway.data.Field\n                       , [{ type: 'TEXT',  key: 'username', friendlyName: 'User name' }]\n                       , {singleton: TRUE}\n                     )\n            .register( 'accountInfoField',\n                       , Sway.data.Field\n                       , [ { type: 'TEXT',  key: 'username', friendlyName: 'User name' }\n                           , ['encryptFilter', 'compressFilter']\n                         ]\n                       , { singleton: TRUE}\n                     ) ;\n\nNow, everywhere in the application where a User model is required simply do\n\n      var User = Sway.di.getInstance('user') ;\n\nDoing the same without Sway.DI, you will have to keep track of a lot more variables\n\n      var userNameField    = new Sway.data.Field( { type: 'TEXT',  key: 'username', friendlyName: 'User name' }] ) ;\n      var accountInfoField = new Sway.data.Field( { type: 'TEXT',  key: 'username', friendlyName: 'User name' }\n                                                  , [encryptFilterInstance, compressFilterInstance] ) ;\n\nAnd finally, to create a User model\n\n      var User = new Sway.data.ActiveRecord( 'User', webSqlInstance, [userNameField, accountInfoField] ) ;\n\nis definitely more tightly coupled code!",
+            "description": "DI makes classes accessible by a contract. Instances are created when requested and dependencies are injected into the constructor,\n facilitating lazy initialization and loose coupling between classes.\n\n     Sway.di.register( 'user'\n                       , Sway.data.ActiveRecord\n                       , [ 'User', 'webSql', ['username', 'password', 'accountInfo'], 'websql' ]\n                       , { singleton: TRUE }\n                     )\n            .register( 'userNameField'\n                       , Sway.data.Field\n                       , [{ type: 'TEXT',  key: 'username', friendlyName: 'User name' }]\n                       , {singleton: TRUE}\n                     )\n            .register( 'accountInfoField',\n                       , Sway.data.Field\n                       , [ { type: 'TEXT',  key: 'username', friendlyName: 'User name' }\n                           , ['encryptFilter', 'compressFilter']\n                         ]\n                       , { singleton: TRUE}\n                     ) ;\n\nNow, everywhere in the application where a User model is required simply do\n\n      var User = Sway.di.getInstance('user') ;\n\nDoing the same without Sway.DI, you will have to keep track of a lot more variables\n\n      var userNameField    = new Sway.data.Field( { type: 'TEXT',  key: 'username', friendlyName: 'User name' }] ) ;\n      var accountInfoField = new Sway.data.Field( { type: 'TEXT',  key: 'username', friendlyName: 'User name' }\n                                                  , [encryptFilterInstance, compressFilterInstance] ) ;\n\nAnd finally, to create a User model\n\n      var User = new Sway.data.ActiveRecord( 'User', webSqlInstance, [userNameField, accountInfoField] ) ;",
             "is_constructor": 1
         },
         "Sway.EventHub": {
@@ -452,7 +452,7 @@
         },
         {
             "file": "src/di.js",
-            "line": 61,
+            "line": 59,
             "description": "Register a class by creating a contract. Use {{#crossLink \"DI/getInstance:method\"}}{{/crossLink}} to obtain\nan instance from this contract. The <tt>param</tt> parameter is a list of contracts,  and, if needed,  mixed\nwith other constructor parameters. These are the constructor parameters.",
             "itemtype": "method",
             "name": "register",
@@ -497,10 +497,10 @@
         },
         {
             "file": "src/di.js",
-            "line": 89,
+            "line": 87,
             "description": "Returns an instance for the given contract.",
             "itemtype": "method",
-            "name": "getInstancet",
+            "name": "getInstance",
             "params": [
                 {
                     "name": "contract",
@@ -519,7 +519,7 @@
         },
         {
             "file": "src/di.js",
-            "line": 112,
+            "line": 110,
             "description": "Returns a new instance of the class matched by the contract. If the contract does not exists an error is thrown.\nIf one of the dependencies does not exists, 'null' is used instead.",
             "itemtype": "method",
             "name": "createInstance",
@@ -864,11 +864,11 @@
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/di.js:89"
+            "line": " src/di.js:87"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/di.js:112"
+            "line": " src/di.js:110"
         },
         {
             "message": "param name missing: {Object}",
