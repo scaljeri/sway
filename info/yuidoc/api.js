@@ -7,7 +7,10 @@ YUI.add("yuidoc-meta", function(Y) {
         "Sway.data.ActiveRecord",
         "Sway.data.Field",
         "Sway.filter.Compress",
-        "Sway.filter.Encrypt"
+        "Sway.filter.Encrypt",
+        "Sway.persistance.Cookie",
+        "Sway.persistance.IndexedDb",
+        "Sway.persistance.LocalStorage"
     ],
     "modules": [],
     "allModules": []

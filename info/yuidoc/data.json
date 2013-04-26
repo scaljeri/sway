@@ -37,10 +37,37 @@
             "fors": {},
             "namespaces": {}
         },
+        "src/persistance/cookie.js": {
+            "name": "src/persistance/cookie.js",
+            "modules": {},
+            "classes": {
+                "Sway.persistance.Cookie": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "src/persistance/fs.js": {
             "name": "src/persistance/fs.js",
             "modules": {},
             "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/persistance/indexeddb.js": {
+            "name": "src/persistance/indexeddb.js",
+            "modules": {},
+            "classes": {
+                "Sway.persistance.IndexedDb": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/persistance/localstorage.js": {
+            "name": "src/persistance/localstorage.js",
+            "modules": {},
+            "classes": {
+                "Sway.persistance.LocalStorage": 1
+            },
             "fors": {},
             "namespaces": {}
         },
@@ -157,6 +184,42 @@
             "file": "src/filters/encrypt.js",
             "line": 10,
             "description": "Encrypt and decrypt a given string",
+            "is_constructor": 1
+        },
+        "Sway.persistance.Cookie": {
+            "name": "Sway.persistance.Cookie",
+            "shortname": "Sway.persistance.Cookie",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/persistance/cookie.js",
+            "line": 2,
+            "is_constructor": 1
+        },
+        "Sway.persistance.IndexedDb": {
+            "name": "Sway.persistance.IndexedDb",
+            "shortname": "Sway.persistance.IndexedDb",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/persistance/indexeddb.js",
+            "line": 2,
+            "is_constructor": 1
+        },
+        "Sway.persistance.LocalStorage": {
+            "name": "Sway.persistance.LocalStorage",
+            "shortname": "Sway.persistance.LocalStorage",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/persistance/localstorage.js",
+            "line": 2,
             "is_constructor": 1
         },
         "Sway": {
@@ -357,19 +420,19 @@
             "file": "src/persistance/fs.js",
             "line": 51,
             "description": "FileEntry interface is provided for working with files:\nhttp://www.mosync.com/files/imports/doxygen/latest/html5/filewriter.md.html\nfileEntry.isFile === true\nfileEntry.isDirectory === false\nfileEntry.name\nfileEntry.fullPath\n...\n\nfileEntry.getMetadata(successCallback, opt_errorCallback);\nfileEntry.remove(successCallback, opt_errorCallback);\nfileEntry.moveTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);\nfileEntry.copyTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);\nfileEntry.getParent(successCallback, opt_errorCallback);\nfileEntry.toURI(opt_mimeType);  // Currently not implemented in Google Chrome 9.\n\nfileEntry.file(successCallback, opt_errorCallback);\nfileEntry.createWriter(successCallback, opt_errorCallback);",
-            "class": "Sway"
+            "class": "Sway.persistance.IndexedDb"
         },
         {
             "file": "src/persistance/fs.js",
             "line": 84,
             "description": "http://www.mosync.com/files/imports/doxygen/latest/html5/filereader.md.html",
-            "class": "Sway"
+            "class": "Sway.persistance.IndexedDb"
         },
         {
             "file": "src/persistance/fs.js",
             "line": 169,
             "description": "https://developer.mozilla.org/en-US/docs/DOM/File_API/File_System_API/FileError",
-            "class": "Sway"
+            "class": "Sway.persistance.IndexedDb"
         },
         {
             "file": "src/appinit.js",
