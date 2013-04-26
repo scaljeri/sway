@@ -244,7 +244,7 @@
             "extension_for": [],
             "file": "src/di.js",
             "line": 4,
-            "description": "DI makes classes accessible by a contract. Instances are created when requested and dependencies are injected into the constructor,\n        facilitating lazy initialization and loose coupling between classes.",
+            "description": "DI makes classes accessible by a contract. Instances are created when requested and dependencies are injected into the constructor,\n facilitating lazy initialization and loose coupling between classes.\n\n     Sway.di.register( 'user'\n                       , Sway.data.ActiveRecord\n                       , [ 'User', 'webSql', ['username', 'password', 'accountInfo'], 'websql' ]\n                       , { singleton: TRUE }\n                     )\n            .register( 'userNameField'\n                       , Sway.data.Field\n                       , [{ type: 'TEXT',  key: 'username', friendlyName: 'User name' }]\n                       , {singleton: TRUE}\n                     )\n            .register( 'accountInfoField',\n                       , Sway.data.Field\n                       , [ { type: 'TEXT',  key: 'username', friendlyName: 'User name' }\n                           , ['encryptFilter', 'compressFilter']\n                         ]\n                       , { singleton: TRUE}\n                     ) ;\n\nNow, everywhere in the application where a User model is required simply do\n\n      var User = Sway.di.getInstance('user') ;\n\nDoing the same without Sway.DI, you will have to keep track of a lot more variables\n\n      var userNameField    = new Sway.data.Field( { type: 'TEXT',  key: 'username', friendlyName: 'User name' }] ) ;\n      var accountInfoField = new Sway.data.Field( { type: 'TEXT',  key: 'username', friendlyName: 'User name' }\n                                                  , [encryptFilterInstance, compressFilterInstance] ) ;\n\nAnd finally, to create a User model\n\n      var User = new Sway.data.ActiveRecord( 'User', webSqlInstance, [userNameField, accountInfoField] ) ;\n\nis definitely more tightly coupled code!",
             "is_constructor": 1
         },
         "Sway.EventHub": {
@@ -454,8 +454,8 @@
         },
         {
             "file": "src/di.js",
-            "line": 29,
-            "description": "Register a class by creating a contract. Use {{#crossLink \"DI/getInstance:method\"}}{{/crossLink}} to obtain\nan instance from this contract/class. The injected dependencies, if any, will be used as constructor parameter\nin the order provided by the dependencies array.",
+            "line": 63,
+            "description": "Register a class by creating a contract. Use {{#crossLink \"DI/getInstance:method\"}}{{/crossLink}} to obtain\nan instance from this contract. The <tt>param</tt> parameter is a list of contracts,  and, if needed,  mixed\nwith other constructor parameters. These are the constructor parameters.",
             "itemtype": "method",
             "name": "register",
             "chainable": 1,
@@ -471,8 +471,8 @@
                     "type": "Class"
                 },
                 {
-                    "name": "dependencies",
-                    "description": "list of contracts; dependencies of this class",
+                    "name": "params",
+                    "description": "list of constructor parameters. If a parameter is a string matching a contract, it\nwill be replaced with the corresponding instance",
                     "type": "Array",
                     "optional": true
                 },
@@ -491,13 +491,13 @@
                 }
             ],
             "example": [
-                "\n        App.di.registerType(\"ajax\", App.AJAX) ;\n        App.di.registerType(\"ajax\", App.AJAX, [], { singleton: true }) ;\n        App.di.registerType(\"util\", App.Util, [\"compress\", \"wsql\"], { singleton: true } ) ;"
+                "\n        App.di.registerType(\"ajax\", App.AJAX) ;\n        App.di.registerType(\"ajax\", App.AJAX, [], { singleton: true }) ;\n        App.di.registerType(\"util\", App.Util, [\"compress\", true, [\"wsql\", \"ls\"] ], { singleton: true } ) ;"
             ],
             "class": "Sway.DI"
         },
         {
             "file": "src/di.js",
-            "line": 56,
+            "line": 91,
             "description": "Returns an instance for the given contract.",
             "itemtype": "method",
             "name": "getInstancet",
@@ -519,7 +519,7 @@
         },
         {
             "file": "src/di.js",
-            "line": 79,
+            "line": 114,
             "description": "Returns a new instance of the class matched by the contract. If the contract does not exists an error is thrown.\nIf one of the dependencies does not exists, 'null' is used instead.",
             "itemtype": "method",
             "name": "createInstance",
@@ -864,11 +864,11 @@
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/di.js:56"
+            "line": " src/di.js:91"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/di.js:79"
+            "line": " src/di.js:114"
         },
         {
             "message": "param name missing: {Object}",

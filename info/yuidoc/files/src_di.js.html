@@ -108,11 +108,45 @@
 (function(console, Ns) {
     &quot;use strict&quot; ;
 	&#x2F;**
-		DI makes classes accessible by a contract. Instances are created when requested and dependencies are injected into the constructor,
-        facilitating lazy initialization and loose coupling between classes.
-
-		@class Sway.DI
-		@constructor
+	 * DI makes classes accessible by a contract. Instances are created when requested and dependencies are injected into the constructor,
+     *  facilitating lazy initialization and loose coupling between classes.
+     *
+     *      Sway.di.register( &#x27;user&#x27;
+     *                        , Sway.data.ActiveRecord
+     *                        , [ &#x27;User&#x27;, &#x27;webSql&#x27;, [&#x27;username&#x27;, &#x27;password&#x27;, &#x27;accountInfo&#x27;], &#x27;websql&#x27; ]
+     *                        , { singleton: TRUE }
+     *                      )
+     *             .register( &#x27;userNameField&#x27;
+     *                        , Sway.data.Field
+     *                        , [{ type: &#x27;TEXT&#x27;,  key: &#x27;username&#x27;, friendlyName: &#x27;User name&#x27; }]
+     *                        , {singleton: TRUE}
+     *                      )
+     *             .register( &#x27;accountInfoField&#x27;,
+     *                        , Sway.data.Field
+     *                        , [ { type: &#x27;TEXT&#x27;,  key: &#x27;username&#x27;, friendlyName: &#x27;User name&#x27; }
+     *                            , [&#x27;encryptFilter&#x27;, &#x27;compressFilter&#x27;]
+     *                          ]
+     *                        , { singleton: TRUE}
+     *                      ) ;
+     *
+     * Now, everywhere in the application where a User model is required simply do
+     *
+     *       var User = Sway.di.getInstance(&#x27;user&#x27;) ;
+     *
+     * Doing the same without Sway.DI, you will have to keep track of a lot more variables
+     *
+     *       var userNameField    = new Sway.data.Field( { type: &#x27;TEXT&#x27;,  key: &#x27;username&#x27;, friendlyName: &#x27;User name&#x27; }] ) ;
+     *       var accountInfoField = new Sway.data.Field( { type: &#x27;TEXT&#x27;,  key: &#x27;username&#x27;, friendlyName: &#x27;User name&#x27; }
+     *                                                   , [encryptFilterInstance, compressFilterInstance] ) ;
+     *
+     * And finally, to create a User model
+     *
+     *       var User = new Sway.data.ActiveRecord( &#x27;User&#x27;, webSqlInstance, [userNameField, accountInfoField] ) ;
+     *
+     * is definitely more tightly coupled code!
+     *
+	 * @class Sway.DI
+	 * @constructor
 	**&#x2F;
 	var di = function() {
         &#x2F;&#x2F; container for all registered classes
@@ -134,28 +168,29 @@
 	di.prototype = {
 		&#x2F;**
 		 * Register a class by creating a contract. Use {{#crossLink &quot;DI&#x2F;getInstance:method&quot;}}{{&#x2F;crossLink}} to obtain
-         * an instance from this contract&#x2F;class. The injected dependencies, if any, will be used as constructor parameter
-         * in the order provided by the dependencies array.
+         * an instance from this contract. The &lt;tt&gt;param&lt;&#x2F;tt&gt; parameter is a list of contracts,  and, if needed,  mixed
+         * with other constructor parameters. These are the constructor parameters.
          *
 		 * @method register
 		 * @chainable
 		 * @param {String} contract name of the contracta
 		 * @param {Class} class the class bind to this contract
-         * @param {Array} [dependencies] list of contracts; dependencies of this class
+         * @param {Array} [params] list of constructor parameters. If a parameter is a string matching a contract, it
+         * will be replaced with the corresponding instance
          * @param {Object} [options] addition setting used to create the instance.
-         * @param {string} options.singleton set to TRUE if the class should be treated as a singleton class
+         *      @param {string} options.singleton set to TRUE if the class should be treated as a singleton class
 		 * @example
          App.di.registerType(&quot;ajax&quot;, App.AJAX) ;
          App.di.registerType(&quot;ajax&quot;, App.AJAX, [], { singleton: true }) ;
-         App.di.registerType(&quot;util&quot;, App.Util, [&quot;compress&quot;, &quot;wsql&quot;], { singleton: true } ) ;
+         App.di.registerType(&quot;util&quot;, App.Util, [&quot;compress&quot;, true, [&quot;wsql&quot;, &quot;ls&quot;] ], { singleton: true } ) ;
 		**&#x2F;
-        register: function(contract, classRef, dependencies, options)
+        register: function(contract, classRef, params, options)
         {
-            if ( !options &amp;&amp; !Array.isArray(dependencies) ) { &#x2F;&#x2F; fix input
-                options = dependencies ;
-                dependencies = [] ;
+            if ( !options &amp;&amp; !Array.isArray(params) ) { &#x2F;&#x2F; fix input
+                options = params ;
+                params = [] ;
             }
-            this._contracts[contract] = { classRef: classRef, dependencies: dependencies, options: options||{} } ;
+            this._contracts[contract] = { classRef: classRef, params: params||[], options: options||{} } ;
             return this ;
         },
 
