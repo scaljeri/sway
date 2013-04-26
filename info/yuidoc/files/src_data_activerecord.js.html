@@ -108,10 +108,13 @@ window.Sway.data = window.Sway.data || {} ;
     &#x2F;**
      * The ActiveRecord class represents data-structures, like a database table. An instance represent a single record.
      *
-     *      var User = new ActiveRecord( webSqlPersistance ) ; &#x2F;&#x2F; create a new model class with WebSQL persistance
-     *      User.addField( new Field({type: &#x27;TEXT&#x27;, key: &#x27;username&#x27;, friendlyName: &#x27;User name&#x27;}) ) &#x2F;&#x2F; addField is chainable
-     *          .addField( new Field([encryptFilter], {type: &#x27;TEXT&#x27;, key: &#x27;password&#x27;, friendlyName: &#x27;Password&#x27;}) ) ;
-     *          .addField( new Field( {type: &#x27;DATE&#x27;, key: &#x27;birthday&#x27;, friendlyName: &#x27;Birthday&#x27;}) ) ;
+     *      var User = new ActiveRecord( new WebSqlPersistance(&#x27;user-table&#x27;), [
+     *              new Field({type: &#x27;TEXT&#x27;, key: &#x27;username&#x27;, friendlyName: &#x27;User name&#x27;}) )
+     *              , new Field([encryptFilter], {type: &#x27;TEXT&#x27;, key: &#x27;password&#x27;, friendlyName: &#x27;Password&#x27;}) )
+     *              , new Field( {type: &#x27;DATE&#x27;, key: &#x27;birthday&#x27;, friendlyName: &#x27;Birthday&#x27;})
+     *          ]) ;
+     *
+     *      ) ; &#x2F;&#x2F; create a new model class with WebSQL persistance and three fields
      *
      *      User.find( &#x2F;&#x2F; asynchronious call
      *         {

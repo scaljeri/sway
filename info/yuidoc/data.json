@@ -84,7 +84,7 @@
             "extension_for": [],
             "file": "src/data/activerecord.js",
             "line": 8,
-            "description": "The ActiveRecord class represents data-structures, like a database table. An instance represent a single record.\n\n     var User = new ActiveRecord( webSqlPersistance ) ; // create a new model class with WebSQL persistance\n     User.addField( new Field({type: 'TEXT', key: 'username', friendlyName: 'User name'}) ) // addField is chainable\n         .addField( new Field([encryptFilter], {type: 'TEXT', key: 'password', friendlyName: 'Password'}) ) ;\n         .addField( new Field( {type: 'DATE', key: 'birthday', friendlyName: 'Birthday'}) ) ;\n\n     User.find( // asynchronious call\n        {\n            'username':   'John'\n            , 'password': 'Secret'\n        }, function(user) {\n            alert('Welcome ' + user.username + '! Your birthday is ' + user.birthday) ;\n            var cloneUser = new User(user) ;\n            cloneUser.birthDay = new Date() ;\n            newUser.save() ;\n        }\n     ) ;",
+            "description": "The ActiveRecord class represents data-structures, like a database table. An instance represent a single record.\n\n     var User = new ActiveRecord( new WebSqlPersistance('user-table'), [\n             new Field({type: 'TEXT', key: 'username', friendlyName: 'User name'}) )\n             , new Field([encryptFilter], {type: 'TEXT', key: 'password', friendlyName: 'Password'}) )\n             , new Field( {type: 'DATE', key: 'birthday', friendlyName: 'Birthday'})\n         ]) ;\n\n     ) ; // create a new model class with WebSQL persistance and three fields\n\n     User.find( // asynchronious call\n        {\n            'username':   'John'\n            , 'password': 'Secret'\n        }, function(user) {\n            alert('Welcome ' + user.username + '! Your birthday is ' + user.birthday) ;\n            var cloneUser = new User(user) ;\n            cloneUser.birthDay = new Date() ;\n            newUser.save() ;\n        }\n     ) ;",
             "params": [
                 {
                     "name": "persistence",
@@ -217,7 +217,7 @@
     "classitems": [
         {
             "file": "src/data/activerecord.js",
-            "line": 68,
+            "line": 71,
             "itemtype": "method",
             "name": "bless",
             "chainable": 1,
@@ -232,7 +232,7 @@
         },
         {
             "file": "src/data/activerecord.js",
-            "line": 110,
+            "line": 113,
             "itemtype": "method",
             "name": "getField",
             "params": [
@@ -250,7 +250,7 @@
         },
         {
             "file": "src/data/activerecord.js",
-            "line": 118,
+            "line": 121,
             "itemtype": "method",
             "name": "setFile",
             "params": [
@@ -269,7 +269,7 @@
         },
         {
             "file": "src/data/activerecord.js",
-            "line": 127,
+            "line": 130,
             "itemtype": "method",
             "name": "getSize",
             "params": [
@@ -793,7 +793,7 @@
     "warnings": [
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/data/activerecord.js:127"
+            "line": " src/data/activerecord.js:130"
         },
         {
             "message": "replacing incorrect tag: returns with return",

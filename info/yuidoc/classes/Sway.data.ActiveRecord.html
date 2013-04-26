@@ -116,10 +116,13 @@
 <div class="box intro">
     <p>The ActiveRecord class represents data-structures, like a database table. An instance represent a single record.</p>
 
-<pre class="code prettyprint"><code> var User = new ActiveRecord( webSqlPersistance ) ; // create a new model class with WebSQL persistance
- User.addField( new Field({type: 'TEXT', key: 'username', friendlyName: 'User name'}) ) // addField is chainable
-     .addField( new Field([encryptFilter], {type: 'TEXT', key: 'password', friendlyName: 'Password'}) ) ;
-     .addField( new Field( {type: 'DATE', key: 'birthday', friendlyName: 'Birthday'}) ) ;
+<pre class="code prettyprint"><code> var User = new ActiveRecord( new WebSqlPersistance('user-table'), [
+         new Field({type: 'TEXT', key: 'username', friendlyName: 'User name'}) )
+         , new Field([encryptFilter], {type: 'TEXT', key: 'password', friendlyName: 'Password'}) )
+         , new Field( {type: 'DATE', key: 'birthday', friendlyName: 'Birthday'})
+     ]) ;
+
+ ) ; // create a new model class with WebSQL persistance and three fields
 
  User.find( // asynchronious call
     {
@@ -247,7 +250,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l68"><code>src&#x2F;data&#x2F;activerecord.js:68</code></a>
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l71"><code>src&#x2F;data&#x2F;activerecord.js:71</code></a>
         
         </p>
 
@@ -338,7 +341,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l110"><code>src&#x2F;data&#x2F;activerecord.js:110</code></a>
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l113"><code>src&#x2F;data&#x2F;activerecord.js:113</code></a>
         
         </p>
 
@@ -442,7 +445,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l127"><code>src&#x2F;data&#x2F;activerecord.js:127</code></a>
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l130"><code>src&#x2F;data&#x2F;activerecord.js:130</code></a>
         
         </p>
 
@@ -547,7 +550,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l118"><code>src&#x2F;data&#x2F;activerecord.js:118</code></a>
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l121"><code>src&#x2F;data&#x2F;activerecord.js:121</code></a>
         
         </p>
 
