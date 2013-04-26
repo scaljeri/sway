@@ -121,13 +121,17 @@
      .addField( new Field([encryptFilter], {type: 'TEXT', key: 'password', friendlyName: 'Password'}) ) ;
      .addField( new Field( {type: 'DATE', key: 'birthday', friendlyName: 'Birthday'}) ) ;
 
- var user = User.find( {
+ User.find( // asynchronious call
+    {
         'username':   'John'
         , 'password': 'Secret'
-    }) ;
- alert('Welcome ' + user.username + '! Your birthday is ' + user.birthday) ;
- user.birthDay = new Date() ;    // change birthday
- user.save() ;
+    }, function(user) {
+        alert('Welcome ' + user.username + '! Your birthday is ' + user.birthday) ;
+        var cloneUser = new User(user) ;
+        cloneUser.birthDay = new Date() ;
+        newUser.save() ;
+    }
+ ) ;
 </code></pre>
 </div>
 
@@ -243,7 +247,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l64"><code>src&#x2F;data&#x2F;activerecord.js:64</code></a>
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l68"><code>src&#x2F;data&#x2F;activerecord.js:68</code></a>
         
         </p>
 
@@ -334,7 +338,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l106"><code>src&#x2F;data&#x2F;activerecord.js:106</code></a>
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l110"><code>src&#x2F;data&#x2F;activerecord.js:110</code></a>
         
         </p>
 
@@ -438,7 +442,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l123"><code>src&#x2F;data&#x2F;activerecord.js:123</code></a>
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l127"><code>src&#x2F;data&#x2F;activerecord.js:127</code></a>
         
         </p>
 
@@ -543,7 +547,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l114"><code>src&#x2F;data&#x2F;activerecord.js:114</code></a>
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l118"><code>src&#x2F;data&#x2F;activerecord.js:118</code></a>
         
         </p>
 
