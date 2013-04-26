@@ -112,19 +112,22 @@ window.Sway.data = window.Sway.data || {} ;
     &quot;use strict&quot; ;
 
     &#x2F;**
-     * The ActiveRecord class represents data-structures, like a database table. An instance represent a single record.
+     * The ActiveRecord class represents data-structures, like a database table. An instance represents a single record.
+     * It is a blue print for all models it creates, providing them with functionality needed to perform CRUD-like taks
      *
-     *      var User = new ActiveRecord( new WebSqlPersistance(&#x27;user-table&#x27;), [
-     *              new Field({type: &#x27;TEXT&#x27;, key: &#x27;username&#x27;, friendlyName: &#x27;User name&#x27;}) )
-     *              , new Field([encryptFilter], {type: &#x27;TEXT&#x27;, key: &#x27;password&#x27;, friendlyName: &#x27;Password&#x27;}) )
-     *              , new Field( {type: &#x27;DATE&#x27;, key: &#x27;birthday&#x27;, friendlyName: &#x27;Birthday&#x27;})
+     * For example, to create a User model do
+     *
+     *      var User = new ActiveRecord( &#x27;User&#x27;, new WebSqlPersistance(&#x27;user-table&#x27;), [
+     *                new Field( {type: &#x27;TEXT&#x27;, key: &#x27;username&#x27;, friendlyName: &#x27;User name&#x27;}) )
+     *              , new Field( [encryptFilter], {type: &#x27;TEXT&#x27;, key: &#x27;password&#x27;, friendlyName: &#x27;Password&#x27;}) )
+     *              , new Field( {type: &#x27;DATE&#x27;, key: &#x27;birthday&#x27;, friendlyName: &#x27;Birthday&#x27;} )
      *          ]) ;
      *
      *      ) ; &#x2F;&#x2F; create a new model class with WebSQL persistance and three fields
      *
      *      User.find( &#x2F;&#x2F; asynchronious call
      *         {
-     *             &#x27;username&#x27;:   &#x27;John&#x27;
+     *               &#x27;username&#x27;:   &#x27;John&#x27;
      *             , &#x27;password&#x27;: &#x27;Secret&#x27;
      *         }, function(user) {
      *             alert(&#x27;Welcome &#x27; + user.username + &#x27;! Your birthday is &#x27; + user.birthday) ;
@@ -135,10 +138,12 @@ window.Sway.data = window.Sway.data || {} ;
      *      ) ;
      *
      * @class Sway.data.ActiveRecord
-     * @param {Object}[persistence] dependency which can persist the data
-     * @param {Array} [fieldList] list of filters. Depending on the filter type its a before and&#x2F;or after filter.
+     * @constructor
+     * @param {String} modelName name of the model
+     * @param {Object}[persistence] object used for data persistance and lookups
+     * @param {Array} [fieldList] list of fields
      *&#x2F;
-     var ActiveRecord = function(persistance ) {
+     var ActiveRecord = function(modelName, persistance, fieldList ) {
 
         &#x2F;*
         AR prototype methods can be access by a BLESSED model, or simply by an ActiveRecord instance. To make these
@@ -175,7 +180,6 @@ window.Sway.data = window.Sway.data || {} ;
 
 	ActiveRecord.prototype = {
         &#x2F;**
-         * @method bless
          * @chainable
          * @param {Object} model instance to be blessed
          *&#x2F;
@@ -217,7 +221,6 @@ window.Sway.data = window.Sway.data || {} ;
             return this ;
         }
         &#x2F;**
-         * @method getField
          * @param {String} key
          * @return {Object} Field instance
          *&#x2F;
@@ -225,7 +228,6 @@ window.Sway.data = window.Sway.data || {} ;
             return this._field[this._fieldLookup[key]].field ;
         }
         &#x2F;**
-         * @method setFile
          * @param {String} key
          * @param {Object} field Field instance
          *&#x2F;
@@ -234,7 +236,6 @@ window.Sway.data = window.Sway.data || {} ;
             this._field.push({ key: key, field: field}) ;
         }
         &#x2F;**
-         * @method getSize
          * @param {String} key
          * @returns {Number}
          *&#x2F;

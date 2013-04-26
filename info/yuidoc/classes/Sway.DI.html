@@ -108,7 +108,7 @@
 
     
         <div class="foundat">
-            Defined in: <a href="..&#x2F;files&#x2F;src_di.js.html#l4"><code>src&#x2F;di.js:4</code></a>
+            Defined in: <a href="..&#x2F;files&#x2F;src_di.js.html#l2"><code>src&#x2F;di.js:2</code></a>
         </div>
     
 
@@ -197,7 +197,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;src_di.js.html#l4"><code>src&#x2F;di.js:4</code></a>
+        <a href="..&#x2F;files&#x2F;src_di.js.html#l2"><code>src&#x2F;di.js:2</code></a>
         
         </p>
 
@@ -332,7 +332,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;src_di.js.html#l114"><code>src&#x2F;di.js:114</code></a>
+        <a href="..&#x2F;files&#x2F;src_di.js.html#l112"><code>src&#x2F;di.js:112</code></a>
         
         </p>
 
@@ -410,12 +410,12 @@ If one of the dependencies does not exists, 'null' is used instead.</p>
             <h4>Example:</h4>
 
             <div class="example-content">
-                <pre class="code prettyprint"><code>try {
-    var storage = App.di.createInstance("data", ["compress", "websql"]) ;
-}
-catch(e) { // will fail if contract does not exist
-    console.log(e.name + ': ' + e.message) ;
-}
+                <pre class="code prettyprint"><code>    try {
+        var storage = App.di.createInstance("data", ["compress", "websql"]) ;
+    }
+    catch(e) { // will fail if contract does not exist
+        console.log(e.name + ': ' + e.message) ;
+    }
 </code></pre>
             </div>
         </div>
@@ -469,7 +469,7 @@ catch(e) { // will fail if contract does not exist
             
         
         
-        <a href="..&#x2F;files&#x2F;src_di.js.html#l91"><code>src&#x2F;di.js:91</code></a>
+        <a href="..&#x2F;files&#x2F;src_di.js.html#l89"><code>src&#x2F;di.js:89</code></a>
         
         </p>
 
@@ -551,7 +551,7 @@ catch(e) { // will fail if contract does not exist
             
                 <li class="arg">
                     
-                        <code>class</code>
+                        <code>classRef</code>
                     
                 </li>
             
@@ -598,7 +598,7 @@ catch(e) { // will fail if contract does not exist
             
         
         
-        <a href="..&#x2F;files&#x2F;src_di.js.html#l63"><code>src&#x2F;di.js:63</code></a>
+        <a href="..&#x2F;files&#x2F;src_di.js.html#l61"><code>src&#x2F;di.js:61</code></a>
         
         </p>
 
@@ -637,7 +637,7 @@ with other constructor parameters. These are the constructor parameters.</p>
             
                 <li class="param">
                     
-                        <code class="param-name">class</code>
+                        <code class="param-name">classRef</code>
                         <span class="type">Class</span>
                     
 
@@ -677,7 +677,7 @@ will be replaced with the corresponding instance</p>
                     
 
                     <div class="param-description">
-                        <p>addition setting used to create the instance.</p>
+                        <p>configuration</p>
                     </div>
 
                     
@@ -685,12 +685,13 @@ will be replaced with the corresponding instance</p>
                             
                             <li class="param">
                                 
-                                    <code class="param-name">singleton</code>
+                                    <code class="param-name optional">[singleton=false]</code>
                                     <span class="type">String</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
                                 
 
                                 <div class="param-description">
-                                    <p>set to TRUE if the class should be treated as a singleton class</p>
+                                    <p>create a new instance every time</p>
                                 </div>
 
                                 

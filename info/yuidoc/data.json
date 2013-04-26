@@ -111,17 +111,23 @@
             "extension_for": [],
             "file": "src/data/activerecord.js",
             "line": 8,
-            "description": "The ActiveRecord class represents data-structures, like a database table. An instance represent a single record.\n\n     var User = new ActiveRecord( new WebSqlPersistance('user-table'), [\n             new Field({type: 'TEXT', key: 'username', friendlyName: 'User name'}) )\n             , new Field([encryptFilter], {type: 'TEXT', key: 'password', friendlyName: 'Password'}) )\n             , new Field( {type: 'DATE', key: 'birthday', friendlyName: 'Birthday'})\n         ]) ;\n\n     ) ; // create a new model class with WebSQL persistance and three fields\n\n     User.find( // asynchronious call\n        {\n            'username':   'John'\n            , 'password': 'Secret'\n        }, function(user) {\n            alert('Welcome ' + user.username + '! Your birthday is ' + user.birthday) ;\n            var cloneUser = new User(user) ;\n            cloneUser.birthDay = new Date() ;\n            newUser.save() ;\n        }\n     ) ;",
+            "description": "The ActiveRecord class represents data-structures, like a database table. An instance represents a single record.\nIt is a blue print for all models it creates, providing them with functionality needed to perform CRUD-like taks\n\nFor example, to create a User model do\n\n     var User = new ActiveRecord( 'User', new WebSqlPersistance('user-table'), [\n               new Field( {type: 'TEXT', key: 'username', friendlyName: 'User name'}) )\n             , new Field( [encryptFilter], {type: 'TEXT', key: 'password', friendlyName: 'Password'}) )\n             , new Field( {type: 'DATE', key: 'birthday', friendlyName: 'Birthday'} )\n         ]) ;\n\n     ) ; // create a new model class with WebSQL persistance and three fields\n\n     User.find( // asynchronious call\n        {\n              'username':   'John'\n            , 'password': 'Secret'\n        }, function(user) {\n            alert('Welcome ' + user.username + '! Your birthday is ' + user.birthday) ;\n            var cloneUser = new User(user) ;\n            cloneUser.birthDay = new Date() ;\n            newUser.save() ;\n        }\n     ) ;",
+            "is_constructor": 1,
             "params": [
                 {
+                    "name": "modelName",
+                    "description": "name of the model",
+                    "type": "String"
+                },
+                {
                     "name": "persistence",
-                    "description": "dependency which can persist the data",
+                    "description": "object used for data persistance and lookups",
                     "type": "Object",
                     "optional": true
                 },
                 {
                     "name": "fieldList",
-                    "description": "list of filters. Depending on the filter type its a before and/or after filter.",
+                    "description": "list of fields",
                     "type": "Array",
                     "optional": true
                 }
@@ -243,7 +249,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/di.js",
-            "line": 4,
+            "line": 2,
             "description": "DI makes classes accessible by a contract. Instances are created when requested and dependencies are injected into the constructor,\n facilitating lazy initialization and loose coupling between classes.\n\n     Sway.di.register( 'user'\n                       , Sway.data.ActiveRecord\n                       , [ 'User', 'webSql', ['username', 'password', 'accountInfo'], 'websql' ]\n                       , { singleton: TRUE }\n                     )\n            .register( 'userNameField'\n                       , Sway.data.Field\n                       , [{ type: 'TEXT',  key: 'username', friendlyName: 'User name' }]\n                       , {singleton: TRUE}\n                     )\n            .register( 'accountInfoField',\n                       , Sway.data.Field\n                       , [ { type: 'TEXT',  key: 'username', friendlyName: 'User name' }\n                           , ['encryptFilter', 'compressFilter']\n                         ]\n                       , { singleton: TRUE}\n                     ) ;\n\nNow, everywhere in the application where a User model is required simply do\n\n      var User = Sway.di.getInstance('user') ;\n\nDoing the same without Sway.DI, you will have to keep track of a lot more variables\n\n      var userNameField    = new Sway.data.Field( { type: 'TEXT',  key: 'username', friendlyName: 'User name' }] ) ;\n      var accountInfoField = new Sway.data.Field( { type: 'TEXT',  key: 'username', friendlyName: 'User name' }\n                                                  , [encryptFilterInstance, compressFilterInstance] ) ;\n\nAnd finally, to create a User model\n\n      var User = new Sway.data.ActiveRecord( 'User', webSqlInstance, [userNameField, accountInfoField] ) ;\n\nis definitely more tightly coupled code!",
             "is_constructor": 1
         },
@@ -280,9 +286,7 @@
     "classitems": [
         {
             "file": "src/data/activerecord.js",
-            "line": 71,
-            "itemtype": "method",
-            "name": "bless",
+            "line": 76,
             "chainable": 1,
             "params": [
                 {
@@ -295,9 +299,7 @@
         },
         {
             "file": "src/data/activerecord.js",
-            "line": 113,
-            "itemtype": "method",
-            "name": "getField",
+            "line": 117,
             "params": [
                 {
                     "name": "key",
@@ -313,9 +315,7 @@
         },
         {
             "file": "src/data/activerecord.js",
-            "line": 121,
-            "itemtype": "method",
-            "name": "setFile",
+            "line": 124,
             "params": [
                 {
                     "name": "key",
@@ -332,9 +332,7 @@
         },
         {
             "file": "src/data/activerecord.js",
-            "line": 130,
-            "itemtype": "method",
-            "name": "getSize",
+            "line": 132,
             "params": [
                 {
                     "name": "key",
@@ -454,7 +452,7 @@
         },
         {
             "file": "src/di.js",
-            "line": 63,
+            "line": 61,
             "description": "Register a class by creating a contract. Use {{#crossLink \"DI/getInstance:method\"}}{{/crossLink}} to obtain\nan instance from this contract. The <tt>param</tt> parameter is a list of contracts,  and, if needed,  mixed\nwith other constructor parameters. These are the constructor parameters.",
             "itemtype": "method",
             "name": "register",
@@ -466,7 +464,7 @@
                     "type": "String"
                 },
                 {
-                    "name": "class",
+                    "name": "classRef",
                     "description": "the class bind to this contract",
                     "type": "Class"
                 },
@@ -478,14 +476,16 @@
                 },
                 {
                     "name": "options",
-                    "description": "addition setting used to create the instance.",
+                    "description": "configuration",
                     "type": "Object",
                     "optional": true,
                     "props": [
                         {
                             "name": "singleton",
-                            "description": "set to TRUE if the class should be treated as a singleton class",
-                            "type": "String"
+                            "description": "create a new instance every time",
+                            "type": "String",
+                            "optional": true,
+                            "optdefault": "false"
                         }
                     ]
                 }
@@ -497,7 +497,7 @@
         },
         {
             "file": "src/di.js",
-            "line": 91,
+            "line": 89,
             "description": "Returns an instance for the given contract.",
             "itemtype": "method",
             "name": "getInstancet",
@@ -519,7 +519,7 @@
         },
         {
             "file": "src/di.js",
-            "line": 114,
+            "line": 112,
             "description": "Returns a new instance of the class matched by the contract. If the contract does not exists an error is thrown.\nIf one of the dependencies does not exists, 'null' is used instead.",
             "itemtype": "method",
             "name": "createInstance",
@@ -540,7 +540,7 @@
                 "type": "Object"
             },
             "example": [
-                "\n    try {\n        var storage = App.di.createInstance(\"data\", [\"compress\", \"websql\"]) ;\n    }\n    catch(e) { // will fail if contract does not exist\n        console.log(e.name + ': ' + e.message) ;\n    }"
+                "\n        try {\n            var storage = App.di.createInstance(\"data\", [\"compress\", \"websql\"]) ;\n        }\n        catch(e) { // will fail if contract does not exist\n            console.log(e.name + ': ' + e.message) ;\n        }"
             ],
             "class": "Sway.DI"
         },
@@ -856,7 +856,7 @@
     "warnings": [
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/data/activerecord.js:130"
+            "line": " src/data/activerecord.js:132"
         },
         {
             "message": "replacing incorrect tag: returns with return",
@@ -864,15 +864,31 @@
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/di.js:91"
+            "line": " src/di.js:89"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/di.js:114"
+            "line": " src/di.js:112"
         },
         {
             "message": "param name missing: {Object}",
             "line": " src/eventhub.js:193"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/data/activerecord.js:76"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/data/activerecord.js:117"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/data/activerecord.js:124"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/data/activerecord.js:132"
         },
         {
             "message": "Missing item type\nFileEntry interface is provided for working with files:\nhttp://www.mosync.com/files/imports/doxygen/latest/html5/filewriter.md.html\nfileEntry.isFile === true\nfileEntry.isDirectory === false\nfileEntry.name\nfileEntry.fullPath\n...\n\nfileEntry.getMetadata(successCallback, opt_errorCallback);\nfileEntry.remove(successCallback, opt_errorCallback);\nfileEntry.moveTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);\nfileEntry.copyTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);\nfileEntry.getParent(successCallback, opt_errorCallback);\nfileEntry.toURI(opt_mimeType);  // Currently not implemented in Google Chrome 9.\n\nfileEntry.file(successCallback, opt_errorCallback);\nfileEntry.createWriter(successCallback, opt_errorCallback);",
