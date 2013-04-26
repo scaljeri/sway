@@ -121,7 +121,7 @@
 
 <p>Or if it the field holds data which should be encrypted and compressed</p>
 
-<pre class="code prettyprint"><code>var accountInfo = new Field( [encryptFilter, compressFilter], { type: 'BLOB', key: 'accountInfo', friendLyName: 'Account info'} ) ;
+<pre class="code prettyprint"><code>var accountInfo = new Field( { type: 'BLOB', key: 'accountInfo', friendLyName: 'Account info'}, [encryptFilter, compressFilter] ) ;
 </code></pre>
 </div>
 

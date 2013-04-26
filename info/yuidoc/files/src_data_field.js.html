@@ -118,7 +118,7 @@ window.Sway.data = window.Sway.data || {};
      *
      * Or if it the field holds data which should be encrypted and compressed
      *
-     *     var accountInfo = new Field( [encryptFilter, compressFilter], { type: &#x27;BLOB&#x27;, key: &#x27;accountInfo&#x27;, friendLyName: &#x27;Account info&#x27;} ) ;
+     *     var accountInfo = new Field( { type: &#x27;BLOB&#x27;, key: &#x27;accountInfo&#x27;, friendLyName: &#x27;Account info&#x27;}, [encryptFilter, compressFilter] ) ;
      *
      * @class Sway.data.Field
      * @param {Array} [filters] list of filters

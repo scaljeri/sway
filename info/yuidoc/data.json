@@ -110,7 +110,7 @@
             "extension_for": [],
             "file": "src/data/field.js",
             "line": 14,
-            "description": "A Field represent a single value of an ActiveRecord model.\n\n    var username = new Field({ type: 'TEXT', key: 'username', friendlyName: 'User name' }) ;\n\nOr if it the field holds data which should be encrypted and compressed\n\n    var accountInfo = new Field( [encryptFilter, compressFilter], { type: 'BLOB', key: 'accountInfo', friendLyName: 'Account info'} ) ;",
+            "description": "A Field represent a single value of an ActiveRecord model.\n\n    var username = new Field({ type: 'TEXT', key: 'username', friendlyName: 'User name' }) ;\n\nOr if it the field holds data which should be encrypted and compressed\n\n    var accountInfo = new Field( { type: 'BLOB', key: 'accountInfo', friendLyName: 'Account info'}, [encryptFilter, compressFilter] ) ;",
             "params": [
                 {
                     "name": "filters",
