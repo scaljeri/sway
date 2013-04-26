@@ -26,10 +26,10 @@ _yuitest_coverage["./src/data/field.js"] = {
     path: "/Volumes/DATA/dev/ws/zipped/src/data/field.js",
     code: []
 };
-_yuitest_coverage["./src/data/field.js"].code=["window.Sway = window.Sway || {}; // make sure it exists","window.Sway.data = window.Sway.data || {};","","(function (Ns) {","    \"use strict\" ;","","    /**","     *","     * @class Sway.data.Field","     * @param {Array} [filters] list of filters","     */","     var f = function (filterList) {","        this.filterList = filterList ;","","        Object.defineProperty(this, '_value',","            {","                value: null","                , enumerable: false // hide it","            }","        ) ;","        Object.defineProperty(this, 'value',","            {","                value: null","                , set: this.setValue","                , get: this.getValue","            }","        ) ;","    } ;","","    f.prototype = {","        /**","         * @method getValue","         * @returns {*}","         */","        getValue: function() {","            return this._value ;","        }","        /**","         * @method getFilteredValue","         */","        , getFilteredValue: function() {","            return this._value ;","","        }","        /**","         * @method setValue","         * @param {Object|String|Blob|Array} value the value of the field instance","         */","        , setValue: function(input) {","            this._value = input ;","","        }","        /**","         * @method setFilteredValue","         * @param {Object|String|Blob|Array} value the filtered value of the field instance","         */","        , setFilteredValue: function(input) {","            this._value = input ;","","        }","        /**","         * @method size","         */","        , getSize: function() {","            return this.state === \"uncompressed\" ? encodeURI(this._inputStr).split(/%..|./).length - 1 : this._zippedBlob.size ;","        }","    } ;","","    Ns.Field = f ;","","})(window.Sway.data) ;","",""];
-_yuitest_coverage["./src/data/field.js"].lines = {"1":0,"2":0,"4":0,"5":0,"12":0,"13":0,"15":0,"21":0,"30":0,"36":0,"42":0,"50":0,"58":0,"65":0,"69":0};
-_yuitest_coverage["./src/data/field.js"].functions = {"f:12":0,"getValue:35":0,"getFilteredValue:41":0,"setValue:49":0,"setFilteredValue:57":0,"getSize:64":0,"(anonymous 1):4":0};
-_yuitest_coverage["./src/data/field.js"].coveredLines = 15;
+_yuitest_coverage["./src/data/field.js"].code=["window.Sway = window.Sway || {}; // make sure it exists","window.Sway.data = window.Sway.data || {};","","(function (ns) {","    \"use strict\" ;","","    var DEFAULTS = {","        STATES: {","            FILTERED: 'filtered'","            , UNFILTERED: 'unfiltered'","        }","    }","","    /**","     * A Field represent a single value of an ActiveRecord model.","     *","     *     var username = new Field({ type: 'TEXT', key: 'username', friendlyName: 'User name' }) ;","     *","     * Or if it the field holds data which should be encrypted and compressed","     *","     *     var accountInfo = new Field( [encryptFilter, compressFilter], { type: 'BLOB', key: 'accountInfo', friendLyName: 'Account info'} ) ;","     *","     * @class Sway.data.Field","     * @param {Array} [filters] list of filters","     * @param {Object} [options] configuration","     *      @param {Boolean} [keepValues=false] keep a reference to both original and filtered value (requires more memory)","     */","        , f = function (filterList, options) {","            this.filterList = filterList ;","","            Object.defineProperty(this, '_filteredValue',","                {","                    value: null","                    , enumerable: false // hide it","                    , writable: true","                }","            ) ;","            Object.defineProperty(this, '_value',","                {","                    value: null","                    , enumerable: false // hide it","                    , writable: true","                }","            ) ;","","            this.state = ns.Field.STATES.UNFILTERED ;","        } ;","","    f.STATES = DEFAULTS.STATES ;","","    f.prototype = {","        /**","         * @method getValue","         * @param {Function} callback","         * @returns {*}","         */","        getValue: function(callback) {","            if ( this.state === ns.Field.STATES.FILTERED ) {","                // TODO get filtered value or return _filteredValue","            }","            else {","                // TODO get unfiltered value or return _value","            }","            return this._value ;","        }","","        /**","         * @method getKey","         * @param {Boolean} [filtered=false] return the","         * @return {String}","         */","        , getKey: function() {","            return this.key ;","        }","        /**","         * @method setValue","         * @chainable","         * @param {*} input Currently only a 'String' is accepted as unfiltered value!","         * @param {Boolean} [filtered=false]","         */","        , setValue: function(input, filtered) {","            this[(filtered ? '_filteredValue' : '_value')] = input ;","            this[(filtered ? '_value' : '_filteredValue')] = null ;     // cleanup","            this.state = ns.Field.STATES[ (filtered ? '' : 'UN') + 'FILTERED'] ;","            return this ;","        }","        ,setState: function(state) {","            this.state = state ;","        }","        /**","         * Returns the size of","         * @method size","         */","        , getSize: function() {","            return this.state === \"uncompressed\" ? encodeURI(this._inputStr).split(/%..|./).length - 1 : this._zippedBlob.size ;","        }","    } ;","","    ns.Field = f ;","","})(window.Sway.data) ;","",""];
+_yuitest_coverage["./src/data/field.js"].lines = {"1":0,"2":0,"4":0,"5":0,"7":0,"29":0,"31":0,"38":0,"46":0,"49":0,"51":0,"58":0,"64":0,"73":0,"82":0,"83":0,"84":0,"85":0,"88":0,"95":0,"99":0};
+_yuitest_coverage["./src/data/field.js"].functions = {"f:28":0,"getValue:57":0,"getKey:72":0,"setValue:81":0,"setState:87":0,"getSize:94":0,"(anonymous 1):4":0};
+_yuitest_coverage["./src/data/field.js"].coveredLines = 21;
 _yuitest_coverage["./src/data/field.js"].coveredFunctions = 7;
 _yuitest_coverline("./src/data/field.js", 1);
 window.Sway = window.Sway || {}; // make sure it exists
@@ -37,91 +37,127 @@ _yuitest_coverline("./src/data/field.js", 2);
 window.Sway.data = window.Sway.data || {};
 
 _yuitest_coverline("./src/data/field.js", 4);
-(function (Ns) {
+(function (ns) {
     _yuitest_coverfunc("./src/data/field.js", "(anonymous 1)", 4);
 _yuitest_coverline("./src/data/field.js", 5);
 "use strict" ;
 
+    _yuitest_coverline("./src/data/field.js", 7);
+var DEFAULTS = {
+        STATES: {
+            FILTERED: 'filtered'
+            , UNFILTERED: 'unfiltered'
+        }
+    }
+
     /**
+     * A Field represent a single value of an ActiveRecord model.
+     *
+     *     var username = new Field({ type: 'TEXT', key: 'username', friendlyName: 'User name' }) ;
+     *
+     * Or if it the field holds data which should be encrypted and compressed
+     *
+     *     var accountInfo = new Field( [encryptFilter, compressFilter], { type: 'BLOB', key: 'accountInfo', friendLyName: 'Account info'} ) ;
      *
      * @class Sway.data.Field
      * @param {Array} [filters] list of filters
+     * @param {Object} [options] configuration
+     *      @param {Boolean} [keepValues=false] keep a reference to both original and filtered value (requires more memory)
      */
-     _yuitest_coverline("./src/data/field.js", 12);
-var f = function (filterList) {
-        _yuitest_coverfunc("./src/data/field.js", "f", 12);
-_yuitest_coverline("./src/data/field.js", 13);
+        , f = function (filterList, options) {
+            _yuitest_coverfunc("./src/data/field.js", "f", 28);
+_yuitest_coverline("./src/data/field.js", 29);
 this.filterList = filterList ;
 
-        _yuitest_coverline("./src/data/field.js", 15);
+            _yuitest_coverline("./src/data/field.js", 31);
+Object.defineProperty(this, '_filteredValue',
+                {
+                    value: null
+                    , enumerable: false // hide it
+                    , writable: true
+                }
+            ) ;
+            _yuitest_coverline("./src/data/field.js", 38);
 Object.defineProperty(this, '_value',
-            {
-                value: null
-                , enumerable: false // hide it
-            }
-        ) ;
-        _yuitest_coverline("./src/data/field.js", 21);
-Object.defineProperty(this, 'value',
-            {
-                value: null
-                , set: this.setValue
-                , get: this.getValue
-            }
-        ) ;
-    } ;
+                {
+                    value: null
+                    , enumerable: false // hide it
+                    , writable: true
+                }
+            ) ;
 
-    _yuitest_coverline("./src/data/field.js", 30);
+            _yuitest_coverline("./src/data/field.js", 46);
+this.state = ns.Field.STATES.UNFILTERED ;
+        } ;
+
+    _yuitest_coverline("./src/data/field.js", 49);
+f.STATES = DEFAULTS.STATES ;
+
+    _yuitest_coverline("./src/data/field.js", 51);
 f.prototype = {
         /**
          * @method getValue
+         * @param {Function} callback
          * @returns {*}
          */
-        getValue: function() {
-            _yuitest_coverfunc("./src/data/field.js", "getValue", 35);
-_yuitest_coverline("./src/data/field.js", 36);
+        getValue: function(callback) {
+            _yuitest_coverfunc("./src/data/field.js", "getValue", 57);
+_yuitest_coverline("./src/data/field.js", 58);
+if ( this.state === ns.Field.STATES.FILTERED ) {
+                // TODO get filtered value or return _filteredValue
+            }
+            else {
+                // TODO get unfiltered value or return _value
+            }
+            _yuitest_coverline("./src/data/field.js", 64);
 return this._value ;
         }
-        /**
-         * @method getFilteredValue
-         */
-        , getFilteredValue: function() {
-            _yuitest_coverfunc("./src/data/field.js", "getFilteredValue", 41);
-_yuitest_coverline("./src/data/field.js", 42);
-return this._value ;
 
+        /**
+         * @method getKey
+         * @param {Boolean} [filtered=false] return the
+         * @return {String}
+         */
+        , getKey: function() {
+            _yuitest_coverfunc("./src/data/field.js", "getKey", 72);
+_yuitest_coverline("./src/data/field.js", 73);
+return this.key ;
         }
         /**
          * @method setValue
-         * @param {Object|String|Blob|Array} value the value of the field instance
+         * @chainable
+         * @param {*} input Currently only a 'String' is accepted as unfiltered value!
+         * @param {Boolean} [filtered=false]
          */
-        , setValue: function(input) {
-            _yuitest_coverfunc("./src/data/field.js", "setValue", 49);
-_yuitest_coverline("./src/data/field.js", 50);
-this._value = input ;
-
+        , setValue: function(input, filtered) {
+            _yuitest_coverfunc("./src/data/field.js", "setValue", 81);
+_yuitest_coverline("./src/data/field.js", 82);
+this[(filtered ? '_filteredValue' : '_value')] = input ;
+            _yuitest_coverline("./src/data/field.js", 83);
+this[(filtered ? '_value' : '_filteredValue')] = null ;     // cleanup
+            _yuitest_coverline("./src/data/field.js", 84);
+this.state = ns.Field.STATES[ (filtered ? '' : 'UN') + 'FILTERED'] ;
+            _yuitest_coverline("./src/data/field.js", 85);
+return this ;
+        }
+        ,setState: function(state) {
+            _yuitest_coverfunc("./src/data/field.js", "setState", 87);
+_yuitest_coverline("./src/data/field.js", 88);
+this.state = state ;
         }
         /**
-         * @method setFilteredValue
-         * @param {Object|String|Blob|Array} value the filtered value of the field instance
-         */
-        , setFilteredValue: function(input) {
-            _yuitest_coverfunc("./src/data/field.js", "setFilteredValue", 57);
-_yuitest_coverline("./src/data/field.js", 58);
-this._value = input ;
-
-        }
-        /**
+         * Returns the size of
          * @method size
          */
         , getSize: function() {
-            _yuitest_coverfunc("./src/data/field.js", "getSize", 64);
-_yuitest_coverline("./src/data/field.js", 65);
+            _yuitest_coverfunc("./src/data/field.js", "getSize", 94);
+_yuitest_coverline("./src/data/field.js", 95);
 return this.state === "uncompressed" ? encodeURI(this._inputStr).split(/%..|./).length - 1 : this._zippedBlob.size ;
         }
     } ;
 
-    _yuitest_coverline("./src/data/field.js", 69);
-Ns.Field = f ;
+    _yuitest_coverline("./src/data/field.js", 99);
+ns.Field = f ;
 
 })(window.Sway.data) ;
 

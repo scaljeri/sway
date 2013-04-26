@@ -101,7 +101,7 @@ h1{font-size:138.5%;}h2{font-size:123.1%;}h3{font-size:108%;}h1,h2,h3{margin:1em
         <div class="hd">
             <!-- title -->
             <h1>./src/di.js Report</h1>
-            <h2>Date Generated: Wed Apr 24 21:33:55 CEST 2013</h2>
+            <h2>Date Generated: Fri Apr 26 14:03:30 CEST 2013</h2>
         </div>
 
         <div class="bd">
@@ -120,8 +120,8 @@ h1{font-size:138.5%;}h2{font-size:123.1%;}h3{font-size:108%;}h1,h2,h3{margin:1em
                 <tbody>
                     <tr>
                         <th>Lines</th>
-                        <td class="results">44</td>
-                        <td class="results">44</td>
+                        <td class="results">41</td>
+                        <td class="results">41</td>
                         <td class="results">100.0%</td>
                     </tr>
                     <tr>
@@ -337,9 +337,9 @@ h1{font-size:138.5%;}h2{font-size:123.1%;}h3{font-size:108%;}h1,h2,h3{margin:1em
                     </tr>    <tr class="uncovered">
                         <td class="line-number">100</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
                     </tr>    <tr class="called">
-                        <td class="line-number">101</td><td class="line-calls">30</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;self&nbsp;=&nbsp;this&nbsp;;</td>
-                    </tr>    <tr class="called">
-                        <td class="line-number">102</td><td class="line-calls">30</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;cr&nbsp;=&nbsp;this._contracts[contract].classRef&nbsp;;</td>
+                        <td class="line-number">101</td><td class="line-calls">30</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;self&nbsp;=&nbsp;this</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">102</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;cr&nbsp;=&nbsp;this._contracts[contract].classRef&nbsp;;</td>
                     </tr>    <tr class="uncovered">
                         <td class="line-number">103</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
                     </tr>    <tr class="called">
@@ -413,39 +413,33 @@ h1{font-size:138.5%;}h2{font-size:123.1%;}h3{font-size:108%;}h1,h2,h3{margin:1em
                     </tr>    <tr class="called">
                         <td class="line-number">138</td><td class="line-calls">33</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;instances.push(this.getInstance(c))&nbsp;;</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">139</td><td class="line-calls">27</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(&nbsp;!instances[instances.length-1])&nbsp;{</td>
+                        <td class="line-number">139</td><td class="line-calls">27</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this._depCheck.pop()&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">140</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">141</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;{&nbsp;//&nbsp;circular&nbsp;dependency&nbsp;detected!!&nbsp;--&gt;&nbsp;STOP</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">140</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;console.warn(&quot;Dependency&nbsp;'&quot;&nbsp;+&nbsp;c&nbsp;+&nbsp;&quot;'&nbsp;does&nbsp;not&nbsp;exist!&quot;)&nbsp;;</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">141</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                        <td class="line-number">142</td><td class="line-calls">3</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this._depCheck.length&nbsp;=&nbsp;0&nbsp;;</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">142</td><td class="line-calls">27</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this._depCheck.pop()&nbsp;;</td>
+                        <td class="line-number">143</td><td class="line-calls">3</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw&nbsp;&quot;Circular&nbsp;dependency&nbsp;detected&nbsp;for&nbsp;contract&nbsp;&quot;&nbsp;+&nbsp;c&nbsp;;</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">143</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                        <td class="line-number">144</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">144</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;{&nbsp;//&nbsp;fatal</td>
+                        <td class="line-number">145</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">146</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}.bind(this))&nbsp;;</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">145</td><td class="line-calls">3</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this._depCheck.length&nbsp;=&nbsp;0&nbsp;;</td>
+                        <td class="line-number">147</td><td class="line-calls">25</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;instances&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">148</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">149</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
                     </tr>    <tr class="called">
-                        <td class="line-number">146</td><td class="line-calls">3</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw&nbsp;&quot;Circular&nbsp;dependency&nbsp;detected&nbsp;for&nbsp;contract&nbsp;&quot;&nbsp;+&nbsp;c&nbsp;;</td>
+                        <td class="line-number">150</td><td class="line-calls">1</td><td class="line-code">	Ns.DI&nbsp;=&nbsp;di&nbsp;;</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">147</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                        <td class="line-number">151</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">148</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">149</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}.bind(this))&nbsp;;</td>
-                    </tr>    <tr class="called">
-                        <td class="line-number">150</td><td class="line-calls">25</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;instances&nbsp;;</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">151</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;}</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">152</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
-                    </tr>    <tr class="called">
-                        <td class="line-number">153</td><td class="line-calls">1</td><td class="line-code">	Ns.DI&nbsp;=&nbsp;di&nbsp;;</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">154</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">155</td><td class="line-calls">&nbsp;</td><td class="line-code">})(window.console,&nbsp;window.Sway)&nbsp;;</td>
+                        <td class="line-number">152</td><td class="line-calls">&nbsp;</td><td class="line-code">})(window.console,&nbsp;window.Sway)&nbsp;;</td>
                     </tr>
                 </table>
             </div>
@@ -453,7 +447,7 @@ h1{font-size:138.5%;}h2{font-size:123.1%;}h3{font-size:108%;}h1,h2,h3{margin:1em
 
         <!-- footer -->
         <div class="ft">
-            <p>Code coverage for ./src/di.js generated on Wed Apr 24 21:33:55 CEST 2013 by YUI Test.</p>
+            <p>Code coverage for ./src/di.js generated on Fri Apr 26 14:03:30 CEST 2013 by YUI Test.</p>
         </div>
     </div>
 

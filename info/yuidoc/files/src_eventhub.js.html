@@ -43,7 +43,7 @@
             
                 <li><a href="..&#x2F;classes/Sway.html">Sway</a></li>
             
-                <li><a href="..&#x2F;classes/Sway.data.ActiveRecord..html">Sway.data.ActiveRecord.</a></li>
+                <li><a href="..&#x2F;classes/Sway.data.ActiveRecord.html">Sway.data.ActiveRecord</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.data.Field.html">Sway.data.Field</a></li>
             
@@ -390,17 +390,16 @@ window.Sway = window.Sway || {} ; &#x2F;&#x2F; make sure it exists
     }
 
     function addCallbackToStack(eventName, callback, options) {
-        var obj
+        var obj = null
             , stack ;
         if ( checkInput(eventName, callback)) {                                     &#x2F;&#x2F; validate input
             stack = createStack.call(this, eventName) ;                             &#x2F;&#x2F; get stack of &#x27;eventName&#x27;
             if ( canAddCallback.call(this, stack.__stack.on, callback, options) === true ) {                       &#x2F;&#x2F; check if the callback is not already added
                 obj = { fn: callback, eventMode: options.eventMode } ;
                 stack.__stack.on[options.prepend ? &#x27;unshift&#x27;:&#x27;push&#x27;](obj) ;
-                return obj ;
             }
         }
-        return null ;
+        return obj ;
     }
 
     &#x2F;*

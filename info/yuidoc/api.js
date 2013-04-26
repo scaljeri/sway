@@ -4,7 +4,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "Sway",
         "Sway.DI",
         "Sway.EventHub",
-        "Sway.data.ActiveRecord.",
+        "Sway.data.ActiveRecord",
         "Sway.data.Field",
         "Sway.filter.Compress",
         "Sway.filter.Encrypt"

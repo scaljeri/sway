@@ -43,7 +43,7 @@
             
                 <li><a href="..&#x2F;classes/Sway.html">Sway</a></li>
             
-                <li><a href="..&#x2F;classes/Sway.data.ActiveRecord..html">Sway.data.ActiveRecord.</a></li>
+                <li><a href="..&#x2F;classes/Sway.data.ActiveRecord.html">Sway.data.ActiveRecord</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.data.Field.html">Sway.data.Field</a></li>
             
@@ -106,12 +106,22 @@ window.Sway.data = window.Sway.data || {} ;
     &quot;use strict&quot; ;
 
     &#x2F;**
-     * This class stores a string in memory. If a persistance dependency is defined, it will use this dependency to store
-     * the data. Filters are used to perform some action on the data before persisting it and on retrieval.
-     * As an example, a persistance dependency could be WebSQL storage. A filter could be encryption and&#x2F;or compression.
-     * Note that for an encryption filter, it will perform an action on the data before persisting it, and on retrieval.
+     * The ActiveRecord class represents data-structures, like a database table. An instance represent a single record.
      *
-     * @class Sway.data.ActiveRecord.
+     *      var User = new ActiveRecord( webSqlPersistance ) ; &#x2F;&#x2F; create a new model class with WebSQL persistance
+     *      User.addField( new Field({type: &#x27;TEXT&#x27;, key: &#x27;username&#x27;, friendlyName: &#x27;User name&#x27;}) ) &#x2F;&#x2F; addField is chainable
+     *          .addField( new Field([encryptFilter], {type: &#x27;TEXT&#x27;, key: &#x27;password&#x27;, friendlyName: &#x27;Password&#x27;}) ) ;
+     *          .addField( new Field( {type: &#x27;DATE&#x27;, key: &#x27;birthday&#x27;, friendlyName: &#x27;Birthday&#x27;}) ) ;
+     *
+     *      var user = User.find( {
+     *             &#x27;username&#x27;:   &#x27;John&#x27;
+     *             , &#x27;password&#x27;: &#x27;Secret&#x27;
+     *         }) ;
+     *      alert(&#x27;Welcome &#x27; + user.username + &#x27;! Your birthday is &#x27; + user.birthday) ;
+     *      user.birthDay = new Date() ;    &#x2F;&#x2F; change birthday
+     *      user.save() ;
+     *
+     * @class Sway.data.ActiveRecord
      * @param {Object}[persistence] dependency which can persist the data
      * @param {Array} [fieldList] list of filters. Depending on the filter type its a before and&#x2F;or after filter.
      *&#x2F;
@@ -201,6 +211,11 @@ window.Sway.data = window.Sway.data || {} ;
         , getField: function(key) {
             return this._field[this._fieldLookup[key]].field ;
         }
+        &#x2F;**
+         * @method setFile
+         * @param {String} key
+         * @param {Object} field Field instance
+         *&#x2F;
         , setField: function(key, field) {
            this._fieldLookup[key] = this._field.length ;
             this._field.push({ key: key, field: field}) ;

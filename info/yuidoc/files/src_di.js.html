@@ -43,7 +43,7 @@
             
                 <li><a href="..&#x2F;classes/Sway.html">Sway</a></li>
             
-                <li><a href="..&#x2F;classes/Sway.data.ActiveRecord..html">Sway.data.ActiveRecord.</a></li>
+                <li><a href="..&#x2F;classes/Sway.data.ActiveRecord.html">Sway.data.ActiveRecord</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.data.Field.html">Sway.data.Field</a></li>
             
@@ -198,8 +198,8 @@
                 throw &#x27;Unknown contract name &quot;&#x27; + contract + &#x27;&quot;&#x27; ;
             }
 
-            var self = this ;
-            var cr = this._contracts[contract].classRef ;
+            var self = this
+                , cr = this._contracts[contract].classRef ;
 
             function Fake(){
                 cr.apply(this, createInstanceList.call(self, contract, dependencies||[])) ;
@@ -236,12 +236,9 @@
                 if ( this._depCheck.indexOf(c) === -1 ) { &#x2F;&#x2F; check for circular dependency
                     this._depCheck.push(c) ;
                     instances.push(this.getInstance(c)) ;
-                    if ( !instances[instances.length-1]) {
-                        console.warn(&quot;Dependency &#x27;&quot; + c + &quot;&#x27; does not exist!&quot;) ;
-                    }
                     this._depCheck.pop() ;
                 }
-                else { &#x2F;&#x2F; fatal
+                else { &#x2F;&#x2F; circular dependency detected!! --&gt; STOP
                     this._depCheck.length = 0 ;
                     throw &quot;Circular dependency detected for contract &quot; + c ;
                 }

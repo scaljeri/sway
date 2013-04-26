@@ -5,7 +5,7 @@
             "name": "src/data/activerecord.js",
             "modules": {},
             "classes": {
-                "Sway.data.ActiveRecord.": 1
+                "Sway.data.ActiveRecord": 1
             },
             "fors": {},
             "namespaces": {}
@@ -74,9 +74,9 @@
     },
     "modules": {},
     "classes": {
-        "Sway.data.ActiveRecord.": {
-            "name": "Sway.data.ActiveRecord.",
-            "shortname": "Sway.data.ActiveRecord.",
+        "Sway.data.ActiveRecord": {
+            "name": "Sway.data.ActiveRecord",
+            "shortname": "Sway.data.ActiveRecord",
             "classitems": [],
             "plugins": [],
             "extensions": [],
@@ -84,7 +84,7 @@
             "extension_for": [],
             "file": "src/data/activerecord.js",
             "line": 8,
-            "description": "This class stores a string in memory. If a persistance dependency is defined, it will use this dependency to store\nthe data. Filters are used to perform some action on the data before persisting it and on retrieval.\nAs an example, a persistance dependency could be WebSQL storage. A filter could be encryption and/or compression.\nNote that for an encryption filter, it will perform an action on the data before persisting it, and on retrieval.",
+            "description": "The ActiveRecord class represents data-structures, like a database table. An instance represent a single record.\n\n     var User = new ActiveRecord( webSqlPersistance ) ; // create a new model class with WebSQL persistance\n     User.addField( new Field({type: 'TEXT', key: 'username', friendlyName: 'User name'}) ) // addField is chainable\n         .addField( new Field([encryptFilter], {type: 'TEXT', key: 'password', friendlyName: 'Password'}) ) ;\n         .addField( new Field( {type: 'DATE', key: 'birthday', friendlyName: 'Birthday'}) ) ;\n\n     var user = User.find( {\n            'username':   'John'\n            , 'password': 'Secret'\n        }) ;\n     alert('Welcome ' + user.username + '! Your birthday is ' + user.birthday) ;\n     user.birthDay = new Date() ;    // change birthday\n     user.save() ;",
             "params": [
                 {
                     "name": "persistence",
@@ -109,13 +109,27 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/data/field.js",
-            "line": 7,
+            "line": 14,
+            "description": "A Field represent a single value of an ActiveRecord model.\n\n    var username = new Field({ type: 'TEXT', key: 'username', friendlyName: 'User name' }) ;\n\nOr if it the field holds data which should be encrypted and compressed\n\n    var accountInfo = new Field( [encryptFilter, compressFilter], { type: 'BLOB', key: 'accountInfo', friendLyName: 'Account info'} ) ;",
             "params": [
                 {
                     "name": "filters",
                     "description": "list of filters",
                     "type": "Array",
                     "optional": true
+                },
+                {
+                    "name": "options",
+                    "description": "configuration",
+                    "type": "Object",
+                    "optional": true
+                },
+                {
+                    "name": "keepValues",
+                    "description": "keep a reference to both original and filtered value (requires more memory)",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": "false"
                 }
             ]
         },
@@ -203,7 +217,7 @@
     "classitems": [
         {
             "file": "src/data/activerecord.js",
-            "line": 54,
+            "line": 64,
             "itemtype": "method",
             "name": "bless",
             "chainable": 1,
@@ -214,11 +228,11 @@
                     "type": "Object"
                 }
             ],
-            "class": "Sway.data.ActiveRecord."
+            "class": "Sway.data.ActiveRecord"
         },
         {
             "file": "src/data/activerecord.js",
-            "line": 96,
+            "line": 106,
             "itemtype": "method",
             "name": "getField",
             "params": [
@@ -232,11 +246,30 @@
                 "description": "Field instance",
                 "type": "Object"
             },
-            "class": "Sway.data.ActiveRecord."
+            "class": "Sway.data.ActiveRecord"
         },
         {
             "file": "src/data/activerecord.js",
-            "line": 108,
+            "line": 114,
+            "itemtype": "method",
+            "name": "setFile",
+            "params": [
+                {
+                    "name": "key",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "field",
+                    "description": "Field instance",
+                    "type": "Object"
+                }
+            ],
+            "class": "Sway.data.ActiveRecord"
+        },
+        {
+            "file": "src/data/activerecord.js",
+            "line": 123,
             "itemtype": "method",
             "name": "getSize",
             "params": [
@@ -250,13 +283,20 @@
                 "description": "",
                 "type": "Number"
             },
-            "class": "Sway.data.ActiveRecord."
+            "class": "Sway.data.ActiveRecord"
         },
         {
             "file": "src/data/field.js",
-            "line": 31,
+            "line": 52,
             "itemtype": "method",
             "name": "getValue",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
             "return": {
                 "description": "",
                 "type": "*"
@@ -265,42 +305,50 @@
         },
         {
             "file": "src/data/field.js",
-            "line": 38,
+            "line": 67,
             "itemtype": "method",
-            "name": "getFilteredValue",
+            "name": "getKey",
+            "params": [
+                {
+                    "name": "filtered",
+                    "description": "return the",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": "false"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
             "class": "Sway.data.Field"
         },
         {
             "file": "src/data/field.js",
-            "line": 45,
+            "line": 75,
             "itemtype": "method",
             "name": "setValue",
+            "chainable": 1,
             "params": [
                 {
-                    "name": "value",
-                    "description": "the value of the field instance",
-                    "type": "Object|String|Blob|Array"
+                    "name": "input",
+                    "description": "Currently only a 'String' is accepted as unfiltered value!",
+                    "type": "*"
+                },
+                {
+                    "name": "filtered",
+                    "description": "",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": "false"
                 }
             ],
             "class": "Sway.data.Field"
         },
         {
             "file": "src/data/field.js",
-            "line": 53,
-            "itemtype": "method",
-            "name": "setFilteredValue",
-            "params": [
-                {
-                    "name": "value",
-                    "description": "the filtered value of the field instance",
-                    "type": "Object|String|Blob|Array"
-                }
-            ],
-            "class": "Sway.data.Field"
-        },
-        {
-            "file": "src/data/field.js",
-            "line": 61,
+            "line": 90,
+            "description": "Returns the size of",
             "itemtype": "method",
             "name": "size",
             "class": "Sway.data.Field"
@@ -745,11 +793,11 @@
     "warnings": [
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/data/activerecord.js:108"
+            "line": " src/data/activerecord.js:123"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/data/field.js:31"
+            "line": " src/data/field.js:52"
         },
         {
             "message": "replacing incorrect tag: returns with return",

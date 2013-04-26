@@ -6,12 +6,22 @@ window.Sway.data = window.Sway.data || {} ;
     "use strict" ;
 
     /**
-     * This class stores a string in memory. If a persistance dependency is defined, it will use this dependency to store
-     * the data. Filters are used to perform some action on the data before persisting it and on retrieval.
-     * As an example, a persistance dependency could be WebSQL storage. A filter could be encryption and/or compression.
-     * Note that for an encryption filter, it will perform an action on the data before persisting it, and on retrieval.
+     * The ActiveRecord class represents data-structures, like a database table. An instance represent a single record.
      *
-     * @class Sway.data.ActiveRecord.
+     *      var User = new ActiveRecord( webSqlPersistance ) ; // create a new model class with WebSQL persistance
+     *      User.addField( new Field({type: 'TEXT', key: 'username', friendlyName: 'User name'}) ) // addField is chainable
+     *          .addField( new Field([encryptFilter], {type: 'TEXT', key: 'password', friendlyName: 'Password'}) ) ;
+     *          .addField( new Field( {type: 'DATE', key: 'birthday', friendlyName: 'Birthday'}) ) ;
+     *
+     *      var user = User.find( {
+     *             'username':   'John'
+     *             , 'password': 'Secret'
+     *         }) ;
+     *      alert('Welcome ' + user.username + '! Your birthday is ' + user.birthday) ;
+     *      user.birthDay = new Date() ;    // change birthday
+     *      user.save() ;
+     *
+     * @class Sway.data.ActiveRecord
      * @param {Object}[persistence] dependency which can persist the data
      * @param {Array} [fieldList] list of filters. Depending on the filter type its a before and/or after filter.
      */
@@ -101,6 +111,11 @@ window.Sway.data = window.Sway.data || {} ;
         , getField: function(key) {
             return this._field[this._fieldLookup[key]].field ;
         }
+        /**
+         * @method setFile
+         * @param {String} key
+         * @param {Object} field Field instance
+         */
         , setField: function(key, field) {
            this._fieldLookup[key] = this._field.length ;
             this._field.push({ key: key, field: field}) ;

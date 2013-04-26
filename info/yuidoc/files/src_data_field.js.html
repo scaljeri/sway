@@ -43,7 +43,7 @@
             
                 <li><a href="..&#x2F;classes/Sway.html">Sway</a></li>
             
-                <li><a href="..&#x2F;classes/Sway.data.ActiveRecord..html">Sway.data.ActiveRecord.</a></li>
+                <li><a href="..&#x2F;classes/Sway.data.ActiveRecord.html">Sway.data.ActiveRecord</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.data.Field.html">Sway.data.Field</a></li>
             
@@ -101,64 +101,94 @@
 window.Sway = window.Sway || {}; &#x2F;&#x2F; make sure it exists
 window.Sway.data = window.Sway.data || {};
 
-(function (Ns) {
+(function (ns) {
     &quot;use strict&quot; ;
 
+    var DEFAULTS = {
+        STATES: {
+            FILTERED: &#x27;filtered&#x27;
+            , UNFILTERED: &#x27;unfiltered&#x27;
+        }
+    }
+
     &#x2F;**
+     * A Field represent a single value of an ActiveRecord model.
+     *
+     *     var username = new Field({ type: &#x27;TEXT&#x27;, key: &#x27;username&#x27;, friendlyName: &#x27;User name&#x27; }) ;
+     *
+     * Or if it the field holds data which should be encrypted and compressed
+     *
+     *     var accountInfo = new Field( [encryptFilter, compressFilter], { type: &#x27;BLOB&#x27;, key: &#x27;accountInfo&#x27;, friendLyName: &#x27;Account info&#x27;} ) ;
      *
      * @class Sway.data.Field
      * @param {Array} [filters] list of filters
+     * @param {Object} [options] configuration
+     *      @param {Boolean} [keepValues=false] keep a reference to both original and filtered value (requires more memory)
      *&#x2F;
-     var f = function (filterList) {
-        this.filterList = filterList ;
+        , f = function (filterList, options) {
+            this.filterList = filterList ;
 
-        Object.defineProperty(this, &#x27;_value&#x27;,
-            {
-                value: null
-                , enumerable: false &#x2F;&#x2F; hide it
-            }
-        ) ;
-        Object.defineProperty(this, &#x27;value&#x27;,
-            {
-                value: null
-                , set: this.setValue
-                , get: this.getValue
-            }
-        ) ;
-    } ;
+            Object.defineProperty(this, &#x27;_filteredValue&#x27;,
+                {
+                    value: null
+                    , enumerable: false &#x2F;&#x2F; hide it
+                    , writable: true
+                }
+            ) ;
+            Object.defineProperty(this, &#x27;_value&#x27;,
+                {
+                    value: null
+                    , enumerable: false &#x2F;&#x2F; hide it
+                    , writable: true
+                }
+            ) ;
+
+            this.state = ns.Field.STATES.UNFILTERED ;
+        } ;
+
+    f.STATES = DEFAULTS.STATES ;
 
     f.prototype = {
         &#x2F;**
          * @method getValue
+         * @param {Function} callback
          * @returns {*}
          *&#x2F;
-        getValue: function() {
+        getValue: function(callback) {
+            if ( this.state === ns.Field.STATES.FILTERED ) {
+                &#x2F;&#x2F; TODO get filtered value or return _filteredValue
+            }
+            else {
+                &#x2F;&#x2F; TODO get unfiltered value or return _value
+            }
             return this._value ;
         }
-        &#x2F;**
-         * @method getFilteredValue
-         *&#x2F;
-        , getFilteredValue: function() {
-            return this._value ;
 
+        &#x2F;**
+         * @method getKey
+         * @param {Boolean} [filtered=false] return the
+         * @return {String}
+         *&#x2F;
+        , getKey: function() {
+            return this.key ;
         }
         &#x2F;**
          * @method setValue
-         * @param {Object|String|Blob|Array} value the value of the field instance
+         * @chainable
+         * @param {*} input Currently only a &#x27;String&#x27; is accepted as unfiltered value!
+         * @param {Boolean} [filtered=false]
          *&#x2F;
-        , setValue: function(input) {
-            this._value = input ;
-
+        , setValue: function(input, filtered) {
+            this[(filtered ? &#x27;_filteredValue&#x27; : &#x27;_value&#x27;)] = input ;
+            this[(filtered ? &#x27;_value&#x27; : &#x27;_filteredValue&#x27;)] = null ;     &#x2F;&#x2F; cleanup
+            this.state = ns.Field.STATES[ (filtered ? &#x27;&#x27; : &#x27;UN&#x27;) + &#x27;FILTERED&#x27;] ;
+            return this ;
+        }
+        ,setState: function(state) {
+            this.state = state ;
         }
         &#x2F;**
-         * @method setFilteredValue
-         * @param {Object|String|Blob|Array} value the filtered value of the field instance
-         *&#x2F;
-        , setFilteredValue: function(input) {
-            this._value = input ;
-
-        }
-        &#x2F;**
+         * Returns the size of
          * @method size
          *&#x2F;
         , getSize: function() {
@@ -166,7 +196,7 @@ window.Sway.data = window.Sway.data || {};
         }
     } ;
 
-    Ns.Field = f ;
+    ns.Field = f ;
 
 })(window.Sway.data) ;
 
