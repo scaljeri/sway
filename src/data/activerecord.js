@@ -11,7 +11,7 @@ window.Sway.data = window.Sway.data || {} ;
      * As an example, a persistance dependency could be WebSQL storage. A filter could be encryption and/or compression.
      * Note that for an encryption filter, it will perform an action on the data before persisting it, and on retrieval.
      *
-     * @class Sway.data.ActiveRecord.
+     * @class Sway.data.ActiveRecord
      * @param {Object}[persistence] dependency which can persist the data
      * @param {Array} [fieldList] list of filters. Depending on the filter type its a before and/or after filter.
      */
@@ -101,6 +101,11 @@ window.Sway.data = window.Sway.data || {} ;
         , getField: function(key) {
             return this._field[this._fieldLookup[key]].field ;
         }
+        /**
+         * @method setFile
+         * @param {String} key
+         * @param {Object} field Field instance
+         */
         , setField: function(key, field) {
            this._fieldLookup[key] = this._field.length ;
             this._field.push({ key: key, field: field}) ;
