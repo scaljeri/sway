@@ -3,39 +3,36 @@
      * DI makes classes accessible by a contract. Instances are created when requested and dependencies are injected into the constructor,
      *  facilitating lazy initialization and loose coupling between classes.
      *
-     *      Sway.di.register( 'user'
-     *                        , Sway.data.ActiveRecord
-     *                        , [ 'User', 'webSql', ['username', 'password', 'accountInfo'], 'websql' ]
-     *                        , { singleton: TRUE }
-     *                      )
-     *             .register( 'userNameField'
-     *                        , Sway.data.Field
-     *                        , [{ type: 'TEXT',  key: 'username', friendlyName: 'User name' }]
-     *                        , {singleton: TRUE}
-     *                      )
-     *             .register( 'accountInfoField',
-     *                        , Sway.data.Field
-     *                        , [ { type: 'TEXT',  key: 'username', friendlyName: 'User name' }
-     *                            , ['encryptFilter', 'compressFilter']
-     *                          ]
-     *                        , { singleton: TRUE}
-     *                      ) ;
+     *      var di = new Sway.DI() ;
+     *      di.register( 'user'                                                                     // contract name
+     *                   , Sway.data.ActiveRecord                                                   // class definiton
+     *                   , [ 'User', 'webSql', ['username', 'password', 'accountInfo'], 'websql' ]  // constructor parameters
+     *                   , { singleton: TRUE }                                                      // configuration: create a singleton
+     *                 )
+     *        .register( 'userNameField'
+     *                   , Sway.data.Field
+     *                   , [{ type: 'TEXT',  key: 'username', friendlyName: 'User name' }]
+     *                   , {singleton: TRUE}
+     *                 )
+     *        .register( 'accountInfoField',
+     *                   , Sway.data.Field
+     *                   , [ { type: 'TEXT',  key: 'username', friendlyName: 'User name' }
+     *                        , ['encryptFilter', 'compressFilter']
+     *                     ]
+     *                   , { singleton: TRUE}
+     *                 ) ;
      *
      * Now, everywhere in the application where a User model is required simply do
      *
      *       var User = Sway.di.getInstance('user') ;
      *
-     * Doing the same without Sway.DI, you will have to keep track of a lot more variables
+     * To give an idea of what this is doing, below is an example doing the same as above but without using Sway.DI
      *
      *       var userNameField    = new Sway.data.Field( { type: 'TEXT',  key: 'username', friendlyName: 'User name' }] ) ;
      *       var accountInfoField = new Sway.data.Field( { type: 'TEXT',  key: 'username', friendlyName: 'User name' }
      *                                                   , [encryptFilterInstance, compressFilterInstance] ) ;
      *
-     * And finally, to create a User model
-     *
      *       var User = new Sway.data.ActiveRecord( 'User', webSqlInstance, [userNameField, accountInfoField] ) ;
-     *
-     * is definitely more tightly coupled code!
      *
      * @class Sway.DI
      * @constructor
@@ -89,7 +86,7 @@
         /**
          * Returns an instance for the given contract.
          *
-         * @method getInstancet
+         * @method getInstance
          * @param  {string} contract name
          * @returns {Object} Class instance
          * @example
@@ -111,15 +108,16 @@
 
         /**
          * Returns a new instance of the class matched by the contract. If the contract does not exists an error is thrown.
-         * If one of the dependencies does not exists, 'null' is used instead.
          *
          * @method createInstance
          * @param {string} contract - the contract name
-         * @param {Array} dependencies - list of contracts passed to the constructor
+         * @param {Array} params - list of contracts passed to the constructor. Each parameter which is not a string or
+         * an unknown contract, is passed as-is to the constructor
+         *
          * @returns {Object}
          * @example
          try {
-             var storage = App.di.createInstance("data", ["compress", "websql"]) ;
+             var storage = App.di.createInstance("data", ["compress", true, "websql"]) ;
          }
          catch(e) { // will fail if contract does not exist
              console.log(e.name + ': ' + e.message) ;
@@ -181,13 +179,13 @@
 
     function createInstanceIfContract(contract) {
         var constParam = contract ;
-        if ( typeof(contract) === 'string' && this._contracts[contract] ) { // is 'contract' just a contructor parameter or a contract?
-            if ( this._depCheck.indexOf(contract) === -1 ) {                // check for circular dependency
-                this._depCheck.push(contract) ;                                    // add contract to circular dependency check list
-                constParam = this.getInstance(contract) ;                     // create the instance
-                this._depCheck.pop() ;                                      // done, remove dependency from the list
+        if ( typeof(contract) === 'string' && this._contracts[contract] ) {     // is 'contract' just a contructor parameter or a contract?
+            if ( this._depCheck.indexOf(contract) === -1 ) {                    // check for circular dependency
+                this._depCheck.push(contract) ;                                 // add contract to circular dependency check list
+                constParam = this.getInstance(contract) ;                       // create the instance
+                this._depCheck.pop() ;                                          // done, remove dependency from the list
             }
-            else { // circular dependency detected!! --> STOP
+            else { // circular dependency detected!! --> STOP, someone did something stupid -> fix needed!!
                 this._depCheck.length = 0 ;
                 throw "Circular dependency detected for contract " + contract ;
             }
