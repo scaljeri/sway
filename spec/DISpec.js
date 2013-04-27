@@ -8,20 +8,17 @@ window.describe("Sway.DI", function() {
         , ns             = {} ;
 
     // mock some classes
-    ns.RealDataSource = function() {
+    ns.Obj1 = function() {
     } ;
-
-    ns.Consumer1 = function(data) {
-        this.data = data ;
+    ns.Obj2 = function() {
+        this.args = arguments ;
     };
 
-    ns.Consumer2 = function(data, consumer) {
-        this.data = data ;
-        this.consumers = consumer ;
+    ns.Obj3 = function() {
+        this.args = arguments ;
     };
-    ns.Consumer3 = function(data, consumers) {
-        this.data = data ;
-        this.consumers = consumers ;
+    ns.Obj4 = function() {
+        this.args = arguments ;
     };
 
     beforeEach(function() {
@@ -31,43 +28,50 @@ window.describe("Sway.DI", function() {
 
     it("should exist", function() {
         expect(Sway.DI).toBeDefined() ; // the class
-        expect(ns.di).toBeDefined() ; // the instance
+        expect(ns.di).toBeDefined() ;   // the instance
     });
 
     it("should be able to setup a contract", function() {
-        expect(ns.di.getInstance("data")).toBeNull() ;
+        expect(ns.di.getInstance("obj1")).toBeNull() ;
 
-        // create "data" contract
-        ns.di.register("data", ns.RealDataSource) ;
-        var dataResource = ns.di.getInstance("data") ;
-        expect( dataResource instanceof ns.RealDataSource).toBeTruthy() ;
-        expect( dataResource !== ns.di.getInstance("data")).toBeTruthy() ;
+        // create contract
+        expect(ns.di.register("obj1", ns.Obj1)).toBe(ns.di) ;
+        var instance = ns.di.getInstance("obj1") ;
+        expect(instance).toBeInstanceof(ns.Obj1) ;
+        expect(instance).not.toBe(ns.di.getInstance("obj1")) ;
     });
 
     it("should provide a signleton instance", function() {
-        expect(ns.di.getInstance("data")).toBeNull() ;
+        expect(ns.di.getInstance("obj1")).toBeNull() ;
 
-        ns.di.register("data", ns.RealDataSource, { singleton: true } ) ;
-        var dataResource = ns.di.getInstance("data") ;
-        expect( dataResource instanceof ns.RealDataSource).toBe(true) ;
-        expect( dataResource ).toEqual(ns.di.getInstance("data")) ; // ===
+        ns.di.register("obj1", ns.Obj1, { singleton: true } ) ;
+        var instance = ns.di.getInstance("obj1") ;
+        expect(instance).toBeInstanceof(ns.Obj1) ;
+        expect(instance).not.toBeInstanceof(ns.Obj2) ;
+        expect(instance).toBe(ns.di.getInstance("obj1")) ;
     });
 
     // test createInstance
     it("should create an instance for a contract", function() {
-        ns.di.register("data", ns.RealDataSource, { singleton: true } ) ;
-        ns.di.register("cons1", ns.Consumer1) ;
-        ns.di.register("cons2", ns.Consumer2) ;
+        ns.di.register("obj1",  ns.Obj1, { singleton: true } ) ;
+        ns.di.register("obj2", ns.Obj2, ['obj1']) ;
+        ns.di.register("obj3", ns.Obj3, ['obj1', [true, false], 'obj2', 10]) ;
 
-        expect(ns.di.createInstance.call(ns.di, "unknown", ["data", "cons1"])).toBeNull() ;
-        var instance = ns.di.createInstance.call(ns.di, "cons2", ["data", "cons1"]) ;
-        expect( instance.data instanceof ns.RealDataSource).toBeTruthy() ;
-        expect( instance.consumers instanceof ns.Consumer1).toBeTruthy() ;
-        expect( instance.data === ns.di.getInstance("data")).toBeTruthy() ;
+        var instance = ns.di.createInstance("obj3") ;
+        debugger ;
+        expect(instance.args).toBeInstanceof(ns.Obj1) ;
+        expect(instance.obj2).not.toBeDefined() ;
+        expect(instance.obj1).toBe(ns.di.getInstance("obj1")) ;
 
-        ns.di.register("cons2", ns.Consumer2) ;
+        instance = ns.di.createInstance("obj3", ['obj2', "obj2"]) ;
+        expect(instance.obj1).toBeInstanceof(ns.Obj1) ;
+        expect(instance.obj2).toBeInstanceof(ns.Obj2) ;
+        expect(instance.obj1).toBe(ns.di.getInstance("data")) ;
+
+        //ns.di.register('cons3', )
+        //ns.di.register("cons2", ns.Consumer2) ;
     }) ;
-    it("should inject dependecies for contract instance", function() {
+    xit("should inject dependencies for contract instance", function() {
         // setup
         ns.di.register("data", ns.RealDataSource, { singleton: true } ) ;
         ns.di.register("cons1", ns.Consumer1, ["data"]) ;
@@ -86,6 +90,9 @@ window.describe("Sway.DI", function() {
         // an unknown dependency
         ns.di.register("cons1", ns.Consumer1, ["unknown"]) ;
         expect(ns.di.getInstance("cons1").data).toBe('unknown') ;
+
+    }) ;
+    xit("should create an instance with dependencies and normal parameters", function() {
 
     }) ;
     xit("should detect circular dependencies", function() {

@@ -1,9 +1,7 @@
 window.beforeEach(function() {
   this.addMatchers({
-    toBePlaying: function(expectedSong) {
-      var player = this.actual;
-      return player.currentlyPlayingSong === expectedSong && 
-             player.isPlaying;
+    toBeInstanceof: function(classRef) {
+       return this.actual instanceof classRef ;
     }
   });
 });
@@ -76,8 +74,8 @@ if (!('map' in Array.prototype)) {
 }
 if (!('filter' in Array.prototype)) {
     Array.prototype.filter= function(filter, that /*opt*/) {
-        var other= [], v;
-        for (var i=0, n= this.length; i<n; i++)
+        var other= [], v, i, n ;
+        for ( i=0, n= this.length; i<n; i++)
             if (i in this && filter.call(that, v= this[i], i, this))
                 other.push(v);
         return other;
