@@ -20,6 +20,8 @@ window.Sway.data = window.Sway.data || {};
      *
      *     var accountInfo = new Field( { type: 'BLOB', key: 'accountInfo', friendLyName: 'Account info'}, [encryptFilter, compressFilter] ) ;
      *
+     * See {{#crossLink "Sway.data.ActiveRecord"}}{{/crossLink}} to understand how it fits into the bigger picture.
+     *
      * @class Sway.data.Field
      * @param {Array} [filters] list of filters
      * @param {Object} [options] configuration
