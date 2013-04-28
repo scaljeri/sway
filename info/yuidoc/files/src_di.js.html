@@ -104,16 +104,18 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-(function(console, Ns) {
+(function(console, ns) {
     &#x2F;**
      * DI makes classes accessible by a contract. Instances are created when requested and dependencies are injected into the constructor,
-     *  facilitating lazy initialization and loose coupling between classes.
+     * facilitating lazy initialization and loose coupling between classes.
+     *
+     * As an example, register all contracts during the application initialization
      *
      *      var di = new Sway.DI() ;
-     *      di.register( &#x27;user&#x27;                                                                     &#x2F;&#x2F; contract name
-     *                   , Sway.data.ActiveRecord                                                   &#x2F;&#x2F; class definiton
-     *                   , [ &#x27;User&#x27;, &#x27;webSql&#x27;, [&#x27;username&#x27;, &#x27;password&#x27;, &#x27;accountInfo&#x27;], &#x27;websql&#x27; ]  &#x2F;&#x2F; constructor parameters
-     *                   , { singleton: TRUE }                                                      &#x2F;&#x2F; configuration: create a singleton
+     *      di.register( &#x27;User&#x27;                                                                                 &#x2F;&#x2F; contract name
+     *                   , Sway.data.ActiveRecord                                                               &#x2F;&#x2F; class definiton
+     *                   , [ &#x27;User&#x27;, &#x27;webSql&#x27;, [&#x27;userNameField&#x27;, &#x27;passwordField&#x27;, &#x27;accountInfo&#x27;], &#x27;websql&#x27; ]    &#x2F;&#x2F; constructor parameters
+     *                   , { singleton: TRUE }                                                                  &#x2F;&#x2F; configuration: create a singleton
      *                 )
      *        .register( &#x27;userNameField&#x27;
      *                   , Sway.data.Field
@@ -126,19 +128,30 @@
      *                        , [&#x27;encryptFilter&#x27;, &#x27;compressFilter&#x27;]
      *                     ]
      *                   , { singleton: TRUE}
-     *                 ) ;
+     *                 )
+     *        .register( &#x27;userRecord&#x27;
+     *                   , di.register(&#x27;User&#x27;)  &#x2F;&#x2F; create the User model!!
+     *                 )
+     *        ...
      *
-     * Now, everywhere in the application where a User model is required simply do
+     * Now everywhere in the application create the instances as follows
      *
-     *       var User = Sway.di.getInstance(&#x27;user&#x27;) ;
+     *       var User = Sway.di.getInstance(&#x27;User&#x27;) ;
+     *       userRecord = new User({ username: &#x27;John&#x27;, password: &#x27;Secret&#x27; }) ;
+     *       &#x2F;&#x2F; or
+     *       userRecord = Sway.di.getInstance(&#x27;userRecord&#x27;, [{username: &#x27;John&#x27;, password: &#x27;Secret&#x27;}]) ;
      *
-     * To give an idea of what this is doing, below is an example doing the same as above but without using Sway.DI
+     * To give an idea of what this does, below is an example doing the exact same thing but without Sway.DI
      *
      *       var userNameField    = new Sway.data.Field( { type: &#x27;TEXT&#x27;,  key: &#x27;username&#x27;, friendlyName: &#x27;User name&#x27; }] ) ;
      *       var accountInfoField = new Sway.data.Field( { type: &#x27;TEXT&#x27;,  key: &#x27;username&#x27;, friendlyName: &#x27;User name&#x27; }
      *                                                   , [encryptFilterInstance, compressFilterInstance] ) ;
+     *       ...
      *
-     *       var User = new Sway.data.ActiveRecord( &#x27;User&#x27;, webSqlInstance, [userNameField, accountInfoField] ) ;
+     * And create instances like
+     *
+     *       var User = new Sway.data.ActiveRecord( &#x27;User&#x27;, webSqlInstance, [userNameField, passwordField, accountInfoField] ) ;
+     *       var userRecord = new User({username: &#x27;John&#x27;, password: &#x27;Secret&#x27;}) ;
      *
      * @class Sway.DI
      * @constructor
@@ -162,18 +175,19 @@
 
     di.prototype = {
         &#x2F;**
-         * Register a class by creating a contract. Use {{#crossLink &quot;DI&#x2F;getInstance:method&quot;}}{{&#x2F;crossLink}} to obtain
-         * an instance from this contract. The &lt;tt&gt;param&lt;&#x2F;tt&gt; parameter is a list of contracts,  and, if needed,  mixed
-         * with other constructor parameters. These are the constructor parameters.
+         * Register a class by creating a contract. Use {{#crossLink &quot;Sway.DI&#x2F;getInstance:method&quot;}}{{&#x2F;crossLink}} to obtain
+         * an instance from this contract. The &lt;tt&gt;params&lt;&#x2F;tt&gt; parameter is a list of contracts,  and, if needed, normal
+         * constructor parameters can be mixed in.
          *
          * @method register
          * @chainable
-         * @param {String} contract name of the contracta
+         * @param {String} contract name of the contract
          * @param {Class} classRef the class bind to this contract
-         * @param {Array} [params] list of constructor parameters. If a parameter is a string matching a contract, it
+         * @param {Array} [params] list of constructor parameters. Only if a parameter is a string and matches a contract, it
          * will be replaced with the corresponding instance
          * @param {Object} [options] configuration
          *      @param {string} [options.singleton=false] create a new instance every time
+         * @return {Object} this
          * @example
          App.di.registerType(&quot;ajax&quot;, App.AJAX) ;
          App.di.registerType(&quot;ajax&quot;, App.AJAX, [], { singleton: true }) ;
@@ -185,82 +199,54 @@
                 options = params ;
                 params = [] ;
             }
-            this._contracts[contract] = { classRef: classRef, dependencies: params||[], options: options||{} } ;
+
+            if ( !classRef ) {
+                console.warn(&#x27;the Class is undefined for contract &#x27; + contract ) ;
+            }
+            else {
+                this._contracts[contract] = { classRef: classRef, params: params||[], options: options||{} } ;
+            }
             return this ;
         },
 
         &#x2F;**
-         * Returns an instance for the given contract.
+         * Returns an instance for the given contract. Use &lt;tt&gt;params&lt;&#x2F;tt&gt; attribute to overwrite the default
+         * parameters for this contract. If &lt;tt&gt;params&lt;&#x2F;tt&gt; is defined, the singleton configuration option is ignored.
          *
          * @method getInstance
-         * @param  {string} contract name
+         * @param  {String} contract name
+         * @param  {Array} [params] constructor parameters
          * @returns {Object} Class instance
          * @example
          var ajax = App.di.getInstance(&quot;ajax&quot;) ;
          **&#x2F;
-        getInstance: function(contract) {
+        getInstance: function(contract, params) {
             var instance = null ;
-            if ( this._contracts[contract] ) {                                          &#x2F;&#x2F; it should exist
-                if (this._contracts[contract].options.singleton )
+
+            if ( this._contracts[contract]  ) {                                      &#x2F;&#x2F; it should exist
+                if (this._contracts[contract].options.singleton )                    &#x2F;&#x2F; if singleton, params arg is not used!!
                 {
-                    instance = getSingletonInstance.call(this._contracts[contract]);
+                    instance = getSingletonInstance.call(this, contract) ;
                 } else &#x2F;&#x2F;create a new instance every time
                 {
-                    instance = this.createInstance(contract, this._contracts[contract].dependencies) ;
+                    instance = createInstance.call(this, contract, params||this._contracts[contract].params||[]) ;
                 }
             }
             return instance ;
         },
-
-        &#x2F;**
-         * Returns a new instance of the class matched by the contract. If the contract does not exists an error is thrown.
-         *
-         * @method createInstance
-         * @param {string} contract - the contract name
-         * @param {Array} params - list of contracts passed to the constructor. Each parameter which is not a string or
-         * an unknown contract, is passed as-is to the constructor
-         *
-         * @returns {Object}
-         * @example
-         try {
-             var storage = App.di.createInstance(&quot;data&quot;, [&quot;compress&quot;, true, &quot;websql&quot;]) ;
-         }
-         catch(e) { &#x2F;&#x2F; will fail if contract does not exist
-             console.log(e.name + &#x27;: &#x27; + e.message) ;
-         }
-         **&#x2F;
-        createInstance: function(contract, params)
-        {
-            var instance = null
-                , self = this
-                , cr ;
-
-            function Fake(){
-                cr.apply(this, createInstanceList.call(self, contract, params||[])) ;
-            }
-
-            if ( this._contracts[contract]) {   &#x2F;&#x2F; contract should exist
-                cr = this._contracts[contract].classRef ;
-
-                Fake.prototype = cr.prototype ; &#x2F;&#x2F; Fix instanceof
-                instance = new Fake() ;
-            }
-            else {
-                console.warn( &#x27;Contract &#x27; + contract + &#x27; does not exist&#x27;) ;
-            }
-            return instance ;
-        }
     } ;
 
 
     &#x2F;* ***** PRIVATE HELPERS ***** *&#x2F;
 
     &#x2F;* Create or reuse a singleton instance *&#x2F;
-    function getSingletonInstance() {
-        if (this.instance === undefined) {
-            this.instance = new this.classRef(this.dependencies);
+    function getSingletonInstance(contract) {
+        var config = this._contracts[contract] ;
+
+        if ( config.instance === undefined ) {
+            config.instance = createInstance.call(this, contract, config.params);
         }
-        return this.instance ;
+        return config.instance ;
     }
 
     &#x2F;* convert a list of contracts into a list of instances
@@ -272,7 +258,7 @@
     function createInstanceList(contract, params) {
         var constParams = [] ;
 
-        params.forEach( function(c) {
+        (params||this._contracts[contract].params||[]).forEach( function(c) {
             if ( Array.isArray(c)) {
                 constParams.push( createInstanceList.call(this, contract, c) ) ;
             }
@@ -283,23 +269,61 @@
         return constParams ;
     }
 
-    function createInstanceIfContract(contract) {
-        var constParam = contract ;
-        if ( typeof(contract) === &#x27;string&#x27; &amp;&amp; this._contracts[contract] ) { &#x2F;&#x2F; is &#x27;contract&#x27; just a contructor parameter or a contract?
-            if ( this._depCheck.indexOf(contract) === -1 ) {                &#x2F;&#x2F; check for circular dependency
-                this._depCheck.push(contract) ;                                    &#x2F;&#x2F; add contract to circular dependency check list
-                constParam = this.getInstance(contract) ;                     &#x2F;&#x2F; create the instance
-                this._depCheck.pop() ;                                      &#x2F;&#x2F; done, remove dependency from the list
+    function createInstanceIfContract(contract) { &#x2F;&#x2F; is a contract
+        var constParam = contract
+            , problemContract ;
+        if ( typeof(contract) === &#x27;string&#x27; &amp;&amp; this._contracts[contract] ) {     &#x2F;&#x2F; is &#x27;contract&#x27; just a contructor parameter or a contract?
+            if ( this._depCheck.indexOf(contract) === -1 ) {                    &#x2F;&#x2F; check for circular dependency
+                &#x2F;&#x2F;this._depCheck.push(contract) ;                               &#x2F;&#x2F; add contract to circular dependency check list
+                constParam = this.getInstance(contract) ;                       &#x2F;&#x2F; create the instance
+                this._depCheck.pop() ;                                          &#x2F;&#x2F; done, remove dependency from the list
             }
-            else { &#x2F;&#x2F; circular dependency detected!! --&gt; STOP
-                this._depCheck.length = 0 ;
-                throw &quot;Circular dependency detected for contract &quot; + contract ;
+            else { &#x2F;&#x2F; circular dependency detected!! --&gt; STOP, someone did something stupid -&gt; fix needed!!
+                problemContract = this._depCheck[0] ;
+                this._depCheck.length = 0 ;                                     &#x2F;&#x2F; cleanup
+                throw &quot;Circular dependency detected for contract &quot; + problemContract ;
             }
         }
         return constParam ;
     }
 
-    Ns.DI = di ;
+    &#x2F;*
+     * Returns a new instance of the class matched by the contract. If the contract does not exists an error is thrown.
+     *
+     * @method createInstance
+     * @param {string} contract - the contract name
+     * @param {Array} params - list of contracts passed to the constructor. Each parameter which is not a string or
+     * an unknown contract, is passed as-is to the constructor
+     *
+     * @returns {Object}
+     * @example
+     var storage = App.di.createInstance(&quot;data&quot;, [&quot;compress&quot;, true, &quot;websql&quot;]) ;
+     **&#x2F;
+    function createInstance(contract, params)
+    {
+        var instance = null
+            , self = this
+            , cr ;
+
+        function Dependency(){
+            cr.apply(this, createInstanceList.call(self, contract, params)) ;
+        }
+
+        if ( this._contracts[contract]) {           &#x2F;&#x2F; contract should exist
+            cr = this._contracts[contract].classRef ;
+
+            this._depCheck.push(contract) ;
+            Dependency.prototype = cr.prototype ;   &#x2F;&#x2F; Fix instanceof
+            instance = new Dependency() ;           &#x2F;&#x2F; done
+            this._depCheck.pop() ;
+        }
+        else {
+            console.warn( &#x27;Contract &#x27; + contract + &#x27; does not exist&#x27;) ;
+        }
+        return instance ;
+    }
+
+    ns.DI = di ;
 
 })(window.console, window.Sway) ;
 

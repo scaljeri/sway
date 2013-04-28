@@ -143,7 +143,7 @@
             "extension_for": [],
             "file": "src/data/field.js",
             "line": 14,
-            "description": "A Field represent a single value of an ActiveRecord model.\n\n    var username = new Field({ type: 'TEXT', key: 'username', friendlyName: 'User name' }) ;\n\nOr if it the field holds data which should be encrypted and compressed\n\n    var accountInfo = new Field( { type: 'BLOB', key: 'accountInfo', friendLyName: 'Account info'}, [encryptFilter, compressFilter] ) ;",
+            "description": "A Field represents a single value of an ActiveRecord model.\n\n    var username = new Field({ type: 'TEXT', key: 'username', friendlyName: 'User name' }) ;\n\nOr if it the field holds data which should be encrypted and compressed\n\n    var accountInfo = new Field( { type: 'BLOB', key: 'accountInfo', friendLyName: 'Account info'}, [encryptFilter, compressFilter] ) ;",
             "params": [
                 {
                     "name": "filters",
@@ -250,7 +250,7 @@
             "extension_for": [],
             "file": "src/di.js",
             "line": 2,
-            "description": "DI makes classes accessible by a contract. Instances are created when requested and dependencies are injected into the constructor,\n facilitating lazy initialization and loose coupling between classes.\n\n     var di = new Sway.DI() ;\n     di.register( 'user'                                                                     // contract name\n                  , Sway.data.ActiveRecord                                                   // class definiton\n                  , [ 'User', 'webSql', ['username', 'password', 'accountInfo'], 'websql' ]  // constructor parameters\n                  , { singleton: TRUE }                                                      // configuration: create a singleton\n                )\n       .register( 'userNameField'\n                  , Sway.data.Field\n                  , [{ type: 'TEXT',  key: 'username', friendlyName: 'User name' }]\n                  , {singleton: TRUE}\n                )\n       .register( 'accountInfoField',\n                  , Sway.data.Field\n                  , [ { type: 'TEXT',  key: 'username', friendlyName: 'User name' }\n                       , ['encryptFilter', 'compressFilter']\n                    ]\n                  , { singleton: TRUE}\n                ) ;\n\nNow, everywhere in the application where a User model is required simply do\n\n      var User = Sway.di.getInstance('user') ;\n\nTo give an idea of what this is doing, below is an example doing the same as above but without using Sway.DI\n\n      var userNameField    = new Sway.data.Field( { type: 'TEXT',  key: 'username', friendlyName: 'User name' }] ) ;\n      var accountInfoField = new Sway.data.Field( { type: 'TEXT',  key: 'username', friendlyName: 'User name' }\n                                                  , [encryptFilterInstance, compressFilterInstance] ) ;\n\n      var User = new Sway.data.ActiveRecord( 'User', webSqlInstance, [userNameField, accountInfoField] ) ;",
+            "description": "DI makes classes accessible by a contract. Instances are created when requested and dependencies are injected into the constructor,\nfacilitating lazy initialization and loose coupling between classes.\n\nAs an example, register all contracts during the application initialization\n\n     var di = new Sway.DI() ;\n     di.register( 'User'                                                                                 // contract name\n                  , Sway.data.ActiveRecord                                                               // class definiton\n                  , [ 'User', 'webSql', ['userNameField', 'passwordField', 'accountInfo'], 'websql' ]    // constructor parameters\n                  , { singleton: TRUE }                                                                  // configuration: create a singleton\n                )\n       .register( 'userNameField'\n                  , Sway.data.Field\n                  , [{ type: 'TEXT',  key: 'username', friendlyName: 'User name' }]\n                  , {singleton: TRUE}\n                )\n       .register( 'accountInfoField',\n                  , Sway.data.Field\n                  , [ { type: 'TEXT',  key: 'username', friendlyName: 'User name' }\n                       , ['encryptFilter', 'compressFilter']\n                    ]\n                  , { singleton: TRUE}\n                )\n       .register( 'userRecord'\n                  , di.register('User')  // create the User model!!\n                )\n       ...\n\nNow everywhere in the application create the instances as follows\n\n      var User = Sway.di.getInstance('User') ;\n      userRecord = new User({ username: 'John', password: 'Secret' }) ;\n      // or\n      userRecord = Sway.di.getInstance('userRecord', [{username: 'John', password: 'Secret'}]) ;\n\nTo give an idea of what this does, below is an example doing the exact same thing but without Sway.DI\n\n      var userNameField    = new Sway.data.Field( { type: 'TEXT',  key: 'username', friendlyName: 'User name' }] ) ;\n      var accountInfoField = new Sway.data.Field( { type: 'TEXT',  key: 'username', friendlyName: 'User name' }\n                                                  , [encryptFilterInstance, compressFilterInstance] ) ;\n      ...\n\nAnd create instances like\n\n      var User = new Sway.data.ActiveRecord( 'User', webSqlInstance, [userNameField, passwordField, accountInfoField] ) ;\n      var userRecord = new User({username: 'John', password: 'Secret'}) ;",
             "is_constructor": 1
         },
         "Sway.EventHub": {
@@ -452,15 +452,15 @@
         },
         {
             "file": "src/di.js",
-            "line": 58,
-            "description": "Register a class by creating a contract. Use {{#crossLink \"DI/getInstance:method\"}}{{/crossLink}} to obtain\nan instance from this contract. The <tt>param</tt> parameter is a list of contracts,  and, if needed,  mixed\nwith other constructor parameters. These are the constructor parameters.",
+            "line": 71,
+            "description": "Register a class by creating a contract. Use {{#crossLink \"Sway.DI/getInstance:method\"}}{{/crossLink}} to obtain\nan instance from this contract. The <tt>params</tt> parameter is a list of contracts,  and, if needed, normal\nconstructor parameters can be mixed in.",
             "itemtype": "method",
             "name": "register",
             "chainable": 1,
             "params": [
                 {
                     "name": "contract",
-                    "description": "name of the contracta",
+                    "description": "name of the contract",
                     "type": "String"
                 },
                 {
@@ -470,7 +470,7 @@
                 },
                 {
                     "name": "params",
-                    "description": "list of constructor parameters. If a parameter is a string matching a contract, it\nwill be replaced with the corresponding instance",
+                    "description": "list of constructor parameters. Only if a parameter is a string and matches a contract, it\nwill be replaced with the corresponding instance",
                     "type": "Array",
                     "optional": true
                 },
@@ -490,6 +490,10 @@
                     ]
                 }
             ],
+            "return": {
+                "description": "this",
+                "type": "Object"
+            },
             "example": [
                 "\n        App.di.registerType(\"ajax\", App.AJAX) ;\n        App.di.registerType(\"ajax\", App.AJAX, [], { singleton: true }) ;\n        App.di.registerType(\"util\", App.Util, [\"compress\", true, [\"wsql\", \"ls\"] ], { singleton: true } ) ;"
             ],
@@ -497,8 +501,8 @@
         },
         {
             "file": "src/di.js",
-            "line": 86,
-            "description": "Returns an instance for the given contract.",
+            "line": 106,
+            "description": "Returns an instance for the given contract. Use <tt>params</tt> attribute to overwrite the default\nparameters for this contract. If <tt>params</tt> is defined, the singleton configuration option is ignored.",
             "itemtype": "method",
             "name": "getInstance",
             "params": [
@@ -506,6 +510,12 @@
                     "name": "contract",
                     "description": "name",
                     "type": "String"
+                },
+                {
+                    "name": "params",
+                    "description": "constructor parameters",
+                    "type": "Array",
+                    "optional": true
                 }
             ],
             "return": {
@@ -514,33 +524,6 @@
             },
             "example": [
                 "\n        var ajax = App.di.getInstance(\"ajax\") ;"
-            ],
-            "class": "Sway.DI"
-        },
-        {
-            "file": "src/di.js",
-            "line": 109,
-            "description": "Returns a new instance of the class matched by the contract. If the contract does not exists an error is thrown.",
-            "itemtype": "method",
-            "name": "createInstance",
-            "params": [
-                {
-                    "name": "contract",
-                    "description": "- the contract name",
-                    "type": "String"
-                },
-                {
-                    "name": "params",
-                    "description": "- list of contracts passed to the constructor. Each parameter which is not a string or\nan unknown contract, is passed as-is to the constructor",
-                    "type": "Array"
-                }
-            ],
-            "return": {
-                "description": "",
-                "type": "Object"
-            },
-            "example": [
-                "\n        try {\n            var storage = App.di.createInstance(\"data\", [\"compress\", true, \"websql\"]) ;\n        }\n        catch(e) { // will fail if contract does not exist\n            console.log(e.name + ': ' + e.message) ;\n        }"
             ],
             "class": "Sway.DI"
         },
@@ -864,11 +847,7 @@
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/di.js:86"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " src/di.js:109"
+            "line": " src/di.js:106"
         },
         {
             "message": "param name missing: {Object}",
