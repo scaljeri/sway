@@ -8,17 +8,22 @@ window.describe("Sway.DI", function() {
         , ns             = {} ;
 
     // mock some classes
-    ns.Obj1 = function() {
+    ns.Obj1 = function(a) {
+        if ( a )
+            this.args = arguments ;
     } ;
-    ns.Obj2 = function() {
-        this.args = arguments ;
+    ns.Obj2 = function(a) {
+        if ( a )
+            this.args = arguments ;
     };
 
-    ns.Obj3 = function() {
-        this.args = arguments ;
+    ns.Obj3 = function(a) {
+        if ( a )
+            this.args = arguments ;
     };
-    ns.Obj4 = function() {
-        this.args = arguments ;
+    ns.Obj4 = function(a) {
+        if ( a )
+            this.args = arguments ;
     };
 
     beforeEach(function() {
@@ -35,81 +40,110 @@ window.describe("Sway.DI", function() {
         expect(ns.di.getInstance("obj1")).toBeNull() ;
 
         // create contract
-        expect(ns.di.register("obj1", ns.Obj1)).toBe(ns.di) ;
-        var instance = ns.di.getInstance("obj1") ;
-        expect(instance).toBeInstanceof(ns.Obj1) ;
-        expect(instance).not.toBe(ns.di.getInstance("obj1")) ;
-    });
+        expect(ns.di.register("obj1", ns.Obj1, ['a', 'b'], {singleton:true} )).toBe(ns.di) ;
+        expect(Object.keys(ns.di._contracts).length).toEqual(1) ;
+        expect(ns.di._contracts['obj1'].classRef).toBe(ns.Obj1) ;
+        expect(ns.di._contracts['obj1'].params).toEqual(['a', 'b']) ;
+        expect(ns.di._contracts['obj1'].options).toEqual({singleton:true}) ;
 
-    it("should provide a signleton instance", function() {
-        expect(ns.di.getInstance("obj1")).toBeNull() ;
+        expect(ns.di.register("obj2", ns.Obj2, {singleton:true} )).toBe(ns.di) ;
+        expect(Object.keys(ns.di._contracts).length).toEqual(2) ;
+        expect(ns.di._contracts['obj2'].classRef).toBe(ns.Obj2) ;
+        expect(ns.di._contracts['obj2'].params).toEqual([]) ;
+        expect(ns.di._contracts['obj2'].options).toEqual({singleton:true}) ;
 
-        ns.di.register("obj1", ns.Obj1, { singleton: true } ) ;
-        var instance = ns.di.getInstance("obj1") ;
-        expect(instance).toBeInstanceof(ns.Obj1) ;
-        expect(instance).not.toBeInstanceof(ns.Obj2) ;
-        expect(instance).toBe(ns.di.getInstance("obj1")) ;
+        expect(ns.di.register("obj3", ns.Obj3)).toBe(ns.di) ;
+        expect(Object.keys(ns.di._contracts).length).toEqual(3) ;
+        expect(ns.di._contracts['obj3'].classRef).toBe(ns.Obj3) ;
+        expect(ns.di._contracts['obj3'].params).toEqual([]) ;
+        expect(ns.di._contracts['obj3'].options).toEqual({}) ;
     });
 
     // test createInstance
     it("should create an instance for a contract", function() {
-        ns.di.register("obj1",  ns.Obj1, { singleton: true } ) ;
+        ns.di.register("obj1",  ns.Obj1) ;
         ns.di.register("obj2", ns.Obj2, ['obj1']) ;
         ns.di.register("obj3", ns.Obj3, ['obj1', [true, false], 'obj2', 10]) ;
 
-        var instance = ns.di.createInstance("obj3") ;
-        debugger ;
-        expect(instance.args).toBeInstanceof(ns.Obj1) ;
-        expect(instance.obj2).not.toBeDefined() ;
-        expect(instance.obj1).toBe(ns.di.getInstance("obj1")) ;
+        var instance = ns.di.getInstance("obj1") ;
+        expect(instance).toBeInstanceof(ns.Obj1) ;
+        expect(instance.args).toBeUndefined() ;
+        expect(instance).not.toBe(ns.di.getInstance("obj1")) ;
 
-        instance = ns.di.createInstance("obj3", ['obj2', "obj2"]) ;
-        expect(instance.obj1).toBeInstanceof(ns.Obj1) ;
-        expect(instance.obj2).toBeInstanceof(ns.Obj2) ;
-        expect(instance.obj1).toBe(ns.di.getInstance("data")) ;
+        instance = ns.di.getInstance("obj2") ;
+        expect(instance).toBeInstanceof(ns.Obj2) ;
+        expect(instance.args).toBeDefined() ;
+        expect(instance.args[0]).toBeInstanceof(ns.Obj1) ;
+        expect(instance).not.toBe(ns.di.getInstance("obj2")) ;
 
-        //ns.di.register('cons3', )
-        //ns.di.register("cons2", ns.Consumer2) ;
+        instance = ns.di.getInstance("obj3") ;
+        expect(instance).toBeInstanceof(ns.Obj3) ;
+        expect(instance.args).toBeDefined() ;
+        expect(instance.args[0]).toBeInstanceof(ns.Obj1) ;
+        expect(instance.args[1]).toEqual([true, false]) ;
+        expect(instance.args[2]).toBeInstanceof(ns.Obj2) ;
+        expect(instance.args[3]).toEqual(10) ;
+        expect(instance).not.toBe(ns.di.getInstance("obj3")) ;
     }) ;
-    xit("should inject dependencies for contract instance", function() {
+
+    it("should provide a signleton instance", function() {
+        ns.di.register("obj1",  ns.Obj1, {singleton:true}) ;
+        ns.di.register("obj2", ns.Obj2, ['obj1'], {singleton:true}) ;
+        ns.di.register("obj3", ns.Obj3, ['obj1', [true, false], 'obj2', 10], {singleton:true}) ;
+
+        var instance = ns.di.getInstance("obj1") ;
+        expect(instance).toBeInstanceof(ns.Obj1) ;
+        expect(instance.args).toBeUndefined() ;
+        expect(instance).toBe(ns.di.getInstance("obj1")) ;
+
+        instance = ns.di.getInstance("obj2") ;
+        expect(instance).toBeInstanceof(ns.Obj2) ;
+        expect(instance.args).toBeDefined() ;
+        expect(instance.args[0]).toBeInstanceof(ns.Obj1) ;
+        expect(instance).toBe(ns.di.getInstance("obj2")) ;
+
+        instance = ns.di.getInstance("obj3") ;
+        expect(instance).toBeInstanceof(ns.Obj3) ;
+        expect(instance.args).toBeDefined() ;
+        expect(instance.args[0]).toBeInstanceof(ns.Obj1) ;
+        expect(instance.args[1]).toEqual([true, false]) ;
+        expect(instance.args[2]).toBeInstanceof(ns.Obj2) ;
+        expect(instance.args[3]).toEqual(10) ;
+        expect(instance).toBe(ns.di.getInstance("obj3")) ;
+    });
+
+    it("should inject dependencies for contract instance", function() {
         // setup
-        ns.di.register("data", ns.RealDataSource, { singleton: true } ) ;
-        ns.di.register("cons1", ns.Consumer1, ["data"]) ;
-        ns.di.register("cons2", ns.Consumer2, ["data", ["cons1", "cons1"]]) ;
+        ns.di.register("obj1", ns.Obj1, [1,2,3], {singleton:true} ) ;
+        ns.di.register("obj2", ns.Obj2, ['obj1']) ;
+        ns.di.register("obj3", ns.Obj3, ['obj1', 1000, 'obj2']) ;
 
-        // a singleton dependency
-        expect(ns.di.getInstance("cons1").data instanceof ns.RealDataSource).toBeTruthy();
-        expect(ns.di.getInstance("cons2").data).toEqual(ns.di.getInstance("data")) ;
+        var obj1 = ns.di.getInstance('obj1')
+            , obj3 = ns.di.getInstance('obj3')
+            , obj2a = ns.di.getInstance('obj2', [4,5,6]) ;  // overwrite default params ['obj1'] with [4,5,6]
 
-        // an array dependency
-        expect(ns.di.getInstance("cons1").consumer).not.toBeTruthy() ;
-        expect(Array.isArray(ns.di.getInstance("cons2").consumers)).toBeTruthy() ;
-        expect(ns.di.getInstance("cons2").consumers.length).toEqual(2) ;
-        expect(ns.di.getInstance("cons2").consumers[0] instanceof ns.Consumer1 ).toBeTruthy() ;
+        expect(obj3).toBeInstanceof(ns.Obj3) ;
+        expect(obj3.args[0]).toBe(obj1) ;
+        expect(obj3.args[0].args[0]).toEqual(1) ;
+        expect(obj3.args[0].args[1]).toEqual(2) ;
+        expect(obj3.args[0].args[2]).toEqual(3) ;
 
-        // an unknown dependency
-        ns.di.register("cons1", ns.Consumer1, ["unknown"]) ;
-        expect(ns.di.getInstance("cons1").data).toBe('unknown') ;
+        expect(obj3.args[2]).toBeInstanceof(ns.Obj2) ;
+        expect(obj3.args[2].args[0]).toBe(obj1) ;           // obj1 is a singelton
+        expect(obj3.args[2].args[0].args[0]).toEqual(1) ;
 
+        expect(obj2a.args[0]).toEqual(4) ;                  // important is that 'obj2' and this object are different
+        expect(obj2a.args[1]).toEqual(5) ;
+        expect(obj2a.args[2]).toEqual(6) ;
     }) ;
-    xit("should create an instance with dependencies and normal parameters", function() {
+    it("should detect circular dependencies", function() {
+        ns.di.register("obj1", ns.Obj1, ["obj2"]) ;
+        ns.di.register("obj2", ns.Obj1, ["obj3"]) ;
+        ns.di.register("obj3", ns.Obj1, [1,2, "obj1"]) ;
 
-    }) ;
-    xit("should detect circular dependencies", function() {
-        ns.di.register("data", ns.RealDataSource, ["data"]) ;
         // simple circular dependency
-        expect(ns.di.getInstance.bind(ns.di, "data")).toThrow("Circular dependency detected for contract data") ;
-
-        // one level deeper circular dependency
-        ns.di.register("data", ns.RealDataSource, ["cons1"]) ;
-        ns.di.register("cons1", ns.Consumer1, ["data"]) ;
-        expect(ns.di.getInstance.bind(ns.di, "data")).toThrow("Circular dependency detected for contract cons1") ;
-
-        // circular dependency in array dependency
-        ns.di.register("data", ns.RealDataSource, ["cons1"]) ;
-        ns.di.register("cons1", ns.Consumer1, ["cons2", "cons3"]) ;
-        ns.di.register("cons2", ns.Consumer1) ;
-        ns.di.register("cons3", ns.Consumer1, [["cons2", "data"]]) ; // array dependency
-        expect(ns.di.getInstance.bind(ns.di, "data")).toThrow("Circular dependency detected for contract cons1") ;
+        expect(ns.di.getInstance.bind(ns.di, "obj1")).toThrow("Circular dependency detected for contract obj1") ;
+        expect(ns.di.getInstance.bind(ns.di, "obj2")).toThrow("Circular dependency detected for contract obj2") ;
+        expect(ns.di.getInstance.bind(ns.di, "obj3")).toThrow("Circular dependency detected for contract obj3") ;
     }) ;
 });
