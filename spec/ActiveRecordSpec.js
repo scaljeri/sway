@@ -19,8 +19,8 @@ window.describe("Sway.data.ActiveRecord", function() {
         // create DI
         ns = {
             ar: new Sway.data.ActiveRecord(persistance)
-            , field1: new Field()
-            , field2: new Field()
+            , field1: new Sway.data.Field({key: 'username'})
+            , field2: new Sway.data.Field({key: 'password'})
         } ;
     });
 

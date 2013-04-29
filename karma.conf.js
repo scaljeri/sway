@@ -14,7 +14,7 @@ files = [
   'src/di.js',
   'src/eventhub.js',
   'src/data/activerecord.js',
-  'src/data/field',
+  'src/data/field.js',
 
   'spec/SpecHelper.js',
   'spec/DISpec.js',
