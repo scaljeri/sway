@@ -27,8 +27,11 @@ window.Sway.data = window.Sway.data || {};
      * @param {Object} [options] configuration
      *      @param {Boolean} [keepValues=false] keep a reference to both original and filtered value (requires more memory)
      */
-        , f = function (filterList, options) {
+        , f = function (definition, filterList) {
             this.filterList = filterList ;
+            this.key = definition.key ;
+            this.friendlyName = definition.friendlyName ;
+            this.type = definition.type ;
 
             Object.defineProperty(this, '_filteredValue',
                 {
