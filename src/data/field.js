@@ -20,13 +20,25 @@ window.Sway.data = window.Sway.data || {};
      *
      *     var accountInfo = new Field( { type: 'BLOB', key: 'accountInfo', friendLyName: 'Account info'}, [encryptFilter, compressFilter] ) ;
      *
+     * See {{#crossLink "Sway.data.ActiveRecord"}}{{/crossLink}} to understand how it fits into the bigger picture.
+     *
      * @class Sway.data.Field
-     * @param {Array} [filters] list of filters
-     * @param {Object} [options] configuration
-     *      @param {Boolean} [keepValues=false] keep a reference to both original and filtered value (requires more memory)
+     * @constructor
+     * @param {Object} definition definition of this field
+     *      @param {String} definition.key
+     *      @param {String} [definition.type=TEXT]
+     *      @param {String} [definition.friendlyName]
+     *      @param {Boolean} [definition.PK=false] primary key field
+     *      @param {Boolean} [definition.required=false]
+     * @param {Array} [transformers] list of transformer objects. A transformer object can transform the data into a new form and also back
+     * into its original form. Think of, zipping and unzipping or encrypting and decrypting
+     * @param {Array} [validators] list of validation functions
      */
-        , f = function (filterList, options) {
+        , f = function (definition, filterList, validators) {
             this.filterList = filterList ;
+            this.key = definition.key ;
+            this.friendlyName = definition.friendlyName ;
+            this.type = definition.type ;
 
             Object.defineProperty(this, '_filteredValue',
                 {

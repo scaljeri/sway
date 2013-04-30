@@ -47,6 +47,8 @@
             
                 <li><a href="..&#x2F;classes/Sway.data.Field.html">Sway.data.Field</a></li>
             
+                <li><a href="..&#x2F;classes/Sway.data.Model.html">Sway.data.Model</a></li>
+            
                 <li><a href="..&#x2F;classes/Sway.DI.html">Sway.DI</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.EventHub.html">Sway.EventHub</a></li>
@@ -108,7 +110,7 @@
 
     
         <div class="foundat">
-            Defined in: <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l8"><code>src&#x2F;data&#x2F;activerecord.js:8</code></a>
+            Defined in: <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l40"><code>src&#x2F;data&#x2F;activerecord.js:40</code></a>
         </div>
     
 
@@ -120,20 +122,29 @@
 
 
 <div class="box intro">
-    <p>The ActiveRecord class represents data-structures, like a database table. An instance represents a single record.
-It is a blue print for all models it creates, providing them with functionality needed to perform CRUD-like tasks</p>
+    <p>The ActiveRecord class represents data-structures, like a database table. However, ActiveRecord is a special class, instead of
+creating instances of itself, is create a new class of type <a href="../classes/Sway.data.Model.html" class="crosslink">Sway.data.Model</a>. ActiveRecord is a
+blue print for all models it creates, providing them with functionality needed to perform CRUD-like tasks</p>
 
-<p>For example, to create a User model, do</p>
+<pre class="code prettyprint"><code> var UserModel = new ActiveRecord( 'User', new WebSqlPersistance('user-table'), [
+                       new Field( {type: 'TEXT', key: 'username', friendlyName: 'User name'})
+                     , new Field( {type: 'TEXT', key: 'password', friendlyName: 'Password'})
+                     , new Field( {type: 'DATE', key: 'birthday', friendlyName: 'Birthday'})
+                 ]) ;
+</code></pre>
 
-<pre class="code prettyprint"><code> var User = new ActiveRecord( 'User', new WebSqlPersistance('user-table'), [
-           new Field( {type: 'TEXT', key: 'username', friendlyName: 'User name'}) )
-         , new Field( [encryptFilter], {type: 'TEXT', key: 'password', friendlyName: 'Password'}) )
-         , new Field( {type: 'DATE', key: 'birthday', friendlyName: 'Birthday'} )
-     ]) ;
+<p>The ActiveRecord class is a bit special, because it doesn't create an instance of itself, but instead
+it creates a new class,  <a href="../classes/Sway.data.Model.html" class="crosslink">Sway.data.Model</a>. This class is has configured the
+fields provided to the ActiveRecord's constructor.</p>
 
- ) ; // create a new model class with WebSQL persistance and three fields
+<p>ActiveRecord needs the name of the model to be created, a object used to persist the data and finally a list of field
+definitions.
+A model is almost identical to the ActiveRecord interface, except that its constructor accepts two parameters,
+    1) data      - json object: { username: 'John', password: 'Secret' }
+    2) options   - options object
+A data record is created as follows</p>
 
- User.find( // asynchronious call
+<pre class="code prettyprint"><code> User.find( // asynchronious call
     {
           'username':   'John'
         , 'password': 'Secret'
@@ -144,6 +155,9 @@ It is a blue print for all models it creates, providing them with functionality 
         newUser.save() ;
     }
  ) ;
+
+ var userRecord = new User({ username: 'John', password: 'Secret'}) ;
+ userRecord.save() ;
 </code></pre>
 </div>
 
@@ -204,7 +218,7 @@ It is a blue print for all models it creates, providing them with functionality 
             
         
         
-        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l8"><code>src&#x2F;data&#x2F;activerecord.js:8</code></a>
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l40"><code>src&#x2F;data&#x2F;activerecord.js:40</code></a>
         
         </p>
 

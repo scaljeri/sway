@@ -47,6 +47,8 @@
             
                 <li><a href="..&#x2F;classes/Sway.data.Field.html">Sway.data.Field</a></li>
             
+                <li><a href="..&#x2F;classes/Sway.data.Model.html">Sway.data.Model</a></li>
+            
                 <li><a href="..&#x2F;classes/Sway.DI.html">Sway.DI</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.EventHub.html">Sway.EventHub</a></li>
@@ -108,137 +110,183 @@
 window.Sway = window.Sway || {} ;
 window.Sway.data = window.Sway.data || {} ;
 
-(function(Ns) {
+(function(ns) {
     &quot;use strict&quot; ;
 
-    &#x2F;**
-     * The ActiveRecord class represents data-structures, like a database table. An instance represents a single record.
-     * It is a blue print for all models it creates, providing them with functionality needed to perform CRUD-like tasks
-     *
-     * For example, to create a User model, do
-     *
-     *      var User = new ActiveRecord( &#x27;User&#x27;, new WebSqlPersistance(&#x27;user-table&#x27;), [
-     *                new Field( {type: &#x27;TEXT&#x27;, key: &#x27;username&#x27;, friendlyName: &#x27;User name&#x27;}) )
-     *              , new Field( [encryptFilter], {type: &#x27;TEXT&#x27;, key: &#x27;password&#x27;, friendlyName: &#x27;Password&#x27;}) )
-     *              , new Field( {type: &#x27;DATE&#x27;, key: &#x27;birthday&#x27;, friendlyName: &#x27;Birthday&#x27;} )
-     *          ]) ;
-     *
-     *      ) ; &#x2F;&#x2F; create a new model class with WebSQL persistance and three fields
-     *
-     *      User.find( &#x2F;&#x2F; asynchronious call
-     *         {
-     *               &#x27;username&#x27;:   &#x27;John&#x27;
-     *             , &#x27;password&#x27;: &#x27;Secret&#x27;
-     *         }, function(user) {
-     *             alert(&#x27;Welcome &#x27; + user.username + &#x27;! Your birthday is &#x27; + user.birthday) ;
-     *             var cloneUser = new User(user) ;
-     *             cloneUser.birthDay = new Date() ;
-     *             newUser.save() ;
-     *         }
-     *      ) ;
-     *
-     * @class Sway.data.ActiveRecord
-     * @constructor
-     * @param {String} modelName name of the model
-     * @param {Object}[persistence] object used for data persistance and lookups
-     * @param {Array} [fieldList] list of fields
-     *&#x2F;
-     var ActiveRecord = function(modelName, persistance, fieldList ) {
+    var DEFAULTS = {
+            STATE: {
+                &#x2F;*
+                 * @property STATE.TRANFORMED
+                 * @static
+                 *&#x2F;
+                TRANSFORMED: 1
+                &#x2F;*
+                 * @property STATE.NORMAL
+                 * @static
+                 *&#x2F;
+                , NORMAL: 0
+            }
+        }
+        , statics = {
+            &#x2F;*
+            * TODO
+            * @method find
+            * @static
+            * @param {Object} options
+            *&#x2F;
+            find: function(options) {
 
-        &#x2F;*
-        AR prototype methods can be access by a BLESSED model, or simply by an ActiveRecord instance. To make these
-        function independent of this BLESSED mechanism the blow variables is used within each function
+            }
+            &#x2F;*
+            * @method save
+            * @static
+            * @param {Object} options
+            *&#x2F;
+            , save: function(options) {
+            }
+        }
+        &#x2F;**
+         * The ActiveRecord class represents data-structures, like a database table. However, ActiveRecord is a special class, instead of
+         * creating instances of itself, is create a new class of type {{#crossLink &quot;Sway.data.Model&quot;}}{{&#x2F;crossLink}}. ActiveRecord is a
+         * blue print for all models it creates, providing them with functionality needed to perform CRUD-like tasks
+         *
+         *      var UserModel = new ActiveRecord( &#x27;User&#x27;, new WebSqlPersistance(&#x27;user-table&#x27;), [
+         *                            new Field( {type: &#x27;TEXT&#x27;, key: &#x27;username&#x27;, friendlyName: &#x27;User name&#x27;})
+         *                          , new Field( {type: &#x27;TEXT&#x27;, key: &#x27;password&#x27;, friendlyName: &#x27;Password&#x27;})
+         *                          , new Field( {type: &#x27;DATE&#x27;, key: &#x27;birthday&#x27;, friendlyName: &#x27;Birthday&#x27;})
+         *                      ]) ;
+         *
+         *
+         * The ActiveRecord class is a bit special, because it doesn&#x27;t create an instance of itself, but instead
+         * it creates a new class,  {{#crossLink &quot;Sway.data.Model&quot;}}{{&#x2F;crossLink}}. This class is has configured the
+         * fields provided to the ActiveRecord&#x27;s constructor.
+         *
+         * ActiveRecord needs the name of the model to be created, a object used to persist the data and finally a list of field
+         * definitions.
+         * A model is almost identical to the ActiveRecord interface, except that its constructor accepts two parameters,
+         *     1) data      - json object: { username: &#x27;John&#x27;, password: &#x27;Secret&#x27; }
+         *     2) options   - options object
+         * A data record is created as follows
+         *
+         *      User.find( &#x2F;&#x2F; asynchronious call
+         *         {
+         *               &#x27;username&#x27;:   &#x27;John&#x27;
+         *             , &#x27;password&#x27;: &#x27;Secret&#x27;
+         *         }, function(user) {
+         *             alert(&#x27;Welcome &#x27; + user.username + &#x27;! Your birthday is &#x27; + user.birthday) ;
+         *             var cloneUser = new User(user) ;
+         *             cloneUser.birthDay = new Date() ;
+         *             newUser.save() ;
+         *         }
+         *      ) ;
+         *
+         *      var userRecord = new User({ username: &#x27;John&#x27;, password: &#x27;Secret&#x27;}) ;
+         *      userRecord.save() ;
+         *
+         * @class Sway.data.ActiveRecord
+         * @constructor
+         * @param {String} modelName name of the model
+         * @param {Object}[persistence] object used for data persistance and lookups
+         * @param {Array} [fieldList] list of fields
          *&#x2F;
-        Object.defineProperty(this, &#x27;_ar&#x27;,          &#x2F;&#x2F; use this._ar instead of this
-            {
-                value:this
-                , configurable: false
-                , writable: false
-                , enumerable: false &#x2F;&#x2F; hide it
-            }
-        ) ;
+       , ActiveRecord = function(modelName, persistance, fieldList ) {
+            var i ;
 
-        Object.defineProperty(this, &#x27;_persist&#x27;,
-            {
-                value: persistance
-                , enumerable: false &#x2F;&#x2F; hide it
+           function Model(data, options) {                 &#x2F;&#x2F; define the model class&#x2F;function
+                    if ( !options) {                                &#x2F;&#x2F; fix input
+                        options = {} ;
+                    }
+                    this.__data        = {} ;                       &#x2F;&#x2F; the data object
+                    this.__fields      = {} ;                       &#x2F;&#x2F; object holding the fields
+                    this.__persistance = persistance ;              &#x2F;&#x2F; persistance layer
+                    this.$className    = modelName ;                  &#x2F;&#x2F; name of the model
+                    this.__state       = typeof(options.transformed) === &#x27;boolean&#x27; ? options.transformed : DEFAULTS.STATE.UNFILTERED ;  &#x2F;&#x2F; state of the record
+
+                    Object.defineProperty(this, &#x27;__transform&#x27;, {    &#x2F;&#x2F; object used in fluent API
+                        value: new Object({ self: this })
+                        ,enumerable: false
+                        ,writable: false
+                        ,configurable: false
+                    }) ;
+
+                    for( i = 0; i &lt; fieldList.length; i++ ) {       &#x2F;&#x2F; add fields to this and
+                        createProperty.call(this, fieldList[i], data) ;   &#x2F;&#x2F; populate this.fields
+                    }
             }
-        ) ;
-        Object.defineProperty(this, &#x27;_field&#x27;,
-            {
-                value: []
-                , enumerable: false &#x2F;&#x2F; hide it
+            Model.prototype = this ; &#x2F;&#x2F; add function using prototype inheritance
+
+            &#x2F;&#x2F; add static functions
+            for( i in statics ) {
+                Model[i] = statics[i] ;
             }
-        ) ;
-        Object.defineProperty(this, &#x27;_fieldLookup&#x27;,
-            {
-                value: {}
-                , enumerable: false &#x2F;&#x2F; hide it
+
+            &#x2F;&#x2F; add static properties
+            for ( i in DEFAULTS.STATE ) {
+                Model[i] = DEFAULTS.STATE[i] ;
             }
-        ) ;
-    } ;
+
+            return Model ;
+        } ;
+
+    &#x2F;*
+     * Make fields accessible as normal properties of &#x27;this&#x27; and populate this.fields.
+     * Now values can be set an accessed as follows
+     *
+     *    userRecord.username = &#x27;John&#x27; ;
+     *    userRecord.transformed(false).password = &#x27;Secret&#x27; ;
+     *&#x2F;
+    function createProperty(field, data) {
+        Object.defineProperty(this, field.key, {
+            get: getValue.bind(this, field)
+            , set: setValue.bind(this, field)
+            ,enumerable: true
+            ,configurable: true
+        }) ;
+
+        Object.defineProperty(this.__transform, field.key, {          &#x2F;&#x2F; create fluent api object
+            get: getValue.bind(this, field)
+            , set: setValue.bind(this, field)
+            ,enumerable: true
+            ,configurable: true
+        }) ;
+
+        this.__fields[field.key] = field ;
+        &#x2F;&#x2F; if data is an active-record, its state is used so no transformations are required
+        this.__data[field.key] = { value: data[field.key], state: (typeof(data.__state) === &#x27;boolean&#x27; ? data.__state: this.state) } ;
+    }
+
+    &#x2F;*
+     * is called if a property is accessed (see createProperty)
+     *&#x2F;
+    function getValue(field) {
+        return this.data[field.key]
+    }
+
+    &#x2F;*
+     * is called when a property is set. Note that the context (this) in this function can be &#x27;this&#x27; or &#x27;this.transform&#x27;
+     *&#x2F;
+    function setValue(field, value) {
+        var self = this ;
+        &#x2F;&#x2F;if ( typeof(this.isTransformed === t)
+        this.data[field.key] = value ;
+    }
 
 	ActiveRecord.prototype = {
-        &#x2F;**
-         * @chainable
-         * @param {Object} model instance to be blessed
-         *&#x2F;
-        bless: function(model) {
+
+        transformed: function(isTransformed) {
             var i
-                , setup ;
+                , retObj =  {} ;
+            for( i in this.fields ) {
 
-            Object.defineProperty(model, &#x27;_ar&#x27;,             &#x2F;&#x2F; create a ref to ActiveRecord instance
-                {
-                    value: this
-                    , enumerable: false &#x2F;&#x2F; hide it
-                }
-            ) ;
-
-            &#x2F;&#x2F; copy methods
-            model.save = this.save ;
-
-            &#x2F;&#x2F; clone the fields
-            if ( !model._field ) {
-                Object.defineProperty(model, &#x27;_field&#x27;,             &#x2F;&#x2F; create a ref to ActiveRecord instance
-                    {
-                        value: []
-                        , enumerable: false &#x2F;&#x2F; hide it
-                    }
-                ) ;
-                Object.defineProperty(model, &#x27;_fieldLookup&#x27;,             &#x2F;&#x2F; create a ref to ActiveRecord instance
-                    {
-                        value:{}
-                        , enumerable: false &#x2F;&#x2F; hide it
-                    }
-                ) ;
-
-                for( i = 0; i &lt; this._field.length; i++ ){
-                    setup = this._field[i] ;
-                    model._fieldLookup[setup.key] = model._field.length ;
-                    model._field.push(clone(this._field[i])) ;
-                }
             }
-            return this ;
+            this.__transform.isTransformed = isTransformed ;
+            return this.__transform ;
         }
-        &#x2F;**
-         * @param {String} key
-         * @return {Object} Field instance
-         *&#x2F;
-        , getField: function(key) {
-            return this._field[this._fieldLookup[key]].field ;
+
+        , toJSON: function() { &#x2F;&#x2F; ale
+            return {} ; &#x2F;&#x2F; TODO
         }
-        &#x2F;**
-         * @param {String} key
-         * @param {Object} field Field instance
-         *&#x2F;
-        , setField: function(key, field) {
-           this._fieldLookup[key] = this._field.length ;
-            this._field.push({ key: key, field: field}) ;
-        }
-        &#x2F;**
-         * @param {String} key
-         * @returns {Number}
-         *&#x2F;
+
         , getSize: function(key) {
             var self = this._ar
                 , size = 0
@@ -258,30 +306,93 @@ window.Sway.data = window.Sway.data || {} ;
                         new Blob([this._inputStr], { type: &quot;text&#x2F;plain&quot;}) : this._zippedBlob
                    ).size ;
             *&#x2F;
-        },
-        save: function() {
         }
     } ;
 
-    function clone (obj){
-        var key
-            , temp ;
 
-        if(obj === null || typeof(obj) !== &#x27;object&#x27;) {
-            return obj;
-        }
-
-        temp = obj.constructor();                           &#x2F;&#x2F; changed
-
-        for(key in obj) {                                   &#x2F;&#x2F; copy every attribute
-            temp[key] = obj[key] ;
-        }
-        return temp;
-    }
-
-	Ns.ActiveRecord = ActiveRecord ;
+	ns.ActiveRecord = ActiveRecord ;
 
 })(window.Sway.data) ;
+
+&#x2F;* Define the Model class here *&#x2F;
+
+&#x2F;**
+ * This is a virtual class and is created using {{#crossLink &quot;Sway.data.ActiveRecord&quot;}}{{&#x2F;crossLink}}. This dynamic class creation method
+ * enables us to create classes fully configured with field definitions and a persistence layer at runtime. This persistence layer is, for example, the
+ * connection with a database and knows how to translate an ActiveRecord into a query.
+ *
+ * Every model comes with a set of static methods
+ *
+ *     User.find(
+ *       {
+ *           &#x27;username&#x27;:   &#x27;John&#x27;
+ *           , &#x27;password&#x27;: &#x27;Secret&#x27;
+ *       }, function(user) {
+ *           alert(&#x27;Welcome &#x27; + user.username + &#x27;! Your birthday is &#x27; + user.birthday) ;
+ *           var cloneUser = new User(user) ;
+ *           cloneUser.birthDay = new Date() ;
+ *           newUser.save() ;
+ *       }
+ *     ) ;
+ *
+ * Or simply create a new instance of a Model and use it for a search or save action
+ *
+ *      var userRecord = new User({ username: &#x27;John&#x27;, password: &#x27;Secret&#x27;}) ;
+ *      User.find(userRecord, callback) ;
+ *      &#x2F;&#x2F; or
+ *      userRecord.save() ;
+ *
+ * @class Sway.data.Model
+ * @constructor
+ *&#x2F;
+&#x2F;**
+ * TODO
+ * @method save
+ *
+ *&#x2F;
+&#x2F;**
+ * This function should only be used if one or more fields use transformers.
+ *
+ * This function can be used as follows
+ *
+ *     userRecord = new User({username: &#x27;John&#x27;}) ;
+ *     userRecord.transformed(false).password = &#x27;Secret&#x27; ;
+ *
+ *
+ * @method transformed
+ * @chainable
+ * @param isTransformed
+ * @returns {Object} special object which behaves identical to this, but its state equals &lt;tt&gt;isTransformed&lt;&#x2F;tt&gt;
+ *&#x2F;
+&#x2F;**
+ * returns all the data in JSON format (unfiltered)
+ * @method getToJSON
+ * @param {String} key
+ * @returns {Number}
+ *&#x2F;
+&#x2F;**
+ * @method getSize
+ * @param {Sting} key
+ *&#x2F;
+&#x2F;**
+ * TODO
+ * @method find
+ * @static
+ * @param {Object} options
+ *&#x2F;
+&#x2F;**
+ * @method save
+ * @static
+ * @param {Object} options
+ *&#x2F;
+&#x2F;**
+ * @property STATE.TRANFORMED
+ * @static
+ *&#x2F;
+&#x2F;**
+ * @property STATE.NORMAL
+ * @static
+ *&#x2F;
 
     </pre>
 </div>

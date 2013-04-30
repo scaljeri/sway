@@ -5,7 +5,8 @@
             "name": "src/data/activerecord.js",
             "modules": {},
             "classes": {
-                "Sway.data.ActiveRecord": 1
+                "Sway.data.ActiveRecord": 1,
+                "Sway.data.Model": 1
             },
             "fors": {},
             "namespaces": {}
@@ -110,8 +111,8 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/data/activerecord.js",
-            "line": 8,
-            "description": "The ActiveRecord class represents data-structures, like a database table. An instance represents a single record.\nIt is a blue print for all models it creates, providing them with functionality needed to perform CRUD-like tasks\n\nFor example, to create a User model, do\n\n     var User = new ActiveRecord( 'User', new WebSqlPersistance('user-table'), [\n               new Field( {type: 'TEXT', key: 'username', friendlyName: 'User name'}) )\n             , new Field( [encryptFilter], {type: 'TEXT', key: 'password', friendlyName: 'Password'}) )\n             , new Field( {type: 'DATE', key: 'birthday', friendlyName: 'Birthday'} )\n         ]) ;\n\n     ) ; // create a new model class with WebSQL persistance and three fields\n\n     User.find( // asynchronious call\n        {\n              'username':   'John'\n            , 'password': 'Secret'\n        }, function(user) {\n            alert('Welcome ' + user.username + '! Your birthday is ' + user.birthday) ;\n            var cloneUser = new User(user) ;\n            cloneUser.birthDay = new Date() ;\n            newUser.save() ;\n        }\n     ) ;",
+            "line": 40,
+            "description": "The ActiveRecord class represents data-structures, like a database table. However, ActiveRecord is a special class, instead of\ncreating instances of itself, is create a new class of type {{#crossLink \"Sway.data.Model\"}}{{/crossLink}}. ActiveRecord is a\nblue print for all models it creates, providing them with functionality needed to perform CRUD-like tasks\n\n     var UserModel = new ActiveRecord( 'User', new WebSqlPersistance('user-table'), [\n                           new Field( {type: 'TEXT', key: 'username', friendlyName: 'User name'})\n                         , new Field( {type: 'TEXT', key: 'password', friendlyName: 'Password'})\n                         , new Field( {type: 'DATE', key: 'birthday', friendlyName: 'Birthday'})\n                     ]) ;\n\n\nThe ActiveRecord class is a bit special, because it doesn't create an instance of itself, but instead\nit creates a new class,  {{#crossLink \"Sway.data.Model\"}}{{/crossLink}}. This class is has configured the\nfields provided to the ActiveRecord's constructor.\n\nActiveRecord needs the name of the model to be created, a object used to persist the data and finally a list of field\ndefinitions.\nA model is almost identical to the ActiveRecord interface, except that its constructor accepts two parameters,\n    1) data      - json object: { username: 'John', password: 'Secret' }\n    2) options   - options object\nA data record is created as follows\n\n     User.find( // asynchronious call\n        {\n              'username':   'John'\n            , 'password': 'Secret'\n        }, function(user) {\n            alert('Welcome ' + user.username + '! Your birthday is ' + user.birthday) ;\n            var cloneUser = new User(user) ;\n            cloneUser.birthDay = new Date() ;\n            newUser.save() ;\n        }\n     ) ;\n\n     var userRecord = new User({ username: 'John', password: 'Secret'}) ;\n     userRecord.save() ;",
             "is_constructor": 1,
             "params": [
                 {
@@ -133,6 +134,19 @@
                 }
             ]
         },
+        "Sway.data.Model": {
+            "name": "Sway.data.Model",
+            "shortname": "Sway.data.Model",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/data/activerecord.js",
+            "line": 211,
+            "description": "This is a virtual class and is created using {{#crossLink \"Sway.data.ActiveRecord\"}}{{/crossLink}}. This dynamic class creation method\nenables us to create classes fully configured with field definitions and a persistence layer at runtime. This persistence layer is, for example, the\nconnection with a database and knows how to translate an ActiveRecord into a query.\n\nEvery model comes with a set of static methods\n\n    User.find(\n      {\n          'username':   'John'\n          , 'password': 'Secret'\n      }, function(user) {\n          alert('Welcome ' + user.username + '! Your birthday is ' + user.birthday) ;\n          var cloneUser = new User(user) ;\n          cloneUser.birthDay = new Date() ;\n          newUser.save() ;\n      }\n    ) ;\n\nOr simply create a new instance of a Model and use it for a search or save action\n\n     var userRecord = new User({ username: 'John', password: 'Secret'}) ;\n     User.find(userRecord, callback) ;\n     // or\n     userRecord.save() ;",
+            "is_constructor": 1
+        },
         "Sway.data.Field": {
             "name": "Sway.data.Field",
             "shortname": "Sway.data.Field",
@@ -143,26 +157,59 @@
             "extension_for": [],
             "file": "src/data/field.js",
             "line": 14,
-            "description": "A Field represents a single value of an ActiveRecord model.\n\n    var username = new Field({ type: 'TEXT', key: 'username', friendlyName: 'User name' }) ;\n\nOr if it the field holds data which should be encrypted and compressed\n\n    var accountInfo = new Field( { type: 'BLOB', key: 'accountInfo', friendLyName: 'Account info'}, [encryptFilter, compressFilter] ) ;",
+            "description": "A Field represents a single value of an ActiveRecord model.\n\n    var username = new Field({ type: 'TEXT', key: 'username', friendlyName: 'User name' }) ;\n\nOr if it the field holds data which should be encrypted and compressed\n\n    var accountInfo = new Field( { type: 'BLOB', key: 'accountInfo', friendLyName: 'Account info'}, [encryptFilter, compressFilter] ) ;\n\nSee {{#crossLink \"Sway.data.ActiveRecord\"}}{{/crossLink}} to understand how it fits into the bigger picture.",
+            "is_constructor": 1,
             "params": [
                 {
-                    "name": "filters",
-                    "description": "list of filters",
+                    "name": "definition",
+                    "description": "definition of this field",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "key",
+                            "description": "",
+                            "type": "String"
+                        },
+                        {
+                            "name": "type",
+                            "description": "",
+                            "type": "String",
+                            "optional": true,
+                            "optdefault": "TEXT"
+                        },
+                        {
+                            "name": "friendlyName",
+                            "description": "",
+                            "type": "String",
+                            "optional": true
+                        },
+                        {
+                            "name": "PK",
+                            "description": "primary key field",
+                            "type": "Boolean",
+                            "optional": true,
+                            "optdefault": "false"
+                        },
+                        {
+                            "name": "required",
+                            "description": "",
+                            "type": "Boolean",
+                            "optional": true,
+                            "optdefault": "false"
+                        }
+                    ]
+                },
+                {
+                    "name": "transformers",
+                    "description": "list of transformer objects. A transformer object can transform the data into a new form and also back\ninto its original form. Think of, zipping and unzipping or encrypting and decrypting",
                     "type": "Array",
                     "optional": true
                 },
                 {
-                    "name": "options",
-                    "description": "configuration",
-                    "type": "Object",
+                    "name": "validators",
+                    "description": "list of validation functions",
+                    "type": "Array",
                     "optional": true
-                },
-                {
-                    "name": "keepValues",
-                    "description": "keep a reference to both original and filtered value (requires more memory)",
-                    "type": "Boolean",
-                    "optional": true,
-                    "optdefault": "false"
                 }
             ]
         },
@@ -286,53 +333,37 @@
     "classitems": [
         {
             "file": "src/data/activerecord.js",
-            "line": 76,
+            "line": 240,
+            "description": "TODO",
+            "itemtype": "method",
+            "name": "save",
+            "class": "Sway.data.Model"
+        },
+        {
+            "file": "src/data/activerecord.js",
+            "line": 245,
+            "description": "This function should only be used if one or more fields use transformers.\n\nThis function can be used as follows\n\n    userRecord = new User({username: 'John'}) ;\n    userRecord.transformed(false).password = 'Secret' ;",
+            "itemtype": "method",
+            "name": "transformed",
             "chainable": 1,
             "params": [
                 {
-                    "name": "model",
-                    "description": "instance to be blessed",
-                    "type": "Object"
-                }
-            ],
-            "class": "Sway.data.ActiveRecord"
-        },
-        {
-            "file": "src/data/activerecord.js",
-            "line": 117,
-            "params": [
-                {
-                    "name": "key",
-                    "description": "",
-                    "type": "String"
+                    "name": "isTransformed",
+                    "description": ""
                 }
             ],
             "return": {
-                "description": "Field instance",
+                "description": "special object which behaves identical to this, but its state equals <tt>isTransformed</tt>",
                 "type": "Object"
             },
-            "class": "Sway.data.ActiveRecord"
+            "class": "Sway.data.Model"
         },
         {
             "file": "src/data/activerecord.js",
-            "line": 124,
-            "params": [
-                {
-                    "name": "key",
-                    "description": "",
-                    "type": "String"
-                },
-                {
-                    "name": "field",
-                    "description": "Field instance",
-                    "type": "Object"
-                }
-            ],
-            "class": "Sway.data.ActiveRecord"
-        },
-        {
-            "file": "src/data/activerecord.js",
-            "line": 132,
+            "line": 259,
+            "description": "returns all the data in JSON format (unfiltered)",
+            "itemtype": "method",
+            "name": "getToJSON",
             "params": [
                 {
                     "name": "key",
@@ -344,11 +375,72 @@
                 "description": "",
                 "type": "Number"
             },
-            "class": "Sway.data.ActiveRecord"
+            "class": "Sway.data.Model"
+        },
+        {
+            "file": "src/data/activerecord.js",
+            "line": 265,
+            "itemtype": "method",
+            "name": "getSize",
+            "params": [
+                {
+                    "name": "key",
+                    "description": "",
+                    "type": "Sting"
+                }
+            ],
+            "class": "Sway.data.Model"
+        },
+        {
+            "file": "src/data/activerecord.js",
+            "line": 269,
+            "description": "TODO",
+            "itemtype": "method",
+            "name": "find",
+            "static": 1,
+            "params": [
+                {
+                    "name": "options",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "Sway.data.Model"
+        },
+        {
+            "file": "src/data/activerecord.js",
+            "line": 275,
+            "itemtype": "method",
+            "name": "save",
+            "static": 1,
+            "params": [
+                {
+                    "name": "options",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "Sway.data.Model"
+        },
+        {
+            "file": "src/data/activerecord.js",
+            "line": 280,
+            "itemtype": "property",
+            "name": "STATE.TRANFORMED",
+            "static": 1,
+            "class": "Sway.data.Model"
+        },
+        {
+            "file": "src/data/activerecord.js",
+            "line": 284,
+            "itemtype": "property",
+            "name": "STATE.NORMAL",
+            "static": 1,
+            "class": "Sway.data.Model"
         },
         {
             "file": "src/data/field.js",
-            "line": 52,
+            "line": 64,
             "itemtype": "method",
             "name": "getValue",
             "params": [
@@ -366,7 +458,7 @@
         },
         {
             "file": "src/data/field.js",
-            "line": 67,
+            "line": 79,
             "itemtype": "method",
             "name": "getKey",
             "params": [
@@ -386,7 +478,7 @@
         },
         {
             "file": "src/data/field.js",
-            "line": 75,
+            "line": 87,
             "itemtype": "method",
             "name": "setValue",
             "chainable": 1,
@@ -408,7 +500,7 @@
         },
         {
             "file": "src/data/field.js",
-            "line": 90,
+            "line": 102,
             "description": "Returns the size of",
             "itemtype": "method",
             "name": "size",
@@ -839,11 +931,15 @@
     "warnings": [
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/data/activerecord.js:132"
+            "line": " src/data/activerecord.js:245"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/data/field.js:52"
+            "line": " src/data/activerecord.js:259"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/data/field.js:64"
         },
         {
             "message": "replacing incorrect tag: returns with return",
@@ -852,22 +948,6 @@
         {
             "message": "param name missing: {Object}",
             "line": " src/eventhub.js:193"
-        },
-        {
-            "message": "Missing item type",
-            "line": " src/data/activerecord.js:76"
-        },
-        {
-            "message": "Missing item type",
-            "line": " src/data/activerecord.js:117"
-        },
-        {
-            "message": "Missing item type",
-            "line": " src/data/activerecord.js:124"
-        },
-        {
-            "message": "Missing item type",
-            "line": " src/data/activerecord.js:132"
         },
         {
             "message": "Missing item type\nFileEntry interface is provided for working with files:\nhttp://www.mosync.com/files/imports/doxygen/latest/html5/filewriter.md.html\nfileEntry.isFile === true\nfileEntry.isDirectory === false\nfileEntry.name\nfileEntry.fullPath\n...\n\nfileEntry.getMetadata(successCallback, opt_errorCallback);\nfileEntry.remove(successCallback, opt_errorCallback);\nfileEntry.moveTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);\nfileEntry.copyTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);\nfileEntry.getParent(successCallback, opt_errorCallback);\nfileEntry.toURI(opt_mimeType);  // Currently not implemented in Google Chrome 9.\n\nfileEntry.file(successCallback, opt_errorCallback);\nfileEntry.createWriter(successCallback, opt_errorCallback);",

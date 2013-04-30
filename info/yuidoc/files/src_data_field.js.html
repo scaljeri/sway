@@ -47,6 +47,8 @@
             
                 <li><a href="..&#x2F;classes/Sway.data.Field.html">Sway.data.Field</a></li>
             
+                <li><a href="..&#x2F;classes/Sway.data.Model.html">Sway.data.Model</a></li>
+            
                 <li><a href="..&#x2F;classes/Sway.DI.html">Sway.DI</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.EventHub.html">Sway.EventHub</a></li>
@@ -126,13 +128,25 @@ window.Sway.data = window.Sway.data || {};
      *
      *     var accountInfo = new Field( { type: &#x27;BLOB&#x27;, key: &#x27;accountInfo&#x27;, friendLyName: &#x27;Account info&#x27;}, [encryptFilter, compressFilter] ) ;
      *
+     * See {{#crossLink &quot;Sway.data.ActiveRecord&quot;}}{{&#x2F;crossLink}} to understand how it fits into the bigger picture.
+     *
      * @class Sway.data.Field
-     * @param {Array} [filters] list of filters
-     * @param {Object} [options] configuration
-     *      @param {Boolean} [keepValues=false] keep a reference to both original and filtered value (requires more memory)
+     * @constructor
+     * @param {Object} definition definition of this field
+     *      @param {String} definition.key
+     *      @param {String} [definition.type=TEXT]
+     *      @param {String} [definition.friendlyName]
+     *      @param {Boolean} [definition.PK=false] primary key field
+     *      @param {Boolean} [definition.required=false]
+     * @param {Array} [transformers] list of transformer objects. A transformer object can transform the data into a new form and also back
+     * into its original form. Think of, zipping and unzipping or encrypting and decrypting
+     * @param {Array} [validators] list of validation functions
      *&#x2F;
-        , f = function (filterList, options) {
+        , f = function (definition, filterList, validators) {
             this.filterList = filterList ;
+            this.key = definition.key ;
+            this.friendlyName = definition.friendlyName ;
+            this.type = definition.type ;
 
             Object.defineProperty(this, &#x27;_filteredValue&#x27;,
                 {

@@ -2,12 +2,22 @@ var page = require('webpage').create()
     , file = "http://192.168.2.4/~QNH/zipped" + "/SpecRunnerCoverage.html" ;
 
 page.open(file, function (status) {
-    setTimeout(function() {
-        var json = page.evaluate(function () {
-            return window._yuitest_coverage;
-        });
+        setInterval(
+            function() {
+                var isReady = page.evaluate(function () {
+                    return window.IS_READY;
+                });
+                if ( isReady ) {
+                    var json = page.evaluate(function () {
+                        return window._yuitest_coverage;
+                    });
+                    console.log(JSON.stringify(json));
+                    phantom.exit();
+                }
+            }, 100) ;
 
-        console.log(JSON.stringify(json));
+    setTimeout(function() { // just to make sure it will stop if something went wrong!
+        console.error('Jasmine never finished!!');
         phantom.exit();
-    }, 2000) ;
+    }, 10000) ;
 });
