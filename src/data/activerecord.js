@@ -7,12 +7,20 @@ window.Sway.data = window.Sway.data || {} ;
 
     var DEFAULTS = {
             STATE: {
-                UNFILTERED: 'unfiltered'
-                , FILTERED: 'filtered'
+                /*
+                 * @property STATE.TRANFORMED
+                 * @static
+                 */
+                TRANSFORMED: 1
+                /*
+                 * @property STATE.NORMAL
+                 * @static
+                 */
+                , NORMAL: 0
             }
         }
         , statics = {
-            /**
+            /*
             * TODO
             * @method find
             * @static
@@ -21,7 +29,7 @@ window.Sway.data = window.Sway.data || {} ;
             find: function(options) {
 
             }
-            /**
+            /*
             * @method save
             * @static
             * @param {Object} options
@@ -30,18 +38,27 @@ window.Sway.data = window.Sway.data || {} ;
             }
         }
         /**
-         * The ActiveRecord class represents data-structures, like a database table. An instance represents a single record.
-         * It is a blue print for all models it creates, providing them with functionality needed to perform CRUD-like tasks
+         * The ActiveRecord class represents data-structures, like a database table. However, ActiveRecord is a special class, instead of
+         * creating instances of itself, is create a new class of type {{#crossLink "Sway.data.Model"}}{{/crossLink}}. ActiveRecord is a
+         * blue print for all models it creates, providing them with functionality needed to perform CRUD-like tasks
          *
-         * Create a model
+         *      var UserModel = new ActiveRecord( 'User', new WebSqlPersistance('user-table'), [
+         *                            new Field( {type: 'TEXT', key: 'username', friendlyName: 'User name'})
+         *                          , new Field( {type: 'TEXT', key: 'password', friendlyName: 'Password'})
+         *                          , new Field( {type: 'DATE', key: 'birthday', friendlyName: 'Birthday'})
+         *                      ]) ;
          *
-         *      var User = new ActiveRecord( 'User', new WebSqlPersistance('user-table'), [
-         *                new Field( {type: 'TEXT', key: 'username', friendlyName: 'User name'})
-         *              , new Field( {type: 'TEXT', key: 'password', friendlyName: 'Password'})
-         *              , new Field( {type: 'DATE', key: 'birthday', friendlyName: 'Birthday'})
-         *          ]) ;
          *
-         *      ) ; // create a new model class with WebSQL persistance and three fields
+         * The ActiveRecord class is a bit special, because it doesn't create an instance of itself, but instead
+         * it creates a new class,  {{#crossLink "Sway.data.Model"}}{{/crossLink}}. This class is has configured the
+         * fields provided to the ActiveRecord's constructor.
+         *
+         * ActiveRecord needs the name of the model to be created, a object used to persist the data and finally a list of field
+         * definitions.
+         * A model is almost identical to the ActiveRecord interface, except that its constructor accepts two parameters,
+         *     1) data      - json object: { username: 'John', password: 'Secret' }
+         *     2) options   - options object
+         * A data record is created as follows
          *
          *      User.find( // asynchronious call
          *         {
@@ -63,20 +80,20 @@ window.Sway.data = window.Sway.data || {} ;
          * @param {String} modelName name of the model
          * @param {Object}[persistence] object used for data persistance and lookups
          * @param {Array} [fieldList] list of fields
-         * @param {Object} [options]
-         *      @param {Boolean} [transformed=false]
          */
        , ActiveRecord = function(modelName, persistance, fieldList ) {
-            var i
-                , model = function(data, options) {
-                    if ( !options) {
+            var i ;
+
+           function Model(data, options) {                 // define the model class/function
+                    if ( !options) {                                // fix input
                         options = {} ;
                     }
                     this.__data        = {} ;                       // the data object
                     this.__fields      = {} ;                       // object holding the fields
                     this.__persistance = persistance ;              // persistance layer
-                    this.$className  = modelName ;                  // name of the model
+                    this.$className    = modelName ;                  // name of the model
                     this.__state       = typeof(options.transformed) === 'boolean' ? options.transformed : DEFAULTS.STATE.UNFILTERED ;  // state of the record
+
                     Object.defineProperty(this, '__transform', {    // object used in fluent API
                         value: new Object({ self: this })
                         ,enumerable: false
@@ -87,14 +104,20 @@ window.Sway.data = window.Sway.data || {} ;
                     for( i = 0; i < fieldList.length; i++ ) {       // add fields to this and
                         createProperty.call(this, fieldList[i], data) ;   // populate this.fields
                     }
-            } ;
-            model.prototype = this ; // add function using prototype inheritance
+            }
+            Model.prototype = this ; // add function using prototype inheritance
 
             // add static functions
             for( i in statics ) {
-                model[i] = statics[i] ;
+                Model[i] = statics[i] ;
             }
-            return model ;
+
+            // add static properties
+            for ( i in DEFAULTS.STATE ) {
+                Model[i] = DEFAULTS.STATE[i] ;
+            }
+
+            return Model ;
         } ;
 
     /*
@@ -120,7 +143,7 @@ window.Sway.data = window.Sway.data || {} ;
         }) ;
 
         this.__fields[field.key] = field ;
-        // if data is an active-record, its state is used so no transforms are needed
+        // if data is an active-record, its state is used so no transformations are required
         this.__data[field.key] = { value: data[field.key], state: (typeof(data.__state) === 'boolean' ? data.__state: this.state) } ;
     }
 
@@ -135,24 +158,13 @@ window.Sway.data = window.Sway.data || {} ;
      * is called when a property is set. Note that the context (this) in this function can be 'this' or 'this.transform'
      */
     function setValue(field, value) {
+        var self = this ;
+        //if ( typeof(this.isTransformed === t)
         this.data[field.key] = value ;
     }
 
 	ActiveRecord.prototype = {
-        /**
-         * This function should only be used if one or more fields use transformers.
-         *
-         * This function can be used as follows
-         *
-         *     userRecord = new User({username: 'John'}) ;
-         *     userRecord.transformed(false).password = 'Secret' ;
-         *
-         *
-         * @method transformed
-         * @chainable
-         * @param isTransformed
-         * @returns {Object} special object which behaves identical to this, but its state equals <tt>isTransformed</tt>
-         */
+
         transformed: function(isTransformed) {
             var i
                 , retObj =  {} ;
@@ -162,28 +174,11 @@ window.Sway.data = window.Sway.data || {} ;
             this.__transform.isTransformed = isTransformed ;
             return this.__transform ;
         }
-        /**
-         * returns all the data in JSON format (unfiltered)
-         * @method getToJSON
-         * @param {String} key
-         * @returns {Number}
-         */
+
         , toJSON: function() { // ale
             return {} ; // TODO
         }
-        /**
-         * @method setData
-         * @chainable
-         * @param {Object} data
-         * @param {Boolean} [isFiltered=false]
-         */
-        , setData: function(data, isFiltered) {
 
-        }
-        /**
-         * @method getSize
-         * @param {Sting} key
-         */
         , getSize: function(key) {
             var self = this._ar
                 , size = 0
@@ -203,10 +198,90 @@ window.Sway.data = window.Sway.data || {} ;
                         new Blob([this._inputStr], { type: "text/plain"}) : this._zippedBlob
                    ).size ;
             */
-        },
+        }
     } ;
 
 
 	ns.ActiveRecord = ActiveRecord ;
 
 })(window.Sway.data) ;
+
+/* Define the Model class here */
+
+/**
+ * This is a virtual class and is created using {{#crossLink "Sway.data.ActiveRecord"}}{{/crossLink}}. This dynamic class creation method
+ * enables us to create classes fully configured with field definitions and a persistence layer at runtime. This persistence layer is, for example, the
+ * connection with a database and knows how to translate an ActiveRecord into a query.
+ *
+ * Every model comes with a set of static methods
+ *
+ *     User.find(
+ *       {
+ *           'username':   'John'
+ *           , 'password': 'Secret'
+ *       }, function(user) {
+ *           alert('Welcome ' + user.username + '! Your birthday is ' + user.birthday) ;
+ *           var cloneUser = new User(user) ;
+ *           cloneUser.birthDay = new Date() ;
+ *           newUser.save() ;
+ *       }
+ *     ) ;
+ *
+ * Or simply create a new instance of a Model and use it for a search or save action
+ *
+ *      var userRecord = new User({ username: 'John', password: 'Secret'}) ;
+ *      User.find(userRecord, callback) ;
+ *      // or
+ *      userRecord.save() ;
+ *
+ * @class Sway.data.Model
+ * @constructor
+ */
+/**
+ * TODO
+ * @method save
+ *
+ */
+/**
+ * This function should only be used if one or more fields use transformers.
+ *
+ * This function can be used as follows
+ *
+ *     userRecord = new User({username: 'John'}) ;
+ *     userRecord.transformed(false).password = 'Secret' ;
+ *
+ *
+ * @method transformed
+ * @chainable
+ * @param isTransformed
+ * @returns {Object} special object which behaves identical to this, but its state equals <tt>isTransformed</tt>
+ */
+/**
+ * returns all the data in JSON format (unfiltered)
+ * @method getToJSON
+ * @param {String} key
+ * @returns {Number}
+ */
+/**
+ * @method getSize
+ * @param {Sting} key
+ */
+/**
+ * TODO
+ * @method find
+ * @static
+ * @param {Object} options
+ */
+/**
+ * @method save
+ * @static
+ * @param {Object} options
+ */
+/**
+ * @property STATE.TRANFORMED
+ * @static
+ */
+/**
+ * @property STATE.NORMAL
+ * @static
+ */
