@@ -74,6 +74,7 @@
   <script type="text/javascript">
       zip.useWebWorkers     = true ;
       zip.workerScriptsPath = "lib/zip.js/" ;
+      window.IS_READY = false ;
 
       // http://stackoverflow.com/questions/13366318/how-to-return-jasmine-unit-test-results-as-a-string
       function TextReporter() {
@@ -119,6 +120,7 @@
         var txtReporter = new TextReporter();
         txtReporter.onRunnerFinished(function (text) {
             hack() ;
+            window.IS_READY = true ;
         });
 
         jasmineEnv.addReporter(txtReporter);

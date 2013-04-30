@@ -1,1 +1,0 @@
-java -jar ../external/yuitest/nodejs-coverage/jar/yuitest-coverage-report.jar -o ../info/coverage/ coverage-data.json
