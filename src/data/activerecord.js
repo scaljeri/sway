@@ -49,31 +49,8 @@ window.Sway.data = window.Sway.data || {} ;
          *                      ]) ;
          *
          *
-         * The ActiveRecord class is a bit special, because it doesn't create an instance of itself, but instead
-         * it creates a new class,  {{#crossLink "Sway.data.Model"}}{{/crossLink}}. This class is has configured the
-         * fields provided to the ActiveRecord's constructor.
-         *
-         * ActiveRecord needs the name of the model to be created, a object used to persist the data and finally a list of field
+         * ActiveRecord needs the name of the model to be created, an object used to persist the data and finally a list of field
          * definitions.
-         * A model is almost identical to the ActiveRecord interface, except that its constructor accepts two parameters,
-         *     1) data      - json object: { username: 'John', password: 'Secret' }
-         *     2) options   - options object
-         * A data record is created as follows
-         *
-         *      User.find( // asynchronious call
-         *         {
-         *               'username':   'John'
-         *             , 'password': 'Secret'
-         *         }, function(user) {
-         *             alert('Welcome ' + user.username + '! Your birthday is ' + user.birthday) ;
-         *             var cloneUser = new User(user) ;
-         *             cloneUser.birthDay = new Date() ;
-         *             newUser.save() ;
-         *         }
-         *      ) ;
-         *
-         *      var userRecord = new User({ username: 'John', password: 'Secret'}) ;
-         *      userRecord.save() ;
          *
          * @class Sway.data.ActiveRecord
          * @constructor
@@ -150,7 +127,8 @@ window.Sway.data = window.Sway.data || {} ;
     /*
      * is called if a property is accessed (see createProperty)
      */
-    function getValue(field) {
+    function getValue(field, callback) {
+        // TODO take into account this.__transform
         return this.data[field.key]
     }
 
@@ -164,15 +142,43 @@ window.Sway.data = window.Sway.data || {} ;
     }
 
 	ActiveRecord.prototype = {
+        // TODO: should not be lazy, or else you cannot use properties, because they need to be transformed :(
+        /**
+         * set the a new state.
+         * @param state
+         * @param {Boolean} [isLazy=true] values are transformed into the new state when requested. If <tt>true, all
+         * values are transformed immediately.
+         * @param {Function} [callback] if <tt>isLazy</tt> is set to TRUE the callback is called when all values
+         * are transformed.
+         */
+        setState: function(state, isLazy, callback) {
+            // TODO
+            this.state = state ;
+        }
+        /**
+         * set the value for a specific field with a specific state. If called with the <tt>state</tt> left empty it behaves
+         * identical to setting this value using the instance corresponding property
+         *
+         *          userRecord.username = 'John'                // or
+         *          userRecord.setValue('username', 'John') ;
+         *
+         * @param {String} key
+         * @param {String} value
+         * @param {String} [state] one of the Model.STATEs. If empty, the data is expected to be in the state of the record
+         */
+        , setValue: function(key, value, state) {
 
-        transformed: function(isTransformed) {
-            var i
-                , retObj =  {} ;
-            for( i in this.fields ) {
+        }
+        /**
+         * Returns the value of a specific field. If called without a <tt>state</tt> defined, it behaves identical to
+         * retrieving the value using the instance corresponding property
+         *
+         *          userRecord.username                        // or
+         *          userRecord.getValue('username') ;
+         */
+        // only use this function if
+        , getValue: function(key, state) {
 
-            }
-            this.__transform.isTransformed = isTransformed ;
-            return this.__transform ;
         }
 
         , toJSON: function() { // ale
@@ -210,32 +216,25 @@ window.Sway.data = window.Sway.data || {} ;
 
 /**
  * This is a virtual class and is created using {{#crossLink "Sway.data.ActiveRecord"}}{{/crossLink}}. This dynamic class creation method
- * enables us to create classes fully configured with field definitions and a persistence layer at runtime. This persistence layer is, for example, the
- * connection with a database and knows how to translate an ActiveRecord into a query.
+ * facilitates the creation of new classes fully configured with field definitions and a persistence layer at runtime. Theses instances
+ * can directly save data
  *
- * Every model comes with a set of static methods
+ *     var userRecord = new User({username: 'John', password: 'Secret'}) ;
+ *     ....
+ *     userRecord.save() ;
  *
- *     User.find(
- *       {
- *           'username':   'John'
- *           , 'password': 'Secret'
- *       }, function(user) {
- *           alert('Welcome ' + user.username + '! Your birthday is ' + user.birthday) ;
- *           var cloneUser = new User(user) ;
- *           cloneUser.birthDay = new Date() ;
- *           newUser.save() ;
- *       }
- *     ) ;
+ * All fields are accessible as a property of a record
  *
- * Or simply create a new instance of a Model and use it for a search or save action
- *
- *      var userRecord = new User({ username: 'John', password: 'Secret'}) ;
- *      User.find(userRecord, callback) ;
- *      // or
- *      userRecord.save() ;
+ *     var userRecord = new User() ;
+ *     userRecord.username = 'John' ;
+ *     userRecord.password = 'Secret' ;
  *
  * @class Sway.data.Model
  * @constructor
+ * @param {Object|Model} [data] JSON data or a model instance to be cloned
+ * @example
+        var userRecord = new User({...}) ;
+        var userRecord1 = new User(userRecord) ;
  */
 /**
  * TODO
@@ -267,7 +266,33 @@ window.Sway.data = window.Sway.data || {} ;
  * @param {Sting} key
  */
 /**
- * TODO
+ *    User.find(
+ *      {
+ *           'username':   'John'
+ *           , 'password': 'Secret'
+ *      }, function(user) { ... } ) ;
+ *
+ * Or use a model instance for searching
+ *
+ *     User.find(userRecord, callbackFunc) ;
+ *
+ *
+ *
+ *
+ *
+ *           alert('Welcome ' + user.username + '! Your birthday is ' + user.birthday) ;
+ *           var cloneUser = new User(user) ;
+ *           cloneUser.birthDay = new Date() ;              // access field 'birthday' as a property
+ *           newUser.save() ;
+ *       }
+ *     ) ;
+ *
+ * Or simply create a new instance of a Model and use it for a search or save action
+ *
+ *      var userRecord = new User({ username: 'John', password: 'Secret'}) ;
+ *      User.find(userRecord, callback) ;
+ *      // or
+ *      userRecord.save() ;
  * @method find
  * @static
  * @param {Object} options

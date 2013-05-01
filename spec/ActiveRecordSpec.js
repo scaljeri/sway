@@ -33,9 +33,7 @@ window.describe("Sway.data.ActiveRecord", function() {
                         , new Sway.data.Field( {type: 'TEXT', key: 'password', friendlyName: 'Password'})
                         , new Sway.data.Field( {type: 'DATE', key: 'birthday', friendlyName: 'Birthday'})
                   ]) ;
-        var u = new User( {username: 'Lucas', password: 'Calje', birthday: new Date()}) ;
-        u.transformed(true) ;
-        debugger ;
+        //var u = new User( {username: 'Lucas', password: 'Calje', birthday: new Date()}) ;
     });
 
     xit("should accept fields", function() {
