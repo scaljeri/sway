@@ -112,7 +112,7 @@
             "extension_for": [],
             "file": "src/data/activerecord.js",
             "line": 40,
-            "description": "The ActiveRecord class represents data-structures, like a database table. However, ActiveRecord is a special class, instead of\ncreating instances of itself, is create a new class of type {{#crossLink \"Sway.data.Model\"}}{{/crossLink}}. ActiveRecord is a\nblue print for all models it creates, providing them with functionality needed to perform CRUD-like tasks\n\n     var UserModel = new ActiveRecord( 'User', new WebSqlPersistance('user-table'), [\n                           new Field( {type: 'TEXT', key: 'username', friendlyName: 'User name'})\n                         , new Field( {type: 'TEXT', key: 'password', friendlyName: 'Password'})\n                         , new Field( {type: 'DATE', key: 'birthday', friendlyName: 'Birthday'})\n                     ]) ;\n\n\nThe ActiveRecord class is a bit special, because it doesn't create an instance of itself, but instead\nit creates a new class,  {{#crossLink \"Sway.data.Model\"}}{{/crossLink}}. This class is has configured the\nfields provided to the ActiveRecord's constructor.\n\nActiveRecord needs the name of the model to be created, a object used to persist the data and finally a list of field\ndefinitions.\nA model is almost identical to the ActiveRecord interface, except that its constructor accepts two parameters,\n    1) data      - json object: { username: 'John', password: 'Secret' }\n    2) options   - options object\nA data record is created as follows\n\n     User.find( // asynchronious call\n        {\n              'username':   'John'\n            , 'password': 'Secret'\n        }, function(user) {\n            alert('Welcome ' + user.username + '! Your birthday is ' + user.birthday) ;\n            var cloneUser = new User(user) ;\n            cloneUser.birthDay = new Date() ;\n            newUser.save() ;\n        }\n     ) ;\n\n     var userRecord = new User({ username: 'John', password: 'Secret'}) ;\n     userRecord.save() ;",
+            "description": "The ActiveRecord class represents data-structures, like a database table. However, ActiveRecord is a special class, instead of\ncreating instances of itself, is create a new class of type {{#crossLink \"Sway.data.Model\"}}{{/crossLink}}. ActiveRecord is a\nblue print for all models it creates, providing them with functionality needed to perform CRUD-like tasks\n\n     var UserModel = new ActiveRecord( 'User', new WebSqlPersistance('user-table'), [\n                           new Field( {type: 'TEXT', key: 'username', friendlyName: 'User name'})\n                         , new Field( {type: 'TEXT', key: 'password', friendlyName: 'Password'})\n                         , new Field( {type: 'DATE', key: 'birthday', friendlyName: 'Birthday'})\n                     ]) ;\n\n\nActiveRecord needs the name of the model to be created, an object used to persist the data and finally a list of field\ndefinitions.",
             "is_constructor": 1,
             "params": [
                 {
@@ -143,9 +143,20 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/data/activerecord.js",
-            "line": 211,
-            "description": "This is a virtual class and is created using {{#crossLink \"Sway.data.ActiveRecord\"}}{{/crossLink}}. This dynamic class creation method\nenables us to create classes fully configured with field definitions and a persistence layer at runtime. This persistence layer is, for example, the\nconnection with a database and knows how to translate an ActiveRecord into a query.\n\nEvery model comes with a set of static methods\n\n    User.find(\n      {\n          'username':   'John'\n          , 'password': 'Secret'\n      }, function(user) {\n          alert('Welcome ' + user.username + '! Your birthday is ' + user.birthday) ;\n          var cloneUser = new User(user) ;\n          cloneUser.birthDay = new Date() ;\n          newUser.save() ;\n      }\n    ) ;\n\nOr simply create a new instance of a Model and use it for a search or save action\n\n     var userRecord = new User({ username: 'John', password: 'Secret'}) ;\n     User.find(userRecord, callback) ;\n     // or\n     userRecord.save() ;",
-            "is_constructor": 1
+            "line": 217,
+            "description": "This is a virtual class and is created using {{#crossLink \"Sway.data.ActiveRecord\"}}{{/crossLink}}. This dynamic class creation method\nfacilitates the creation of new classes fully configured with field definitions and a persistence layer at runtime. Theses instances\ncan directly save data\n\n    var userRecord = new User({username: 'John', password: 'Secret'}) ;\n    ....\n    userRecord.save() ;\n\nAll fields are accessible as a property of a record\n\n    var userRecord = new User() ;\n    userRecord.username = 'John' ;\n    userRecord.password = 'Secret' ;",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "data",
+                    "description": "JSON data or a model instance to be cloned",
+                    "type": "Object|Model",
+                    "optional": true
+                }
+            ],
+            "example": [
+                "\n       var userRecord = new User({...}) ;\n       var userRecord1 = new User(userRecord) ;"
+            ]
         },
         "Sway.data.Field": {
             "name": "Sway.data.Field",
@@ -333,7 +344,62 @@
     "classitems": [
         {
             "file": "src/data/activerecord.js",
-            "line": 240,
+            "line": 146,
+            "description": "set the a new state.",
+            "params": [
+                {
+                    "name": "state",
+                    "description": ""
+                },
+                {
+                    "name": "isLazy",
+                    "description": "values are transformed into the new state when requested. If <tt>true, all\nvalues are transformed immediately.",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": "true"
+                },
+                {
+                    "name": "callback",
+                    "description": "if <tt>isLazy</tt> is set to TRUE the callback is called when all values\nare transformed.",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "class": "Sway.data.ActiveRecord"
+        },
+        {
+            "file": "src/data/activerecord.js",
+            "line": 158,
+            "description": "set the value for a specific field with a specific state. If called with the <tt>state</tt> left empty it behaves\nidentical to setting this value using the instance corresponding property\n\n         userRecord.username = 'John'                // or\n         userRecord.setValue('username', 'John') ;",
+            "params": [
+                {
+                    "name": "key",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "value",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "state",
+                    "description": "one of the Model.STATEs. If empty, the data is expected to be in the state of the record",
+                    "type": "String",
+                    "optional": true
+                }
+            ],
+            "class": "Sway.data.ActiveRecord"
+        },
+        {
+            "file": "src/data/activerecord.js",
+            "line": 172,
+            "description": "Returns the value of a specific field. If called without a <tt>state</tt> defined, it behaves identical to\nretrieving the value using the instance corresponding property\n\n         userRecord.username                        // or\n         userRecord.getValue('username') ;",
+            "class": "Sway.data.ActiveRecord"
+        },
+        {
+            "file": "src/data/activerecord.js",
+            "line": 239,
             "description": "TODO",
             "itemtype": "method",
             "name": "save",
@@ -341,7 +407,7 @@
         },
         {
             "file": "src/data/activerecord.js",
-            "line": 245,
+            "line": 244,
             "description": "This function should only be used if one or more fields use transformers.\n\nThis function can be used as follows\n\n    userRecord = new User({username: 'John'}) ;\n    userRecord.transformed(false).password = 'Secret' ;",
             "itemtype": "method",
             "name": "transformed",
@@ -360,7 +426,7 @@
         },
         {
             "file": "src/data/activerecord.js",
-            "line": 259,
+            "line": 258,
             "description": "returns all the data in JSON format (unfiltered)",
             "itemtype": "method",
             "name": "getToJSON",
@@ -379,7 +445,7 @@
         },
         {
             "file": "src/data/activerecord.js",
-            "line": 265,
+            "line": 264,
             "itemtype": "method",
             "name": "getSize",
             "params": [
@@ -393,8 +459,8 @@
         },
         {
             "file": "src/data/activerecord.js",
-            "line": 269,
-            "description": "TODO",
+            "line": 268,
+            "description": "User.find(\n  {\n       'username':   'John'\n       , 'password': 'Secret'\n  }, function(user) { ... } ) ;\n\n Or use a model instance for searching\n\n User.find(userRecord, callbackFunc) ;\n\n\n\n\n\n       alert('Welcome ' + user.username + '! Your birthday is ' + user.birthday) ;\n       var cloneUser = new User(user) ;\n       cloneUser.birthDay = new Date() ;              // access field 'birthday' as a property\n       newUser.save() ;\n   }\n ) ;\n\n Or simply create a new instance of a Model and use it for a search or save action\n\n  var userRecord = new User({ username: 'John', password: 'Secret'}) ;\n  User.find(userRecord, callback) ;\n  // or\n  userRecord.save() ;",
             "itemtype": "method",
             "name": "find",
             "static": 1,
@@ -409,7 +475,7 @@
         },
         {
             "file": "src/data/activerecord.js",
-            "line": 275,
+            "line": 300,
             "itemtype": "method",
             "name": "save",
             "static": 1,
@@ -424,7 +490,7 @@
         },
         {
             "file": "src/data/activerecord.js",
-            "line": 280,
+            "line": 305,
             "itemtype": "property",
             "name": "STATE.TRANFORMED",
             "static": 1,
@@ -432,7 +498,7 @@
         },
         {
             "file": "src/data/activerecord.js",
-            "line": 284,
+            "line": 309,
             "itemtype": "property",
             "name": "STATE.NORMAL",
             "static": 1,
@@ -931,11 +997,11 @@
     "warnings": [
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/data/activerecord.js:245"
+            "line": " src/data/activerecord.js:244"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/data/activerecord.js:259"
+            "line": " src/data/activerecord.js:258"
         },
         {
             "message": "replacing incorrect tag: returns with return",
@@ -948,6 +1014,18 @@
         {
             "message": "param name missing: {Object}",
             "line": " src/eventhub.js:193"
+        },
+        {
+            "message": "Missing item type\nset the a new state.",
+            "line": " src/data/activerecord.js:146"
+        },
+        {
+            "message": "Missing item type\nset the value for a specific field with a specific state. If called with the <tt>state</tt> left empty it behaves\nidentical to setting this value using the instance corresponding property\n\n         userRecord.username = 'John'                // or\n         userRecord.setValue('username', 'John') ;",
+            "line": " src/data/activerecord.js:158"
+        },
+        {
+            "message": "Missing item type\nReturns the value of a specific field. If called without a <tt>state</tt> defined, it behaves identical to\nretrieving the value using the instance corresponding property\n\n         userRecord.username                        // or\n         userRecord.getValue('username') ;",
+            "line": " src/data/activerecord.js:172"
         },
         {
             "message": "Missing item type\nFileEntry interface is provided for working with files:\nhttp://www.mosync.com/files/imports/doxygen/latest/html5/filewriter.md.html\nfileEntry.isFile === true\nfileEntry.isDirectory === false\nfileEntry.name\nfileEntry.fullPath\n...\n\nfileEntry.getMetadata(successCallback, opt_errorCallback);\nfileEntry.remove(successCallback, opt_errorCallback);\nfileEntry.moveTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);\nfileEntry.copyTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);\nfileEntry.getParent(successCallback, opt_errorCallback);\nfileEntry.toURI(opt_mimeType);  // Currently not implemented in Google Chrome 9.\n\nfileEntry.file(successCallback, opt_errorCallback);\nfileEntry.createWriter(successCallback, opt_errorCallback);",

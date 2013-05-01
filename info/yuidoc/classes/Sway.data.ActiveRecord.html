@@ -133,32 +133,8 @@ blue print for all models it creates, providing them with functionality needed t
                  ]) ;
 </code></pre>
 
-<p>The ActiveRecord class is a bit special, because it doesn't create an instance of itself, but instead
-it creates a new class,  <a href="../classes/Sway.data.Model.html" class="crosslink">Sway.data.Model</a>. This class is has configured the
-fields provided to the ActiveRecord's constructor.</p>
-
-<p>ActiveRecord needs the name of the model to be created, a object used to persist the data and finally a list of field
-definitions.
-A model is almost identical to the ActiveRecord interface, except that its constructor accepts two parameters,
-    1) data      - json object: { username: 'John', password: 'Secret' }
-    2) options   - options object
-A data record is created as follows</p>
-
-<pre class="code prettyprint"><code> User.find( // asynchronious call
-    {
-          'username':   'John'
-        , 'password': 'Secret'
-    }, function(user) {
-        alert('Welcome ' + user.username + '! Your birthday is ' + user.birthday) ;
-        var cloneUser = new User(user) ;
-        cloneUser.birthDay = new Date() ;
-        newUser.save() ;
-    }
- ) ;
-
- var userRecord = new User({ username: 'John', password: 'Secret'}) ;
- userRecord.save() ;
-</code></pre>
+<p>ActiveRecord needs the name of the model to be created, an object used to persist the data and finally a list of field
+definitions.</p>
 </div>
 
 

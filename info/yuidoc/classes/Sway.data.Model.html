@@ -110,7 +110,7 @@
 
     
         <div class="foundat">
-            Defined in: <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l211"><code>src&#x2F;data&#x2F;activerecord.js:211</code></a>
+            Defined in: <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l217"><code>src&#x2F;data&#x2F;activerecord.js:217</code></a>
         </div>
     
 
@@ -123,30 +123,19 @@
 
 <div class="box intro">
     <p>This is a virtual class and is created using <a href="../classes/Sway.data.ActiveRecord.html" class="crosslink">Sway.data.ActiveRecord</a>. This dynamic class creation method
-enables us to create classes fully configured with field definitions and a persistence layer at runtime. This persistence layer is, for example, the
-connection with a database and knows how to translate an ActiveRecord into a query.</p>
+facilitates the creation of new classes fully configured with field definitions and a persistence layer at runtime. Theses instances
+can directly save data</p>
 
-<p>Every model comes with a set of static methods</p>
-
-<pre class="code prettyprint"><code>User.find(
-  {
-      'username':   'John'
-      , 'password': 'Secret'
-  }, function(user) {
-      alert('Welcome ' + user.username + '! Your birthday is ' + user.birthday) ;
-      var cloneUser = new User(user) ;
-      cloneUser.birthDay = new Date() ;
-      newUser.save() ;
-  }
-) ;
+<pre class="code prettyprint"><code>var userRecord = new User({username: 'John', password: 'Secret'}) ;
+....
+userRecord.save() ;
 </code></pre>
 
-<p>Or simply create a new instance of a Model and use it for a search or save action</p>
+<p>All fields are accessible as a property of a record</p>
 
-<pre class="code prettyprint"><code> var userRecord = new User({ username: 'John', password: 'Secret'}) ;
- User.find(userRecord, callback) ;
- // or
- userRecord.save() ;
+<pre class="code prettyprint"><code>var userRecord = new User() ;
+userRecord.username = 'John' ;
+userRecord.password = 'Secret' ;
 </code></pre>
 </div>
 
@@ -157,7 +146,17 @@ connection with a database and knows how to translate an ActiveRecord into a que
     <h3 class="name"><code>Sway.data.Model</code></h3>
 
     
-        <span class="paren">()</span>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code class="optional">[data]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
     
 
     
@@ -185,7 +184,7 @@ connection with a database and knows how to translate an ActiveRecord into a que
             
         
         
-        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l211"><code>src&#x2F;data&#x2F;activerecord.js:211</code></a>
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l217"><code>src&#x2F;data&#x2F;activerecord.js:217</code></a>
         
         </p>
 
@@ -200,9 +199,43 @@ connection with a database and knows how to translate an ActiveRecord into a que
     </div>
 
     
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[data]</code>
+                        <span class="type">Object | Model</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>JSON data or a model instance to be cloned</p>
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
 
     
 
+    
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+                <pre class="code prettyprint"><code>   var userRecord = new User({...}) ;
+   var userRecord1 = new User(userRecord) ;
+</code></pre>
+            </div>
+        </div>
     
 </div>
 
@@ -365,7 +398,7 @@ connection with a database and knows how to translate an ActiveRecord into a que
             
         
         
-        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l269"><code>src&#x2F;data&#x2F;activerecord.js:269</code></a>
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l268"><code>src&#x2F;data&#x2F;activerecord.js:268</code></a>
         
         </p>
 
@@ -376,7 +409,31 @@ connection with a database and knows how to translate an ActiveRecord into a que
     </div>
 
     <div class="description">
-        <p>TODO</p>
+        <p>User.find(
+  {
+       'username':   'John'
+       , 'password': 'Secret'
+  }, function(user) { ... } ) ;</p>
+
+<p>Or use a model instance for searching</p>
+
+<p>User.find(userRecord, callbackFunc) ;</p>
+
+<pre class="code prettyprint"><code>   alert('Welcome ' + user.username + '! Your birthday is ' + user.birthday) ;
+   var cloneUser = new User(user) ;
+   cloneUser.birthDay = new Date() ;              // access field 'birthday' as a property
+   newUser.save() ;
+</code></pre>
+
+<p>}
+ ) ;</p>
+
+<p>Or simply create a new instance of a Model and use it for a search or save action</p>
+
+<p>var userRecord = new User({ username: 'John', password: 'Secret'}) ;
+  User.find(userRecord, callback) ;
+  // or
+  userRecord.save() ;</p>
     </div>
 
     
@@ -452,7 +509,7 @@ connection with a database and knows how to translate an ActiveRecord into a que
             
         
         
-        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l265"><code>src&#x2F;data&#x2F;activerecord.js:265</code></a>
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l264"><code>src&#x2F;data&#x2F;activerecord.js:264</code></a>
         
         </p>
 
@@ -543,7 +600,7 @@ connection with a database and knows how to translate an ActiveRecord into a que
             
         
         
-        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l259"><code>src&#x2F;data&#x2F;activerecord.js:259</code></a>
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l258"><code>src&#x2F;data&#x2F;activerecord.js:258</code></a>
         
         </p>
 
@@ -632,7 +689,7 @@ connection with a database and knows how to translate an ActiveRecord into a que
             
         
         
-        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l240"><code>src&#x2F;data&#x2F;activerecord.js:240</code></a>
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l239"><code>src&#x2F;data&#x2F;activerecord.js:239</code></a>
         
         </p>
 
@@ -698,7 +755,7 @@ connection with a database and knows how to translate an ActiveRecord into a que
             
         
         
-        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l275"><code>src&#x2F;data&#x2F;activerecord.js:275</code></a>
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l300"><code>src&#x2F;data&#x2F;activerecord.js:300</code></a>
         
         </p>
 
@@ -791,7 +848,7 @@ connection with a database and knows how to translate an ActiveRecord into a que
             
         
         
-        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l245"><code>src&#x2F;data&#x2F;activerecord.js:245</code></a>
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l244"><code>src&#x2F;data&#x2F;activerecord.js:244</code></a>
         
         </p>
 
@@ -888,7 +945,7 @@ userRecord.transformed(false).password = 'Secret' ;
             
         
         
-        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l284"><code>src&#x2F;data&#x2F;activerecord.js:284</code></a>
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l309"><code>src&#x2F;data&#x2F;activerecord.js:309</code></a>
         
         </p>
 
@@ -934,7 +991,7 @@ userRecord.transformed(false).password = 'Secret' ;
             
         
         
-        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l280"><code>src&#x2F;data&#x2F;activerecord.js:280</code></a>
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l305"><code>src&#x2F;data&#x2F;activerecord.js:305</code></a>
         
         </p>
 
