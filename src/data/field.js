@@ -99,7 +99,7 @@ window.Sway.data = window.Sway.data || {};
         ,setState: function(state) {
             this.state = state ;
         }
-        /**
+        /*
          * Returns the size of
          * @method size
          */

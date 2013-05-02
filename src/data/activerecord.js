@@ -59,154 +59,41 @@ window.Sway.data = window.Sway.data || {} ;
          * @param {Array} [fieldList] list of fields
          */
        , ActiveRecord = function(modelName, persistance, fieldList ) {
-            var i ;
 
-           function Model(data, options) {                 // define the model class/function
-                    if ( !options) {                                // fix input
-                        options = {} ;
-                    }
-                    this.__data        = {} ;                       // the data object
-                    this.__fields      = {} ;                       // object holding the fields
-                    this.__persistance = persistance ;              // persistance layer
-                    this.$className    = modelName ;                  // name of the model
-                    this.__state       = typeof(options.transformed) === 'boolean' ? options.transformed : DEFAULTS.STATE.UNFILTERED ;  // state of the record
+           function Model(data, options) {                              // define the model class/function
+               var i ;
 
-                    Object.defineProperty(this, '__transform', {    // object used in fluent API
-                        value: new Object({ self: this })
-                        ,enumerable: false
-                        ,writable: false
-                        ,configurable: false
-                    }) ;
+               if ( !options) {                                         // fix input
+                    options = {} ;
+               }
+               if ( data && data.$className ) {
+                   data = data.toJSON() ;
+               }
+               this.__fields      = {} ;                                // object holding the Field instances
+               this.__persistance = persistance ;                       // persistance layer
+               this.__state       = typeof(options.state) === 'boolean' ? options.state : DEFAULTS.STATE.UNFILTERED ;  // default state of the record
+               this.$className    = modelName ;                         // name of the model
 
-                    for( i = 0; i < fieldList.length; i++ ) {       // add fields to this and
-                        createProperty.call(this, fieldList[i], data) ;   // populate this.fields
-                    }
+               for( i = 0; i < fieldList.length; i++ ) {                // add fields to this and
+                   this[i] = data[i] ;
+                   this.__fields[fieldList[i].key] = fieldList[i] ;     // hash of field objects
+               }
             }
-            Model.prototype = this ; // add function using prototype inheritance
+            Model.prototype = this ;                                    // add function using prototype inheritance
 
-            // add static functions
-            for( i in statics ) {
-                Model[i] = statics[i] ;
-            }
-
-            // add static properties
-            for ( i in DEFAULTS.STATE ) {
-                Model[i] = DEFAULTS.STATE[i] ;
-            }
-
-            return Model ;
+            return Model ;                                              // return a Model instance
         } ;
 
-    /*
-     * Make fields accessible as normal properties of 'this' and populate this.fields.
-     * Now values can be set an accessed as follows
-     *
-     *    userRecord.username = 'John' ;
-     *    userRecord.transformed(false).password = 'Secret' ;
-     */
-    function createProperty(field, data) {
-        Object.defineProperty(this, field.key, {
-            get: getValue.bind(this, field)
-            , set: setValue.bind(this, field)
-            ,enumerable: true
-            ,configurable: true
-        }) ;
-
-        Object.defineProperty(this.__transform, field.key, {          // create fluent api object
-            get: getValue.bind(this, field)
-            , set: setValue.bind(this, field)
-            ,enumerable: true
-            ,configurable: true
-        }) ;
-
-        this.__fields[field.key] = field ;
-        // if data is an active-record, its state is used so no transformations are required
-        this.__data[field.key] = { value: data[field.key], state: (typeof(data.__state) === 'boolean' ? data.__state: this.state) } ;
-    }
-
-    /*
-     * is called if a property is accessed (see createProperty)
-     */
-    function getValue(field, callback) {
-        // TODO take into account this.__transform
-        return this.data[field.key]
-    }
-
-    /*
-     * is called when a property is set. Note that the context (this) in this function can be 'this' or 'this.transform'
-     */
-    function setValue(field, value) {
-        var self = this ;
-        //if ( typeof(this.isTransformed === t)
-        this.data[field.key] = value ;
-    }
-
 	ActiveRecord.prototype = {
-        // TODO: should not be lazy, or else you cannot use properties, because they need to be transformed :(
-        /**
-         * set the a new state.
-         * @param state
-         * @param {Boolean} [isLazy=true] values are transformed into the new state when requested. If <tt>true, all
-         * values are transformed immediately.
-         * @param {Function} [callback] if <tt>isLazy</tt> is set to TRUE the callback is called when all values
-         * are transformed.
-         */
-        setState: function(state, isLazy, callback) {
-            // TODO
+        setState: function(state, callback) {
             this.state = state ;
+            // TODO: applie transformers
+            callback() ;
         }
-        /**
-         * set the value for a specific field with a specific state. If called with the <tt>state</tt> left empty it behaves
-         * identical to setting this value using the instance corresponding property
-         *
-         *          userRecord.username = 'John'                // or
-         *          userRecord.setValue('username', 'John') ;
-         *
-         * @param {String} key
-         * @param {String} value
-         * @param {String} [state] one of the Model.STATEs. If empty, the data is expected to be in the state of the record
-         */
-        , setValue: function(key, value, state) {
-
-        }
-        /**
-         * Returns the value of a specific field. If called without a <tt>state</tt> defined, it behaves identical to
-         * retrieving the value using the instance corresponding property
-         *
-         *          userRecord.username                        // or
-         *          userRecord.getValue('username') ;
-         */
-        // only use this function if
-        , getValue: function(key, state) {
-
-        }
-
         , toJSON: function() { // ale
-            return {} ; // TODO
-        }
-
-        , getSize: function(key) {
-            var self = this._ar
-                , size = 0
-                , i ;
-
-            if ( key ) {
-                return self._field[self._fieldLookup[key]].field.getSize() ;
-            }
-            else {
-                for( i = 0; i < self._field.length; i++ ) {
-                    size += self._field[i].field.getSize() ;
-                }
-            }
-            return size ;
-            /*
-            return (this.state == "uncompressed" ?
-                        new Blob([this._inputStr], { type: "text/plain"}) : this._zippedBlob
-                   ).size ;
-            */
+            return { msg: 'todo' } ; // TODO
         }
     } ;
-
 
 	ns.ActiveRecord = ActiveRecord ;
 
@@ -232,9 +119,6 @@ window.Sway.data = window.Sway.data || {} ;
  * @class Sway.data.Model
  * @constructor
  * @param {Object|Model} [data] JSON data or a model instance to be cloned
- * @example
-        var userRecord = new User({...}) ;
-        var userRecord1 = new User(userRecord) ;
  */
 /**
  * TODO
@@ -242,28 +126,19 @@ window.Sway.data = window.Sway.data || {} ;
  *
  */
 /**
- * This function should only be used if one or more fields use transformers.
- *
- * This function can be used as follows
- *
- *     userRecord = new User({username: 'John'}) ;
- *     userRecord.transformed(false).password = 'Secret' ;
- *
- *
- * @method transformed
- * @chainable
- * @param isTransformed
- * @returns {Object} special object which behaves identical to this, but its state equals <tt>isTransformed</tt>
+ * set the a new state.
+ * @param state
+ * @param {Boolean} [isLazy=true] values are transformed into the new state when requested. If <tt>true, all
+ * values are transformed immediately.
+ * @param {Function} [callback] if <tt>isLazy</tt> is set to TRUE the callback is called when all values
+ * are transformed.
  */
 /**
+ *
  * returns all the data in JSON format (unfiltered)
- * @method getToJSON
+ * @method toJSON
  * @param {String} key
  * @returns {Number}
- */
-/**
- * @method getSize
- * @param {Sting} key
  */
 /**
  *    User.find(

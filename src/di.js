@@ -1,3 +1,5 @@
+window.Sway = window.Sway || {} ; // make sure it exists
+
 (function(console, ns) {
     /**
      * DI makes classes accessible by a contract. Instances are created when requested and dependencies are injected into the constructor,
