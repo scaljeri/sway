@@ -61,28 +61,49 @@ window.Sway.data = window.Sway.data || {} ;
        , ActiveRecord = function(modelName, persistance, fieldList ) {
 
            function Model(data, options) {                              // define the model class/function
+               console.dir(Model.fields) ;
                var i ;
 
                if ( !options) {                                         // fix input
                     options = {} ;
                }
-               if ( data && data.$className ) {
+               if ( !data ) {
+                   data = {} ;
+               }
+               else if ( data.$className ) {
                    data = data.toJSON() ;
                }
-               this.__fields      = {} ;                                // object holding the Field instances
+
                this.__persistance = persistance ;                       // persistance layer
                this.__state       = typeof(options.state) === 'boolean' ? options.state : DEFAULTS.STATE.UNFILTERED ;  // default state of the record
                this.$className    = modelName ;                         // name of the model
 
-               for( i = 0; i < fieldList.length; i++ ) {                // add fields to this and
-                   this[i] = data[i] ;
-                   this.__fields[fieldList[i].key] = fieldList[i] ;     // hash of field objects
+               for( i in this.constructor.fields ) {
+                    this[i] = data[i] ;
                }
+               return Object.seal(this) ;
             }
-            Model.prototype = this ;                                    // add function using prototype inheritance
 
-            return Model ;                                              // return a Model instance
+            Model.prototype.setState = this.setState ;                                    // add function using prototype inheritance
+            Model.prototype.toJSON = this.toJSON ;                                         // add function using prototype inheritance
+
+            // create static stuff
+            Model.find = ActiveRecord.find ;
+            Model.persistance = persistance ;
+            Model.fields = {} ;
+            for( var i = 0; i < fieldList.length; i++ ) {                   // add fields to this and
+                Model.fields[fieldList[i].key] = fieldList[i] ;             // hash of field objects
+            }
+            return Model ;                                                  // return a Model instance
         } ;
+
+    ActiveRecord.find = function(record) {
+        if ( record.$className ) {
+            record = record.toJSON() ;
+        }
+        var result = this.persistance.find(record) ;
+        return new this(result) ;                                           // return a new record
+    } ;
 
 	ActiveRecord.prototype = {
         setState: function(state, callback) {
@@ -91,7 +112,12 @@ window.Sway.data = window.Sway.data || {} ;
             callback() ;
         }
         , toJSON: function() { // ale
-            return { msg: 'todo' } ; // TODO
+            var json = {}
+                , i ;
+            for( i in this.constructor.fields ) {
+                json[i] = this[i] ;
+            }
+            return json ;
         }
     } ;
 
