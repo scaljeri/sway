@@ -22,6 +22,9 @@ window.describe("Sway.data.ActiveRecord", function() {
                 // TODO
             }
         } ;
+        spyOn(ns.persistance, 'find').andCallThrough() ;
+        spyOn(ns.persistance, 'save').andCallThrough() ;
+
         ns.persistanceAsync = {
             find: function(record, callback){
                 setTimeout( function() {
@@ -45,16 +48,18 @@ window.describe("Sway.data.ActiveRecord", function() {
             for( var i in options)   {
                 this[i] = options[i] ;
             }
-            this.transform = function(value, callback) {
-                setTimeout(function(){callback(value);},1) ;
+            this.load = function(key, callback) { // fake loading an Address record
+                this[key] = new ns.Address( { address: '350 Fifth Avenue'}) ;
+                callback(this) ;
             } ;
-            this.validate = function(value) {
+            this.transform = function(value, callback) {
+                setTimeout(function(){callback(value + '-transformed');},1) ; // modify value by adding '-transformed'
+            } ;
+            this.validate = function() {
                 return true ;
             } ;
             return Object.freeze(this) ;
         } ;
-        spyOn(ns.persistance, 'find').andCallThrough(); // andReturn({username: 'John', password: 'Secret'}) ;
-        spyOn(ns.persistance, 'save').andCallThrough();
         spyOn(ns.persistanceAsync, 'find').andCallThrough(); // andReturn({username: 'John', password: 'Secret'}) ;
         spyOn(ns.persistanceAsync, 'save').andCallThrough();
 
@@ -102,7 +107,7 @@ window.describe("Sway.data.ActiveRecord", function() {
         expect(rec2.birthday).toBe(date) ;
     }) ;
 
-    it("should find/load a stored record without callbacks", function() {
+    it("should find a stored record without callbacks", function() {
         var newRec = null
             , newRec1 = null  ;
 
@@ -115,6 +120,8 @@ window.describe("Sway.data.ActiveRecord", function() {
         newRec1 = ns.User.find(newRec) ;
         expect(newRec1.username).toEqual('Sue') ;
         expect(newRec1.password).toEqual('Secret') ;
+
+        expect()
     }) ;
 
     xit("should find/load a stored record with callbacks", function() {

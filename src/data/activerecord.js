@@ -176,6 +176,16 @@ window.Sway.data = window.Sway.data || {} ;
             , hasPrev: function() {
 
             }
+            , load: function(key, callback) {
+                var json = {} ;
+                if ( this.fields[key].FK ) {
+                    json[key] = this[key] ;
+                    this.fields[key].model.find(json, function(records){
+                            this[key] = records ;
+                            callback(this) ;
+                        }.bind(this) ) ;
+                }
+            }
         } ;
 
     /* Private helpers */
