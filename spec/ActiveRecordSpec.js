@@ -6,39 +6,68 @@ window.describe("Sway.data.ActiveRecord", function() {
         , expect        = window.expect
         , spyOn         = window.spyOn
         , it            = window.it
-        , ns ;
+        , ns = {} ;
 
     beforeEach(function() {
         // create DI
-        var persistance = { find: function(record, callback){
-               var json = {username: (record.username||'John'), password: (record.password||'Secret'), __id__: 1} ;
-               if ( callback ) {
+        ns.persistance = {
+            find: function(record, callback){
+                var json = {username: (record.username||'John'), password: (record.password||'Secret'), __id__: 1} ;
+                if ( callback ) {
                     callback(json) ;
-               }
-               return json ;
+                }
+                return json ;
             }
             , save: function(record) {
                 // TODO
             }
-        }
-            , persistanceAsync = { find: function(record, callback){
-                    setTimeout( function() {
-                        callback({username: (record.username||'John'), password: (record.password||'Secret'), __id__: 2} ) ;
-                    }, 10) ;
-                }
-                , save: function(record) {
-                    // TODO
-                }
         } ;
-        spyOn(persistance, 'find').andCallThrough(); // andReturn({username: 'John', password: 'Secret'}) ;
-        spyOn(persistance, 'save').andCallThrough();
+        ns.persistanceAsync = {
+            find: function(record, callback){
+                setTimeout( function() {
+                    callback({username: (record.username||'John'), password: (record.password||'Secret'), __id__: 2} ) ;
+                }, 10) ;
+            }
+            , save: function(record) {
+               // TODO
+            }
+        } ;
 
-        ns = {
-            field1: {type: 'TEXT', key: 'username', friendlyName: 'User name'}
-            , field2: {type: 'TEXT', key: 'password', friendlyName: 'Password'}
-            , field3: {type: 'DATE', key: 'birthday', friendlyName: 'Birthday'}
+        ns.Field = function(key, options) {
+            if ( !options ) {
+                options = {} ;
+            }
+            if ( options.type ) {
+                options.type = 'TEXT' ;
+            }
+
+            this.key = key ;
+            for( var i in options)   {
+                this[i] = options[i] ;
+            }
+            this.transform = function(value, callback) {
+                setTimeout(function(){callback(value);},1) ;
+            } ;
+            this.validate = function(value) {
+                return true ;
+            } ;
+            return Object.freeze(this) ;
         } ;
-        ns.User = new Sway.data.ActiveRecord( 'User', persistance, [ns.field1, ns.field2, ns.field3] ) ;
+        spyOn(ns.persistance, 'find').andCallThrough(); // andReturn({username: 'John', password: 'Secret'}) ;
+        spyOn(ns.persistance, 'save').andCallThrough();
+        spyOn(ns.persistanceAsync, 'find').andCallThrough(); // andReturn({username: 'John', password: 'Secret'}) ;
+        spyOn(ns.persistanceAsync, 'save').andCallThrough();
+
+        ns.field0 = new ns.Field('address', {friendlyName: 'Address'});
+        ns.Address = new Sway.data.ActiveRecord( 'Address', ns.persistance, [ns.field0] ) ;
+
+        ns.field1 = new ns.Field('username', {friendlyName: 'User name'});
+        ns.field2 = new ns.Field('password', {friendlyName: 'Password'}) ;
+        ns.field3 = new ns.Field('birthday', {type: 'DATE', friendlyName: 'Birthday'}) ;
+        ns.field4 = new ns.Field('address', {FK: { model: ns.Address, key: 'address'}, friendlyName: 'Address'}) ;
+
+        ns.User = new Sway.data.ActiveRecord( 'User', ns.persistance, [ns.field1, ns.field2, ns.field3, ns.field4] ) ;
+        ns.UserAsync = new Sway.data.ActiveRecord( 'User', ns.persistanceAsync, [ns.field1, ns.field2, ns.field3, ns.field4] ) ;
     });
 
     it("should exist", function() {

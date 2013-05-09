@@ -273,7 +273,7 @@ window.Sway.data = window.Sway.data || {} ;
  *
  * @class Sway.data.Model
  * @constructor
- * @param {Object|Model} [data] JSON data or a model instance to be cloned
+ * @param {Object} [data] JSON data or a model instance to be cloned
  */
 /**
  * TODO
@@ -308,26 +308,12 @@ window.Sway.data = window.Sway.data || {} ;
  * @returns {Number}
  */
 /**
- *    User.find(
- *      {
+ * Use find to perform searches
+ *
+ *      User.find( {
  *           'username':   'John'
  *           , 'password': 'Secret'
  *      }, function(user) { ... } ) ;
- *
- * Or use a model instance for searching
- *
- *     User.find(userRecord, callbackFunc) ;
- *
- *
- *
- *
- *
- *           alert('Welcome ' + user.username + '! Your birthday is ' + user.birthday) ;
- *           var cloneUser = new User(user) ;
- *           cloneUser.birthDay = new Date() ;              // access field 'birthday' as a property
- *           newUser.save() ;
- *       }
- *     ) ;
  *
  * Or simply create a new instance of a Model and use it for a search or save action
  *
@@ -337,7 +323,10 @@ window.Sway.data = window.Sway.data || {} ;
  *      userRecord.save() ;
  * @method find
  * @static
- * @param {Object} options
+ * @param {Object} data JSON or model instance
+ * @param {Object} [options] configuration
+ *  @param {Boolean} [lazy=true] If false, <tt>find</tt> returns a model which will have all its data, including foreign key data, loaded.
+ *  If the record is <tt>lazy</tt>, call {{#crossLink "Sway.data.Model/load:method"}}{{/crossLink}} first to make the data avaiable.
  */
 /**
  * @method save
@@ -371,4 +360,9 @@ window.Sway.data = window.Sway.data || {} ;
  */
 /**
  * @method unlink
+ */
+/**
+ * @method load
+ * @param {String} key name of the field
+ * @param {Function} [callback] callback function, called when the data is available
  */

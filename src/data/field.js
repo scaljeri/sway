@@ -5,108 +5,98 @@ window.Sway.data = window.Sway.data || {};
     "use strict" ;
 
     var DEFAULTS = {
-        STATES: {
-            FILTERED: 'filtered'
-            , UNFILTERED: 'unfiltered'
-        }
     }
 
     /**
-     * A Field represents a single value of an ActiveRecord model.
+     * A Field represents a single value of an {{#crossLink "Sway.data.ActiveRecord"}}{{/crossLink}} model.
      *
-     *     var username = new Field({ type: 'TEXT', key: 'username', friendlyName: 'User name' }) ;
+     *     var username   = new Field('username', { friendlyName: 'User name' })
+     *         , password = new Field('password', { type: 'password', friendlyName: 'Password' })
+     *         , address  = new Field('address',  { FK: {model: Sway.data.Address}, friendlyName: 'Address' }) ;
      *
-     * Or if it the field holds data which should be encrypted and compressed
+     * Or if a field holds data which should be encrypted and compressed before persisted
      *
-     *     var accountInfo = new Field( { type: 'BLOB', key: 'accountInfo', friendLyName: 'Account info'}, [encryptFilter, compressFilter] ) ;
-     *
-     * See {{#crossLink "Sway.data.ActiveRecord"}}{{/crossLink}} to understand how it fits into the bigger picture.
+     *     var accountInfo = new Field( 'accountInfo', { type: 'BLOB', friendLyName: 'Account info', transformers: [encryptFilter, compressFilter] }) ;
      *
      * @class Sway.data.Field
      * @constructor
-     * @param {Object} definition definition of this field
-     *      @param {String} definition.key
-     *      @param {String} [definition.type=TEXT]
-     *      @param {String} [definition.friendlyName]
-     *      @param {Boolean} [definition.PK=false] primary key field
-     *      @param {Boolean} [definition.required=false]
-     * @param {Array} [transformers] list of transformer objects. A transformer object can transform the data into a new form and also back
+     * @param {String} key name of the field
+     * @param {Object} [options] definition of this field
+     *      @param {String}  [options.type=TEXT] type of the field
+     *      @param {String}  [options.friendlyName] description of the field
+     *      @param {Boolean} [options.PK=false] primary key field
+     *      @param {Object} [options.FK] foreign key configuration object
+     *          @param {Model} options.FK.model Model reference
+     *          @param {String} [options.FK.key=id] the key of the model it is referencing
+     *      @param {Boolean} [options.required=false] a required field
+     *      @param {Array}   [options.transformers] list of transformer objects. A transformer object can transform the data into a new form and also back
      * into its original form. Think of, zipping and unzipping or encrypting and decrypting
-     * @param {Array} [validators] list of validation functions
+     *      @param {Array}   [options.validators] list of validation functions
      */
-        , f = function (definition, filterList, validators) {
-            this.filterList = filterList ;
-            this.key = definition.key ;
-            this.friendlyName = definition.friendlyName ;
-            this.type = definition.type ;
-
-            Object.defineProperty(this, '_filteredValue',
-                {
-                    value: null
-                    , enumerable: false // hide it
-                    , writable: true
-                }
-            ) ;
-            Object.defineProperty(this, '_value',
-                {
-                    value: null
-                    , enumerable: false // hide it
-                    , writable: true
-                }
-            ) ;
-
-            this.state = ns.Field.STATES.UNFILTERED ;
+        , f = function (key, options) {
+            if ( !options ) {
+                options = {};
+            }
+            this.key = key ;
+            this.type = options.type||'text' ;
+            this.friendlyName = options.friendlyName ;
+            this.transformers = options.transformers ;
+            this.validators = options.validators ;
+            return Object.freeze(this) ;
         } ;
-
-    f.STATES = DEFAULTS.STATES ;
 
     f.prototype = {
         /**
-         * @method getValue
-         * @param {Function} callback
-         * @returns {*}
+         * @method transform
+         * @param {*} value value to be transformed
+         * @param {Function} callback function called with the transformed data
          */
-        getValue: function(callback) {
-            if ( this.state === ns.Field.STATES.FILTERED ) {
-                // TODO get filtered value or return _filteredValue
+        transform: function(value, callback) {
+            if ( this.transformers ) {
+                transform(0, this.transformers, callback, value) ;
             }
             else {
-                // TODO get unfiltered value or return _value
+                callback(value) ;
             }
-            return this._value ;
         }
+        /**
+         * @method validate
+         * @param {*} value value to be validated
+         * @return {Boolean}
+         */
+        , validate: function(value) {
+            var i
+                , ok = true ;
 
-        /**
-         * @method getKey
-         * @param {Boolean} [filtered=false] return the
-         * @return {String}
-         */
-        , getKey: function() {
-            return this.key ;
-        }
-        /**
-         * @method setValue
-         * @chainable
-         * @param {*} input Currently only a 'String' is accepted as unfiltered value!
-         * @param {Boolean} [filtered=false]
-         */
-        , setValue: function(input, filtered) {
-            this[(filtered ? '_filteredValue' : '_value')] = input ;
-            this[(filtered ? '_value' : '_filteredValue')] = null ;     // cleanup
-            this.state = ns.Field.STATES[ (filtered ? '' : 'UN') + 'FILTERED'] ;
-            return this ;
-        }
-        ,setState: function(state) {
-            this.state = state ;
+            if ( this.validators ) {
+                for( i = 0; i < this.validators.length; i++ ) {
+                    if ( !this.validators[i].validate(value) ) {
+                        ok = false ;
+                        break ;
+                    }
+                }
+            }
+            return ok ;
         }
         /*
          * Returns the size of
          * @method size
          */
+        /*
         , getSize: function() {
             return this.state === "uncompressed" ? encodeURI(this._inputStr).split(/%..|./).length - 1 : this._zippedBlob.size ;
         }
+        */
     } ;
+
+    function transform(index, transformers, callback, value) {
+        if ( transformers[index] ) {
+            transformers[index].transform(value, transform.bind(null, ++index, transformers,callback) ) ;
+        }
+        else {
+           callback(value) ;
+        }
+    }
 
     ns.Field = f ;
 
