@@ -43,11 +43,15 @@
             
                 <li><a href="..&#x2F;classes/Sway.html">Sway</a></li>
             
+                <li><a href="..&#x2F;classes/Sway.Bindable.html">Sway.Bindable</a></li>
+            
                 <li><a href="..&#x2F;classes/Sway.data.ActiveRecord.html">Sway.data.ActiveRecord</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.data.Field.html">Sway.data.Field</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.data.Model.html">Sway.data.Model</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.data.Relation.html">Sway.data.Relation</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.DI.html">Sway.DI</a></li>
             
@@ -110,7 +114,7 @@
 
     
         <div class="foundat">
-            Defined in: <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l217"><code>src&#x2F;data&#x2F;activerecord.js:217</code></a>
+            Defined in: <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l215"><code>src&#x2F;data&#x2F;activerecord.js:215</code></a>
         </div>
     
 
@@ -122,9 +126,67 @@
 
 
 <div class="box intro">
-    <p>This is a virtual class and is created using <a href="../classes/Sway.data.ActiveRecord.html" class="crosslink">Sway.data.ActiveRecord</a>. This dynamic class creation method
-facilitates the creation of new classes fully configured with field definitions and a persistence layer at runtime. Theses instances
-can directly save data</p>
+    <p>Use the Model class to create instances which represent your data records. These will speed up your develement
+when CRUD-like tasks need to be done.<br>
+To create a Model class, use <a href="../classes/Sway.data.ActiveRecord.html" class="crosslink">Sway.data.ActiveRecord</a>.</p>
+
+<h3>The basics</h3>
+
+<p>To perform a search, a couple of static methods are available. Use the <tt>findByX</tt> methods to search on
+a specific field</p>
+
+<pre class="code prettyprint"><code>UserModel.findByUsername('John', function(userRecord) {
+     // this === UserModel
+}) ;
+</code></pre>
+
+<p>Of course, the same can be achieved using the more general search method</p>
+
+<pre class="code prettyprint"><code>UserModel.find( {username: 'John'}, function(userRecord) {
+     // this === UserModel
+}) ;
+</code></pre>
+
+<p>With <tt>find</tt> it is also possible to define more fields to search for.<br>
+A Model instance, on the otherhand, can be used to create or manipulate data</p>
+
+<pre class="code prettyprint"><code>userRecord = new User() ;                            // create a blank record
+userRecord.username = 'John' ;                       // set the username
+userRecord.password = 'Secret' ;                     // set the password
+userRecord.save(successCallback, errorCallback) ;    // check the result, because this action might fail
+</code></pre>
+
+<h3>Multiple result-sets</h3>
+
+<p>In <a href="../classes/Sway.html" class="crosslink">Sway</a> a Model instance can also represent multiple records. Although it always
+represent a single record, internally this has the whole result set.</p>
+
+<p>its current
+state will always be a single record, it is possible to navigate from one state to an other</p>
+
+<pre class="code prettyprint"><code>User.search({username: 'John'}, function(record) {   // record is a model instance representing more than on result
+      while( record.hasNext() ) {                    // check if there is an other record
+           record.next() ;                           // move on record up
+           ....
+      }
+      record.item(1) ;                               // go to second record
+      record.prev() ;                                // go to first record. Use 'prev' in combination with 'hasPrev'
+}) ;
+</code></pre>
+
+<h3>Advanced</h3>
+
+<p>An instance represents one or more records, which depends on how it was created. For example, if a database search returns multiple records,
+the Model instance represent them all, holding in its current state the first record's values</p>
+
+<pre class="code prettyprint"><code> User.find({ username: 'John' }, function(ar) {  // ActiveRecord instance, holding multiple records
+     console.log("Found " + ar.length + " records) ;
+ }) ;
+</code></pre>
+
+<p>Checkout <a href="../classes/Sway.data.Model.html#method_next" class="crosslink">next</a>, <a href="../classes/Sway.data.Model.html#method_prev" class="crosslink">prev</a>
+<a href="../classes/Sway.data.Model.html#method_item" class="crosslink">item</a> and <a href="../classes/Sway.data.Model.html#method_hasNext" class="crosslink">hasNext</a> to
+understand how to deal with multi-record result-sets.</p>
 
 <pre class="code prettyprint"><code>var userRecord = new User({username: 'John', password: 'Secret'}) ;
 ....
@@ -184,7 +246,7 @@ userRecord.password = 'Secret' ;
             
         
         
-        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l217"><code>src&#x2F;data&#x2F;activerecord.js:217</code></a>
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l215"><code>src&#x2F;data&#x2F;activerecord.js:215</code></a>
         
         </p>
 
@@ -207,7 +269,7 @@ userRecord.password = 'Secret' ;
                 <li class="param">
                     
                         <code class="param-name optional">[data]</code>
-                        <span class="type">Object | Model</span>
+                        <span class="type">Object</span>
                         <span class="flag optional" title="This parameter is optional.">optional</span>
                     
 
@@ -226,16 +288,6 @@ userRecord.password = 'Secret' ;
 
     
 
-    
-        <div class="example">
-            <h4>Example:</h4>
-
-            <div class="example-content">
-                <pre class="code prettyprint"><code>   var userRecord = new User({...}) ;
-   var userRecord1 = new User(userRecord) ;
-</code></pre>
-            </div>
-        </div>
     
 </div>
 
@@ -276,21 +328,49 @@ userRecord.password = 'Secret' ;
                             </li>
                         
                             <li class="index-item method">
-                                <a href="#method_getSize">getSize</a>
+                                <a href="#method_getState">getState</a>
 
                                 
                                 
                             </li>
                         
                             <li class="index-item method">
-                                <a href="#method_getToJSON">getToJSON</a>
+                                <a href="#method_hasNext">hasNext</a>
 
                                 
                                 
                             </li>
                         
                             <li class="index-item method">
-                                <a href="#method_save">save</a>
+                                <a href="#method_item">item</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_link">link</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_load">load</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_next">next</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_prev">prev</a>
 
                                 
                                 
@@ -306,7 +386,28 @@ userRecord.password = 'Secret' ;
                             </li>
                         
                             <li class="index-item method">
-                                <a href="#method_transformed">transformed</a>
+                                <a href="#method_save">save</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_setState">setState</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_toJSON">toJSON</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_unlink">unlink</a>
 
                                 
                                 
@@ -363,6 +464,593 @@ userRecord.password = 'Secret' ;
             
                 <li class="arg">
                     
+                        <code>data</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[options]</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[lazy=true]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l320"><code>src&#x2F;data&#x2F;activerecord.js:320</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Use find to perform searches</p>
+
+<pre class="code prettyprint"><code> User.find( {
+      'username':   'John'
+      , 'password': 'Secret'
+ }, function(user) { ... } ) ;
+</code></pre>
+
+<p>Or simply create a new instance of a Model and use it for a search or save action</p>
+
+<pre class="code prettyprint"><code> var userRecord = new User({ username: 'John', password: 'Secret'}) ;
+ User.find(userRecord, callback) ;
+ // or
+ userRecord.save() ;
+</code></pre>
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">data</code>
+                        <span class="type">Object</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>JSON or model instance</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[options]</code>
+                        <span class="type">Object</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>configuration</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[lazy=true]</code>
+                        <span class="type">Boolean</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>If false, <tt>find</tt> returns a model which will have all its data, including foreign key data, loaded.
+ If the record is <tt>lazy</tt>, call <a href="../classes/Sway.data.Model.html#method_load" class="crosslink">load</a> first to make the data avaiable.</p>
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_getState" class="method item">
+    <h3 class="name"><code>getState</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l355"><code>src&#x2F;data&#x2F;activerecord.js:355</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_hasNext" class="method item">
+    <h3 class="name"><code>hasNext</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l302"><code>src&#x2F;data&#x2F;activerecord.js:302</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_item" class="method item">
+    <h3 class="name"><code>item</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l299"><code>src&#x2F;data&#x2F;activerecord.js:299</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_link" class="method item">
+    <h3 class="name"><code>link</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l361"><code>src&#x2F;data&#x2F;activerecord.js:361</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Call this function to make it aware of changes made to the data it relates to. Because a Model instance
+has no direct link with, for example, a database, this mechanism only works when all changes made to the data are performed
+by one and the same storage object. This storage object is responsible for the notifications.</p>
+
+<p>Always call <a href="../classes/Sway.data.Model.html#method_unlink" class="crosslink">unlink</a> to disable this behavior, or when the Model instance
+otherwise, the
+If the record or this <tt>link</tt> is not needed anymore, make sure to remove by calling <a href="../classes/Sway.data.Model.html#method_unlink" class="crosslink">unlink</a>,</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_load" class="method item">
+    <h3 class="name"><code>load</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>key</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[callback]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l374"><code>src&#x2F;data&#x2F;activerecord.js:374</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">key</code>
+                        <span class="type">String</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>name of the field</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[callback]</code>
+                        <span class="type">Function</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>callback function, called when the data is available</p>
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_next" class="method item">
+    <h3 class="name"><code>next</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l293"><code>src&#x2F;data&#x2F;activerecord.js:293</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_prev" class="method item">
+    <h3 class="name"><code>prev</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l296"><code>src&#x2F;data&#x2F;activerecord.js:296</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_save" class="method item">
+    <h3 class="name"><code>save</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
                         <code>options</code>
                     
                 </li>
@@ -398,7 +1086,7 @@ userRecord.password = 'Secret' ;
             
         
         
-        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l268"><code>src&#x2F;data&#x2F;activerecord.js:268</code></a>
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l341"><code>src&#x2F;data&#x2F;activerecord.js:341</code></a>
         
         </p>
 
@@ -409,31 +1097,7 @@ userRecord.password = 'Secret' ;
     </div>
 
     <div class="description">
-        <p>User.find(
-  {
-       'username':   'John'
-       , 'password': 'Secret'
-  }, function(user) { ... } ) ;</p>
-
-<p>Or use a model instance for searching</p>
-
-<p>User.find(userRecord, callbackFunc) ;</p>
-
-<pre class="code prettyprint"><code>   alert('Welcome ' + user.username + '! Your birthday is ' + user.birthday) ;
-   var cloneUser = new User(user) ;
-   cloneUser.birthDay = new Date() ;              // access field 'birthday' as a property
-   newUser.save() ;
-</code></pre>
-
-<p>}
- ) ;</p>
-
-<p>Or simply create a new instance of a Model and use it for a search or save action</p>
-
-<p>var userRecord = new User({ username: 'John', password: 'Secret'}) ;
-  User.find(userRecord, callback) ;
-  // or
-  userRecord.save() ;</p>
+        
     </div>
 
     
@@ -467,21 +1131,11 @@ userRecord.password = 'Secret' ;
 </div>
 
                 
-                    <div id="method_getSize" class="method item">
-    <h3 class="name"><code>getSize</code></h3>
+                    <div id="method_save" class="method item">
+    <h3 class="name"><code>save</code></h3>
 
     
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        <code>key</code>
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
+        <span class="paren">()</span>
     
 
     
@@ -509,7 +1163,61 @@ userRecord.password = 'Secret' ;
             
         
         
-        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l264"><code>src&#x2F;data&#x2F;activerecord.js:264</code></a>
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l288"><code>src&#x2F;data&#x2F;activerecord.js:288</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>TODO</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_setState" class="method item">
+    <h3 class="name"><code>setState</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l358"><code>src&#x2F;data&#x2F;activerecord.js:358</code></a>
         
         </p>
 
@@ -524,29 +1232,6 @@ userRecord.password = 'Secret' ;
     </div>
 
     
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-            
-                <li class="param">
-                    
-                        <code class="param-name">key</code>
-                        <span class="type">Sting</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                    
-                </li>
-            
-            </ul>
-        </div>
-    
 
     
 
@@ -554,8 +1239,8 @@ userRecord.password = 'Secret' ;
 </div>
 
                 
-                    <div id="method_getToJSON" class="method item">
-    <h3 class="name"><code>getToJSON</code></h3>
+                    <div id="method_toJSON" class="method item">
+    <h3 class="name"><code>toJSON</code></h3>
 
     
         <div class="args">
@@ -600,7 +1285,7 @@ userRecord.password = 'Secret' ;
             
         
         
-        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l258"><code>src&#x2F;data&#x2F;activerecord.js:258</code></a>
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l313"><code>src&#x2F;data&#x2F;activerecord.js:313</code></a>
         
         </p>
 
@@ -657,8 +1342,8 @@ userRecord.password = 'Secret' ;
 </div>
 
                 
-                    <div id="method_save" class="method item">
-    <h3 class="name"><code>save</code></h3>
+                    <div id="method_unlink" class="method item">
+    <h3 class="name"><code>unlink</code></h3>
 
     
         <span class="paren">()</span>
@@ -689,73 +1374,7 @@ userRecord.password = 'Secret' ;
             
         
         
-        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l239"><code>src&#x2F;data&#x2F;activerecord.js:239</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>TODO</p>
-    </div>
-
-    
-
-    
-
-    
-</div>
-
-                
-                    <div id="method_save" class="method item">
-    <h3 class="name"><code>save</code></h3>
-
-    
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        <code>options</code>
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <span class="flag static">static</span>
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l300"><code>src&#x2F;data&#x2F;activerecord.js:300</code></a>
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l371"><code>src&#x2F;data&#x2F;activerecord.js:371</code></a>
         
         </p>
 
@@ -770,142 +1389,7 @@ userRecord.password = 'Secret' ;
     </div>
 
     
-        <div class="params">
-            <h4>Parameters:</h4>
 
-            <ul class="params-list">
-            
-                <li class="param">
-                    
-                        <code class="param-name">options</code>
-                        <span class="type">Object</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                    
-                </li>
-            
-            </ul>
-        </div>
-    
-
-    
-
-    
-</div>
-
-                
-                    <div id="method_transformed" class="method item">
-    <h3 class="name"><code>transformed</code></h3>
-
-    
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        <code>isTransformed</code>
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
-    
-
-    
-        <span class="returns-inline">
-            <span class="type">Object</span>
-        </span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <span class="flag chainable">chainable</span>
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l244"><code>src&#x2F;data&#x2F;activerecord.js:244</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>This function should only be used if one or more fields use transformers.</p>
-
-<p>This function can be used as follows</p>
-
-<pre class="code prettyprint"><code>userRecord = new User({username: 'John'}) ;
-userRecord.transformed(false).password = 'Secret' ;
-</code></pre>
-    </div>
-
-    
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-            
-                <li class="param">
-                    
-                        <code class="param-name">isTransformed</code>
-                        <span class="type">Object</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                    
-                </li>
-            
-            </ul>
-        </div>
-    
-
-    
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                
-                    
-                        <span class="type">Object</span>:
-                    
-                    special object which behaves identical to this, but its state equals isTransformed
-                
-            </div>
-        </div>
     
 
     
@@ -945,7 +1429,7 @@ userRecord.transformed(false).password = 'Secret' ;
             
         
         
-        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l309"><code>src&#x2F;data&#x2F;activerecord.js:309</code></a>
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l350"><code>src&#x2F;data&#x2F;activerecord.js:350</code></a>
         
         </p>
 
@@ -991,7 +1475,7 @@ userRecord.transformed(false).password = 'Secret' ;
             
         
         
-        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l305"><code>src&#x2F;data&#x2F;activerecord.js:305</code></a>
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l346"><code>src&#x2F;data&#x2F;activerecord.js:346</code></a>
         
         </p>
 

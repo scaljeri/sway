@@ -1,5 +1,6 @@
 var page = require('webpage').create()
-    , file = "http://localhost/~QNH/zipped" + "/SpecRunnerCoverage.html" ;
+    //, file = "http://localhost/~QNH/zipped" + "/SpecRunnerCoverage.html" ;
+    , file = "./SpecRunnerCoverage.html" ;
 
 /*
 page.onConsoleMessage = function (msg) {

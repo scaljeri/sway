@@ -43,11 +43,15 @@
             
                 <li><a href="..&#x2F;classes/Sway.html">Sway</a></li>
             
+                <li><a href="..&#x2F;classes/Sway.Bindable.html">Sway.Bindable</a></li>
+            
                 <li><a href="..&#x2F;classes/Sway.data.ActiveRecord.html">Sway.data.ActiveRecord</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.data.Field.html">Sway.data.Field</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.data.Model.html">Sway.data.Model</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.data.Relation.html">Sway.data.Relation</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.DI.html">Sway.DI</a></li>
             
@@ -122,19 +126,17 @@
 
 
 <div class="box intro">
-    <p>The ActiveRecord class represents data-structures, like a database table. However, ActiveRecord is a special class, instead of
-creating instances of itself, is create a new class of type <a href="../classes/Sway.data.Model.html" class="crosslink">Sway.data.Model</a>. ActiveRecord is a
-blue print for all models it creates, providing them with functionality needed to perform CRUD-like tasks</p>
+    <p>ActiveRecord is the pattern used for this ORM implementation. This pattern encapsulates access
+to its resources, like a database.<br>
+This class is a helper class, because it creates new Model classes of type <a href="../classes/Sway.data.Model.html" class="crosslink">Sway.data.Model</a>.
+Its a blue print and gives all models it creates everything they need to perform CRUD-like tasks</p>
 
-<pre class="code prettyprint"><code> var UserModel = new ActiveRecord( 'User', new WebSqlPersistance('user-table'), [
+<pre class="code prettyprint"><code> var UserModel = new ActiveRecord( 'User', new WebSqlStorage('user-table'), [
                        new Field( {type: 'TEXT', key: 'username', friendlyName: 'User name'})
                      , new Field( {type: 'TEXT', key: 'password', friendlyName: 'Password'})
                      , new Field( {type: 'DATE', key: 'birthday', friendlyName: 'Birthday'})
                  ]) ;
 </code></pre>
-
-<p>ActiveRecord needs the name of the model to be created, an object used to persist the data and finally a list of field
-definitions.</p>
 </div>
 
 
@@ -155,7 +157,7 @@ definitions.</p>
             
                 <li class="arg">
                     
-                        <code class="optional">[persistence]</code>
+                        <code class="optional">[storage]</code>
                     
                 </li>
             
@@ -231,7 +233,7 @@ definitions.</p>
             
                 <li class="param">
                     
-                        <code class="param-name optional">[persistence]</code>
+                        <code class="param-name optional">[storage]</code>
                         <span class="type">Object</span>
                         <span class="flag optional" title="This parameter is optional.">optional</span>
                     
@@ -239,7 +241,7 @@ definitions.</p>
                     
 
                     <div class="param-description">
-                        <p>object used for data persistance and lookups</p>
+                        <p>object used to access the underlying data structure</p>
                     </div>
 
                     
@@ -255,7 +257,7 @@ definitions.</p>
                     
 
                     <div class="param-description">
-                        <p>list of fields</p>
+                        <p>list of fields (see <a href="../classes/Sway.data.Field.html" class="crosslink">Sway.data.Field</a>) ) ;</p>
                     </div>
 
                     

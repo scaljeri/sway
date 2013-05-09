@@ -6,87 +6,163 @@ window.describe("Sway.data.ActiveRecord", function() {
         , expect        = window.expect
         , spyOn         = window.spyOn
         , it            = window.it
-        , ns
-
-    // mock and stub
-        , persistance = {}
-
-        , Field = function(){
-            this.getSize = function() { return 10; } ;
-        } ;
+        , ns = {} ;
 
     beforeEach(function() {
         // create DI
-        ns = {
-            ar: new Sway.data.ActiveRecord(persistance)
-            , field1: new Sway.data.Field({key: 'username'})
-            , field2: new Sway.data.Field({key: 'password'})
+        ns.persistance = {
+            find: function(record, callback){
+                var json = {username: (record.username||'John'), password: (record.password||'Secret'), __id__: 1} ;
+                if ( callback ) {
+                    callback(json) ;
+                }
+                return json ;
+            }
+            , save: function(record) {
+                // TODO
+            }
         } ;
+        spyOn(ns.persistance, 'find').andCallThrough() ;
+        spyOn(ns.persistance, 'save').andCallThrough() ;
+
+        ns.persistanceAsync = {
+            find: function(record, callback){
+                setTimeout( function() {
+                    callback({username: (record.username||'John'), password: (record.password||'Secret'), __id__: 2} ) ;
+                }, 10) ;
+            }
+            , save: function(record) {
+               // TODO
+            }
+        } ;
+
+        ns.Field = function(key, options) {
+            if ( !options ) {
+                options = {} ;
+            }
+            if ( options.type ) {
+                options.type = 'TEXT' ;
+            }
+
+            this.key = key ;
+            for( var i in options)   {
+                this[i] = options[i] ;
+            }
+            this.load = function(key, callback) { // fake loading an Address record
+                this[key] = new ns.Address( { address: '350 Fifth Avenue'}) ;
+                callback(this) ;
+            } ;
+            this.transform = function(value, callback) {
+                setTimeout(function(){callback(value + '-transformed');},1) ; // modify value by adding '-transformed'
+            } ;
+            this.validate = function() {
+                return true ;
+            } ;
+            return Object.freeze(this) ;
+        } ;
+        spyOn(ns.persistanceAsync, 'find').andCallThrough(); // andReturn({username: 'John', password: 'Secret'}) ;
+        spyOn(ns.persistanceAsync, 'save').andCallThrough();
+
+        ns.field0 = new ns.Field('address', {friendlyName: 'Address'});
+        ns.Address = new Sway.data.ActiveRecord( 'Address', ns.persistance, [ns.field0] ) ;
+
+        ns.field1 = new ns.Field('username', {friendlyName: 'User name'});
+        ns.field2 = new ns.Field('password', {friendlyName: 'Password'}) ;
+        ns.field3 = new ns.Field('birthday', {type: 'DATE', friendlyName: 'Birthday'}) ;
+        ns.field4 = new ns.Field('address', {FK: { model: ns.Address, key: 'address'}, friendlyName: 'Address'}) ;
+
+        ns.User = new Sway.data.ActiveRecord( 'User', ns.persistance, [ns.field1, ns.field2, ns.field3, ns.field4] ) ;
+        ns.UserAsync = new Sway.data.ActiveRecord( 'User', ns.persistanceAsync, [ns.field1, ns.field2, ns.field3, ns.field4] ) ;
     });
 
     it("should exist", function() {
         expect(Sway.data.ActiveRecord).toBeDefined() ; // the class
-        expect(ns.ar).toBeDefined() ; // the instance
+    }) ;
 
-        var User = new Sway.data.ActiveRecord( 'User', null, [
-                          new Sway.data.Field( {type: 'TEXT', key: 'username', friendlyName: 'User name'})
-                        , new Sway.data.Field( {type: 'TEXT', key: 'password', friendlyName: 'Password'})
-                        , new Sway.data.Field( {type: 'DATE', key: 'birthday', friendlyName: 'Birthday'})
-                  ]) ;
-        //var u = new User( {username: 'Lucas', password: 'Calje', birthday: new Date()}) ;
+    it("should create a model class", function(){
+        expect(ns.User).toBeDefined() ;
+        expect(ns.User.fields).toBeDefined() ;
+        expect(ns.User.fields['username']).toBe(ns.field1) ;
+        expect(ns.User.fields['password']).toBe(ns.field2) ;
+        expect(ns.User.fields['birthday']).toBe(ns.field3) ;
     });
 
-    xit("should accept fields", function() {
+    it("should create a record", function() {
+        var rec1 = new ns.User( {username: 'John', password: 'Secret'} )
+            , rec2
+            , date = new Date() ;
 
-        ns.ar.setField("id", ns.field1);
-        expect(ns.ar._field.length).toEqual(1) ;
-        expect(ns.ar._field[0].field).toEqual(ns.field1) ;
-        expect(ns.ar._field[0].key).toEqual("id") ;
-        expect(ns.ar._fieldLookup.id).toEqual(0) ;
+        expect(rec1).toBeDefined() ;
+        expect(rec1.username).toEqual('John') ;
+        expect(rec1.password).toEqual('Secret') ;
+        rec1.birthday = date ;
+        expect(rec1.birthday).toBe(date) ;
 
-        ns.ar.setField("data", ns.field2);
-        expect(ns.ar._field.length).toEqual(2) ;
-        expect(ns.ar._field[1].field).toEqual(ns.field2) ;
-        expect(ns.ar._field[1].key).toEqual("data") ;
-        expect(ns.ar._fieldLookup.data).toEqual(1) ;
-
-        expect(ns.ar._field[0].field !== ns.ar._field[1].field).toBeTruthy() ;
+        rec2 = new ns.User(rec1) ;              // this also test the toJSON function
+        expect(rec2).toBeDefined() ;
+        expect(rec2).not.toBe(rec1) ;
+        expect(rec2).toBeInstanceof(ns.User) ;
+        expect(rec2.username).toEqual('John') ;
+        expect(rec2.password).toEqual('Secret') ;
+        expect(rec2.birthday).toBe(date) ;
     }) ;
 
-    xit("should be able to manipulate fields", function() {
-        var msg = "this is a test" ;
+    it("should find a stored record without callbacks", function() {
+        var newRec = null
+            , newRec1 = null  ;
 
-        ns.ar.setField("id", ns.field1);
-        ns.ar.setField("data", ns.field2);
+        newRec = ns.User.find({username:'John'}) ;      // not async
+        expect(newRec).toBeDefined() ;
+        expect(newRec.password).toEqual('Secret') ;         // it worked :)
 
-        ns.field1.value = msg ;
-        ns.field2.value = msg + "." ;
-        expect(ns.ar.getField("id").value).toEqual(msg) ;
-        expect(ns.ar.getField("id").value).not.toEqual(ns.ar.getField("data").value) ;
-        expect(ns.ar.getSize("id")).toEqual(10) ;
-        expect(ns.ar.getSize()).toEqual(20) ;
+
+        newRec.username = 'Sue' ;
+        newRec1 = ns.User.find(newRec) ;
+        expect(newRec1.username).toEqual('Sue') ;
+        expect(newRec1.password).toEqual('Secret') ;
+
+        expect()
     }) ;
 
-    xit("should bless objects/models", function() {
-        var model1 = Object.create(null)
-           , model2 = Object.create(null)
-           , field1 = new Field()
-           , field2 = new Field() ;
+    xit("should find/load a stored record with callbacks", function() {
+        var newRec = null
+            , isReady = false ;
 
-        spyOn(ns.ar, 'save').andCallThrough() ;                     // make sure this function is called on blessed objects
+        runs(function() {                                   // doing the same
+            ns.User.find({username: 'John'}, function(r){
+                newRec = r ;
+                isReady = true ;            // ready, this will stop 'waitsFor'
+            }) ;
+        }) ;
 
-        // bless "model1"
-        expect(ns.ar.bless(model1) === ns.ar).toBeTruthy() ;
-        model1.save() ;
-        expect(model1.save).toHaveBeenCalled() ;                    // was ns.ar.save called ?
+        waitsFor(function(){ // waitsFor will stop if isReady === TRUE
+           return isReady ;
+        }, "a record search using JSON", 500) ;
 
-        ns.ar.setField("id", field1) ;
-        ns.ar.setField("value", field2) ;
+        runs(function() {   // after waitsFor is ready this function will run
+            expect(newRec).toBeDefined() ;
+            expect(newRec.password).toEqual('Secret') ;
 
-        // bless model2 with 2 fields
-        expect(ns.ar.bless(model2) === ns.ar).toBeTruthy() ;
-        expect(model1._field.length).toEqual(0) ;                   // model1 was blessed before the fields were added to ns.ar
-        expect(model2._field.length).toEqual(2) ;                   // should have 2 fields
-        expect(model2._field[0] !== ns.ar._field[0]).toBeTruthy() ; // the fields should be different from ns.ar
+            newRec.username = 'Sue' ;
+            isReady = false ;
+            ns.User.find(newRec, function(r){
+                newRec = r ;
+                isReady = true ;            // ready, this will stop 'waitsFor'
+            }) ;
+        }) ;
+
+        waitsFor(function() {
+            return isReady ;
+        }, "a record search using record object", 500 ) ;
+        runs(function() {
+            expect(newRec.username).toEqual('Sue') ;
+            expect(newRec.password).toEqual('Secret') ;
+        }) ;
+    }) ;
+    xit("should save a new record", function() {
+        var rec = new ns.User( { username: 'John', password: 'Secret'}) ;
+    }) ;
+    xit("should update a record", function() {
+        var rec = new ns.User( { username: 'John', password: 'Secret'}) ;
     }) ;
 }) ;

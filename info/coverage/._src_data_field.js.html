@@ -101,7 +101,7 @@ h1{font-size:138.5%;}h2{font-size:123.1%;}h3{font-size:108%;}h1,h2,h3{margin:1em
         <div class="hd">
             <!-- title -->
             <h1>./src/data/field.js Report</h1>
-            <h2>Date Generated: Wed May 01 23:36:22 CEST 2013</h2>
+            <h2>Date Generated: Thu May 09 22:44:03 CEST 2013</h2>
         </div>
 
         <div class="bd">
@@ -120,15 +120,15 @@ h1{font-size:138.5%;}h2{font-size:123.1%;}h3{font-size:108%;}h1,h2,h3{margin:1em
                 <tbody>
                     <tr>
                         <th>Lines</th>
-                        <td class="results">15</td>
-                        <td class="results">24</td>
-                        <td class="results">62.5%</td>
+                        <td class="results">8</td>
+                        <td class="results">29</td>
+                        <td class="results">27.59%</td>
                     </tr>
                     <tr>
                         <th>Functions</th>
-                        <td class="results">2</td>
-                        <td class="results">7</td>
-                        <td class="results">28.57%</td>
+                        <td class="results">1</td>
+                        <td class="results">5</td>
+                        <td class="results">20.0%</td>
                     </tr>
                 </tbody>
             </table>
@@ -151,221 +151,201 @@ h1{font-size:138.5%;}h2{font-size:123.1%;}h3{font-size:108%;}h1,h2,h3{margin:1em
                     </tr>    <tr class="called">
                         <td class="line-number">7</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;DEFAULTS&nbsp;=&nbsp;{</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">8</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;STATES:&nbsp;{</td>
+                        <td class="line-number">8</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;}</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">9</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FILTERED:&nbsp;'filtered'</td>
+                        <td class="line-number">9</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">10</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;UNFILTERED:&nbsp;'unfiltered'</td>
+                        <td class="line-number">10</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;/**</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">11</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                        <td class="line-number">11</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;A&nbsp;Field&nbsp;represents&nbsp;a&nbsp;single&nbsp;value&nbsp;of&nbsp;an&nbsp;{{#crossLink&nbsp;&quot;Sway.data.ActiveRecord&quot;}}{{/crossLink}}&nbsp;model.</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">12</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                        <td class="line-number">12</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">13</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                        <td class="line-number">13</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;username&nbsp;&nbsp;&nbsp;=&nbsp;new&nbsp;Field('username',&nbsp;{&nbsp;friendlyName:&nbsp;'User&nbsp;name'&nbsp;})</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">14</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;/**</td>
+                        <td class="line-number">14</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;password&nbsp;=&nbsp;new&nbsp;Field('password',&nbsp;{&nbsp;type:&nbsp;'password',&nbsp;friendlyName:&nbsp;'Password'&nbsp;})</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">15</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;A&nbsp;Field&nbsp;represents&nbsp;a&nbsp;single&nbsp;value&nbsp;of&nbsp;an&nbsp;ActiveRecord&nbsp;model.</td>
+                        <td class="line-number">15</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;address&nbsp;&nbsp;=&nbsp;new&nbsp;Field('address',&nbsp;&nbsp;{&nbsp;FK:&nbsp;{model:&nbsp;Sway.data.Address},&nbsp;friendlyName:&nbsp;'Address'&nbsp;})&nbsp;;</td>
                     </tr>    <tr class="uncovered">
                         <td class="line-number">16</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">17</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;username&nbsp;=&nbsp;new&nbsp;Field({&nbsp;type:&nbsp;'TEXT',&nbsp;key:&nbsp;'username',&nbsp;friendlyName:&nbsp;'User&nbsp;name'&nbsp;})&nbsp;;</td>
+                        <td class="line-number">17</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Or&nbsp;if&nbsp;a&nbsp;field&nbsp;holds&nbsp;data&nbsp;which&nbsp;should&nbsp;be&nbsp;encrypted&nbsp;and&nbsp;compressed&nbsp;before&nbsp;persisted</td>
                     </tr>    <tr class="uncovered">
                         <td class="line-number">18</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">19</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Or&nbsp;if&nbsp;it&nbsp;the&nbsp;field&nbsp;holds&nbsp;data&nbsp;which&nbsp;should&nbsp;be&nbsp;encrypted&nbsp;and&nbsp;compressed</td>
+                        <td class="line-number">19</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;accountInfo&nbsp;=&nbsp;new&nbsp;Field(&nbsp;'accountInfo',&nbsp;{&nbsp;type:&nbsp;'BLOB',&nbsp;friendLyName:&nbsp;'Account&nbsp;info',&nbsp;transformers:&nbsp;[encryptFilter,&nbsp;compressFilter]&nbsp;})&nbsp;;</td>
                     </tr>    <tr class="uncovered">
                         <td class="line-number">20</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">21</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;accountInfo&nbsp;=&nbsp;new&nbsp;Field(&nbsp;{&nbsp;type:&nbsp;'BLOB',&nbsp;key:&nbsp;'accountInfo',&nbsp;friendLyName:&nbsp;'Account&nbsp;info'},&nbsp;[encryptFilter,&nbsp;compressFilter]&nbsp;)&nbsp;;</td>
+                        <td class="line-number">21</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@class&nbsp;Sway.data.Field</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">22</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</td>
+                        <td class="line-number">22</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@constructor</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">23</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;See&nbsp;{{#crossLink&nbsp;&quot;Sway.data.ActiveRecord&quot;}}{{/crossLink}}&nbsp;to&nbsp;understand&nbsp;how&nbsp;it&nbsp;fits&nbsp;into&nbsp;the&nbsp;bigger&nbsp;picture.</td>
+                        <td class="line-number">23</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;{String}&nbsp;key&nbsp;name&nbsp;of&nbsp;the&nbsp;field</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">24</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</td>
+                        <td class="line-number">24</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;{Object}&nbsp;[options]&nbsp;definition&nbsp;of&nbsp;this&nbsp;field</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">25</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@class&nbsp;Sway.data.Field</td>
+                        <td class="line-number">25</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@param&nbsp;{String}&nbsp;&nbsp;[options.type=TEXT]&nbsp;type&nbsp;of&nbsp;the&nbsp;field</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">26</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@constructor</td>
+                        <td class="line-number">26</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@param&nbsp;{String}&nbsp;&nbsp;[options.friendlyName]&nbsp;description&nbsp;of&nbsp;the&nbsp;field</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">27</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;{Object}&nbsp;definition&nbsp;definition&nbsp;of&nbsp;this&nbsp;field</td>
+                        <td class="line-number">27</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@param&nbsp;{Boolean}&nbsp;[options.PK=false]&nbsp;primary&nbsp;key&nbsp;field</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">28</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@param&nbsp;{String}&nbsp;definition.key</td>
+                        <td class="line-number">28</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@param&nbsp;{Object}&nbsp;[options.FK]&nbsp;foreign&nbsp;key&nbsp;configuration&nbsp;object</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">29</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@param&nbsp;{String}&nbsp;[definition.type=TEXT]</td>
+                        <td class="line-number">29</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@param&nbsp;{Model}&nbsp;options.FK.model&nbsp;Model&nbsp;reference</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">30</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@param&nbsp;{String}&nbsp;[definition.friendlyName]</td>
+                        <td class="line-number">30</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@param&nbsp;{String}&nbsp;[options.FK.key=id]&nbsp;the&nbsp;key&nbsp;of&nbsp;the&nbsp;model&nbsp;it&nbsp;is&nbsp;referencing</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">31</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@param&nbsp;{Boolean}&nbsp;[definition.PK=false]&nbsp;primary&nbsp;key&nbsp;field</td>
+                        <td class="line-number">31</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@param&nbsp;{Boolean}&nbsp;[options.required=false]&nbsp;a&nbsp;required&nbsp;field</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">32</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@param&nbsp;{Boolean}&nbsp;[definition.required=false]</td>
+                        <td class="line-number">32</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@param&nbsp;{Array}&nbsp;&nbsp;&nbsp;[options.transformers]&nbsp;list&nbsp;of&nbsp;transformer&nbsp;objects.&nbsp;A&nbsp;transformer&nbsp;object&nbsp;can&nbsp;transform&nbsp;the&nbsp;data&nbsp;into&nbsp;a&nbsp;new&nbsp;form&nbsp;and&nbsp;also&nbsp;back</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">33</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;{Array}&nbsp;[transformers]&nbsp;list&nbsp;of&nbsp;transformer&nbsp;objects.&nbsp;A&nbsp;transformer&nbsp;object&nbsp;can&nbsp;transform&nbsp;the&nbsp;data&nbsp;into&nbsp;a&nbsp;new&nbsp;form&nbsp;and&nbsp;also&nbsp;back</td>
+                        <td class="line-number">33</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;into&nbsp;its&nbsp;original&nbsp;form.&nbsp;Think&nbsp;of,&nbsp;zipping&nbsp;and&nbsp;unzipping&nbsp;or&nbsp;encrypting&nbsp;and&nbsp;decrypting</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">34</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;into&nbsp;its&nbsp;original&nbsp;form.&nbsp;Think&nbsp;of,&nbsp;zipping&nbsp;and&nbsp;unzipping&nbsp;or&nbsp;encrypting&nbsp;and&nbsp;decrypting</td>
+                        <td class="line-number">34</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@param&nbsp;{Array}&nbsp;&nbsp;&nbsp;[options.validators]&nbsp;list&nbsp;of&nbsp;validation&nbsp;functions</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">35</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;{Array}&nbsp;[validators]&nbsp;list&nbsp;of&nbsp;validation&nbsp;functions</td>
+                        <td class="line-number">35</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">36</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">37</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;f&nbsp;=&nbsp;function&nbsp;(definition,&nbsp;filterList,&nbsp;validators)&nbsp;{</td>
-                    </tr>    <tr class="called">
-                        <td class="line-number">38</td><td class="line-calls">5</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.filterList&nbsp;=&nbsp;filterList&nbsp;;</td>
-                    </tr>    <tr class="called">
-                        <td class="line-number">39</td><td class="line-calls">5</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.key&nbsp;=&nbsp;definition.key&nbsp;;</td>
-                    </tr>    <tr class="called">
-                        <td class="line-number">40</td><td class="line-calls">5</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.friendlyName&nbsp;=&nbsp;definition.friendlyName&nbsp;;</td>
-                    </tr>    <tr class="called">
-                        <td class="line-number">41</td><td class="line-calls">5</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.type&nbsp;=&nbsp;definition.type&nbsp;;</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">42</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
-                    </tr>    <tr class="called">
-                        <td class="line-number">43</td><td class="line-calls">5</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Object.defineProperty(this,&nbsp;'_filteredValue',</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">44</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">45</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value:&nbsp;null</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">46</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;enumerable:&nbsp;false&nbsp;//&nbsp;hide&nbsp;it</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">47</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;writable:&nbsp;true</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">48</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">49</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)&nbsp;;</td>
-                    </tr>    <tr class="called">
-                        <td class="line-number">50</td><td class="line-calls">5</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Object.defineProperty(this,&nbsp;'_value',</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">51</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">52</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value:&nbsp;null</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">53</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;enumerable:&nbsp;false&nbsp;//&nbsp;hide&nbsp;it</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">54</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;writable:&nbsp;true</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">55</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">56</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)&nbsp;;</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">57</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
-                    </tr>    <tr class="called">
-                        <td class="line-number">58</td><td class="line-calls">5</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.state&nbsp;=&nbsp;ns.Field.STATES.UNFILTERED&nbsp;;</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">59</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;;</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">60</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
-                    </tr>    <tr class="called">
-                        <td class="line-number">61</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;f.STATES&nbsp;=&nbsp;DEFAULTS.STATES&nbsp;;</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">62</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
-                    </tr>    <tr class="called">
-                        <td class="line-number">63</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;f.prototype&nbsp;=&nbsp;{</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">64</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">65</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@method&nbsp;getValue</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">66</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;{Function}&nbsp;callback</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">67</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@returns&nbsp;{*}</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">68</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">69</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getValue:&nbsp;function(callback)&nbsp;{</td>
+                        <td class="line-number">36</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;f&nbsp;=&nbsp;function&nbsp;(key,&nbsp;options)&nbsp;{</td>
                     </tr>    <tr class="not-called">
-                        <td class="line-number">70</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(&nbsp;this.state&nbsp;===&nbsp;ns.Field.STATES.FILTERED&nbsp;)&nbsp;{</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">71</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;TODO&nbsp;get&nbsp;filtered&nbsp;value&nbsp;or&nbsp;return&nbsp;_filteredValue</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">72</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">73</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;{</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">74</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;TODO&nbsp;get&nbsp;unfiltered&nbsp;value&nbsp;or&nbsp;return&nbsp;_value</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">75</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                        <td class="line-number">37</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(&nbsp;!options&nbsp;)&nbsp;{</td>
                     </tr>    <tr class="not-called">
-                        <td class="line-number">76</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;this._value&nbsp;;</td>
+                        <td class="line-number">38</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;options&nbsp;=&nbsp;{};</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">77</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">78</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">79</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">80</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@method&nbsp;getKey</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">81</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;{Boolean}&nbsp;[filtered=false]&nbsp;return&nbsp;the</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">82</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;{String}</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">83</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">84</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;getKey:&nbsp;function()&nbsp;{</td>
+                        <td class="line-number">39</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
                     </tr>    <tr class="not-called">
-                        <td class="line-number">85</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;this.key&nbsp;;</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">86</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">87</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">88</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@method&nbsp;setValue</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">89</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@chainable</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">90</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;{*}&nbsp;input&nbsp;Currently&nbsp;only&nbsp;a&nbsp;'String'&nbsp;is&nbsp;accepted&nbsp;as&nbsp;unfiltered&nbsp;value!</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">91</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;{Boolean}&nbsp;[filtered=false]</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">92</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">93</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;setValue:&nbsp;function(input,&nbsp;filtered)&nbsp;{</td>
+                        <td class="line-number">40</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.key&nbsp;=&nbsp;key&nbsp;;</td>
                     </tr>    <tr class="not-called">
-                        <td class="line-number">94</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this[(filtered&nbsp;?&nbsp;'_filteredValue'&nbsp;:&nbsp;'_value')]&nbsp;=&nbsp;input&nbsp;;</td>
+                        <td class="line-number">41</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.type&nbsp;=&nbsp;options.type||'text'&nbsp;;</td>
                     </tr>    <tr class="not-called">
-                        <td class="line-number">95</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this[(filtered&nbsp;?&nbsp;'_value'&nbsp;:&nbsp;'_filteredValue')]&nbsp;=&nbsp;null&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;cleanup</td>
+                        <td class="line-number">42</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.friendlyName&nbsp;=&nbsp;options.friendlyName&nbsp;;</td>
                     </tr>    <tr class="not-called">
-                        <td class="line-number">96</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.state&nbsp;=&nbsp;ns.Field.STATES[&nbsp;(filtered&nbsp;?&nbsp;''&nbsp;:&nbsp;'UN')&nbsp;+&nbsp;'FILTERED']&nbsp;;</td>
+                        <td class="line-number">43</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.transformers&nbsp;=&nbsp;options.transformers&nbsp;;</td>
                     </tr>    <tr class="not-called">
-                        <td class="line-number">97</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;this&nbsp;;</td>
+                        <td class="line-number">44</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.validators&nbsp;=&nbsp;options.validators&nbsp;;</td>
+                    </tr>    <tr class="not-called">
+                        <td class="line-number">45</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;Object.freeze(this)&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">46</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">47</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">48</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;f.prototype&nbsp;=&nbsp;{</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">49</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">50</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@method&nbsp;transform</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">51</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;{*}&nbsp;value&nbsp;value&nbsp;to&nbsp;be&nbsp;transformed</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">52</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;{Function}&nbsp;callback&nbsp;function&nbsp;called&nbsp;with&nbsp;the&nbsp;transformed&nbsp;data</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">53</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">54</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transform:&nbsp;function(value,&nbsp;callback)&nbsp;{</td>
+                    </tr>    <tr class="not-called">
+                        <td class="line-number">55</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(&nbsp;this.transformers&nbsp;)&nbsp;{</td>
+                    </tr>    <tr class="not-called">
+                        <td class="line-number">56</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transform(0,&nbsp;this.transformers,&nbsp;callback,&nbsp;value)&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">57</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">58</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;{</td>
+                    </tr>    <tr class="not-called">
+                        <td class="line-number">59</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;callback(value)&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">60</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">61</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">62</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">63</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@method&nbsp;validate</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">64</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;{*}&nbsp;value&nbsp;value&nbsp;to&nbsp;be&nbsp;validated</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">65</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;{Boolean}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">66</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">67</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;validate:&nbsp;function(value)&nbsp;{</td>
+                    </tr>    <tr class="not-called">
+                        <td class="line-number">68</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;i</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">69</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;ok&nbsp;=&nbsp;true&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">70</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="not-called">
+                        <td class="line-number">71</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(&nbsp;this.validators&nbsp;)&nbsp;{</td>
+                    </tr>    <tr class="not-called">
+                        <td class="line-number">72</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for(&nbsp;i&nbsp;=&nbsp;0;&nbsp;i&nbsp;&lt;&nbsp;this.validators.length;&nbsp;i++&nbsp;)&nbsp;{</td>
+                    </tr>    <tr class="not-called">
+                        <td class="line-number">73</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(&nbsp;!this.validators[i].validate(value)&nbsp;)&nbsp;{</td>
+                    </tr>    <tr class="not-called">
+                        <td class="line-number">74</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ok&nbsp;=&nbsp;false&nbsp;;</td>
+                    </tr>    <tr class="not-called">
+                        <td class="line-number">75</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">76</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">77</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">78</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="not-called">
+                        <td class="line-number">79</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;ok&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">80</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">81</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">82</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Returns&nbsp;the&nbsp;size&nbsp;of</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">83</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@method&nbsp;size</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">84</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">85</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">86</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;getSize:&nbsp;function()&nbsp;{</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">87</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;this.state&nbsp;===&nbsp;&quot;uncompressed&quot;&nbsp;?&nbsp;encodeURI(this._inputStr).split(/%..|./).length&nbsp;-&nbsp;1&nbsp;:&nbsp;this._zippedBlob.size&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">88</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">89</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">90</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">91</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">92</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;transform(index,&nbsp;transformers,&nbsp;callback,&nbsp;value)&nbsp;{</td>
+                    </tr>    <tr class="not-called">
+                        <td class="line-number">93</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(&nbsp;transformers[index]&nbsp;)&nbsp;{</td>
+                    </tr>    <tr class="not-called">
+                        <td class="line-number">94</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transformers[index].transform(value,&nbsp;transform.bind(null,&nbsp;++index,&nbsp;transformers,callback)&nbsp;)&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">95</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">96</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;{</td>
+                    </tr>    <tr class="not-called">
+                        <td class="line-number">97</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;callback(value)&nbsp;;</td>
                     </tr>    <tr class="uncovered">
                         <td class="line-number">98</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">99</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,setState:&nbsp;function(state)&nbsp;{</td>
-                    </tr>    <tr class="not-called">
-                        <td class="line-number">100</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.state&nbsp;=&nbsp;state&nbsp;;</td>
+                        <td class="line-number">99</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;}</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">101</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">102</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">103</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Returns&nbsp;the&nbsp;size&nbsp;of</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">104</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@method&nbsp;size</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">105</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">106</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;getSize:&nbsp;function()&nbsp;{</td>
-                    </tr>    <tr class="not-called">
-                        <td class="line-number">107</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;this.state&nbsp;===&nbsp;&quot;uncompressed&quot;&nbsp;?&nbsp;encodeURI(this._inputStr).split(/%..|./).length&nbsp;-&nbsp;1&nbsp;:&nbsp;this._zippedBlob.size&nbsp;;</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">108</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">109</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;;</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">110</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                        <td class="line-number">100</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
                     </tr>    <tr class="called">
-                        <td class="line-number">111</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;ns.Field&nbsp;=&nbsp;f&nbsp;;</td>
+                        <td class="line-number">101</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;ns.Field&nbsp;=&nbsp;f&nbsp;;</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">112</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                        <td class="line-number">102</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">113</td><td class="line-calls">&nbsp;</td><td class="line-code">})(window.Sway.data)&nbsp;;</td>
+                        <td class="line-number">103</td><td class="line-calls">&nbsp;</td><td class="line-code">})(window.Sway.data)&nbsp;;</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">114</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                        <td class="line-number">104</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">115</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                        <td class="line-number">105</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
                     </tr>
                 </table>
             </div>
@@ -373,7 +353,7 @@ h1{font-size:138.5%;}h2{font-size:123.1%;}h3{font-size:108%;}h1,h2,h3{margin:1em
 
         <!-- footer -->
         <div class="ft">
-            <p>Code coverage for ./src/data/field.js generated on Wed May 01 23:36:22 CEST 2013 by YUI Test.</p>
+            <p>Code coverage for ./src/data/field.js generated on Thu May 09 22:44:03 CEST 2013 by YUI Test.</p>
         </div>
     </div>
 

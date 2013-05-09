@@ -43,11 +43,15 @@
             
                 <li><a href="..&#x2F;classes/Sway.html">Sway</a></li>
             
+                <li><a href="..&#x2F;classes/Sway.Bindable.html">Sway.Bindable</a></li>
+            
                 <li><a href="..&#x2F;classes/Sway.data.ActiveRecord.html">Sway.data.ActiveRecord</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.data.Field.html">Sway.data.Field</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.data.Model.html">Sway.data.Model</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.data.Relation.html">Sway.data.Relation</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.DI.html">Sway.DI</a></li>
             
@@ -106,6 +110,8 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
+window.Sway = window.Sway || {} ; &#x2F;&#x2F; make sure it exists
+
 (function(console, ns) {
     &#x2F;**
      * DI makes classes accessible by a contract. Instances are created when requested and dependencies are injected into the constructor,
