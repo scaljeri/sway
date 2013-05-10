@@ -67,6 +67,8 @@
             
                 <li><a href="..&#x2F;classes/Sway.persistance.LocalStorage.html">Sway.persistance.LocalStorage</a></li>
             
+                <li><a href="..&#x2F;classes/Sway.ux.D3Carousel.html">Sway.ux.D3Carousel</a></li>
+            
             </ul>
 
             <ul id="api-modules" class="apis modules">
@@ -117,38 +119,7 @@ window.Sway.data = window.Sway.data || {} ;
 (function(ns) {
     &quot;use strict&quot; ;
 
-    var DEFAULTS = {
-            STATE: {
-                &#x2F;*
-                 * @property STATE.TRANFORMED
-                 * @static
-                 *&#x2F;
-                TRANSFORMED: 1
-                &#x2F;*
-                 * @property STATE.NORMAL
-                 * @static
-                 *&#x2F;
-                , NORMAL: 0
-            }
-        }
-        , statics = {
-            &#x2F;*
-            * TODO
-            * @method find
-            * @static
-            * @param {Object} options
-            *&#x2F;
-            find: function(options) {
 
-            }
-            &#x2F;*
-            * @method save
-            * @static
-            * @param {Object} options
-            *&#x2F;
-            , save: function(options) {
-            }
-        }
         &#x2F;**
          * ActiveRecord is the pattern used for this ORM implementation. This pattern encapsulates access
          * to its resources, like a database.&lt;br&gt;
@@ -165,9 +136,10 @@ window.Sway.data = window.Sway.data || {} ;
          * @constructor
          * @param {String} modelName name of the model
          * @param {Object}[storage] object used to access the underlying data structure
-         * @param {Array} [fieldList] list of fields (see {{#crossLink &quot;Sway.data.Field&quot;}}{{&#x2F;crossLink}}) ) ;
+         * @param {Array} fieldList list of fields (see {{#crossLink &quot;Sway.data.Field&quot;}}{{&#x2F;crossLink}}) ) ;
+         * @param {Array} [relations] list of Relations
          *&#x2F;
-       , ActiveRecord = function(modelName, storage, fieldList ) {
+       var ActiveRecord = function(modelName, storage, fields, relations ) {
             var i, key ;
 
            function Model(data, options) {                              &#x2F;&#x2F; define the model class&#x2F;function
@@ -216,26 +188,133 @@ window.Sway.data = window.Sway.data || {} ;
                return Object.seal(this) ;                               &#x2F;&#x2F; make sure no properties can be added
             }
 
-            for( i in INSTANCE ){
-                Model.prototype[i] = INSTANCE[i] ;                                &#x2F;&#x2F; create instance function
-            }
+            appendStaticProperties(Model, storage, fields, relations ) ;
+            appendPrototypeProperties(Model) ;
 
-            &#x2F;&#x2F; create static stuff
-            for ( i in STATIC ) {                                   &#x2F;&#x2F; create static methods
-                Model[i] = STATIC[i].bind(Model) ;
-            }
-            Model.storage = storage ;                                   &#x2F;&#x2F; reference to the storage object
-            Model.fields = {} ;                                         &#x2F;&#x2F; field container, referenced by their key value
-            for( i = 0; i &lt; fieldList.length; i++ ) {
-                key = fieldList[i].key ;
-                Model.fields[key] = fieldList[i] ;         &#x2F;&#x2F; add field to fields object
-                &#x2F;&#x2F; create a &#x27;findByXXX&#x27; function, like: findByUserName
-                Model[[&#x27;findBy&#x27;, key.slice(0,1).toUpperCase(), key.slice(1)].join(&#x27;&#x27;)] = findBy.bind(Model, key);
-            }
+
+
             return Model ;
         }
 
+
+    &#x2F;* Define the Model class here *&#x2F;
+
+    &#x2F;**
+     * Use the Model class to create instances which represent your data records. These will speed up your develement
+     * when CRUD-like tasks need to be done.&lt;br&gt;
+     * To create a Model class, use {{#crossLink &quot;Sway.data.ActiveRecord&quot;}}{{&#x2F;crossLink}}.
+     *
+     * &lt;h3&gt;The basics&lt;&#x2F;h3&gt;
+     * To perform a search, a couple of static methods are available. Use the &lt;tt&gt;findByX&lt;&#x2F;tt&gt; methods to search on
+     * a specific field
+     *
+     *     UserModel.findByUsername(&#x27;John&#x27;, function(userRecord) {
+ *          &#x2F;&#x2F; this === UserModel
+ *     }) ;
+     *
+     * Of course, the same can be achieved using the more general search method
+     *
+     *     UserModel.find( {username: &#x27;John&#x27;}, function(userRecord) {
+ *          &#x2F;&#x2F; this === UserModel
+ *     }) ;
+     *
+     * With &lt;tt&gt;find&lt;&#x2F;tt&gt; it is also possible to define more fields to search for.&lt;br&gt;
+     * A Model instance, on the otherhand, can be used to create or manipulate data
+     *
+     *     userRecord = new User() ;                            &#x2F;&#x2F; create a blank record
+     *     userRecord.username = &#x27;John&#x27; ;                       &#x2F;&#x2F; set the username
+     *     userRecord.password = &#x27;Secret&#x27; ;                     &#x2F;&#x2F; set the password
+     *     userRecord.save(successCallback, errorCallback) ;    &#x2F;&#x2F; check the result, because this action might fail
+     *
+     * &lt;h3&gt;Multiple result-sets&lt;&#x2F;h3&gt;
+     * In {{#crossLink &quot;Sway&quot;}}{{&#x2F;crossLink}} a Model instance can also represent multiple records. Although it always
+     * represent a single record, internally this has the whole result set.
+     *
+     * its current
+     * state will always be a single record, it is possible to navigate from one state to an other
+     *
+     *     User.search({username: &#x27;John&#x27;}, function(record) {   &#x2F;&#x2F; record is a model instance representing more than on result
+ *           while( record.hasNext() ) {                    &#x2F;&#x2F; check if there is an other record
+ *                record.next() ;                           &#x2F;&#x2F; move on record up
+ *                ....
+ *           }
+ *           record.item(1) ;                               &#x2F;&#x2F; go to second record
+ *           record.prev() ;                                &#x2F;&#x2F; go to first record. Use &#x27;prev&#x27; in combination with &#x27;hasPrev&#x27;
+ *     }) ;
+     *
+     * &lt;h3&gt;Advanced&lt;&#x2F;h3&gt;
+     *
+     *
+     *
+     * An instance represents one or more records, which depends on how it was created. For example, if a database search returns multiple records,
+     * the Model instance represent them all, holding in its current state the first record&#x27;s values
+     *
+     *      User.find({ username: &#x27;John&#x27; }, function(ar) {  &#x2F;&#x2F; ActiveRecord instance, holding multiple records
+ *          console.log(&quot;Found &quot; + ar.length + &quot; records) ;
+ *      }) ;
+     *
+     * Checkout {{#crossLink &quot;Sway.data.Model&#x2F;next:method&quot;}}{{&#x2F;crossLink}}, {{#crossLink &quot;Sway.data.Model&#x2F;prev:method&quot;}}{{&#x2F;crossLink}}
+     * {{#crossLink &quot;Sway.data.Model&#x2F;item:method&quot;}}{{&#x2F;crossLink}} and {{#crossLink &quot;Sway.data.Model&#x2F;hasNext:method&quot;}}{{&#x2F;crossLink}} to
+     * understand how to deal with multi-record result-sets.
+     *
+     *
+     *     var userRecord = new User({username: &#x27;John&#x27;, password: &#x27;Secret&#x27;}) ;
+     *     ....
+     *     userRecord.save() ;
+     *
+     * All fields are accessible as a property of a record
+     *
+     *     var userRecord = new User() ;
+     *     userRecord.username = &#x27;John&#x27; ;
+     *     userRecord.password = &#x27;Secret&#x27; ;
+     *
+     * @class Sway.data.Model
+     * @constructor
+     * @param {Object} [data] JSON data or a model instance to be cloned
+     *&#x2F;
+        , DEFAULTS = {
+                &#x2F;**
+                 * a record can be in two states; NORMAL (default) or TRANSFORMED ...... TODO
+                 *
+                 *      userRecord.setState(User.TRANSFORMED, callback) ; &#x2F;&#x2F; change the state of the record
+                 *
+                 * @property {Object} STATE
+                 *&#x2F;
+            STATE: {
+                &#x2F;**
+                 * @property {Number} STATE.TRANFORMED
+                 * @static
+                 *&#x2F;
+                TRANSFORMED: 1
+                &#x2F;**
+                 * @property {Number} STATE.NORMAL
+                 * @static
+                 *&#x2F;
+                , NORMAL: 0
+            }
+        }
         , STATIC = {
+            &#x2F;**
+             * Use find to perform searches
+             *
+             *      User.find( {
+             *           &#x27;username&#x27;:   &#x27;John&#x27;
+             *           , &#x27;password&#x27;: &#x27;Secret&#x27;
+             *      }, function(user) { ... } ) ;
+             *
+             * Or simply create a new instance of a Model and use it for a search or save action
+             *
+             *      var userRecord = new User({ username: &#x27;John&#x27;, password: &#x27;Secret&#x27;}) ;
+             *      User.find(userRecord, callback) ;
+             *      &#x2F;&#x2F; or
+             *      userRecord.save() ;
+             * @method find
+             * @static
+             * @param {Object} data JSON or model instance
+             * @param {Object} [options] configuration
+             *  @param {Boolean} [lazy=true] If false, &lt;tt&gt;find&lt;&#x2F;tt&gt; returns a model which will have all its data, including foreign key data, loaded.
+             *  If the record is &lt;tt&gt;lazy&lt;&#x2F;tt&gt;, call {{#crossLink &quot;Sway.data.Model&#x2F;load:method&quot;}}{{&#x2F;crossLink}} first to make the data avaiable.
+             *&#x2F;
             find: function(record, callback) {
                 if ( record.$className ) {
                     record = record.toJSON() ;
@@ -245,20 +324,57 @@ window.Sway.data = window.Sway.data || {} ;
                     return new this(json, {state: DEFAULTS.STATE.TRANSFORMED}) ;
                 }
             }
+            &#x2F;**
+             * @method save
+             * @static
+             * @param {Object} options
+             *&#x2F;
             , save: function(json, callback) {
                 &#x2F;&#x2F; for performance (no instance required
             }
         }
 
+
+
+
+    &#x2F;**
+     * @method item
+     *&#x2F;
+    &#x2F;**
+     * @method hasNext
+     *&#x2F;
         , INSTANCE = {
+            &#x2F;**
+             * @method getState
+             *&#x2F;
             getState: function() {
                 return this.__state__ ;
             }
-            , setState: function(state, callback) {
+            &#x2F;**
+             * change the state of a record. See ......
+             * @method setState
+             * @param state
+             * @param {Boolean} [isLazy=true] values are transformed into the new state when requested. If &lt;tt&gt;true, all
+             * values are transformed immediately.
+             * @param {Function} [callback] if &lt;tt&gt;isLazy&lt;&#x2F;tt&gt; is set to TRUE the callback is called when all values
+             * are transformed.
+             *&#x2F;
+            , setState: function(state, isLazy, callback) {
                 this.state = state ;
+                if ( typeof(isLazy) === &#x27;function&#x27;) {
+                    callback = isLazy ;
+                    isLazy = true ;
+                }
                 &#x2F;&#x2F; TODO: applie transformers
                 callback() ;
             }
+            &#x2F;**
+             *
+             * returns all the data in JSON format (unfiltered)
+             * @method toJSON
+             * @param {String} key
+             * @returns {Number}
+             *&#x2F;
             , toJSON: function() { &#x2F;&#x2F; ale
                 var json = {}
                     , i ;
@@ -267,27 +383,52 @@ window.Sway.data = window.Sway.data || {} ;
                 }
                 return json ;
             }
+            &#x2F;**
+             * TODO
+             * @method save
+             *
+             *&#x2F;
             , save: function(callback) {
 
             }
             , getFields: function() {
                 return this.constructor.fields ;
             }
+            &#x2F;**
+             * @method next
+             *&#x2F;
             , next: function() {
 
             }
+            &#x2F;**
+             * @method prev
+             *&#x2F;
             , prev: function() {
 
             }
+            &#x2F;**
+             * @method item
+             *&#x2F;
             , item: function() {
 
             }
+            &#x2F;**
+             * @method hasNext
+             *&#x2F;
             , hasNext: function() {
 
             }
+            &#x2F;**
+             * @method hasPrev
+             *&#x2F;
             , hasPrev: function() {
 
             }
+                &#x2F;**
+                 * @method load
+                 * @param {String} key name of the field
+                 * @param {Function} [callback] callback function, called when the data is available
+                 *&#x2F;
             , load: function(key, callback) {
                 var json = {} ;
                 if ( this.fields[key].FK ) {
@@ -298,9 +439,55 @@ window.Sway.data = window.Sway.data || {} ;
                         }.bind(this) ) ;
                 }
             }
+            &#x2F;**
+             * Call this function to make it aware of changes made to the data it relates to. Because a Model instance
+             * has no direct link with, for example, a database, this mechanism only works when all changes made to the data are performed
+             * by one and the same storage object. This storage object is responsible for the notifications.
+             *
+             * Always call {{#crossLink &quot;Sway.data.Model&#x2F;unlink:method&quot;}}{{&#x2F;crossLink}} to disable this behavior, or when the Model instance
+             * otherwise, the
+             * If the record or this &lt;tt&gt;link&lt;&#x2F;tt&gt; is not needed anymore, make sure to remove by calling {{#crossLink &quot;Sway.data.Model&#x2F;unlink:method&quot;}}{{&#x2F;crossLink}},
+             * @method link
+             *&#x2F;
+            , link: function() {
+
+            }
+            &#x2F;**
+             * @method unlink
+             *&#x2F;
+            , unlink: function() {
+
+            }
         } ;
 
     &#x2F;* Private helpers *&#x2F;
+
+    function appendStaticProperties(Model, storage, fields, relations) {
+        var i, key ;
+
+        for ( i in STATIC ) {                                   &#x2F;&#x2F; create static methods
+            Model[i] = STATIC[i].bind(Model) ;
+        }
+
+        Model.storage = storage ;                                   &#x2F;&#x2F; reference to the storage object
+        Model.relations = relations ;
+        Model.fields = {} ;                                         &#x2F;&#x2F; field container, referenced by their key value
+
+        for( i = 0; i &lt; fields.length; i++ ) {
+            key = fields[i].key ;
+            Model.fields[key] = fields[i] ;         &#x2F;&#x2F; add field to fields object
+            &#x2F;&#x2F; create a &#x27;findByXXX&#x27; function, like: findByUserName
+            Model[[&#x27;findBy&#x27;, key.slice(0,1).toUpperCase(), key.slice(1)].join(&#x27;&#x27;)] = findBy.bind(Model, key);
+        }
+    }
+
+    function appendPrototypeProperties(Model) {
+        var i ;
+
+        for( i in INSTANCE ){
+            Model.prototype[i] = INSTANCE[i] ;                                &#x2F;&#x2F; create instance function
+        }
+    }
 
     function findBy(property, value) {
         console.log(&quot;find by &quot; + property + &quot; with value=&quot; + value) ;
@@ -322,172 +509,15 @@ window.Sway.data = window.Sway.data || {} ;
 
 })(window.Sway.data) ;
 
-&#x2F;* Define the Model class here *&#x2F;
 
-&#x2F;**
- * Use the Model class to create instances which represent your data records. These will speed up your develement
- * when CRUD-like tasks need to be done.&lt;br&gt;
- * To create a Model class, use {{#crossLink &quot;Sway.data.ActiveRecord&quot;}}{{&#x2F;crossLink}}.
- *
- * &lt;h3&gt;The basics&lt;&#x2F;h3&gt;
- * To perform a search, a couple of static methods are available. Use the &lt;tt&gt;findByX&lt;&#x2F;tt&gt; methods to search on
- * a specific field
- *
- *     UserModel.findByUsername(&#x27;John&#x27;, function(userRecord) {
- *          &#x2F;&#x2F; this === UserModel
- *     }) ;
- *
- * Of course, the same can be achieved using the more general search method
- *
- *     UserModel.find( {username: &#x27;John&#x27;}, function(userRecord) {
- *          &#x2F;&#x2F; this === UserModel
- *     }) ;
- *
- * With &lt;tt&gt;find&lt;&#x2F;tt&gt; it is also possible to define more fields to search for.&lt;br&gt;
- * A Model instance, on the otherhand, can be used to create or manipulate data
- *
- *     userRecord = new User() ;                            &#x2F;&#x2F; create a blank record
- *     userRecord.username = &#x27;John&#x27; ;                       &#x2F;&#x2F; set the username
- *     userRecord.password = &#x27;Secret&#x27; ;                     &#x2F;&#x2F; set the password
- *     userRecord.save(successCallback, errorCallback) ;    &#x2F;&#x2F; check the result, because this action might fail
- *
- * &lt;h3&gt;Multiple result-sets&lt;&#x2F;h3&gt;
- * In {{#crossLink &quot;Sway&quot;}}{{&#x2F;crossLink}} a Model instance can also represent multiple records. Although it always
- * represent a single record, internally this has the whole result set.
- *
- * its current
- * state will always be a single record, it is possible to navigate from one state to an other
- *
- *     User.search({username: &#x27;John&#x27;}, function(record) {   &#x2F;&#x2F; record is a model instance representing more than on result
- *           while( record.hasNext() ) {                    &#x2F;&#x2F; check if there is an other record
- *                record.next() ;                           &#x2F;&#x2F; move on record up
- *                ....
- *           }
- *           record.item(1) ;                               &#x2F;&#x2F; go to second record
- *           record.prev() ;                                &#x2F;&#x2F; go to first record. Use &#x27;prev&#x27; in combination with &#x27;hasPrev&#x27;
- *     }) ;
- *
- * &lt;h3&gt;Advanced&lt;&#x2F;h3&gt;
- *
- *
- *
- * An instance represents one or more records, which depends on how it was created. For example, if a database search returns multiple records,
- * the Model instance represent them all, holding in its current state the first record&#x27;s values
- *
- *      User.find({ username: &#x27;John&#x27; }, function(ar) {  &#x2F;&#x2F; ActiveRecord instance, holding multiple records
- *          console.log(&quot;Found &quot; + ar.length + &quot; records) ;
- *      }) ;
- *
- * Checkout {{#crossLink &quot;Sway.data.Model&#x2F;next:method&quot;}}{{&#x2F;crossLink}}, {{#crossLink &quot;Sway.data.Model&#x2F;prev:method&quot;}}{{&#x2F;crossLink}}
- * {{#crossLink &quot;Sway.data.Model&#x2F;item:method&quot;}}{{&#x2F;crossLink}} and {{#crossLink &quot;Sway.data.Model&#x2F;hasNext:method&quot;}}{{&#x2F;crossLink}} to
- * understand how to deal with multi-record result-sets.
- *
- *
- *     var userRecord = new User({username: &#x27;John&#x27;, password: &#x27;Secret&#x27;}) ;
- *     ....
- *     userRecord.save() ;
- *
- * All fields are accessible as a property of a record
- *
- *     var userRecord = new User() ;
- *     userRecord.username = &#x27;John&#x27; ;
- *     userRecord.password = &#x27;Secret&#x27; ;
- *
- * @class Sway.data.Model
- * @constructor
- * @param {Object} [data] JSON data or a model instance to be cloned
- *&#x2F;
-&#x2F;**
- * TODO
- * @method save
- *
- *&#x2F;
-&#x2F;**
- * @method next
- *&#x2F;
-&#x2F;**
- * @method prev
- *&#x2F;
-&#x2F;**
- * @method item
- *&#x2F;
-&#x2F;**
- * @method hasNext
- *&#x2F;
-&#x2F;**
- * set the a new state.
- * @param state
- * @param {Boolean} [isLazy=true] values are transformed into the new state when requested. If &lt;tt&gt;true, all
- * values are transformed immediately.
- * @param {Function} [callback] if &lt;tt&gt;isLazy&lt;&#x2F;tt&gt; is set to TRUE the callback is called when all values
- * are transformed.
- *&#x2F;
-&#x2F;**
- *
- * returns all the data in JSON format (unfiltered)
- * @method toJSON
- * @param {String} key
- * @returns {Number}
- *&#x2F;
-&#x2F;**
- * Use find to perform searches
- *
- *      User.find( {
- *           &#x27;username&#x27;:   &#x27;John&#x27;
- *           , &#x27;password&#x27;: &#x27;Secret&#x27;
- *      }, function(user) { ... } ) ;
- *
- * Or simply create a new instance of a Model and use it for a search or save action
- *
- *      var userRecord = new User({ username: &#x27;John&#x27;, password: &#x27;Secret&#x27;}) ;
- *      User.find(userRecord, callback) ;
- *      &#x2F;&#x2F; or
- *      userRecord.save() ;
- * @method find
- * @static
- * @param {Object} data JSON or model instance
- * @param {Object} [options] configuration
- *  @param {Boolean} [lazy=true] If false, &lt;tt&gt;find&lt;&#x2F;tt&gt; returns a model which will have all its data, including foreign key data, loaded.
- *  If the record is &lt;tt&gt;lazy&lt;&#x2F;tt&gt;, call {{#crossLink &quot;Sway.data.Model&#x2F;load:method&quot;}}{{&#x2F;crossLink}} first to make the data avaiable.
- *&#x2F;
-&#x2F;**
- * @method save
- * @static
- * @param {Object} options
- *&#x2F;
-&#x2F;**
- * @property STATE.TRANFORMED
- * @static
- *&#x2F;
-&#x2F;**
- * @property STATE.NORMAL
- * @static
- *&#x2F;
 
-&#x2F;**
- * @method getState
- *&#x2F;
-&#x2F;**
- * @method setState
- *&#x2F;
-&#x2F;**
- * Call this function to make it aware of changes made to the data it relates to. Because a Model instance
- * has no direct link with, for example, a database, this mechanism only works when all changes made to the data are performed
- * by one and the same storage object. This storage object is responsible for the notifications.
- *
- * Always call {{#crossLink &quot;Sway.data.Model&#x2F;unlink:method&quot;}}{{&#x2F;crossLink}} to disable this behavior, or when the Model instance
- * otherwise, the
- * If the record or this &lt;tt&gt;link&lt;&#x2F;tt&gt; is not needed anymore, make sure to remove by calling {{#crossLink &quot;Sway.data.Model&#x2F;unlink:method&quot;}}{{&#x2F;crossLink}},
- * @method link
- *&#x2F;
-&#x2F;**
- * @method unlink
- *&#x2F;
-&#x2F;**
- * @method load
- * @param {String} key name of the field
- * @param {Function} [callback] callback function, called when the data is available
- *&#x2F;
+
+
+
+
+
+
+
 
     </pre>
 </div>

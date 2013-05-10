@@ -81,6 +81,15 @@
             "fors": {},
             "namespaces": {}
         },
+        "src/ux/d3carousel.js": {
+            "name": "src/ux/d3carousel.js",
+            "modules": {},
+            "classes": {
+                "Sway.ux.D3Carousel": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "src/appinit.js": {
             "name": "src/appinit.js",
             "modules": {},
@@ -129,7 +138,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/data/activerecord.js",
-            "line": 40,
+            "line": 9,
             "description": "ActiveRecord is the pattern used for this ORM implementation. This pattern encapsulates access\nto its resources, like a database.<br>\nThis class is a helper class, because it creates new Model classes of type {{#crossLink \"Sway.data.Model\"}}{{/crossLink}}.\nIts a blue print and gives all models it creates everything they need to perform CRUD-like tasks\n\n     var UserModel = new ActiveRecord( 'User', new WebSqlStorage('user-table'), [\n                           new Field( {type: 'TEXT', key: 'username', friendlyName: 'User name'})\n                         , new Field( {type: 'TEXT', key: 'password', friendlyName: 'Password'})\n                         , new Field( {type: 'DATE', key: 'birthday', friendlyName: 'Birthday'})\n                     ]) ;",
             "is_constructor": 1,
             "params": [
@@ -147,6 +156,11 @@
                 {
                     "name": "fieldList",
                     "description": "list of fields (see {{#crossLink \"Sway.data.Field\"}}{{/crossLink}}) ) ;",
+                    "type": "Array"
+                },
+                {
+                    "name": "relations",
+                    "description": "list of Relations",
                     "type": "Array",
                     "optional": true
                 }
@@ -161,7 +175,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/data/activerecord.js",
-            "line": 215,
+            "line": 88,
             "description": "Use the Model class to create instances which represent your data records. These will speed up your develement\nwhen CRUD-like tasks need to be done.<br>\nTo create a Model class, use {{#crossLink \"Sway.data.ActiveRecord\"}}{{/crossLink}}.\n\n<h3>The basics</h3>\nTo perform a search, a couple of static methods are available. Use the <tt>findByX</tt> methods to search on\na specific field\n\n    UserModel.findByUsername('John', function(userRecord) {\n         // this === UserModel\n    }) ;\n\nOf course, the same can be achieved using the more general search method\n\n    UserModel.find( {username: 'John'}, function(userRecord) {\n         // this === UserModel\n    }) ;\n\nWith <tt>find</tt> it is also possible to define more fields to search for.<br>\nA Model instance, on the otherhand, can be used to create or manipulate data\n\n    userRecord = new User() ;                            // create a blank record\n    userRecord.username = 'John' ;                       // set the username\n    userRecord.password = 'Secret' ;                     // set the password\n    userRecord.save(successCallback, errorCallback) ;    // check the result, because this action might fail\n\n<h3>Multiple result-sets</h3>\nIn {{#crossLink \"Sway\"}}{{/crossLink}} a Model instance can also represent multiple records. Although it always\nrepresent a single record, internally this has the whole result set.\n\nits current\nstate will always be a single record, it is possible to navigate from one state to an other\n\n    User.search({username: 'John'}, function(record) {   // record is a model instance representing more than on result\n          while( record.hasNext() ) {                    // check if there is an other record\n               record.next() ;                           // move on record up\n               ....\n          }\n          record.item(1) ;                               // go to second record\n          record.prev() ;                                // go to first record. Use 'prev' in combination with 'hasPrev'\n    }) ;\n\n<h3>Advanced</h3>\n\n\n\nAn instance represents one or more records, which depends on how it was created. For example, if a database search returns multiple records,\nthe Model instance represent them all, holding in its current state the first record's values\n\n     User.find({ username: 'John' }, function(ar) {  // ActiveRecord instance, holding multiple records\n         console.log(\"Found \" + ar.length + \" records) ;\n     }) ;\n\nCheckout {{#crossLink \"Sway.data.Model/next:method\"}}{{/crossLink}}, {{#crossLink \"Sway.data.Model/prev:method\"}}{{/crossLink}}\n{{#crossLink \"Sway.data.Model/item:method\"}}{{/crossLink}} and {{#crossLink \"Sway.data.Model/hasNext:method\"}}{{/crossLink}} to\nunderstand how to deal with multi-record result-sets.\n\n\n    var userRecord = new User({username: 'John', password: 'Secret'}) ;\n    ....\n    userRecord.save() ;\n\nAll fields are accessible as a property of a record\n\n    var userRecord = new User() ;\n    userRecord.username = 'John' ;\n    userRecord.password = 'Secret' ;",
             "is_constructor": 1,
             "params": [
@@ -355,6 +369,19 @@
             "line": 2,
             "is_constructor": 1
         },
+        "Sway.ux.D3Carousel": {
+            "name": "Sway.ux.D3Carousel",
+            "shortname": "Sway.ux.D3Carousel",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/ux/d3carousel.js",
+            "line": 6,
+            "description": "3D carousel like https://market.sencha.com/extensions/ext-ux-cover",
+            "is_constructor": 1
+        },
         "Sway": {
             "name": "Sway",
             "shortname": "Sway",
@@ -425,87 +452,34 @@
     "classitems": [
         {
             "file": "src/data/activerecord.js",
-            "line": 288,
-            "description": "TODO",
-            "itemtype": "method",
-            "name": "save",
+            "line": 162,
+            "description": "a record can be in two states; NORMAL (default) or TRANSFORMED ...... TODO\n\n     userRecord.setState(User.TRANSFORMED, callback) ; // change the state of the record",
+            "itemtype": "property",
+            "name": "STATE",
+            "type": "Object",
             "class": "Sway.data.Model"
         },
         {
             "file": "src/data/activerecord.js",
-            "line": 293,
-            "itemtype": "method",
-            "name": "next",
+            "line": 170,
+            "itemtype": "property",
+            "name": "STATE.TRANFORMED",
+            "type": "Number",
+            "static": 1,
             "class": "Sway.data.Model"
         },
         {
             "file": "src/data/activerecord.js",
-            "line": 296,
-            "itemtype": "method",
-            "name": "prev",
+            "line": 175,
+            "itemtype": "property",
+            "name": "STATE.NORMAL",
+            "type": "Number",
+            "static": 1,
             "class": "Sway.data.Model"
         },
         {
             "file": "src/data/activerecord.js",
-            "line": 299,
-            "itemtype": "method",
-            "name": "item",
-            "class": "Sway.data.Model"
-        },
-        {
-            "file": "src/data/activerecord.js",
-            "line": 302,
-            "itemtype": "method",
-            "name": "hasNext",
-            "class": "Sway.data.Model"
-        },
-        {
-            "file": "src/data/activerecord.js",
-            "line": 305,
-            "description": "set the a new state.",
-            "params": [
-                {
-                    "name": "state",
-                    "description": ""
-                },
-                {
-                    "name": "isLazy",
-                    "description": "values are transformed into the new state when requested. If <tt>true, all\nvalues are transformed immediately.",
-                    "type": "Boolean",
-                    "optional": true,
-                    "optdefault": "true"
-                },
-                {
-                    "name": "callback",
-                    "description": "if <tt>isLazy</tt> is set to TRUE the callback is called when all values\nare transformed.",
-                    "type": "Function",
-                    "optional": true
-                }
-            ],
-            "class": "Sway.data.Model"
-        },
-        {
-            "file": "src/data/activerecord.js",
-            "line": 313,
-            "description": "returns all the data in JSON format (unfiltered)",
-            "itemtype": "method",
-            "name": "toJSON",
-            "params": [
-                {
-                    "name": "key",
-                    "description": "",
-                    "type": "String"
-                }
-            ],
-            "return": {
-                "description": "",
-                "type": "Number"
-            },
-            "class": "Sway.data.Model"
-        },
-        {
-            "file": "src/data/activerecord.js",
-            "line": 320,
+            "line": 183,
             "description": "Use find to perform searches\n\n     User.find( {\n          'username':   'John'\n          , 'password': 'Secret'\n     }, function(user) { ... } ) ;\n\nOr simply create a new instance of a Model and use it for a search or save action\n\n     var userRecord = new User({ username: 'John', password: 'Secret'}) ;\n     User.find(userRecord, callback) ;\n     // or\n     userRecord.save() ;",
             "itemtype": "method",
             "name": "find",
@@ -534,7 +508,7 @@
         },
         {
             "file": "src/data/activerecord.js",
-            "line": 341,
+            "line": 213,
             "itemtype": "method",
             "name": "save",
             "static": 1,
@@ -549,52 +523,117 @@
         },
         {
             "file": "src/data/activerecord.js",
-            "line": 346,
-            "itemtype": "property",
-            "name": "STATE.TRANFORMED",
-            "static": 1,
+            "line": 226,
+            "itemtype": "method",
+            "name": "item",
             "class": "Sway.data.Model"
         },
         {
             "file": "src/data/activerecord.js",
-            "line": 350,
-            "itemtype": "property",
-            "name": "STATE.NORMAL",
-            "static": 1,
+            "line": 229,
+            "itemtype": "method",
+            "name": "hasNext",
             "class": "Sway.data.Model"
         },
         {
             "file": "src/data/activerecord.js",
-            "line": 355,
+            "line": 233,
             "itemtype": "method",
             "name": "getState",
             "class": "Sway.data.Model"
         },
         {
             "file": "src/data/activerecord.js",
-            "line": 358,
+            "line": 239,
+            "description": "change the state of a record. See ......",
             "itemtype": "method",
             "name": "setState",
+            "params": [
+                {
+                    "name": "state",
+                    "description": ""
+                },
+                {
+                    "name": "isLazy",
+                    "description": "values are transformed into the new state when requested. If <tt>true, all\nvalues are transformed immediately.",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": "true"
+                },
+                {
+                    "name": "callback",
+                    "description": "if <tt>isLazy</tt> is set to TRUE the callback is called when all values\nare transformed.",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
             "class": "Sway.data.Model"
         },
         {
             "file": "src/data/activerecord.js",
-            "line": 361,
-            "description": "Call this function to make it aware of changes made to the data it relates to. Because a Model instance\nhas no direct link with, for example, a database, this mechanism only works when all changes made to the data are performed\nby one and the same storage object. This storage object is responsible for the notifications.\n\nAlways call {{#crossLink \"Sway.data.Model/unlink:method\"}}{{/crossLink}} to disable this behavior, or when the Model instance\notherwise, the\nIf the record or this <tt>link</tt> is not needed anymore, make sure to remove by calling {{#crossLink \"Sway.data.Model/unlink:method\"}}{{/crossLink}},",
+            "line": 257,
+            "description": "returns all the data in JSON format (unfiltered)",
             "itemtype": "method",
-            "name": "link",
+            "name": "toJSON",
+            "params": [
+                {
+                    "name": "key",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Number"
+            },
             "class": "Sway.data.Model"
         },
         {
             "file": "src/data/activerecord.js",
-            "line": 371,
+            "line": 272,
+            "description": "TODO",
             "itemtype": "method",
-            "name": "unlink",
+            "name": "save",
             "class": "Sway.data.Model"
         },
         {
             "file": "src/data/activerecord.js",
-            "line": 374,
+            "line": 283,
+            "itemtype": "method",
+            "name": "next",
+            "class": "Sway.data.Model"
+        },
+        {
+            "file": "src/data/activerecord.js",
+            "line": 289,
+            "itemtype": "method",
+            "name": "prev",
+            "class": "Sway.data.Model"
+        },
+        {
+            "file": "src/data/activerecord.js",
+            "line": 295,
+            "itemtype": "method",
+            "name": "item",
+            "class": "Sway.data.Model"
+        },
+        {
+            "file": "src/data/activerecord.js",
+            "line": 301,
+            "itemtype": "method",
+            "name": "hasNext",
+            "class": "Sway.data.Model"
+        },
+        {
+            "file": "src/data/activerecord.js",
+            "line": 307,
+            "itemtype": "method",
+            "name": "hasPrev",
+            "class": "Sway.data.Model"
+        },
+        {
+            "file": "src/data/activerecord.js",
+            "line": 313,
             "itemtype": "method",
             "name": "load",
             "params": [
@@ -610,6 +649,21 @@
                     "optional": true
                 }
             ],
+            "class": "Sway.data.Model"
+        },
+        {
+            "file": "src/data/activerecord.js",
+            "line": 328,
+            "description": "Call this function to make it aware of changes made to the data it relates to. Because a Model instance\nhas no direct link with, for example, a database, this mechanism only works when all changes made to the data are performed\nby one and the same storage object. This storage object is responsible for the notifications.\n\nAlways call {{#crossLink \"Sway.data.Model/unlink:method\"}}{{/crossLink}} to disable this behavior, or when the Model instance\notherwise, the\nIf the record or this <tt>link</tt> is not needed anymore, make sure to remove by calling {{#crossLink \"Sway.data.Model/unlink:method\"}}{{/crossLink}},",
+            "itemtype": "method",
+            "name": "link",
+            "class": "Sway.data.Model"
+        },
+        {
+            "file": "src/data/activerecord.js",
+            "line": 341,
+            "itemtype": "method",
+            "name": "unlink",
             "class": "Sway.data.Model"
         },
         {
@@ -1114,7 +1168,7 @@
     "warnings": [
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/data/activerecord.js:313"
+            "line": " src/data/activerecord.js:257"
         },
         {
             "message": "replacing incorrect tag: returns with return",
@@ -1123,10 +1177,6 @@
         {
             "message": "param name missing: {Object}",
             "line": " src/eventhub.js:193"
-        },
-        {
-            "message": "Missing item type\nset the a new state.",
-            "line": " src/data/activerecord.js:305"
         },
         {
             "message": "Missing item type",

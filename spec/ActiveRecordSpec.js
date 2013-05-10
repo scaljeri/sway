@@ -18,7 +18,7 @@ window.describe("Sway.data.ActiveRecord", function() {
                 }
                 return json ;
             }
-            , save: function(record) {
+            , save: function(record, callback) {
                 // TODO
             }
         } ;

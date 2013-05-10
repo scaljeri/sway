@@ -13,7 +13,8 @@ YUI.add("yuidoc-meta", function(Y) {
         "Sway.filter.Encrypt",
         "Sway.persistance.Cookie",
         "Sway.persistance.IndexedDb",
-        "Sway.persistance.LocalStorage"
+        "Sway.persistance.LocalStorage",
+        "Sway.ux.D3Carousel"
     ],
     "modules": [],
     "allModules": []
