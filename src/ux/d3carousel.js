@@ -4,7 +4,8 @@ window.Sway.ux = window.Sway.ux || {} ;
 
 (function(ns){
     /**
-     * @class D3Carousel
+     * 3D carousel like https://market.sencha.com/extensions/ext-ux-cover
+     * @class Sway.ux.D3Carousel
      * @constructor
      */
     var D3Carousel = function(){

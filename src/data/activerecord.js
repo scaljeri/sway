@@ -56,11 +56,6 @@ window.Sway.data = window.Sway.data || {} ;
                        , writable: true
                    }) ;
 
-               Object.defineProperty(this, '__length',                  // if the data comes from storage, this number represents
-                   {                                                    // the number of items this record encapsulates
-                       value: 0
-                       , writable: false
-                   }) ;
                Object.defineProperty(this, '__dataSet',                 // al items
                    {
                        value: data
@@ -202,12 +197,15 @@ window.Sway.data = window.Sway.data || {} ;
              *  If the record is <tt>lazy</tt>, call {{#crossLink "Sway.data.Model/load:method"}}{{/crossLink}} first to make the data avaiable.
              */
             find: function(record, callback) {
-                if ( record.$className ) {
+                if ( record.$className ) {                                              // json required for searching
                     record = record.toJSON() ;
                 }
                 var json = this.storage.find(record, loadJSON.bind(this, callback) ) ;
-                if ( typeof(json) === 'object' ) {
-                    return new this(json, {state: DEFAULTS.STATE.TRANSFORMED}) ;
+                if ( typeof(json) === 'object' ) {                                      // not async ?
+                    var inst = new this(json, {state: DEFAULTS.STATE.TRANSFORMED}) ;
+                    if ( inst.setState(DEFAULTS.STATE.NORMAL, callback) ) {             // detect if async ? TODO
+                        return inst ;
+                    }
                 }
             }
             /**
@@ -270,12 +268,14 @@ window.Sway.data = window.Sway.data || {} ;
                 return json ;
             }
             /**
-             * TODO
+             * Save the data and its relations (See Relation TODO)
              * @method save
+             * @param {Boolean} [deep=true] save related data
+             * @param {Function} [callback] callback function
              *
              */
-            , save: function(callback) {
-
+            , save: function(deep, callback) {
+               return this.constructor.storage.save(this, deep, callback) ;
             }
             , getFields: function() {
                 return this.constructor.fields ;
@@ -344,12 +344,15 @@ window.Sway.data = window.Sway.data || {} ;
             , unlink: function() {
 
             }
+            , getLength: function() {
+                return this.__dataSet.length ;
+            }
         } ;
 
     /* Private helpers */
 
     function appendStaticProperties(Model, storage, fields, relations) {
-        var i, key ;
+        var i, key, hasTransformers = false ;
 
         for ( i in STATIC ) {                                   // create static methods
             Model[i] = STATIC[i].bind(Model) ;
@@ -358,12 +361,17 @@ window.Sway.data = window.Sway.data || {} ;
         Model.storage = storage ;                                   // reference to the storage object
         Model.relations = relations ;
         Model.fields = {} ;                                         // field container, referenced by their key value
+        Model.hasTransformers = false ;
+
 
         for( i = 0; i < fields.length; i++ ) {
             key = fields[i].key ;
             Model.fields[key] = fields[i] ;         // add field to fields object
             // create a 'findByXXX' function, like: findByUserName
             Model[['findBy', key.slice(0,1).toUpperCase(), key.slice(1)].join('')] = findBy.bind(Model, key);
+            if ( fields[i].transformers && fields[i].transformers.length > 0 ) {
+                Model.hasTransformers = true ;
+            }
         }
     }
 

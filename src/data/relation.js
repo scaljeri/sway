@@ -1,3 +1,6 @@
+// Create the namespace -> JS load order independent
+window.Sway = window.Sway || {} ;
+window.Sway.data = window.Sway.data || {} ;
 (function(ns){
     /**
      */
