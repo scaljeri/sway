@@ -82,7 +82,8 @@ window.Sway = window.Sway || {} ; // make sure it exists
          * @param {Array} [params] list of constructor parameters. Only if a parameter is a string and matches a contract, it
          * will be replaced with the corresponding instance
          * @param {Object} [options] configuration
-         *      @param {string} [options.singleton=false] create a new instance every time
+         *      @param {String} [options.singleton=false] create a new instance every time
+         *      @param {String} [options.description] describes the contract (used when {{#crossLink "Sway.DI/listContracts:method"}}{{/crossLink}} is called.
          * @return {Object} this
          * @example
          App.di.registerType("ajax", App.AJAX) ;
@@ -130,8 +131,17 @@ window.Sway = window.Sway || {} ; // make sure it exists
             }
             return instance ;
         },
+        /**
+         * List all available contracts with their description to <tt>console.log</tt>
+         * @method listContracts
+         */
+        listContracts: function() {
+            var keys = Object.keys(this._contracts) ;
+            keys.sort().forEach(function(v) {
+               console(v + ', ' + this._contracts[v].options.description) ;
+            }.bind(this)) ;
+        }
     } ;
-
 
     /* ***** PRIVATE HELPERS ***** */
 
