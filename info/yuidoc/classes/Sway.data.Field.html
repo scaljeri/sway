@@ -43,9 +43,15 @@
             
                 <li><a href="..&#x2F;classes/Sway.html">Sway</a></li>
             
-                <li><a href="..&#x2F;classes/Sway.data.ActiveRecord..html">Sway.data.ActiveRecord.</a></li>
+                <li><a href="..&#x2F;classes/Sway.Bindable.html">Sway.Bindable</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.data.ActiveRecord.html">Sway.data.ActiveRecord</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.data.Field.html">Sway.data.Field</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.data.Model.html">Sway.data.Model</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.data.Relation.html">Sway.data.Relation</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.DI.html">Sway.DI</a></li>
             
@@ -54,6 +60,16 @@
                 <li><a href="..&#x2F;classes/Sway.filter.Compress.html">Sway.filter.Compress</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.filter.Encrypt.html">Sway.filter.Encrypt</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.persistance.Cookie.html">Sway.persistance.Cookie</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.persistance.IndexedDb.html">Sway.persistance.IndexedDb</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.persistance.LocalStorage.html">Sway.persistance.LocalStorage</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.ux.D3Carousel.html">Sway.ux.D3Carousel</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.ux.Form.html">Sway.ux.Form</a></li>
             
             </ul>
 
@@ -102,7 +118,7 @@
 
     
         <div class="foundat">
-            Defined in: <a href="..&#x2F;files&#x2F;src_data_field.js.html#l7"><code>src&#x2F;data&#x2F;field.js:7</code></a>
+            Defined in: <a href="..&#x2F;files&#x2F;src_data_field.js.html#l10"><code>src&#x2F;data&#x2F;field.js:10</code></a>
         </div>
     
 
@@ -114,89 +130,46 @@
 
 
 <div class="box intro">
-    
+    <p>A Field represents a single value of an <a href="../classes/Sway.data.ActiveRecord.html" class="crosslink">Sway.data.ActiveRecord</a> model.</p>
+
+<pre class="code prettyprint"><code>var username   = new Field('username', { friendlyName: 'User name' })
+    , password = new Field('password', { type: 'password', friendlyName: 'Password' })
+    , address  = new Field('address',  { FK: {model: Sway.data.Address}, friendlyName: 'Address' }) ;
+</code></pre>
+
+<p>Or if a field holds data which should be encrypted and compressed before persisted</p>
+
+<pre class="code prettyprint"><code>var accountInfo = new Field( 'accountInfo', { type: 'BLOB', friendLyName: 'Account info', transformers: [encryptFilter, compressFilter] }) ;
+</code></pre>
+
+<p>The constructor's <tt>options</tt> parameter has many sub-options, however, it depends on the storage engine used which are used or ignored.
+Checkout the storage engine classes to find out which parameter are user/required.</p>
 </div>
 
 
-
-<div id="classdocs" class="tabview">
-    <ul class="api-class-tabs">
-        <li class="api-class-tab index"><a href="#index">Index</a></li>
-
-        
-            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
-        
-        
-        
-        
-    </ul>
-
-    <div>
-        <div id="index" class="api-class-tabpanel index">
-            <h2 class="off-left">Item Index</h2>
-
-            
-                <div class="index-section methods">
-                    <h3>Methods</h3>
-
-                    <ul class="index-list methods">
-                        
-                            <li class="index-item method">
-                                <a href="#method_getFilteredValue">getFilteredValue</a>
-
-                                
-                                
-                            </li>
-                        
-                            <li class="index-item method">
-                                <a href="#method_getValue">getValue</a>
-
-                                
-                                
-                            </li>
-                        
-                            <li class="index-item method">
-                                <a href="#method_setFilteredValue">setFilteredValue</a>
-
-                                
-                                
-                            </li>
-                        
-                            <li class="index-item method">
-                                <a href="#method_setValue">setValue</a>
-
-                                
-                                
-                            </li>
-                        
-                            <li class="index-item method">
-                                <a href="#method_size">size</a>
-
-                                
-                                
-                            </li>
-                        
-                    </ul>
-                </div>
-            
-
-            
-
-            
-
-            
-        </div>
-
-        
-            <div id="methods" class="api-class-tabpanel">
-                <h2 class="off-left">Methods</h2>
-
-                
-                    <div id="method_getFilteredValue" class="method item">
-    <h3 class="name"><code>getFilteredValue</code></h3>
+    <div class="constructor">
+        <h2>Constructor</h2>
+        <div id="method_Sway.data.Field" class="method item">
+    <h3 class="name"><code>Sway.data.Field</code></h3>
 
     
-        <span class="paren">()</span>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>key</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[options]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
     
 
     
@@ -224,7 +197,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;src_data_field.js.html#l38"><code>src&#x2F;data&#x2F;field.js:38</code></a>
+        <a href="..&#x2F;files&#x2F;src_data_field.js.html#l10"><code>src&#x2F;data&#x2F;field.js:10</code></a>
         
         </p>
 
@@ -239,6 +212,395 @@
     </div>
 
     
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">key</code>
+                        <span class="type">String</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>name of the field</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[options]</code>
+                        <span class="type">Object</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>definition of this field</p>
+                    </div>
+
+                    
+                        <ul class="params-list">
+                            
+                            <li class="param">
+                                
+                                    <code class="param-name optional">[type=TEXT]</code>
+                                    <span class="type">String</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+                                
+
+                                <div class="param-description">
+                                    <p>type of the field</p>
+                                </div>
+
+                                
+                            </li>
+                            
+                            <li class="param">
+                                
+                                    <code class="param-name optional">[friendlyName]</code>
+                                    <span class="type">String</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+                                
+
+                                <div class="param-description">
+                                    <p>description of the field</p>
+                                </div>
+
+                                
+                            </li>
+                            
+                            <li class="param">
+                                
+                                    <code class="param-name optional">[PK]</code>
+                                    <span class="type">Object</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+                                
+
+                                <div class="param-description">
+                                    <p>primary key field (there can only be one primary key field)</p>
+                                </div>
+
+                                
+                                    <ul class="params-list">
+                                        
+                                        <li class="param">
+                                            
+                                                <code class="param-name optional">[auto=true]</code>
+                                                <span class="type">Boolean</span>
+                                                <span class="flag optional" title="This parameter is optional.">optional</span>
+                                            
+
+                                            <div class="param-description">
+                                                Primary key field is auto-incremented (auto generated key)
+                                            </div>
+                                        </li>
+                                        
+                                    </ul>
+                                
+                            </li>
+                            
+                            <li class="param">
+                                
+                                    <code class="param-name optional">[FK]</code>
+                                    <span class="type">Object</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+                                
+
+                                <div class="param-description">
+                                    <p>foreign key configuration object</p>
+                                </div>
+
+                                
+                                    <ul class="params-list">
+                                        
+                                        <li class="param">
+                                            
+                                                <code class="param-name">model</code>
+                                                <span class="type">Model</span>
+                                            
+
+                                            <div class="param-description">
+                                                Model reference
+                                            </div>
+                                        </li>
+                                        
+                                        <li class="param">
+                                            
+                                                <code class="param-name optional">[key=id]</code>
+                                                <span class="type">String</span>
+                                                <span class="flag optional" title="This parameter is optional.">optional</span>
+                                            
+
+                                            <div class="param-description">
+                                                the key of the model it is referencing
+                                            </div>
+                                        </li>
+                                        
+                                    </ul>
+                                
+                            </li>
+                            
+                            <li class="param">
+                                
+                                    <code class="param-name optional">[index]</code>
+                                    <span class="type">Object</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+                                
+
+                                <div class="param-description">
+                                    
+                                </div>
+
+                                
+                                    <ul class="params-list">
+                                        
+                                        <li class="param">
+                                            
+                                                <code class="param-name optional">[unique=false]</code>
+                                                <span class="type">Boolean</span>
+                                                <span class="flag optional" title="This parameter is optional.">optional</span>
+                                            
+
+                                            <div class="param-description">
+                                                unique field
+                                            </div>
+                                        </li>
+                                        
+                                        <li class="param">
+                                            
+                                                <code class="param-name optional">[compound]</code>
+                                                <span class="type">Array</span>
+                                                <span class="flag optional" title="This parameter is optional.">optional</span>
+                                            
+
+                                            <div class="param-description">
+                                                names of the compound index. All fields with the same compound index name are used to create a compound index
+                                            </div>
+                                        </li>
+                                        
+                                    </ul>
+                                
+                            </li>
+                            
+                            <li class="param">
+                                
+                                    <code class="param-name optional">[required=false]</code>
+                                    <span class="type">Boolean</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+                                
+
+                                <div class="param-description">
+                                    <p>a required field</p>
+                                </div>
+
+                                
+                            </li>
+                            
+                            <li class="param">
+                                
+                                    <code class="param-name optional">[transformers]</code>
+                                    <span class="type">Array</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+                                
+
+                                <div class="param-description">
+                                    <p>list of transformer objects. A transformer object can transform the data into a new form and also back
+into its original form. Think of, zipping and unzipping or encrypting and decrypting</p>
+                                </div>
+
+                                
+                            </li>
+                            
+                            <li class="param">
+                                
+                                    <code class="param-name optional">[validators]</code>
+                                    <span class="type">Array</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+                                
+
+                                <div class="param-description">
+                                    <p>list of validation functions</p>
+                                </div>
+
+                                
+                            </li>
+                            
+                        </ul>
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+    </div>
+
+
+<div id="classdocs" class="tabview">
+    <ul class="api-class-tabs">
+        <li class="api-class-tab index"><a href="#index">Index</a></li>
+
+        
+            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
+        
+        
+        
+        
+    </ul>
+
+    <div>
+        <div id="index" class="api-class-tabpanel index">
+            <h2 class="off-left">Item Index</h2>
+
+            
+                <div class="index-section methods">
+                    <h3>Methods</h3>
+
+                    <ul class="index-list methods">
+                        
+                            <li class="index-item method">
+                                <a href="#method_transform">transform</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_validate">validate</a>
+
+                                
+                                
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+            
+
+            
+
+            
+        </div>
+
+        
+            <div id="methods" class="api-class-tabpanel">
+                <h2 class="off-left">Methods</h2>
+
+                
+                    <div id="method_transform" class="method item">
+    <h3 class="name"><code>transform</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>value</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>callback</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;src_data_field.js.html#l56"><code>src&#x2F;data&#x2F;field.js:56</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">value</code>
+                        <span class="type"></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>value to be transformed</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">callback</code>
+                        <span class="type">Function</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>function called with the transformed data</p>
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
 
     
 
@@ -246,16 +608,26 @@
 </div>
 
                 
-                    <div id="method_getValue" class="method item">
-    <h3 class="name"><code>getValue</code></h3>
+                    <div id="method_validate" class="method item">
+    <h3 class="name"><code>validate</code></h3>
 
     
-        <span class="paren">()</span>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>value</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
     
 
     
         <span class="returns-inline">
-            <span class="type"></span>
+            <span class="type">Boolean</span>
         </span>
     
 
@@ -282,7 +654,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;src_data_field.js.html#l31"><code>src&#x2F;data&#x2F;field.js:31</code></a>
+        <a href="..&#x2F;files&#x2F;src_data_field.js.html#l69"><code>src&#x2F;data&#x2F;field.js:69</code></a>
         
         </p>
 
@@ -296,6 +668,29 @@
         
     </div>
 
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">value</code>
+                        <span class="type"></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>value to be validated</p>
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
     
 
     
@@ -305,239 +700,11 @@
             <div class="returns-description">
                 
                     
-                        <span class="type"></span>:
+                        <span class="type">Boolean</span>:
                     
                 
             </div>
         </div>
-    
-
-    
-</div>
-
-                
-                    <div id="method_setFilteredValue" class="method item">
-    <h3 class="name"><code>setFilteredValue</code></h3>
-
-    
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        <code>value</code>
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="..&#x2F;files&#x2F;src_data_field.js.html#l53"><code>src&#x2F;data&#x2F;field.js:53</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-    
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-            
-                <li class="param">
-                    
-                        <code class="param-name">value</code>
-                        <span class="type">Object | String | Blob | Array</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>the filtered value of the field instance</p>
-                    </div>
-
-                    
-                </li>
-            
-            </ul>
-        </div>
-    
-
-    
-
-    
-</div>
-
-                
-                    <div id="method_setValue" class="method item">
-    <h3 class="name"><code>setValue</code></h3>
-
-    
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        <code>value</code>
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="..&#x2F;files&#x2F;src_data_field.js.html#l45"><code>src&#x2F;data&#x2F;field.js:45</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-    
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-            
-                <li class="param">
-                    
-                        <code class="param-name">value</code>
-                        <span class="type">Object | String | Blob | Array</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>the value of the field instance</p>
-                    </div>
-
-                    
-                </li>
-            
-            </ul>
-        </div>
-    
-
-    
-
-    
-</div>
-
-                
-                    <div id="method_size" class="method item">
-    <h3 class="name"><code>size</code></h3>
-
-    
-        <span class="paren">()</span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="..&#x2F;files&#x2F;src_data_field.js.html#l61"><code>src&#x2F;data&#x2F;field.js:61</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-    
-
     
 
     

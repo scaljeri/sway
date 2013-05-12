@@ -43,9 +43,15 @@
             
                 <li><a href="..&#x2F;classes/Sway.html">Sway</a></li>
             
-                <li><a href="..&#x2F;classes/Sway.data.ActiveRecord..html">Sway.data.ActiveRecord.</a></li>
+                <li><a href="..&#x2F;classes/Sway.Bindable.html">Sway.Bindable</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.data.ActiveRecord.html">Sway.data.ActiveRecord</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.data.Field.html">Sway.data.Field</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.data.Model.html">Sway.data.Model</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.data.Relation.html">Sway.data.Relation</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.DI.html">Sway.DI</a></li>
             
@@ -54,6 +60,16 @@
                 <li><a href="..&#x2F;classes/Sway.filter.Compress.html">Sway.filter.Compress</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.filter.Encrypt.html">Sway.filter.Encrypt</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.persistance.Cookie.html">Sway.persistance.Cookie</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.persistance.IndexedDb.html">Sway.persistance.IndexedDb</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.persistance.LocalStorage.html">Sway.persistance.LocalStorage</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.ux.D3Carousel.html">Sway.ux.D3Carousel</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.ux.Form.html">Sway.ux.Form</a></li>
             
             </ul>
 
@@ -102,157 +118,416 @@
 window.Sway = window.Sway || {} ;
 window.Sway.data = window.Sway.data || {} ;
 
-(function(Ns) {
+(function(ns) {
     &quot;use strict&quot; ;
 
+
+        &#x2F;**
+         * ActiveRecord is the pattern used for this ORM implementation. This pattern encapsulates access
+         * to its resources, like a database.&lt;br&gt;
+         * This class is a helper class, because it creates new Model classes of type {{#crossLink &quot;Sway.data.Model&quot;}}{{&#x2F;crossLink}}.
+         * Its a blue print and gives all models it creates everything they need to perform CRUD-like tasks
+         *
+         *      var UserModel = new ActiveRecord( &#x27;User&#x27;, new WebSqlStorage(&#x27;user-table&#x27;), [
+         *                            new Field( {type: &#x27;TEXT&#x27;, key: &#x27;username&#x27;, friendlyName: &#x27;User name&#x27;})
+         *                          , new Field( {type: &#x27;TEXT&#x27;, key: &#x27;password&#x27;, friendlyName: &#x27;Password&#x27;})
+         *                          , new Field( {type: &#x27;DATE&#x27;, key: &#x27;birthday&#x27;, friendlyName: &#x27;Birthday&#x27;})
+         *                      ]) ;
+         *
+         * @class Sway.data.ActiveRecord
+         * @constructor
+         * @param {String} modelName name of the model
+         * @param {Object}[storage] object used to access the underlying data structure
+         * @param {Array} fieldList list of fields (see {{#crossLink &quot;Sway.data.Field&quot;}}{{&#x2F;crossLink}}) ) ;
+         * @param {Array} [relations] list of Relations
+         *&#x2F;
+       var ActiveRecord = function(modelName, storage, fields, relations ) {
+            var i, key ;
+
+           function Model(data, options) {                              &#x2F;&#x2F; define the model class&#x2F;function
+               if ( !options) {                                         &#x2F;&#x2F; fix input
+                    options = {} ;
+               }
+               if ( !data ) {
+                   data = {} ;
+               }
+               else if ( data.$className ) {
+                   data = data.toJSON() ;
+               }
+
+               Object.defineProperty(this, &#x27;__state__&#x27;,
+                   {
+                       value: typeof(options.state) === &#x27;boolean&#x27; ? options.state : DEFAULTS.STATE.NORMAL
+                       , enumarable: false
+                   }) ;
+               Object.defineProperty(this, &#x27;$className&#x27;,                &#x2F;&#x2F; name of the class it belongs too
+                   {
+                       value: this.constructor.name
+                       , writable: false
+                   }) ;
+               Object.defineProperty(this, &#x27;__id__&#x27;,                    &#x2F;&#x2F; if none of the fields is unique, this field is
+                   {                                                    &#x2F;&#x2F; added to the record
+                       value: null
+                       , enumarable: false
+                       , writable: true
+                   }) ;
+
+               Object.defineProperty(this, &#x27;__dataSet&#x27;,                 &#x2F;&#x2F; al items
+                   {
+                       value: data
+                       , writable: false
+                   }) ;
+
+               for( i in this.constructor.fields ) {                &#x2F;&#x2F; TODO: initialize with first item
+                   this[i] = data[i] ;
+
+               }
+               return Object.seal(this) ;                               &#x2F;&#x2F; make sure no properties can be added
+            }
+
+            appendStaticProperties(Model, storage, fields, relations ) ;
+            appendPrototypeProperties(Model) ;
+
+
+
+            return Model ;
+        }
+
+
+    &#x2F;* Define the Model class here *&#x2F;
+
     &#x2F;**
-     * This class stores a string in memory. If a persistance dependency is defined, it will use this dependency to store
-     * the data. Filters are used to perform some action on the data before persisting it and on retrieval.
-     * As an example, a persistance dependency could be WebSQL storage. A filter could be encryption and&#x2F;or compression.
-     * Note that for an encryption filter, it will perform an action on the data before persisting it, and on retrieval.
+     * Use the Model class to create instances which represent your data records. These will speed up your develement
+     * when CRUD-like tasks need to be done.&lt;br&gt;
+     * To create a Model class, use {{#crossLink &quot;Sway.data.ActiveRecord&quot;}}{{&#x2F;crossLink}}.
      *
-     * @class Sway.data.ActiveRecord.
-     * @param {Object}[persistence] dependency which can persist the data
-     * @param {Array} [fieldList] list of filters. Depending on the filter type its a before and&#x2F;or after filter.
+     * &lt;h3&gt;The basics&lt;&#x2F;h3&gt;
+     * To perform a search, a couple of static methods are available. Use the &lt;tt&gt;findByX&lt;&#x2F;tt&gt; methods to search on
+     * a specific field
+     *
+     *     UserModel.findByUsername(&#x27;John&#x27;, function(userRecord) {
+ *          &#x2F;&#x2F; this === UserModel
+ *     }) ;
+     *
+     * Of course, the same can be achieved using the more general search method
+     *
+     *     UserModel.find( {username: &#x27;John&#x27;}, function(userRecord) {
+ *          &#x2F;&#x2F; this === UserModel
+ *     }) ;
+     *
+     * With &lt;tt&gt;find&lt;&#x2F;tt&gt; it is also possible to define more fields to search for.&lt;br&gt;
+     * A Model instance, on the otherhand, can be used to create or manipulate data
+     *
+     *     userRecord = new User() ;                            &#x2F;&#x2F; create a blank record
+     *     userRecord.username = &#x27;John&#x27; ;                       &#x2F;&#x2F; set the username
+     *     userRecord.password = &#x27;Secret&#x27; ;                     &#x2F;&#x2F; set the password
+     *     userRecord.save(successCallback, errorCallback) ;    &#x2F;&#x2F; check the result, because this action might fail
+     *
+     * &lt;h3&gt;Multiple result-sets&lt;&#x2F;h3&gt;
+     * In {{#crossLink &quot;Sway&quot;}}{{&#x2F;crossLink}} a Model instance can also represent multiple records. Although it always
+     * represent a single record, internally this has the whole result set.
+     *
+     * its current
+     * state will always be a single record, it is possible to navigate from one state to an other
+     *
+     *     User.search({username: &#x27;John&#x27;}, function(record) {   &#x2F;&#x2F; record is a model instance representing more than on result
+ *           while( record.hasNext() ) {                    &#x2F;&#x2F; check if there is an other record
+ *                record.next() ;                           &#x2F;&#x2F; move on record up
+ *                ....
+ *           }
+ *           record.item(1) ;                               &#x2F;&#x2F; go to second record
+ *           record.prev() ;                                &#x2F;&#x2F; go to first record. Use &#x27;prev&#x27; in combination with &#x27;hasPrev&#x27;
+ *     }) ;
+     *
+     * &lt;h3&gt;Advanced&lt;&#x2F;h3&gt;
+     *
+     *
+     *
+     * An instance represents one or more records, which depends on how it was created. For example, if a database search returns multiple records,
+     * the Model instance represent them all, holding in its current state the first record&#x27;s values
+     *
+     *      User.find({ username: &#x27;John&#x27; }, function(ar) {  &#x2F;&#x2F; ActiveRecord instance, holding multiple records
+ *          console.log(&quot;Found &quot; + ar.length + &quot; records) ;
+ *      }) ;
+     *
+     * Checkout {{#crossLink &quot;Sway.data.Model&#x2F;next:method&quot;}}{{&#x2F;crossLink}}, {{#crossLink &quot;Sway.data.Model&#x2F;prev:method&quot;}}{{&#x2F;crossLink}}
+     * {{#crossLink &quot;Sway.data.Model&#x2F;item:method&quot;}}{{&#x2F;crossLink}} and {{#crossLink &quot;Sway.data.Model&#x2F;hasNext:method&quot;}}{{&#x2F;crossLink}} to
+     * understand how to deal with multi-record result-sets.
+     *
+     *
+     *     var userRecord = new User({username: &#x27;John&#x27;, password: &#x27;Secret&#x27;}) ;
+     *     ....
+     *     userRecord.save() ;
+     *
+     * All fields are accessible as a property of a record
+     *
+     *     var userRecord = new User() ;
+     *     userRecord.username = &#x27;John&#x27; ;
+     *     userRecord.password = &#x27;Secret&#x27; ;
+     *
+     * @class Sway.data.Model
+     * @constructor
+     * @param {Object} [data] JSON data or a model instance to be cloned
      *&#x2F;
-     var ActiveRecord = function(persistance ) {
-
-        &#x2F;*
-        AR prototype methods can be access by a BLESSED model, or simply by an ActiveRecord instance. To make these
-        function independent of this BLESSED mechanism the blow variables is used within each function
-         *&#x2F;
-        Object.defineProperty(this, &#x27;_ar&#x27;,          &#x2F;&#x2F; use this._ar instead of this
-            {
-                value:this
-                , configurable: false
-                , writable: false
-                , enumerable: false &#x2F;&#x2F; hide it
+        , DEFAULTS = {
+                &#x2F;**
+                 * a record can be in two states; NORMAL (default) or TRANSFORMED ...... TODO
+                 *
+                 *      userRecord.setState(User.TRANSFORMED, callback) ; &#x2F;&#x2F; change the state of the record
+                 *
+                 * @property {Object} STATE
+                 *&#x2F;
+            STATE: {
+                &#x2F;**
+                 * @property {Number} STATE.TRANFORMED
+                 * @static
+                 *&#x2F;
+                TRANSFORMED: 1
+                &#x2F;**
+                 * @property {Number} STATE.NORMAL
+                 * @static
+                 *&#x2F;
+                , NORMAL: 0
             }
-        ) ;
-
-        Object.defineProperty(this, &#x27;_persist&#x27;,
-            {
-                value: persistance
-                , enumerable: false &#x2F;&#x2F; hide it
-            }
-        ) ;
-        Object.defineProperty(this, &#x27;_field&#x27;,
-            {
-                value: []
-                , enumerable: false &#x2F;&#x2F; hide it
-            }
-        ) ;
-        Object.defineProperty(this, &#x27;_fieldLookup&#x27;,
-            {
-                value: {}
-                , enumerable: false &#x2F;&#x2F; hide it
-            }
-        ) ;
-    } ;
-
-	ActiveRecord.prototype = {
-        &#x2F;**
-         * @method bless
-         * @chainable
-         * @param {Object} model instance to be blessed
-         *&#x2F;
-        bless: function(model) {
-            var i
-                , setup ;
-
-            Object.defineProperty(model, &#x27;_ar&#x27;,             &#x2F;&#x2F; create a ref to ActiveRecord instance
-                {
-                    value: this
-                    , enumerable: false &#x2F;&#x2F; hide it
+        }
+        , STATIC = {
+            &#x2F;**
+             * Use find to perform searches
+             *
+             *      User.find( {
+             *           &#x27;username&#x27;:   &#x27;John&#x27;
+             *           , &#x27;password&#x27;: &#x27;Secret&#x27;
+             *      }, function(user) { ... } ) ;
+             *
+             * Or simply create a new instance of a Model and use it for a search or save action
+             *
+             *      var userRecord = new User({ username: &#x27;John&#x27;, password: &#x27;Secret&#x27;}) ;
+             *      User.find(userRecord, callback) ;
+             *      &#x2F;&#x2F; or
+             *      userRecord.save() ;
+             * @method find
+             * @static
+             * @param {Object} data JSON or model instance
+             * @param {Object} [options] configuration
+             *  @param {Boolean} [lazy=true] If false, &lt;tt&gt;find&lt;&#x2F;tt&gt; returns a model which will have all its data, including foreign key data, loaded.
+             *  If the record is &lt;tt&gt;lazy&lt;&#x2F;tt&gt;, call {{#crossLink &quot;Sway.data.Model&#x2F;load:method&quot;}}{{&#x2F;crossLink}} first to make the data avaiable.
+             *&#x2F;
+            find: function(record, callback) {
+                if ( record.$className ) {                                              &#x2F;&#x2F; json required for searching
+                    record = record.toJSON() ;
                 }
-            ) ;
-
-            &#x2F;&#x2F; copy methods
-            model.save = this.save ;
-
-            &#x2F;&#x2F; clone the fields
-            if ( !model._field ) {
-                Object.defineProperty(model, &#x27;_field&#x27;,             &#x2F;&#x2F; create a ref to ActiveRecord instance
-                    {
-                        value: []
-                        , enumerable: false &#x2F;&#x2F; hide it
+                var json = this.storage.find(record, loadJSON.bind(this, callback) ) ;
+                if ( typeof(json) === &#x27;object&#x27; ) {                                      &#x2F;&#x2F; not async ?
+                    var inst = new this(json, {state: DEFAULTS.STATE.TRANSFORMED}) ;
+                    if ( inst.setState(DEFAULTS.STATE.NORMAL, callback) ) {             &#x2F;&#x2F; detect if async ? TODO
+                        return inst ;
                     }
-                ) ;
-                Object.defineProperty(model, &#x27;_fieldLookup&#x27;,             &#x2F;&#x2F; create a ref to ActiveRecord instance
-                    {
-                        value:{}
-                        , enumerable: false &#x2F;&#x2F; hide it
-                    }
-                ) ;
-
-                for( i = 0; i &lt; this._field.length; i++ ){
-                    setup = this._field[i] ;
-                    model._fieldLookup[setup.key] = model._field.length ;
-                    model._field.push(clone(this._field[i])) ;
                 }
             }
-            return this ;
-        }
-        &#x2F;**
-         * @method getField
-         * @param {String} key
-         * @return {Object} Field instance
-         *&#x2F;
-        , getField: function(key) {
-            return this._field[this._fieldLookup[key]].field ;
-        }
-        , setField: function(key, field) {
-           this._fieldLookup[key] = this._field.length ;
-            this._field.push({ key: key, field: field}) ;
-        }
-        &#x2F;**
-         * @method getSize
-         * @param {String} key
-         * @returns {Number}
-         *&#x2F;
-        , getSize: function(key) {
-            var self = this._ar
-                , size = 0
-                , i ;
-
-            if ( key ) {
-                return self._field[self._fieldLookup[key]].field.getSize() ;
+            &#x2F;**
+             * @method save
+             * @static
+             * @param {Object} options
+             *&#x2F;
+            , save: function(json, callback) {
+                &#x2F;&#x2F; for performance (no instance required
             }
-            else {
-                for( i = 0; i &lt; self._field.length; i++ ) {
-                    size += self._field[i].field.getSize() ;
+        }
+
+
+
+
+    &#x2F;**
+     * @method item
+     *&#x2F;
+    &#x2F;**
+     * @method hasNext
+     *&#x2F;
+        , INSTANCE = {
+            &#x2F;**
+             * @method getState
+             *&#x2F;
+            getState: function() {
+                return this.__state__ ;
+            }
+            &#x2F;**
+             * change the state of a record. See ......
+             * @method setState
+             * @param state
+             * @param {Boolean} [isLazy=true] values are transformed into the new state when requested. If &lt;tt&gt;true, all
+             * values are transformed immediately.
+             * @param {Function} [callback] if &lt;tt&gt;isLazy&lt;&#x2F;tt&gt; is set to TRUE the callback is called when all values
+             * are transformed.
+             *&#x2F;
+            , setState: function(state, isLazy, callback) {
+                this.state = state ;
+                if ( typeof(isLazy) === &#x27;function&#x27;) {
+                    callback = isLazy ;
+                    isLazy = true ;
+                }
+                &#x2F;&#x2F; TODO: applie transformers
+                callback() ;
+            }
+            &#x2F;**
+             *
+             * returns all the data in JSON format (unfiltered)
+             * @method toJSON
+             * @param {String} key
+             * @returns {Number}
+             *&#x2F;
+            , toJSON: function() { &#x2F;&#x2F; ale
+                var json = {}
+                    , i ;
+                for( i in this.constructor.fields ) {
+                    json[i] = this[i] ;
+                }
+                return json ;
+            }
+            &#x2F;**
+             * Save the data and its relations (See Relation TODO)
+             * @method save
+             * @param {Boolean} [deep=true] save related data
+             * @param {Function} [callback] callback function
+             *
+             *&#x2F;
+            , save: function(deep, callback) {
+               return this.constructor.storage.save(this, deep, callback) ;
+            }
+            , getFields: function() {
+                return this.constructor.fields ;
+            }
+            &#x2F;**
+             * @method next
+             *&#x2F;
+            , next: function() {
+
+            }
+            &#x2F;**
+             * @method prev
+             *&#x2F;
+            , prev: function() {
+
+            }
+            &#x2F;**
+             * @method item
+             *&#x2F;
+            , item: function() {
+
+            }
+            &#x2F;**
+             * @method hasNext
+             *&#x2F;
+            , hasNext: function() {
+
+            }
+            &#x2F;**
+             * @method hasPrev
+             *&#x2F;
+            , hasPrev: function() {
+
+            }
+                &#x2F;**
+                 * @method load
+                 * @param {String} key name of the field
+                 * @param {Function} [callback] callback function, called when the data is available
+                 *&#x2F;
+            , load: function(key, callback) {
+                var json = {} ;
+                if ( this.fields[key].FK ) {
+                    json[key] = this[key] ;
+                    this.fields[key].model.find(json, function(records){
+                            this[key] = records ;
+                            callback(this) ;
+                        }.bind(this) ) ;
                 }
             }
-            return size ;
-            &#x2F;*
-            return (this.state == &quot;uncompressed&quot; ?
-                        new Blob([this._inputStr], { type: &quot;text&#x2F;plain&quot;}) : this._zippedBlob
-                   ).size ;
-            *&#x2F;
-        },
-        save: function() {
+            &#x2F;**
+             * Call this function to make it aware of changes made to the data it relates to. Because a Model instance
+             * has no direct link with, for example, a database, this mechanism only works when all changes made to the data are performed
+             * by one and the same storage object. This storage object is responsible for the notifications.
+             *
+             * Always call {{#crossLink &quot;Sway.data.Model&#x2F;unlink:method&quot;}}{{&#x2F;crossLink}} to disable this behavior, or when the Model instance
+             * otherwise, the
+             * If the record or this &lt;tt&gt;link&lt;&#x2F;tt&gt; is not needed anymore, make sure to remove by calling {{#crossLink &quot;Sway.data.Model&#x2F;unlink:method&quot;}}{{&#x2F;crossLink}},
+             * @method link
+             *&#x2F;
+            , link: function() {
+
+            }
+            &#x2F;**
+             * @method unlink
+             *&#x2F;
+            , unlink: function() {
+
+            }
+            , getLength: function() {
+                return this.__dataSet.length ;
+            }
+        } ;
+
+    &#x2F;* Private helpers *&#x2F;
+
+    function appendStaticProperties(Model, storage, fields, relations) {
+        var i, key, hasTransformers = false ;
+
+        for ( i in STATIC ) {                                   &#x2F;&#x2F; create static methods
+            Model[i] = STATIC[i].bind(Model) ;
         }
-    } ;
 
-    function clone (obj){
-        var key
-            , temp ;
+        Model.storage = storage ;                                   &#x2F;&#x2F; reference to the storage object
+        Model.relations = relations ;
+        Model.fields = {} ;                                         &#x2F;&#x2F; field container, referenced by their key value
+        Model.hasTransformers = false ;
 
-        if(obj === null || typeof(obj) !== &#x27;object&#x27;) {
-            return obj;
+
+        for( i = 0; i &lt; fields.length; i++ ) {
+            key = fields[i].key ;
+            Model.fields[key] = fields[i] ;         &#x2F;&#x2F; add field to fields object
+            &#x2F;&#x2F; create a &#x27;findByXXX&#x27; function, like: findByUserName
+            Model[[&#x27;findBy&#x27;, key.slice(0,1).toUpperCase(), key.slice(1)].join(&#x27;&#x27;)] = findBy.bind(Model, key);
+            if ( fields[i].transformers &amp;&amp; fields[i].transformers.length &gt; 0 ) {
+                Model.hasTransformers = true ;
+            }
         }
-
-        temp = obj.constructor();                           &#x2F;&#x2F; changed
-
-        for(key in obj) {                                   &#x2F;&#x2F; copy every attribute
-            temp[key] = obj[key] ;
-        }
-        return temp;
     }
 
-	Ns.ActiveRecord = ActiveRecord ;
+    function appendPrototypeProperties(Model) {
+        var i ;
+
+        for( i in INSTANCE ){
+            Model.prototype[i] = INSTANCE[i] ;                                &#x2F;&#x2F; create instance function
+        }
+    }
+
+    function findBy(property, value) {
+        console.log(&quot;find by &quot; + property + &quot; with value=&quot; + value) ;
+    }
+
+    &#x2F;*
+     * loadJSON receives json from a storage object. It converts this into an active record object.
+     *&#x2F;
+    function loadJSON(callback, json) {
+        var newRec = new this(json, {state: DEFAULTS.STATE.TRANSFORMED}) ;
+        newRec.__id__ = json.__id__ ;                                   &#x2F;&#x2F; existing records get a unique id
+        if ( callback ) {
+            callback(newRec) ;                                              &#x2F;&#x2F; return a new record
+        }
+        return newRec ;
+    }
+
+	ns.ActiveRecord = ActiveRecord ;
 
 })(window.Sway.data) ;
+
+
+
+
+
+
+
+
+
+
 
     </pre>
 </div>

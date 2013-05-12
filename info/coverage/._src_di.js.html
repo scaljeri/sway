@@ -101,7 +101,7 @@ h1{font-size:138.5%;}h2{font-size:123.1%;}h3{font-size:108%;}h1,h2,h3{margin:1em
         <div class="hd">
             <!-- title -->
             <h1>./src/di.js Report</h1>
-            <h2>Date Generated: Wed Apr 10 12:25:53 CEST 2013</h2>
+            <h2>Date Generated: Sun May 12 19:22:09 CEST 2013</h2>
         </div>
 
         <div class="bd">
@@ -120,15 +120,15 @@ h1{font-size:138.5%;}h2{font-size:123.1%;}h3{font-size:108%;}h1,h2,h3{margin:1em
                 <tbody>
                     <tr>
                         <th>Lines</th>
-                        <td class="results">44</td>
-                        <td class="results">44</td>
-                        <td class="results">100.0%</td>
+                        <td class="results">52</td>
+                        <td class="results">57</td>
+                        <td class="results">91.23%</td>
                     </tr>
                     <tr>
                         <th>Functions</th>
-                        <td class="results">9</td>
-                        <td class="results">9</td>
-                        <td class="results">100.0%</td>
+                        <td class="results">10</td>
+                        <td class="results">12</td>
+                        <td class="results">83.33%</td>
                     </tr>
                 </tbody>
             </table>
@@ -136,316 +136,474 @@ h1{font-size:138.5%;}h2{font-size:123.1%;}h3{font-size:108%;}h1,h2,h3{margin:1em
             <!-- source code --->
             <div class="source-code-sec">
                 <table class="source-code">
-                    <tr class="uncovered">
-                        <td class="line-number">1</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    <tr class="called">
+                        <td class="line-number">1</td><td class="line-calls">1</td><td class="line-code">window.Sway&nbsp;=&nbsp;window.Sway&nbsp;||&nbsp;{}&nbsp;;&nbsp;//&nbsp;make&nbsp;sure&nbsp;it&nbsp;exists</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">2</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
                     </tr>    <tr class="called">
-                        <td class="line-number">2</td><td class="line-calls">1</td><td class="line-code">(function(console,&nbsp;Ns)&nbsp;{</td>
+                        <td class="line-number">3</td><td class="line-calls">1</td><td class="line-code">(function(console,&nbsp;ns)&nbsp;{</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">4</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;/**</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">5</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;DI&nbsp;makes&nbsp;classes&nbsp;accessible&nbsp;by&nbsp;a&nbsp;contract.&nbsp;Instances&nbsp;are&nbsp;created&nbsp;when&nbsp;requested&nbsp;and&nbsp;dependencies&nbsp;are&nbsp;injected&nbsp;into&nbsp;the&nbsp;constructor,</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">6</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;facilitating&nbsp;lazy&nbsp;initialization&nbsp;and&nbsp;loose&nbsp;coupling&nbsp;between&nbsp;classes.</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">7</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">8</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;As&nbsp;an&nbsp;example,&nbsp;register&nbsp;all&nbsp;contracts&nbsp;during&nbsp;the&nbsp;application&nbsp;initialization</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">9</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">10</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;di&nbsp;=&nbsp;new&nbsp;Sway.DI()&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">11</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;di.register(&nbsp;'User'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;contract&nbsp;name</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">12</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;Sway.data.ActiveRecord&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;class&nbsp;definiton</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">13</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;[&nbsp;'User',&nbsp;'webSql',&nbsp;['userNameField',&nbsp;'passwordField',&nbsp;'accountInfo'],&nbsp;'websql'&nbsp;]&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;constructor&nbsp;parameters</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">14</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;{&nbsp;singleton:&nbsp;TRUE&nbsp;}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;configuration:&nbsp;create&nbsp;a&nbsp;singleton</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">15</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">16</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.register(&nbsp;'userNameField'</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">17</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;Sway.data.Field</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">18</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;[{&nbsp;type:&nbsp;'TEXT',&nbsp;&nbsp;key:&nbsp;'username',&nbsp;friendlyName:&nbsp;'User&nbsp;name'&nbsp;}]</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">19</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;{singleton:&nbsp;TRUE}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">20</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">21</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.register(&nbsp;'accountInfoField',</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">22</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;Sway.data.Field</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">23</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;[&nbsp;{&nbsp;type:&nbsp;'TEXT',&nbsp;&nbsp;key:&nbsp;'username',&nbsp;friendlyName:&nbsp;'User&nbsp;name'&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">24</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;['encryptFilter',&nbsp;'compressFilter']</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">25</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">26</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;{&nbsp;singleton:&nbsp;TRUE}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">27</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">28</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.register(&nbsp;'userRecord'</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">29</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;di.register('User')&nbsp;&nbsp;//&nbsp;create&nbsp;the&nbsp;User&nbsp;model!!</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">30</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">31</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">32</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">33</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Now&nbsp;everywhere&nbsp;in&nbsp;the&nbsp;application&nbsp;create&nbsp;the&nbsp;instances&nbsp;as&nbsp;follows</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">34</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">35</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;User&nbsp;=&nbsp;Sway.di.getInstance('User')&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">36</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;userRecord&nbsp;=&nbsp;new&nbsp;User({&nbsp;username:&nbsp;'John',&nbsp;password:&nbsp;'Secret'&nbsp;})&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">37</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;or</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">38</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;userRecord&nbsp;=&nbsp;Sway.di.getInstance('userRecord',&nbsp;[{username:&nbsp;'John',&nbsp;password:&nbsp;'Secret'}])&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">39</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">40</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;To&nbsp;give&nbsp;an&nbsp;idea&nbsp;of&nbsp;what&nbsp;this&nbsp;does,&nbsp;below&nbsp;is&nbsp;an&nbsp;example&nbsp;doing&nbsp;the&nbsp;exact&nbsp;same&nbsp;thing&nbsp;but&nbsp;without&nbsp;Sway.DI</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">41</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">42</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;userNameField&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;new&nbsp;Sway.data.Field(&nbsp;{&nbsp;type:&nbsp;'TEXT',&nbsp;&nbsp;key:&nbsp;'username',&nbsp;friendlyName:&nbsp;'User&nbsp;name'&nbsp;}]&nbsp;)&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">43</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;accountInfoField&nbsp;=&nbsp;new&nbsp;Sway.data.Field(&nbsp;{&nbsp;type:&nbsp;'TEXT',&nbsp;&nbsp;key:&nbsp;'username',&nbsp;friendlyName:&nbsp;'User&nbsp;name'&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">44</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;[encryptFilterInstance,&nbsp;compressFilterInstance]&nbsp;)&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">45</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">46</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">47</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;And&nbsp;create&nbsp;instances&nbsp;like</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">48</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">49</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;User&nbsp;=&nbsp;new&nbsp;Sway.data.ActiveRecord(&nbsp;'User',&nbsp;webSqlInstance,&nbsp;[userNameField,&nbsp;passwordField,&nbsp;accountInfoField]&nbsp;)&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">50</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;userRecord&nbsp;=&nbsp;new&nbsp;User({username:&nbsp;'John',&nbsp;password:&nbsp;'Secret'})&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">51</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">52</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@class&nbsp;Sway.DI</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">53</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@constructor</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">54</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**/</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">3</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&quot;use&nbsp;strict&quot;&nbsp;;</td>
+                        <td class="line-number">55</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;di&nbsp;=&nbsp;function()&nbsp;{</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">4</td><td class="line-calls">&nbsp;</td><td class="line-code">	/**</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">5</td><td class="line-calls">&nbsp;</td><td class="line-code">		DI&nbsp;makes&nbsp;classes&nbsp;accessible&nbsp;by&nbsp;a&nbsp;contract.&nbsp;Instances&nbsp;are&nbsp;created&nbsp;when&nbsp;requested&nbsp;and&nbsp;dependencies&nbsp;are&nbsp;injected&nbsp;into&nbsp;the&nbsp;constructor,</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">6</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;facilitating&nbsp;lazy&nbsp;initialization&nbsp;and&nbsp;loose&nbsp;coupling&nbsp;between&nbsp;classes.</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">7</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">8</td><td class="line-calls">&nbsp;</td><td class="line-code">		@class&nbsp;Sway.DI</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">9</td><td class="line-calls">&nbsp;</td><td class="line-code">		@constructor</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">10</td><td class="line-calls">&nbsp;</td><td class="line-code">	**/</td>
+                        <td class="line-number">56</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;container&nbsp;for&nbsp;all&nbsp;registered&nbsp;classes</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">11</td><td class="line-calls">1</td><td class="line-code">	var&nbsp;di&nbsp;=&nbsp;function()&nbsp;{</td>
+                        <td class="line-number">57</td><td class="line-calls">6</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Object.defineProperty(this,&nbsp;'_contracts',</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">12</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;container&nbsp;for&nbsp;all&nbsp;registered&nbsp;classes</td>
+                        <td class="line-number">58</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">59</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value:&nbsp;{},</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">60</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enumerable:&nbsp;false&nbsp;//&nbsp;hide&nbsp;it</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">61</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">62</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">63</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;used&nbsp;to&nbsp;check&nbsp;for&nbsp;circular&nbsp;dependencies</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">13</td><td class="line-calls">6</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Object.defineProperty(this,&nbsp;'_contracts',</td>
+                        <td class="line-number">64</td><td class="line-calls">6</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Object.defineProperty(this,&nbsp;'_depCheck',</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">14</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</td>
+                        <td class="line-number">65</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">15</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value:&nbsp;{},</td>
+                        <td class="line-number">66</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value:[],</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">16</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enumerable:&nbsp;false&nbsp;//&nbsp;hide&nbsp;it</td>
+                        <td class="line-number">67</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enumerable:&nbsp;false&nbsp;//&nbsp;hide&nbsp;it</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">17</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                        <td class="line-number">68</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">18</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)&nbsp;;</td>
+                        <td class="line-number">69</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)&nbsp;;</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">19</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;used&nbsp;to&nbsp;check&nbsp;for&nbsp;circular&nbsp;dependencies</td>
+                        <td class="line-number">70</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">71</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
                     </tr>    <tr class="called">
-                        <td class="line-number">20</td><td class="line-calls">6</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Object.defineProperty(this,&nbsp;'_depCheck',</td>
+                        <td class="line-number">72</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;di.prototype&nbsp;=&nbsp;{</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">21</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</td>
+                        <td class="line-number">73</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">22</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value:[],</td>
+                        <td class="line-number">74</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Register&nbsp;a&nbsp;class&nbsp;by&nbsp;creating&nbsp;a&nbsp;contract.&nbsp;Use&nbsp;{{#crossLink&nbsp;&quot;Sway.DI/getInstance:method&quot;}}{{/crossLink}}&nbsp;to&nbsp;obtain</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">23</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enumerable:&nbsp;false&nbsp;//&nbsp;hide&nbsp;it</td>
+                        <td class="line-number">75</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;an&nbsp;instance&nbsp;from&nbsp;this&nbsp;contract.&nbsp;The&nbsp;&lt;tt&gt;params&lt;/tt&gt;&nbsp;parameter&nbsp;is&nbsp;a&nbsp;list&nbsp;of&nbsp;contracts,&nbsp;&nbsp;and,&nbsp;if&nbsp;needed,&nbsp;normal</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">24</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                        <td class="line-number">76</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;constructor&nbsp;parameters&nbsp;can&nbsp;be&nbsp;mixed&nbsp;in.</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">25</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)&nbsp;;</td>
+                        <td class="line-number">77</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">26</td><td class="line-calls">&nbsp;</td><td class="line-code">	}&nbsp;;</td>
+                        <td class="line-number">78</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@method&nbsp;register</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">27</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                        <td class="line-number">79</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@chainable</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">80</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;{String}&nbsp;contract&nbsp;name&nbsp;of&nbsp;the&nbsp;contract</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">81</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;{Class}&nbsp;classRef&nbsp;the&nbsp;class&nbsp;bind&nbsp;to&nbsp;this&nbsp;contract</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">82</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;{Array}&nbsp;[params]&nbsp;list&nbsp;of&nbsp;constructor&nbsp;parameters.&nbsp;Only&nbsp;if&nbsp;a&nbsp;parameter&nbsp;is&nbsp;a&nbsp;string&nbsp;and&nbsp;matches&nbsp;a&nbsp;contract,&nbsp;it</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">83</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;will&nbsp;be&nbsp;replaced&nbsp;with&nbsp;the&nbsp;corresponding&nbsp;instance</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">84</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;{Object}&nbsp;[options]&nbsp;configuration</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">85</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@param&nbsp;{String}&nbsp;[options.singleton=false]&nbsp;create&nbsp;a&nbsp;new&nbsp;instance&nbsp;every&nbsp;time</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">86</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@param&nbsp;{String}&nbsp;[options.description]&nbsp;describes&nbsp;the&nbsp;contract&nbsp;(currently&nbsp;only&nbsp;used&nbsp;by&nbsp;{{#crossLink&nbsp;&quot;Sway.DI/listContracts:method&quot;}}{{/crossLink}}).</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">87</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;{Object}&nbsp;this</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">88</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@example</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">89</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;App.di.registerType(&quot;ajax&quot;,&nbsp;App.AJAX)&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">90</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;App.di.registerType(&quot;ajax&quot;,&nbsp;App.AJAX,&nbsp;[],&nbsp;{&nbsp;singleton:&nbsp;true&nbsp;})&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">91</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;App.di.registerType(&quot;util&quot;,&nbsp;App.Util,&nbsp;[&quot;compress&quot;,&nbsp;true,&nbsp;[&quot;wsql&quot;,&nbsp;&quot;ls&quot;]&nbsp;],&nbsp;{&nbsp;singleton:&nbsp;true&nbsp;}&nbsp;)&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">92</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**/</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">93</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;register:&nbsp;function(contract,&nbsp;classRef,&nbsp;params,&nbsp;options)</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">94</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">28</td><td class="line-calls">1</td><td class="line-code">	di.prototype&nbsp;=&nbsp;{</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">29</td><td class="line-calls">&nbsp;</td><td class="line-code">		/**</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">30</td><td class="line-calls">&nbsp;</td><td class="line-code">		&nbsp;*&nbsp;Register&nbsp;a&nbsp;class&nbsp;by&nbsp;creating&nbsp;a&nbsp;contract.&nbsp;Use&nbsp;{{#crossLink&nbsp;&quot;DI/getInstance:method&quot;}}{{/crossLink}}&nbsp;to&nbsp;obtain</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">31</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;an&nbsp;instance&nbsp;from&nbsp;this&nbsp;contract/class.&nbsp;The&nbsp;injected&nbsp;dependencies,&nbsp;if&nbsp;any,&nbsp;will&nbsp;be&nbsp;used&nbsp;as&nbsp;constructor&nbsp;parameter</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">32</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;in&nbsp;the&nbsp;order&nbsp;provided&nbsp;by&nbsp;the&nbsp;dependencies&nbsp;array.</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">33</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">34</td><td class="line-calls">&nbsp;</td><td class="line-code">		&nbsp;*&nbsp;@method&nbsp;register</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">35</td><td class="line-calls">&nbsp;</td><td class="line-code">		&nbsp;*&nbsp;@chainable</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">36</td><td class="line-calls">&nbsp;</td><td class="line-code">		&nbsp;*&nbsp;@param&nbsp;{String}&nbsp;contract&nbsp;name&nbsp;of&nbsp;the&nbsp;contracta</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">37</td><td class="line-calls">&nbsp;</td><td class="line-code">		&nbsp;*&nbsp;@param&nbsp;{Class}&nbsp;class&nbsp;the&nbsp;class&nbsp;bind&nbsp;to&nbsp;this&nbsp;contract</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">38</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;{Array}&nbsp;[dependencies]&nbsp;list&nbsp;of&nbsp;contracts;&nbsp;dependencies&nbsp;of&nbsp;this&nbsp;class</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">39</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;{Object}&nbsp;[options]&nbsp;addition&nbsp;setting&nbsp;used&nbsp;to&nbsp;create&nbsp;the&nbsp;instance.</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">40</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;{string}&nbsp;options.singleton&nbsp;set&nbsp;to&nbsp;TRUE&nbsp;if&nbsp;the&nbsp;class&nbsp;should&nbsp;be&nbsp;treated&nbsp;as&nbsp;a&nbsp;singleton&nbsp;class</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">41</td><td class="line-calls">&nbsp;</td><td class="line-code">		&nbsp;*&nbsp;@example</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">42</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;App.di.registerType(&quot;ajax&quot;,&nbsp;App.AJAX)&nbsp;;</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">43</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;App.di.registerType(&quot;ajax&quot;,&nbsp;App.AJAX,&nbsp;[],&nbsp;{&nbsp;singleton:&nbsp;true&nbsp;})&nbsp;;</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">44</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;App.di.registerType(&quot;util&quot;,&nbsp;App.Util,&nbsp;[&quot;compress&quot;,&nbsp;&quot;wsql&quot;],&nbsp;{&nbsp;singleton:&nbsp;true&nbsp;}&nbsp;)&nbsp;;</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">45</td><td class="line-calls">&nbsp;</td><td class="line-code">		**/</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">46</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;register:&nbsp;function(contract,&nbsp;classRef,&nbsp;dependencies,&nbsp;options)</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">47</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</td>
+                        <td class="line-number">95</td><td class="line-calls">15</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(&nbsp;!options&nbsp;&amp;&amp;&nbsp;!Array.isArray(params)&nbsp;)&nbsp;{&nbsp;//&nbsp;fix&nbsp;input</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">48</td><td class="line-calls">17</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(&nbsp;!options&nbsp;&amp;&amp;&nbsp;!Array.isArray(dependencies)&nbsp;)&nbsp;{&nbsp;//&nbsp;fix&nbsp;input</td>
+                        <td class="line-number">96</td><td class="line-calls">4</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;options&nbsp;=&nbsp;params&nbsp;;</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">49</td><td class="line-calls">8</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;options&nbsp;=&nbsp;dependencies&nbsp;;</td>
+                        <td class="line-number">97</td><td class="line-calls">4</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;params&nbsp;=&nbsp;[]&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">98</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">99</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
                     </tr>    <tr class="called">
-                        <td class="line-number">50</td><td class="line-calls">8</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dependencies&nbsp;=&nbsp;[]&nbsp;;</td>
+                        <td class="line-number">100</td><td class="line-calls">15</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(&nbsp;!classRef&nbsp;)&nbsp;{</td>
+                    </tr>    <tr class="not-called">
+                        <td class="line-number">101</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;console.warn('the&nbsp;Class&nbsp;is&nbsp;undefined&nbsp;for&nbsp;contract&nbsp;'&nbsp;+&nbsp;contract&nbsp;)&nbsp;;</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">51</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                        <td class="line-number">102</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">103</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;{</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">52</td><td class="line-calls">17</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this._contracts[contract]&nbsp;=&nbsp;{&nbsp;classRef:&nbsp;classRef,&nbsp;dependencies:&nbsp;dependencies,&nbsp;options:&nbsp;options||{}&nbsp;}&nbsp;;</td>
+                        <td class="line-number">104</td><td class="line-calls">15</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this._contracts[contract]&nbsp;=&nbsp;{&nbsp;classRef:&nbsp;classRef,&nbsp;params:&nbsp;params||[],&nbsp;options:&nbsp;options||{}&nbsp;}&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">105</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">53</td><td class="line-calls">17</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;this&nbsp;;</td>
+                        <td class="line-number">106</td><td class="line-calls">15</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;this&nbsp;;</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">54</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},</td>
+                        <td class="line-number">107</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">55</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                        <td class="line-number">108</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">56</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**</td>
+                        <td class="line-number">109</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">57</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Returns&nbsp;an&nbsp;instance&nbsp;for&nbsp;the&nbsp;given&nbsp;contract.</td>
+                        <td class="line-number">110</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Returns&nbsp;an&nbsp;instance&nbsp;for&nbsp;the&nbsp;given&nbsp;contract.&nbsp;Use&nbsp;&lt;tt&gt;params&lt;/tt&gt;&nbsp;attribute&nbsp;to&nbsp;overwrite&nbsp;the&nbsp;default</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">58</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</td>
+                        <td class="line-number">111</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;parameters&nbsp;for&nbsp;this&nbsp;contract.&nbsp;If&nbsp;&lt;tt&gt;params&lt;/tt&gt;&nbsp;is&nbsp;defined,&nbsp;the&nbsp;singleton&nbsp;configuration&nbsp;option&nbsp;is&nbsp;ignored.</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">59</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@method&nbsp;geInstancet</td>
+                        <td class="line-number">112</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">60</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;&nbsp;{string}&nbsp;contract&nbsp;name</td>
+                        <td class="line-number">113</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@method&nbsp;getInstance</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">61</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@returns&nbsp;{Object}&nbsp;Class&nbsp;instance</td>
+                        <td class="line-number">114</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;&nbsp;{String}&nbsp;contract&nbsp;name</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">62</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@example</td>
+                        <td class="line-number">115</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;&nbsp;{Array}&nbsp;[params]&nbsp;constructor&nbsp;parameters</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">63</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;ajax&nbsp;=&nbsp;App.di.getInstance(&quot;ajax&quot;)&nbsp;;</td>
+                        <td class="line-number">116</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@returns&nbsp;{Object}&nbsp;Class&nbsp;instance</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">64</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**/</td>
+                        <td class="line-number">117</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@example</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">65</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getInstance:&nbsp;function(contract)&nbsp;{</td>
+                        <td class="line-number">118</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;ajax&nbsp;=&nbsp;App.di.getInstance(&quot;ajax&quot;)&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">119</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**/</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">120</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getInstance:&nbsp;function(contract,&nbsp;params)&nbsp;{</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">66</td><td class="line-calls">51</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;instance&nbsp;=&nbsp;null&nbsp;;</td>
+                        <td class="line-number">121</td><td class="line-calls">39</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;instance&nbsp;=&nbsp;null&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">122</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
                     </tr>    <tr class="called">
-                        <td class="line-number">67</td><td class="line-calls">51</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(&nbsp;this._contracts[contract]&nbsp;)&nbsp;{</td>
+                        <td class="line-number">123</td><td class="line-calls">39</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(&nbsp;this._contracts[contract]&nbsp;&nbsp;)&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;it&nbsp;should&nbsp;exist</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">68</td><td class="line-calls">48</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(this._contracts[contract].options.singleton&nbsp;)</td>
+                        <td class="line-number">124</td><td class="line-calls">38</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(this._contracts[contract].options.singleton&nbsp;)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;if&nbsp;singleton,&nbsp;params&nbsp;arg&nbsp;is&nbsp;not&nbsp;used!!</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">69</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</td>
+                        <td class="line-number">125</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">70</td><td class="line-calls">19</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;instance&nbsp;=&nbsp;getSingletonInstance.call(this._contracts[contract]);</td>
+                        <td class="line-number">126</td><td class="line-calls">12</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;instance&nbsp;=&nbsp;getSingletonInstance.call(this,&nbsp;contract)&nbsp;;</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">71</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;else&nbsp;//create&nbsp;a&nbsp;new&nbsp;instance&nbsp;every&nbsp;time</td>
+                        <td class="line-number">127</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;else&nbsp;//create&nbsp;a&nbsp;new&nbsp;instance&nbsp;every&nbsp;time</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">72</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</td>
+                        <td class="line-number">128</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">73</td><td class="line-calls">29</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;instance&nbsp;=&nbsp;this.createInstance(contract,&nbsp;this._contracts[contract].dependencies)&nbsp;;</td>
+                        <td class="line-number">129</td><td class="line-calls">26</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;instance&nbsp;=&nbsp;createInstance.call(this,&nbsp;contract,&nbsp;params||this._contracts[contract].params||[])&nbsp;;</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">74</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                        <td class="line-number">130</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">75</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                        <td class="line-number">131</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">76</td><td class="line-calls">42</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;instance&nbsp;;</td>
+                        <td class="line-number">132</td><td class="line-calls">30</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;instance&nbsp;;</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">77</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},</td>
+                        <td class="line-number">133</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">78</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                        <td class="line-number">134</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">79</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**</td>
+                        <td class="line-number">135</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;List&nbsp;all&nbsp;available&nbsp;contracts&nbsp;with&nbsp;their&nbsp;description&nbsp;to&nbsp;&lt;tt&gt;console.log&lt;/tt&gt;</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">80</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns&nbsp;a&nbsp;new&nbsp;instance&nbsp;of&nbsp;the&nbsp;class&nbsp;matched&nbsp;by&nbsp;the&nbsp;contract.&nbsp;If&nbsp;the&nbsp;contract&nbsp;does&nbsp;not&nbsp;exists&nbsp;an&nbsp;error&nbsp;is&nbsp;thrown.</td>
+                        <td class="line-number">136</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@method&nbsp;listContracts</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">81</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If&nbsp;one&nbsp;of&nbsp;the&nbsp;dependencies&nbsp;does&nbsp;not&nbsp;exists,&nbsp;'null'&nbsp;is&nbsp;used&nbsp;instead.</td>
+                        <td class="line-number">137</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">82</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                        <td class="line-number">138</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;listContracts:&nbsp;function()&nbsp;{</td>
+                    </tr>    <tr class="not-called">
+                        <td class="line-number">139</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;keys&nbsp;=&nbsp;Object.keys(this._contracts)&nbsp;;</td>
+                    </tr>    <tr class="not-called">
+                        <td class="line-number">140</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;keys.sort().forEach(function(v)&nbsp;{</td>
+                    </tr>    <tr class="not-called">
+                        <td class="line-number">141</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;console(v&nbsp;+&nbsp;',&nbsp;'&nbsp;+&nbsp;this._contracts[v].options.description)&nbsp;;</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">83</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@method&nbsp;createInstance</td>
+                        <td class="line-number">142</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}.bind(this))&nbsp;;</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">84</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@param&nbsp;{string}&nbsp;contract&nbsp;-&nbsp;the&nbsp;contract&nbsp;name</td>
+                        <td class="line-number">143</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">85</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@param&nbsp;{Array}&nbsp;dependencies&nbsp;-&nbsp;list&nbsp;of&nbsp;contracts&nbsp;passed&nbsp;to&nbsp;the&nbsp;constructor</td>
+                        <td class="line-number">144</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;;</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">86</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@returns&nbsp;{Object}</td>
+                        <td class="line-number">145</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">87</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@example</td>
+                        <td class="line-number">146</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;/*&nbsp;*****&nbsp;PRIVATE&nbsp;HELPERS&nbsp;*****&nbsp;*/</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">88</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;try&nbsp;{</td>
+                        <td class="line-number">147</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">89</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;storage&nbsp;=&nbsp;App.di.createInstance(&quot;data&quot;,&nbsp;[&quot;compress&quot;,&nbsp;&quot;websql&quot;])&nbsp;;</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">90</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">91</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;catch(e)&nbsp;{&nbsp;//&nbsp;will&nbsp;fail&nbsp;if&nbsp;contract&nbsp;does&nbsp;not&nbsp;exist</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">92</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;console.log(e.name&nbsp;+&nbsp;':&nbsp;'&nbsp;+&nbsp;e.message)&nbsp;;</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">93</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">94</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**/</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">95</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;createInstance:&nbsp;function(contract,&nbsp;dependencies)</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">96</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</td>
+                        <td class="line-number">148</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;/*&nbsp;Create&nbsp;or&nbsp;reuse&nbsp;a&nbsp;singleton&nbsp;instance&nbsp;*/</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">97</td><td class="line-calls">31</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(&nbsp;!this._contracts[contract]&nbsp;)&nbsp;{</td>
+                        <td class="line-number">149</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;getSingletonInstance(contract)&nbsp;{</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">98</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw&nbsp;'Unknown&nbsp;contract&nbsp;name&nbsp;&quot;'&nbsp;+&nbsp;contract&nbsp;+&nbsp;'&quot;'&nbsp;;</td>
+                        <td class="line-number">150</td><td class="line-calls">12</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;config&nbsp;=&nbsp;this._contracts[contract]&nbsp;;</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">99</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">100</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                        <td class="line-number">151</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
                     </tr>    <tr class="called">
-                        <td class="line-number">101</td><td class="line-calls">30</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;self&nbsp;=&nbsp;this&nbsp;;</td>
+                        <td class="line-number">152</td><td class="line-calls">12</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(&nbsp;config.instance&nbsp;===&nbsp;undefined&nbsp;)&nbsp;{</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">102</td><td class="line-calls">30</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;cr&nbsp;=&nbsp;this._contracts[contract].classRef&nbsp;;</td>
+                        <td class="line-number">153</td><td class="line-calls">4</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;config.instance&nbsp;=&nbsp;createInstance.call(this,&nbsp;contract,&nbsp;config.params);</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">103</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                        <td class="line-number">154</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">104</td><td class="line-calls">30</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;Fake(){</td>
+                        <td class="line-number">155</td><td class="line-calls">12</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;config.instance&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">156</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">157</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">158</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;/*&nbsp;convert&nbsp;a&nbsp;list&nbsp;of&nbsp;contracts&nbsp;into&nbsp;a&nbsp;list&nbsp;of&nbsp;instances</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">159</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;A&nbsp;dependency&nbsp;list&nbsp;can&nbsp;contain&nbsp;arrays&nbsp;with&nbsp;dependencies&nbsp;too:</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">160</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;[&quot;depA&quot;,&nbsp;[&quot;depB&quot;,&nbsp;&quot;depC&quot;],&nbsp;&quot;depE&quot;]</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">161</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;In&nbsp;this&nbsp;case,&nbsp;the&nbsp;constructor&nbsp;would,&nbsp;for&nbsp;example,&nbsp;look&nbsp;like&nbsp;this:</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">162</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;constructor(instance,&nbsp;array,&nbsp;instance)&nbsp;{&nbsp;..&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">163</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;*/</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">105</td><td class="line-calls">30</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cr.apply(this,&nbsp;createInstanceList.call(self,&nbsp;contract,&nbsp;dependencies||[]))&nbsp;;</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">106</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                        <td class="line-number">164</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;createInstanceList(contract,&nbsp;params)&nbsp;{</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">107</td><td class="line-calls">30</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fake.prototype&nbsp;=&nbsp;cr.prototype&nbsp;;&nbsp;//&nbsp;Fix&nbsp;instanceof</td>
+                        <td class="line-number">165</td><td class="line-calls">33</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;constParams&nbsp;=&nbsp;[]&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">166</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
                     </tr>    <tr class="called">
-                        <td class="line-number">108</td><td class="line-calls">30</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;new&nbsp;Fake()&nbsp;;</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">109</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">110</td><td class="line-calls">&nbsp;</td><td class="line-code">	}&nbsp;;</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">111</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">112</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;/*&nbsp;*****&nbsp;PRIVATE&nbsp;HELPERS&nbsp;*****&nbsp;*/</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">113</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">114</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;/*&nbsp;Create&nbsp;or&nbsp;reuse&nbsp;a&nbsp;singleton&nbsp;instance&nbsp;*/</td>
+                        <td class="line-number">167</td><td class="line-calls">33</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(params||this._contracts[contract].params||[]).forEach(&nbsp;function(c)&nbsp;{</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">115</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;getSingletonInstance()&nbsp;{</td>
+                        <td class="line-number">168</td><td class="line-calls">48</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(&nbsp;Array.isArray(c))&nbsp;{</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">116</td><td class="line-calls">19</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(this.instance&nbsp;===&nbsp;undefined)&nbsp;{</td>
+                        <td class="line-number">169</td><td class="line-calls">3</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;constParams.push(&nbsp;createInstanceList.call(this,&nbsp;contract,&nbsp;c)&nbsp;)&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">170</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">171</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;{</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">117</td><td class="line-calls">3</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.instance&nbsp;=&nbsp;new&nbsp;this.classRef(this.dependencies);</td>
+                        <td class="line-number">172</td><td class="line-calls">45</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;constParams.push(&nbsp;createInstanceIfContract.call(this,&nbsp;c)&nbsp;)&nbsp;;</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">118</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                        <td class="line-number">173</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">174</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}.bind(this))&nbsp;;</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">119</td><td class="line-calls">19</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;this.instance&nbsp;;</td>
+                        <td class="line-number">175</td><td class="line-calls">24</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;constParams&nbsp;;</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">120</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                        <td class="line-number">176</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;}</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">121</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">122</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;/*&nbsp;convert&nbsp;a&nbsp;list&nbsp;of&nbsp;contracts&nbsp;into&nbsp;a&nbsp;list&nbsp;of&nbsp;instances</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">123</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;A&nbsp;dependency&nbsp;list&nbsp;can&nbsp;contain&nbsp;arrays&nbsp;with&nbsp;dependencies&nbsp;too:</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">124</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;[&quot;depA&quot;,&nbsp;[&quot;depB&quot;,&nbsp;&quot;depC&quot;],&nbsp;&quot;depE&quot;]</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">125</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;In&nbsp;this&nbsp;case,&nbsp;the&nbsp;constructor&nbsp;would,&nbsp;for&nbsp;example,&nbsp;look&nbsp;like&nbsp;this:</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">126</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;constructor(instance,&nbsp;array,&nbsp;instance)&nbsp;{&nbsp;..&nbsp;}</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">127</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;*/</td>
+                        <td class="line-number">177</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
                     </tr>    <tr class="called">
-                        <td class="line-number">128</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;createInstanceList(contract,&nbsp;dependencies)&nbsp;{</td>
+                        <td class="line-number">178</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;createInstanceIfContract(contract)&nbsp;{&nbsp;//&nbsp;is&nbsp;a&nbsp;contract</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">129</td><td class="line-calls">35</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;instances&nbsp;=&nbsp;[]&nbsp;;</td>
+                        <td class="line-number">179</td><td class="line-calls">45</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;constParam&nbsp;=&nbsp;contract</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">130</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                        <td class="line-number">180</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;problemContract&nbsp;;</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">131</td><td class="line-calls">35</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dependencies.forEach(&nbsp;function(c)&nbsp;{</td>
+                        <td class="line-number">181</td><td class="line-calls">45</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(&nbsp;typeof(contract)&nbsp;===&nbsp;'string'&nbsp;&amp;&amp;&nbsp;this._contracts[contract]&nbsp;)&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;is&nbsp;'contract'&nbsp;just&nbsp;a&nbsp;contructor&nbsp;parameter&nbsp;or&nbsp;a&nbsp;contract?</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">132</td><td class="line-calls">41</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(&nbsp;Array.isArray(c))&nbsp;{</td>
-                    </tr>    <tr class="called">
-                        <td class="line-number">133</td><td class="line-calls">5</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;instances.push(&nbsp;createInstanceList.call(this,&nbsp;contract,&nbsp;c)&nbsp;)&nbsp;;</td>
+                        <td class="line-number">182</td><td class="line-calls">23</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(&nbsp;this._depCheck.indexOf(contract)&nbsp;===&nbsp;-1&nbsp;)&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;check&nbsp;for&nbsp;circular&nbsp;dependency</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">134</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">135</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;{</td>
+                        <td class="line-number">183</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//this._depCheck.push(contract)&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;add&nbsp;contract&nbsp;to&nbsp;circular&nbsp;dependency&nbsp;check&nbsp;list</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">136</td><td class="line-calls">36</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(&nbsp;this._depCheck.indexOf(c)&nbsp;===&nbsp;-1&nbsp;)&nbsp;{&nbsp;//&nbsp;check&nbsp;for&nbsp;circular&nbsp;dependency</td>
+                        <td class="line-number">184</td><td class="line-calls">20</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;constParam&nbsp;=&nbsp;this.getInstance(contract)&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;create&nbsp;the&nbsp;instance</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">137</td><td class="line-calls">33</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this._depCheck.push(c)&nbsp;;</td>
+                        <td class="line-number">185</td><td class="line-calls">14</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this._depCheck.pop()&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;done,&nbsp;remove&nbsp;dependency&nbsp;from&nbsp;the&nbsp;list</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">186</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">187</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;{&nbsp;//&nbsp;circular&nbsp;dependency&nbsp;detected!!&nbsp;--&gt;&nbsp;STOP,&nbsp;someone&nbsp;did&nbsp;something&nbsp;stupid&nbsp;-&gt;&nbsp;fix&nbsp;needed!!</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">138</td><td class="line-calls">33</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;instances.push(this.getInstance(c))&nbsp;;</td>
+                        <td class="line-number">188</td><td class="line-calls">3</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;problemContract&nbsp;=&nbsp;this._depCheck[0]&nbsp;;</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">139</td><td class="line-calls">27</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(&nbsp;!instances[instances.length-1])&nbsp;{</td>
+                        <td class="line-number">189</td><td class="line-calls">3</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this._depCheck.length&nbsp;=&nbsp;0&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;cleanup</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">140</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;console.warn(&quot;Dependency&nbsp;'&quot;&nbsp;+&nbsp;c&nbsp;+&nbsp;&quot;'&nbsp;does&nbsp;not&nbsp;exist!&quot;)&nbsp;;</td>
+                        <td class="line-number">190</td><td class="line-calls">3</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw&nbsp;&quot;Circular&nbsp;dependency&nbsp;detected&nbsp;for&nbsp;contract&nbsp;&quot;&nbsp;+&nbsp;problemContract&nbsp;;</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">141</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                        <td class="line-number">191</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">192</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">142</td><td class="line-calls">27</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this._depCheck.pop()&nbsp;;</td>
+                        <td class="line-number">193</td><td class="line-calls">36</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;constParam&nbsp;;</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">143</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                        <td class="line-number">194</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;}</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">144</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;{&nbsp;//&nbsp;fatal</td>
+                        <td class="line-number">195</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">196</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;/*</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">197</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Returns&nbsp;a&nbsp;new&nbsp;instance&nbsp;of&nbsp;the&nbsp;class&nbsp;matched&nbsp;by&nbsp;the&nbsp;contract.&nbsp;If&nbsp;the&nbsp;contract&nbsp;does&nbsp;not&nbsp;exists&nbsp;an&nbsp;error&nbsp;is&nbsp;thrown.</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">198</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">199</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@method&nbsp;createInstance</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">200</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;{string}&nbsp;contract&nbsp;-&nbsp;the&nbsp;contract&nbsp;name</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">201</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;{Array}&nbsp;params&nbsp;-&nbsp;list&nbsp;of&nbsp;contracts&nbsp;passed&nbsp;to&nbsp;the&nbsp;constructor.&nbsp;Each&nbsp;parameter&nbsp;which&nbsp;is&nbsp;not&nbsp;a&nbsp;string&nbsp;or</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">202</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;an&nbsp;unknown&nbsp;contract,&nbsp;is&nbsp;passed&nbsp;as-is&nbsp;to&nbsp;the&nbsp;constructor</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">203</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">204</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@returns&nbsp;{Object}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">205</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@example</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">206</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;storage&nbsp;=&nbsp;App.di.createInstance(&quot;data&quot;,&nbsp;[&quot;compress&quot;,&nbsp;true,&nbsp;&quot;websql&quot;])&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">207</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**/</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">145</td><td class="line-calls">3</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this._depCheck.length&nbsp;=&nbsp;0&nbsp;;</td>
+                        <td class="line-number">208</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;createInstance(contract,&nbsp;params)</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">209</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;{</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">146</td><td class="line-calls">3</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw&nbsp;&quot;Circular&nbsp;dependency&nbsp;detected&nbsp;for&nbsp;contract&nbsp;&quot;&nbsp;+&nbsp;c&nbsp;;</td>
+                        <td class="line-number">210</td><td class="line-calls">30</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;instance&nbsp;=&nbsp;null</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">147</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                        <td class="line-number">211</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;self&nbsp;=&nbsp;this</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">148</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                        <td class="line-number">212</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;,&nbsp;cr&nbsp;;</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">149</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}.bind(this))&nbsp;;</td>
+                        <td class="line-number">213</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
                     </tr>    <tr class="called">
-                        <td class="line-number">150</td><td class="line-calls">25</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;instances&nbsp;;</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">151</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;}</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">152</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                        <td class="line-number">214</td><td class="line-calls">30</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;Dependency(){</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">153</td><td class="line-calls">1</td><td class="line-code">	Ns.DI&nbsp;=&nbsp;di&nbsp;;</td>
+                        <td class="line-number">215</td><td class="line-calls">30</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cr.apply(this,&nbsp;createInstanceList.call(self,&nbsp;contract,&nbsp;params))&nbsp;;</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">154</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                        <td class="line-number">216</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">155</td><td class="line-calls">&nbsp;</td><td class="line-code">})(window.console,&nbsp;window.Sway)&nbsp;;</td>
+                        <td class="line-number">217</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">218</td><td class="line-calls">30</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(&nbsp;this._contracts[contract])&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;contract&nbsp;should&nbsp;exist</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">219</td><td class="line-calls">30</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cr&nbsp;=&nbsp;this._contracts[contract].classRef&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">220</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">221</td><td class="line-calls">30</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this._depCheck.push(contract)&nbsp;;</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">222</td><td class="line-calls">30</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dependency.prototype&nbsp;=&nbsp;cr.prototype&nbsp;;&nbsp;&nbsp;&nbsp;//&nbsp;Fix&nbsp;instanceof</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">223</td><td class="line-calls">30</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;instance&nbsp;=&nbsp;new&nbsp;Dependency()&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;done</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">224</td><td class="line-calls">21</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this._depCheck.pop()&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">225</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">226</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;{</td>
+                    </tr>    <tr class="not-called">
+                        <td class="line-number">227</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;console.warn(&nbsp;'Contract&nbsp;'&nbsp;+&nbsp;contract&nbsp;+&nbsp;'&nbsp;does&nbsp;not&nbsp;exist')&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">228</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">229</td><td class="line-calls">21</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;instance&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">230</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">231</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">232</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;ns.DI&nbsp;=&nbsp;di&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">233</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">234</td><td class="line-calls">&nbsp;</td><td class="line-code">})(window.console,&nbsp;window.Sway)&nbsp;;</td>
                     </tr>
                 </table>
             </div>
@@ -453,7 +611,7 @@ h1{font-size:138.5%;}h2{font-size:123.1%;}h3{font-size:108%;}h1,h2,h3{margin:1em
 
         <!-- footer -->
         <div class="ft">
-            <p>Code coverage for ./src/di.js generated on Wed Apr 10 12:25:53 CEST 2013 by YUI Test.</p>
+            <p>Code coverage for ./src/di.js generated on Sun May 12 19:22:09 CEST 2013 by YUI Test.</p>
         </div>
     </div>
 

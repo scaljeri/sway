@@ -1,11 +1,46 @@
 {
     "project": {},
     "files": {
+        "src/data/storage/cookie.js": {
+            "name": "src/data/storage/cookie.js",
+            "modules": {},
+            "classes": {
+                "Sway.persistance.Cookie": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/data/storage/fs.js": {
+            "name": "src/data/storage/fs.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/data/storage/indexeddb.js": {
+            "name": "src/data/storage/indexeddb.js",
+            "modules": {},
+            "classes": {
+                "Sway.persistance.IndexedDb": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/data/storage/localstorage.js": {
+            "name": "src/data/storage/localstorage.js",
+            "modules": {},
+            "classes": {
+                "Sway.persistance.LocalStorage": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "src/data/activerecord.js": {
             "name": "src/data/activerecord.js",
             "modules": {},
             "classes": {
-                "Sway.data.ActiveRecord.": 1
+                "Sway.data.ActiveRecord": 1,
+                "Sway.data.Model": 1
             },
             "fors": {},
             "namespaces": {}
@@ -15,6 +50,15 @@
             "modules": {},
             "classes": {
                 "Sway.data.Field": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/data/relation.js": {
+            "name": "src/data/relation.js",
+            "modules": {},
+            "classes": {
+                "Sway.data.Relation": 1
             },
             "fors": {},
             "namespaces": {}
@@ -37,10 +81,21 @@
             "fors": {},
             "namespaces": {}
         },
-        "src/persistance/fs.js": {
-            "name": "src/persistance/fs.js",
+        "src/ux/Form.js": {
+            "name": "src/ux/Form.js",
             "modules": {},
-            "classes": {},
+            "classes": {
+                "Sway.ux.Form": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/ux/d3carousel.js": {
+            "name": "src/ux/d3carousel.js",
+            "modules": {},
+            "classes": {
+                "Sway.ux.D3Carousel": 1
+            },
             "fors": {},
             "namespaces": {}
         },
@@ -49,6 +104,15 @@
             "modules": {},
             "classes": {
                 "Sway": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/bindable.js": {
+            "name": "src/bindable.js",
+            "modules": {},
+            "classes": {
+                "Sway.Bindable": 1
             },
             "fors": {},
             "namespaces": {}
@@ -74,28 +138,96 @@
     },
     "modules": {},
     "classes": {
-        "Sway.data.ActiveRecord.": {
-            "name": "Sway.data.ActiveRecord.",
-            "shortname": "Sway.data.ActiveRecord.",
+        "Sway.persistance.Cookie": {
+            "name": "Sway.persistance.Cookie",
+            "shortname": "Sway.persistance.Cookie",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/data/storage/cookie.js",
+            "line": 2,
+            "is_constructor": 1
+        },
+        "Sway.persistance.IndexedDb": {
+            "name": "Sway.persistance.IndexedDb",
+            "shortname": "Sway.persistance.IndexedDb",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/data/storage/indexeddb.js",
+            "line": 8,
+            "is_constructor": 1
+        },
+        "Sway.persistance.LocalStorage": {
+            "name": "Sway.persistance.LocalStorage",
+            "shortname": "Sway.persistance.LocalStorage",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/data/storage/localstorage.js",
+            "line": 2,
+            "is_constructor": 1
+        },
+        "Sway.data.ActiveRecord": {
+            "name": "Sway.data.ActiveRecord",
+            "shortname": "Sway.data.ActiveRecord",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
             "file": "src/data/activerecord.js",
-            "line": 8,
-            "description": "This class stores a string in memory. If a persistance dependency is defined, it will use this dependency to store\nthe data. Filters are used to perform some action on the data before persisting it and on retrieval.\nAs an example, a persistance dependency could be WebSQL storage. A filter could be encryption and/or compression.\nNote that for an encryption filter, it will perform an action on the data before persisting it, and on retrieval.",
+            "line": 9,
+            "description": "ActiveRecord is the pattern used for this ORM implementation. This pattern encapsulates access\nto its resources, like a database.<br>\nThis class is a helper class, because it creates new Model classes of type {{#crossLink \"Sway.data.Model\"}}{{/crossLink}}.\nIts a blue print and gives all models it creates everything they need to perform CRUD-like tasks\n\n     var UserModel = new ActiveRecord( 'User', new WebSqlStorage('user-table'), [\n                           new Field( {type: 'TEXT', key: 'username', friendlyName: 'User name'})\n                         , new Field( {type: 'TEXT', key: 'password', friendlyName: 'Password'})\n                         , new Field( {type: 'DATE', key: 'birthday', friendlyName: 'Birthday'})\n                     ]) ;",
+            "is_constructor": 1,
             "params": [
                 {
-                    "name": "persistence",
-                    "description": "dependency which can persist the data",
+                    "name": "modelName",
+                    "description": "name of the model",
+                    "type": "String"
+                },
+                {
+                    "name": "storage",
+                    "description": "object used to access the underlying data structure",
                     "type": "Object",
                     "optional": true
                 },
                 {
                     "name": "fieldList",
-                    "description": "list of filters. Depending on the filter type its a before and/or after filter.",
+                    "description": "list of fields (see {{#crossLink \"Sway.data.Field\"}}{{/crossLink}}) ) ;",
+                    "type": "Array"
+                },
+                {
+                    "name": "relations",
+                    "description": "list of Relations",
                     "type": "Array",
+                    "optional": true
+                }
+            ]
+        },
+        "Sway.data.Model": {
+            "name": "Sway.data.Model",
+            "shortname": "Sway.data.Model",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/data/activerecord.js",
+            "line": 83,
+            "description": "Use the Model class to create instances which represent your data records. These will speed up your develement\nwhen CRUD-like tasks need to be done.<br>\nTo create a Model class, use {{#crossLink \"Sway.data.ActiveRecord\"}}{{/crossLink}}.\n\n<h3>The basics</h3>\nTo perform a search, a couple of static methods are available. Use the <tt>findByX</tt> methods to search on\na specific field\n\n    UserModel.findByUsername('John', function(userRecord) {\n         // this === UserModel\n    }) ;\n\nOf course, the same can be achieved using the more general search method\n\n    UserModel.find( {username: 'John'}, function(userRecord) {\n         // this === UserModel\n    }) ;\n\nWith <tt>find</tt> it is also possible to define more fields to search for.<br>\nA Model instance, on the otherhand, can be used to create or manipulate data\n\n    userRecord = new User() ;                            // create a blank record\n    userRecord.username = 'John' ;                       // set the username\n    userRecord.password = 'Secret' ;                     // set the password\n    userRecord.save(successCallback, errorCallback) ;    // check the result, because this action might fail\n\n<h3>Multiple result-sets</h3>\nIn {{#crossLink \"Sway\"}}{{/crossLink}} a Model instance can also represent multiple records. Although it always\nrepresent a single record, internally this has the whole result set.\n\nits current\nstate will always be a single record, it is possible to navigate from one state to an other\n\n    User.search({username: 'John'}, function(record) {   // record is a model instance representing more than on result\n          while( record.hasNext() ) {                    // check if there is an other record\n               record.next() ;                           // move on record up\n               ....\n          }\n          record.item(1) ;                               // go to second record\n          record.prev() ;                                // go to first record. Use 'prev' in combination with 'hasPrev'\n    }) ;\n\n<h3>Advanced</h3>\n\n\n\nAn instance represents one or more records, which depends on how it was created. For example, if a database search returns multiple records,\nthe Model instance represent them all, holding in its current state the first record's values\n\n     User.find({ username: 'John' }, function(ar) {  // ActiveRecord instance, holding multiple records\n         console.log(\"Found \" + ar.length + \" records) ;\n     }) ;\n\nCheckout {{#crossLink \"Sway.data.Model/next:method\"}}{{/crossLink}}, {{#crossLink \"Sway.data.Model/prev:method\"}}{{/crossLink}}\n{{#crossLink \"Sway.data.Model/item:method\"}}{{/crossLink}} and {{#crossLink \"Sway.data.Model/hasNext:method\"}}{{/crossLink}} to\nunderstand how to deal with multi-record result-sets.\n\n\n    var userRecord = new User({username: 'John', password: 'Secret'}) ;\n    ....\n    userRecord.save() ;\n\nAll fields are accessible as a property of a record\n\n    var userRecord = new User() ;\n    userRecord.username = 'John' ;\n    userRecord.password = 'Secret' ;",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "data",
+                    "description": "JSON data or a model instance to be cloned",
+                    "type": "Object",
                     "optional": true
                 }
             ]
@@ -109,14 +241,144 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/data/field.js",
-            "line": 7,
+            "line": 10,
+            "description": "A Field represents a single value of an {{#crossLink \"Sway.data.ActiveRecord\"}}{{/crossLink}} model.\n\n    var username   = new Field('username', { friendlyName: 'User name' })\n        , password = new Field('password', { type: 'password', friendlyName: 'Password' })\n        , address  = new Field('address',  { FK: {model: Sway.data.Address}, friendlyName: 'Address' }) ;\n\nOr if a field holds data which should be encrypted and compressed before persisted\n\n    var accountInfo = new Field( 'accountInfo', { type: 'BLOB', friendLyName: 'Account info', transformers: [encryptFilter, compressFilter] }) ;\n\nThe constructor's <tt>options</tt> parameter has many sub-options, however, it depends on the storage engine used which are used or ignored.\nCheckout the storage engine classes to find out which parameter are user/required.",
+            "is_constructor": 1,
             "params": [
                 {
-                    "name": "filters",
-                    "description": "list of filters",
-                    "type": "Array",
-                    "optional": true
+                    "name": "key",
+                    "description": "name of the field",
+                    "type": "String"
+                },
+                {
+                    "name": "options",
+                    "description": "definition of this field",
+                    "type": "Object",
+                    "optional": true,
+                    "props": [
+                        {
+                            "name": "type",
+                            "description": "type of the field",
+                            "type": "String",
+                            "optional": true,
+                            "optdefault": "TEXT"
+                        },
+                        {
+                            "name": "friendlyName",
+                            "description": "description of the field",
+                            "type": "String",
+                            "optional": true
+                        },
+                        {
+                            "name": "PK",
+                            "description": "primary key field (there can only be one primary key field)",
+                            "type": "Object",
+                            "optional": true,
+                            "props": [
+                                {
+                                    "name": "auto",
+                                    "description": "Primary key field is auto-incremented (auto generated key)",
+                                    "type": "Boolean",
+                                    "optional": true,
+                                    "optdefault": "true"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "FK",
+                            "description": "foreign key configuration object",
+                            "type": "Object",
+                            "optional": true,
+                            "props": [
+                                {
+                                    "name": "model",
+                                    "description": "Model reference",
+                                    "type": "Model"
+                                },
+                                {
+                                    "name": "key",
+                                    "description": "the key of the model it is referencing",
+                                    "type": "String",
+                                    "optional": true,
+                                    "optdefault": "id"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "index",
+                            "description": "",
+                            "type": "Object",
+                            "optional": true,
+                            "props": [
+                                {
+                                    "name": "unique",
+                                    "description": "unique field",
+                                    "type": "Boolean",
+                                    "optional": true,
+                                    "optdefault": "false"
+                                },
+                                {
+                                    "name": "compound",
+                                    "description": "names of the compound index. All fields with the same compound index name are used to create a compound index",
+                                    "type": "Array",
+                                    "optional": true
+                                }
+                            ]
+                        },
+                        {
+                            "name": "required",
+                            "description": "a required field",
+                            "type": "Boolean",
+                            "optional": true,
+                            "optdefault": "false"
+                        },
+                        {
+                            "name": "transformers",
+                            "description": "list of transformer objects. A transformer object can transform the data into a new form and also back\ninto its original form. Think of, zipping and unzipping or encrypting and decrypting",
+                            "type": "Array",
+                            "optional": true
+                        },
+                        {
+                            "name": "validators",
+                            "description": "list of validation functions",
+                            "type": "Array",
+                            "optional": true
+                        }
+                    ]
                 }
+            ]
+        },
+        "Sway.data.Relation": {
+            "name": "Sway.data.Relation",
+            "shortname": "Sway.data.Relation",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/data/relation.js",
+            "line": 23,
+            "description": "A Relation defines the relation between {{#crossLink \"Sway.data.Model\"}}{{/crossLink}}s. The following relations types\nare available\n<ul>\n     <li>HAS_MANY</li>\n     <li>HAS_ONE</li>\n     <li>BELONGS_TO</li>\n     <li>HAS_MANY</li>\n     <li>HAS_AND_BELONGS_TO_MANY</li>\n</ul>",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "key",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "relation",
+                    "description": "type of relation. Available relations are",
+                    "type": "RelationType"
+                },
+                {
+                    "name": "options",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "example": [
+                "\n    var relation = new Sway.Relation(Sway.Relation.HAS_ONE, { model: Sway.Account, key: id }) ;"
             ]
         },
         "Sway.filter.Compress": {
@@ -145,6 +407,32 @@
             "description": "Encrypt and decrypt a given string",
             "is_constructor": 1
         },
+        "Sway.ux.Form": {
+            "name": "Sway.ux.Form",
+            "shortname": "Sway.ux.Form",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/ux/Form.js",
+            "line": 6,
+            "description": "Form generator. This class provides a Fluent API to construct forms.\n\n     new Form(json)\n         .fieldset()\n         .label('username').text()\n         .label('password').password()\n         .submit(callback)\n         .clear() ;",
+            "is_constructor": 1
+        },
+        "Sway.ux.D3Carousel": {
+            "name": "Sway.ux.D3Carousel",
+            "shortname": "Sway.ux.D3Carousel",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/ux/d3carousel.js",
+            "line": 6,
+            "description": "3D carousel like https://market.sencha.com/extensions/ext-ux-cover",
+            "is_constructor": 1
+        },
         "Sway": {
             "name": "Sway",
             "shortname": "Sway",
@@ -157,6 +445,18 @@
             "line": 1,
             "description": "Namespace"
         },
+        "Sway.Bindable": {
+            "name": "Sway.Bindable",
+            "shortname": "Sway.Bindable",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/bindable.js",
+            "line": 4,
+            "is_constructor": 1
+        },
         "Sway.DI": {
             "name": "Sway.DI",
             "shortname": "Sway.DI",
@@ -167,7 +467,7 @@
             "extension_for": [],
             "file": "src/di.js",
             "line": 4,
-            "description": "DI makes classes accessible by a contract. Instances are created when requested and dependencies are injected into the constructor,\n        facilitating lazy initialization and loose coupling between classes.",
+            "description": "DI makes classes accessible by a contract. Instances are created when requested and dependencies are injected into the constructor,\nfacilitating lazy initialization and loose coupling between classes.\n\nAs an example, register all contracts during the application initialization\n\n     var di = new Sway.DI() ;\n     di.register( 'User'                                                                                 // contract name\n                  , Sway.data.ActiveRecord                                                               // class definiton\n                  , [ 'User', 'webSql', ['userNameField', 'passwordField', 'accountInfo'], 'websql' ]    // constructor parameters\n                  , { singleton: TRUE }                                                                  // configuration: create a singleton\n                )\n       .register( 'userNameField'\n                  , Sway.data.Field\n                  , [{ type: 'TEXT',  key: 'username', friendlyName: 'User name' }]\n                  , {singleton: TRUE}\n                )\n       .register( 'accountInfoField',\n                  , Sway.data.Field\n                  , [ { type: 'TEXT',  key: 'username', friendlyName: 'User name' }\n                       , ['encryptFilter', 'compressFilter']\n                    ]\n                  , { singleton: TRUE}\n                )\n       .register( 'userRecord'\n                  , di.register('User')  // create the User model!!\n                )\n       ...\n\nNow everywhere in the application create the instances as follows\n\n      var User = Sway.di.getInstance('User') ;\n      userRecord = new User({ username: 'John', password: 'Secret' }) ;\n      // or\n      userRecord = Sway.di.getInstance('userRecord', [{username: 'John', password: 'Secret'}]) ;\n\nTo give an idea of what this does, below is an example doing the exact same thing but without Sway.DI\n\n      var userNameField    = new Sway.data.Field( { type: 'TEXT',  key: 'username', friendlyName: 'User name' }] ) ;\n      var accountInfoField = new Sway.data.Field( { type: 'TEXT',  key: 'username', friendlyName: 'User name' }\n                                                  , [encryptFilterInstance, compressFilterInstance] ) ;\n      ...\n\nAnd create instances like\n\n      var User = new Sway.data.ActiveRecord( 'User', webSqlInstance, [userNameField, passwordField, accountInfoField] ) ;\n      var userRecord = new User({username: 'John', password: 'Secret'}) ;",
             "is_constructor": 1
         },
         "Sway.EventHub": {
@@ -179,50 +479,171 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/eventhub.js",
-            "line": 8,
-            "description": "EventHub facilitates event-based communication between different parts of an application (Event driven system).\nEvents can be namespaced too, checkout the jQuery <a href=\"http://docs.jquery.com/Namespaced_Events \">documentation</a> on how to use these namespaces.",
-            "is_constructor": 1
+            "line": 63,
+            "description": "EventHub facilitates event-based communication between different parts of an application (Event driven system).\nEvents can be namespaced too.\n\nNamespaces are separated by a dot, like\n\n    bar.foo1\n    bar.foo2\n    bar.bar1.foo1\n\nA Namespace and an Eventname are actually more or less the same thing:\n\n    eventHub.on('bar', myFunc1) ;\n    eventHub.on('bar.foo1', myFunc2) ;\n    eventHub.on('bar.bar1', myFunc3) ;\n    eventHub.on('bar.bar1.foo1', myFunc4) ;\n\nThe advantage of namespaced events is that it facilitates triggering groups of events\n\n    eventHub.trigger('bar') ;        // --> triggers: myFunc1, myFunc2, myFunc3 and myFunc4\n    eventHub.trigger('bar.bar1');    // --> triggers: myFunc3 and myFunc4",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "options",
+                    "description": "configuration parameters",
+                    "type": "Object",
+                    "optional": true,
+                    "props": [
+                        {
+                            "name": "allowMultiple",
+                            "description": "accept multiple registrations of a function for the same event name",
+                            "type": "Boolean",
+                            "optional": true
+                        }
+                    ]
+                }
+            ]
         }
     },
     "classitems": [
         {
+            "file": "src/data/storage/fs.js",
+            "line": 51,
+            "description": "FileEntry interface is provided for working with files:\nhttp://www.mosync.com/files/imports/doxygen/latest/html5/filewriter.md.html\nfileEntry.isFile === true\nfileEntry.isDirectory === false\nfileEntry.name\nfileEntry.fullPath\n...\n\nfileEntry.getMetadata(successCallback, opt_errorCallback);\nfileEntry.remove(successCallback, opt_errorCallback);\nfileEntry.moveTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);\nfileEntry.copyTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);\nfileEntry.getParent(successCallback, opt_errorCallback);\nfileEntry.toURI(opt_mimeType);  // Currently not implemented in Google Chrome 9.\n\nfileEntry.file(successCallback, opt_errorCallback);\nfileEntry.createWriter(successCallback, opt_errorCallback);",
+            "class": "Sway.persistance.IndexedDb"
+        },
+        {
+            "file": "src/data/storage/fs.js",
+            "line": 84,
+            "description": "http://www.mosync.com/files/imports/doxygen/latest/html5/filereader.md.html",
+            "class": "Sway.persistance.IndexedDb"
+        },
+        {
+            "file": "src/data/storage/fs.js",
+            "line": 169,
+            "description": "https://developer.mozilla.org/en-US/docs/DOM/File_API/File_System_API/FileError",
+            "class": "Sway.persistance.IndexedDb"
+        },
+        {
             "file": "src/data/activerecord.js",
-            "line": 54,
+            "line": 157,
+            "description": "a record can be in two states; NORMAL (default) or TRANSFORMED ...... TODO\n\n     userRecord.setState(User.TRANSFORMED, callback) ; // change the state of the record",
+            "itemtype": "property",
+            "name": "STATE",
+            "type": "Object",
+            "class": "Sway.data.Model"
+        },
+        {
+            "file": "src/data/activerecord.js",
+            "line": 165,
+            "itemtype": "property",
+            "name": "STATE.TRANFORMED",
+            "type": "Number",
+            "static": 1,
+            "class": "Sway.data.Model"
+        },
+        {
+            "file": "src/data/activerecord.js",
+            "line": 170,
+            "itemtype": "property",
+            "name": "STATE.NORMAL",
+            "type": "Number",
+            "static": 1,
+            "class": "Sway.data.Model"
+        },
+        {
+            "file": "src/data/activerecord.js",
+            "line": 178,
+            "description": "Use find to perform searches\n\n     User.find( {\n          'username':   'John'\n          , 'password': 'Secret'\n     }, function(user) { ... } ) ;\n\nOr simply create a new instance of a Model and use it for a search or save action\n\n     var userRecord = new User({ username: 'John', password: 'Secret'}) ;\n     User.find(userRecord, callback) ;\n     // or\n     userRecord.save() ;",
             "itemtype": "method",
-            "name": "bless",
-            "chainable": 1,
+            "name": "find",
+            "static": 1,
             "params": [
                 {
-                    "name": "model",
-                    "description": "instance to be blessed",
+                    "name": "data",
+                    "description": "JSON or model instance",
+                    "type": "Object"
+                },
+                {
+                    "name": "options",
+                    "description": "configuration",
+                    "type": "Object",
+                    "optional": true
+                },
+                {
+                    "name": "lazy",
+                    "description": "If false, <tt>find</tt> returns a model which will have all its data, including foreign key data, loaded.\n If the record is <tt>lazy</tt>, call {{#crossLink \"Sway.data.Model/load:method\"}}{{/crossLink}} first to make the data avaiable.",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": "true"
+                }
+            ],
+            "class": "Sway.data.Model"
+        },
+        {
+            "file": "src/data/activerecord.js",
+            "line": 211,
+            "itemtype": "method",
+            "name": "save",
+            "static": 1,
+            "params": [
+                {
+                    "name": "options",
+                    "description": "",
                     "type": "Object"
                 }
             ],
-            "class": "Sway.data.ActiveRecord."
+            "class": "Sway.data.Model"
         },
         {
             "file": "src/data/activerecord.js",
-            "line": 96,
+            "line": 224,
             "itemtype": "method",
-            "name": "getField",
+            "name": "item",
+            "class": "Sway.data.Model"
+        },
+        {
+            "file": "src/data/activerecord.js",
+            "line": 227,
+            "itemtype": "method",
+            "name": "hasNext",
+            "class": "Sway.data.Model"
+        },
+        {
+            "file": "src/data/activerecord.js",
+            "line": 231,
+            "itemtype": "method",
+            "name": "getState",
+            "class": "Sway.data.Model"
+        },
+        {
+            "file": "src/data/activerecord.js",
+            "line": 237,
+            "description": "change the state of a record. See ......",
+            "itemtype": "method",
+            "name": "setState",
             "params": [
                 {
-                    "name": "key",
-                    "description": "",
-                    "type": "String"
+                    "name": "state",
+                    "description": ""
+                },
+                {
+                    "name": "isLazy",
+                    "description": "values are transformed into the new state when requested. If <tt>true, all\nvalues are transformed immediately.",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": "true"
+                },
+                {
+                    "name": "callback",
+                    "description": "if <tt>isLazy</tt> is set to TRUE the callback is called when all values\nare transformed.",
+                    "type": "Function",
+                    "optional": true
                 }
             ],
-            "return": {
-                "description": "Field instance",
-                "type": "Object"
-            },
-            "class": "Sway.data.ActiveRecord."
+            "class": "Sway.data.Model"
         },
         {
             "file": "src/data/activerecord.js",
-            "line": 108,
+            "line": 255,
+            "description": "returns all the data in JSON format (unfiltered)",
             "itemtype": "method",
-            "name": "getSize",
+            "name": "toJSON",
             "params": [
                 {
                     "name": "key",
@@ -234,78 +655,142 @@
                 "description": "",
                 "type": "Number"
             },
-            "class": "Sway.data.ActiveRecord."
+            "class": "Sway.data.Model"
+        },
+        {
+            "file": "src/data/activerecord.js",
+            "line": 270,
+            "description": "Save the data and its relations (See Relation TODO)",
+            "itemtype": "method",
+            "name": "save",
+            "params": [
+                {
+                    "name": "deep",
+                    "description": "save related data",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": "true"
+                },
+                {
+                    "name": "callback",
+                    "description": "callback function",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "class": "Sway.data.Model"
+        },
+        {
+            "file": "src/data/activerecord.js",
+            "line": 283,
+            "itemtype": "method",
+            "name": "next",
+            "class": "Sway.data.Model"
+        },
+        {
+            "file": "src/data/activerecord.js",
+            "line": 289,
+            "itemtype": "method",
+            "name": "prev",
+            "class": "Sway.data.Model"
+        },
+        {
+            "file": "src/data/activerecord.js",
+            "line": 295,
+            "itemtype": "method",
+            "name": "item",
+            "class": "Sway.data.Model"
+        },
+        {
+            "file": "src/data/activerecord.js",
+            "line": 301,
+            "itemtype": "method",
+            "name": "hasNext",
+            "class": "Sway.data.Model"
+        },
+        {
+            "file": "src/data/activerecord.js",
+            "line": 307,
+            "itemtype": "method",
+            "name": "hasPrev",
+            "class": "Sway.data.Model"
+        },
+        {
+            "file": "src/data/activerecord.js",
+            "line": 313,
+            "itemtype": "method",
+            "name": "load",
+            "params": [
+                {
+                    "name": "key",
+                    "description": "name of the field",
+                    "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "callback function, called when the data is available",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "class": "Sway.data.Model"
+        },
+        {
+            "file": "src/data/activerecord.js",
+            "line": 328,
+            "description": "Call this function to make it aware of changes made to the data it relates to. Because a Model instance\nhas no direct link with, for example, a database, this mechanism only works when all changes made to the data are performed\nby one and the same storage object. This storage object is responsible for the notifications.\n\nAlways call {{#crossLink \"Sway.data.Model/unlink:method\"}}{{/crossLink}} to disable this behavior, or when the Model instance\notherwise, the\nIf the record or this <tt>link</tt> is not needed anymore, make sure to remove by calling {{#crossLink \"Sway.data.Model/unlink:method\"}}{{/crossLink}},",
+            "itemtype": "method",
+            "name": "link",
+            "class": "Sway.data.Model"
+        },
+        {
+            "file": "src/data/activerecord.js",
+            "line": 341,
+            "itemtype": "method",
+            "name": "unlink",
+            "class": "Sway.data.Model"
         },
         {
             "file": "src/data/field.js",
-            "line": 31,
+            "line": 56,
             "itemtype": "method",
-            "name": "getValue",
+            "name": "transform",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "value to be transformed",
+                    "type": "*"
+                },
+                {
+                    "name": "callback",
+                    "description": "function called with the transformed data",
+                    "type": "Function"
+                }
+            ],
+            "class": "Sway.data.Field"
+        },
+        {
+            "file": "src/data/field.js",
+            "line": 69,
+            "itemtype": "method",
+            "name": "validate",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "value to be validated",
+                    "type": "*"
+                }
+            ],
             "return": {
                 "description": "",
-                "type": "*"
+                "type": "Boolean"
             },
             "class": "Sway.data.Field"
         },
         {
-            "file": "src/data/field.js",
-            "line": 38,
-            "itemtype": "method",
-            "name": "getFilteredValue",
-            "class": "Sway.data.Field"
-        },
-        {
-            "file": "src/data/field.js",
-            "line": 45,
-            "itemtype": "method",
-            "name": "setValue",
-            "params": [
-                {
-                    "name": "value",
-                    "description": "the value of the field instance",
-                    "type": "Object|String|Blob|Array"
-                }
-            ],
-            "class": "Sway.data.Field"
-        },
-        {
-            "file": "src/data/field.js",
-            "line": 53,
-            "itemtype": "method",
-            "name": "setFilteredValue",
-            "params": [
-                {
-                    "name": "value",
-                    "description": "the filtered value of the field instance",
-                    "type": "Object|String|Blob|Array"
-                }
-            ],
-            "class": "Sway.data.Field"
-        },
-        {
-            "file": "src/data/field.js",
-            "line": 61,
-            "itemtype": "method",
-            "name": "size",
-            "class": "Sway.data.Field"
-        },
-        {
-            "file": "src/persistance/fs.js",
-            "line": 51,
-            "description": "FileEntry interface is provided for working with files:\nhttp://www.mosync.com/files/imports/doxygen/latest/html5/filewriter.md.html\nfileEntry.isFile === true\nfileEntry.isDirectory === false\nfileEntry.name\nfileEntry.fullPath\n...\n\nfileEntry.getMetadata(successCallback, opt_errorCallback);\nfileEntry.remove(successCallback, opt_errorCallback);\nfileEntry.moveTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);\nfileEntry.copyTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);\nfileEntry.getParent(successCallback, opt_errorCallback);\nfileEntry.toURI(opt_mimeType);  // Currently not implemented in Google Chrome 9.\n\nfileEntry.file(successCallback, opt_errorCallback);\nfileEntry.createWriter(successCallback, opt_errorCallback);",
-            "class": "Sway"
-        },
-        {
-            "file": "src/persistance/fs.js",
-            "line": 84,
-            "description": "http://www.mosync.com/files/imports/doxygen/latest/html5/filereader.md.html",
-            "class": "Sway"
-        },
-        {
-            "file": "src/persistance/fs.js",
-            "line": 169,
-            "description": "https://developer.mozilla.org/en-US/docs/DOM/File_API/File_System_API/FileError",
-            "class": "Sway"
+            "file": "src/data/relation.js",
+            "line": 5,
+            "class": "Sway.data.Relation"
         },
         {
             "file": "src/appinit.js",
@@ -326,59 +811,112 @@
             "class": "Sway"
         },
         {
+            "file": "src/bindable.js",
+            "line": 11,
+            "itemtype": "method",
+            "name": "bind",
+            "params": [
+                {
+                    "name": "object",
+                    "description": ""
+                },
+                {
+                    "name": "property",
+                    "description": ""
+                },
+                {
+                    "name": "callback",
+                    "description": ""
+                }
+            ],
+            "class": "Sway.Bindable"
+        },
+        {
+            "file": "src/bindable.js",
+            "line": 18,
+            "itemtype": "method",
+            "name": "bind2DOM",
+            "class": "Sway.Bindable"
+        },
+        {
+            "file": "src/bindable.js",
+            "line": 22,
+            "itemtype": "method",
+            "name": "bind2Storage",
+            "class": "Sway.Bindable"
+        },
+        {
             "file": "src/di.js",
-            "line": 29,
-            "description": "Register a class by creating a contract. Use {{#crossLink \"DI/getInstance:method\"}}{{/crossLink}} to obtain\nan instance from this contract/class. The injected dependencies, if any, will be used as constructor parameter\nin the order provided by the dependencies array.",
+            "line": 73,
+            "description": "Register a class by creating a contract. Use {{#crossLink \"Sway.DI/getInstance:method\"}}{{/crossLink}} to obtain\nan instance from this contract. The <tt>params</tt> parameter is a list of contracts,  and, if needed, normal\nconstructor parameters can be mixed in.",
             "itemtype": "method",
             "name": "register",
             "chainable": 1,
             "params": [
                 {
                     "name": "contract",
-                    "description": "name of the contracta",
+                    "description": "name of the contract",
                     "type": "String"
                 },
                 {
-                    "name": "class",
+                    "name": "classRef",
                     "description": "the class bind to this contract",
                     "type": "Class"
                 },
                 {
-                    "name": "dependencies",
-                    "description": "list of contracts; dependencies of this class",
+                    "name": "params",
+                    "description": "list of constructor parameters. Only if a parameter is a string and matches a contract, it\nwill be replaced with the corresponding instance",
                     "type": "Array",
                     "optional": true
                 },
                 {
                     "name": "options",
-                    "description": "addition setting used to create the instance.",
+                    "description": "configuration",
                     "type": "Object",
                     "optional": true,
                     "props": [
                         {
                             "name": "singleton",
-                            "description": "set to TRUE if the class should be treated as a singleton class",
-                            "type": "String"
+                            "description": "create a new instance every time",
+                            "type": "String",
+                            "optional": true,
+                            "optdefault": "false"
+                        },
+                        {
+                            "name": "description",
+                            "description": "describes the contract (currently only used by {{#crossLink \"Sway.DI/listContracts:method\"}}{{/crossLink}}).",
+                            "type": "String",
+                            "optional": true
                         }
                     ]
                 }
             ],
+            "return": {
+                "description": "this",
+                "type": "Object"
+            },
             "example": [
-                "\n        App.di.registerType(\"ajax\", App.AJAX) ;\n        App.di.registerType(\"ajax\", App.AJAX, [], { singleton: true }) ;\n        App.di.registerType(\"util\", App.Util, [\"compress\", \"wsql\"], { singleton: true } ) ;"
+                "\n        App.di.registerType(\"ajax\", App.AJAX) ;\n        App.di.registerType(\"ajax\", App.AJAX, [], { singleton: true }) ;\n        App.di.registerType(\"util\", App.Util, [\"compress\", true, [\"wsql\", \"ls\"] ], { singleton: true } ) ;"
             ],
             "class": "Sway.DI"
         },
         {
             "file": "src/di.js",
-            "line": 56,
-            "description": "Returns an instance for the given contract.",
+            "line": 109,
+            "description": "Returns an instance for the given contract. Use <tt>params</tt> attribute to overwrite the default\nparameters for this contract. If <tt>params</tt> is defined, the singleton configuration option is ignored.",
             "itemtype": "method",
-            "name": "geInstancet",
+            "name": "getInstance",
             "params": [
                 {
                     "name": "contract",
                     "description": "name",
                     "type": "String"
+                },
+                {
+                    "name": "params",
+                    "description": "constructor parameters",
+                    "type": "Array",
+                    "optional": true
                 }
             ],
             "return": {
@@ -392,53 +930,71 @@
         },
         {
             "file": "src/di.js",
-            "line": 79,
-            "description": "Returns a new instance of the class matched by the contract. If the contract does not exists an error is thrown.\nIf one of the dependencies does not exists, 'null' is used instead.",
+            "line": 134,
+            "description": "List all available contracts with their description to <tt>console.log</tt>",
             "itemtype": "method",
-            "name": "createInstance",
-            "params": [
-                {
-                    "name": "contract",
-                    "description": "- the contract name",
-                    "type": "String"
-                },
-                {
-                    "name": "dependencies",
-                    "description": "- list of contracts passed to the constructor",
-                    "type": "Array"
-                }
-            ],
-            "return": {
-                "description": "",
-                "type": "Object"
-            },
-            "example": [
-                "\n    try {\n        var storage = App.di.createInstance(\"data\", [\"compress\", \"websql\"]) ;\n    }\n    catch(e) { // will fail if contract does not exist\n        console.log(e.name + ': ' + e.message) ;\n    }"
-            ],
+            "name": "listContracts",
             "class": "Sway.DI"
         },
         {
             "file": "src/eventhub.js",
-            "line": 31,
-            "description": "Change the behavior of an event. By default, only the callbacks registered to an event are triggered. But the event can\nalso be set to 'capturing' or 'bubbling' mode. Bubbling means the trigger starts at the root of the namespaces and bubbles\nup to the event in question. Capturing does the opposite.",
-            "itemtype": "method",
-            "name": "defineEvent",
-            "params": [
-                {
-                    "name": "eventName",
-                    "description": "name of the event"
-                },
-                {
-                    "name": "etype",
-                    "description": "event type. Supported options are: 'capturing' and 'bubbling'"
-                }
+            "line": 5,
+            "description": "Contains available event modes. For example, if <tt>bar.foo</tt> is triggered, both event modes do the opposite\n\n                   | |                                     / \\\n    ---------------| |-----------------     ---------------| |-----------------\n    | bar          | |                |     | bar          | |                |\n    |   -----------| |-----------     |     |   -----------| |-----------     |\n    |   |bar.foo   \\ /          |     |     |   |bar.foo   | |          |     |\n    |   -------------------------     |     |   -------------------------     |\n    |        Event CAPTURING          |     |        Event BUBBLING           |\n    -----------------------------------     -----------------------------------\n\nThe event model implemented in this class does both, going from <tt>bubbling</tt> to the execution of all callbacks in <tt>bar.foo</tt>, then back in <tt>capturing</tt> mode\n\n                                  | |  / \\\n                 -----------------| |--| |-----------------\n                 | bar            | |  | |                |\n                 |   -------------| |--| |-----------     |\n                 |   |bar.foo     \\ /  | |          |     |\n                 |   --------------------------------     |\n                 |               event model              |\n                 ------------------------------------------\n\n    eventHub.on('bar.foo', myFunc1) ;\n    eventHub.on('bar', myFunc2, Sway.EventHub.EVENT_MODE.CAPTURING) ;\n    eventHub.on('bar', myFunc3, Sway.EventHub.EVENT_MODE.BUBBLING) ;\n    eventHub.on('bar', myFunc4, Sway.EventHub.EVENT_MODE.BOTH) ;\n    eventHub.trigger('bar.foo') ; // -> callback execution order: myFunc3, myFunc4, myFunc1, myFunc2 and myFunc4",
+            "itemtype": "property",
+            "name": "EVENT_MODE",
+            "type": "Object",
+            "static": 1,
+            "example": [
+                ""
             ],
             "class": "Sway.EventHub"
         },
         {
             "file": "src/eventhub.js",
-            "line": 49,
-            "description": "Trigger one or more events. One event is triggered if the 'eventName' parameter targets a specific event, but if this parameter is a namespace, all nested events and\nnamespaces will be triggered.",
+            "line": 39,
+            "description": "Defines the capturing event mode",
+            "itemtype": "property",
+            "name": "EVENT_MODE.CAPTURING",
+            "type": "String",
+            "static": 1,
+            "class": "Sway.EventHub"
+        },
+        {
+            "file": "src/eventhub.js",
+            "line": 45,
+            "description": "Defines the bubbling event mode",
+            "itemtype": "property",
+            "name": "EVENT_MODE.BUBBLING",
+            "type": "String",
+            "static": 1,
+            "class": "Sway.EventHub"
+        },
+        {
+            "file": "src/eventhub.js",
+            "line": 51,
+            "description": "Represent both capturing and bubbling event modes",
+            "itemtype": "property",
+            "name": "EVENT_MODE.ALL",
+            "type": "String",
+            "static": 1,
+            "class": "Sway.EventHub"
+        },
+        {
+            "file": "src/eventhub.js",
+            "line": 110,
+            "description": "Generates an unique event name",
+            "itemtype": "method",
+            "name": "generateUniqueEventName",
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "Sway.EventHub"
+        },
+        {
+            "file": "src/eventhub.js",
+            "line": 122,
+            "description": "Triggers one or more events. One event is triggered if the 'eventName' parameter targets a specific event, but if this parameter is a namespace, all nested events and\nnamespaces will be triggered.",
             "itemtype": "method",
             "name": "trigger",
             "params": [
@@ -452,6 +1008,21 @@
                     "description": "data passed to the triggered callback function",
                     "type": "Object|Array|Number|String|Boolean|Function",
                     "optional": true
+                },
+                {
+                    "name": "options",
+                    "description": "configuration",
+                    "type": "Opbject",
+                    "optional": true,
+                    "props": [
+                        {
+                            "name": "traverse",
+                            "description": "trigger all callbacks in nested namespaces",
+                            "type": "String",
+                            "optional": true,
+                            "optdefault": "false"
+                        }
+                    ]
                 }
             ],
             "return": {
@@ -459,14 +1030,14 @@
                 "type": "Number"
             },
             "example": [
-                "\n        Sway.eventHub.trigger('ui.update', {authenticated: true} ) ; // trigger the 'update' event inside the 'ui' namespace\n        Sway.eventHub.trigger('ui', {authenticated: true} ) ;        // trigger all nested events and namespaces inside the 'ui' namespace"
+                "\n        Sway.eventHub.trigger('ui.update', {authenticated: true} ) ;               // trigger the 'update' event inside the 'ui' namespace\n        Sway.eventHub.trigger('ui', {authenticated: true} ) ;                      // trigger all nested events and namespaces inside the 'ui' namespace"
             ],
             "class": "Sway.EventHub"
         },
         {
             "file": "src/eventhub.js",
-            "line": 66,
-            "description": "Register a callback to a specific event. Callbacks are executed in the order of\nregistration. Set 'prepend' to TRUE to add the callback in front of the others.",
+            "line": 150,
+            "description": "Register a callback for a specific event. Callbacks are executed in the order of\nregistration. Set 'prepend' to TRUE to add the callback in front of the others. With the 'options'\nparameter it is also possible to execute the callback in a capturing or bubbling phase.",
             "itemtype": "method",
             "name": "on",
             "params": [
@@ -481,21 +1052,39 @@
                     "type": "Function"
                 },
                 {
-                    "name": "prepend",
-                    "description": "if TRUE, the callback is placed before all other registered callbacks.",
-                    "type": "Boolean",
-                    "optional": true
+                    "name": "options",
+                    "description": "configuration",
+                    "type": "Object",
+                    "optional": true,
+                    "props": [
+                        {
+                            "name": "prepend",
+                            "description": "if TRUE, the callback is placed before all other registered callbacks.",
+                            "type": "Boolean",
+                            "optional": true
+                        },
+                        {
+                            "name": "eventMode",
+                            "description": "the event mode for which the callback is triggered too. Available modes are\n         <tt>capture</tt> and <tt>bubble</tt>",
+                            "type": "String",
+                            "optional": true
+                        }
+                    ]
                 }
             ],
+            "return": {
+                "description": "TRUE if the callback is registered successfully. It will fail if the callback was already registered",
+                "type": "Boolean"
+            },
             "example": [
-                "\n        Sway.eventHub.on( 'ui.update', this.update.bind(this) ) ;\n        Sway.eventHub.on( 'ui.update', this.update.bind(this), true ) ;"
+                "\n        Sway.eventHub.on( 'ui.update', this.update.bind(this) ) ;\n        Sway.eventHub.on( 'ui.update', this.update.bind(this), {prepend: true, eventMode: Sway.EventHub.EVENT_MODE.CAPTURING} ) ;"
             ],
             "class": "Sway.EventHub"
         },
         {
             "file": "src/eventhub.js",
-            "line": 83,
-            "description": "Register a callback to a specific event. This function is identical to {{#crossLink \"Sway.EventHub/on:method\"}}{{/crossLink}}\nexcept that this callback is removed from the list after it has been triggered.",
+            "line": 172,
+            "description": "Register a callback for a specific event. This function is identical to {{#crossLink \"Sway.EventHub/on:method\"}}{{/crossLink}}\nexcept that this callback is removed from the list after it has been triggered.",
             "itemtype": "method",
             "name": "one",
             "params": [
@@ -510,38 +1099,37 @@
                     "type": "Function"
                 },
                 {
-                    "name": "prepend",
-                    "description": "if TRUE, the callback is placed before all other registered callbacks.",
-                    "type": "Boolean",
-                    "optional": true
-                }
-            ],
-            "class": "Sway.EventHub"
-        },
-        {
-            "file": "src/eventhub.js",
-            "line": 101,
-            "description": "count the registered callbacks for an event or namespace",
-            "itemtype": "method",
-            "name": "count",
-            "params": [
-                {
-                    "name": "eventName",
-                    "description": "if empty all registered callbacks are counted",
-                    "type": "Sting",
-                    "optional": true
+                    "name": "options",
+                    "description": "configuration",
+                    "type": "Object",
+                    "optional": true,
+                    "props": [
+                        {
+                            "name": "prepend",
+                            "description": "if TRUE, the callback is placed before all other registered callbacks.",
+                            "type": "Boolean",
+                            "optional": true
+                        },
+                        {
+                            "name": "eventMode",
+                            "description": "the event mode for which the callback is triggered too. Available modes are\n         <tt>capture</tt> and <tt>bubble</tt>",
+                            "type": "String",
+                            "optional": true,
+                            "optdefault": "null"
+                        }
+                    ]
                 }
             ],
             "return": {
-                "description": "the number of callback functions inside 'eventName'. Returns -1 if the event or namespace does not exists",
-                "type": "Number"
+                "description": "TRUE if the callback is registered successfully. It will fail if the callback was already registered",
+                "type": "Boolean"
             },
             "class": "Sway.EventHub"
         },
         {
             "file": "src/eventhub.js",
-            "line": 113,
-            "description": "Removes the given callback for a specific event.",
+            "line": 193,
+            "description": "Removes the given callback for a specific event. However, if a callback is registered with an 'eventMode', the\ncallback can only be removed if that eventMode is specified too!",
             "itemtype": "method",
             "name": "off",
             "params": [
@@ -555,6 +1143,25 @@
                     "description": "the callback function to be removed. If omitted, all registered events and nested\nnamespaces inside 'eventName' are removed",
                     "type": "Function",
                     "optional": true
+                },
+                {
+                    "name": "UNKNOWN",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "traverse",
+                    "description": "traverse all nested namespaces",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": "false"
+                },
+                {
+                    "name": "options.eventMode",
+                    "description": "the event mode for which the callback is triggered too. Available modes are",
+                    "type": "String",
+                    "optional": true,
+                    "optdefault": "null"
                 }
             ],
             "return": {
@@ -562,22 +1169,73 @@
                 "type": "Number"
             },
             "example": [
-                "\n        Sway.eventHub.off('ui.update', this.update) ;\n        Sway.eventHub.off('ui') ;"
+                "\n        Sway.eventHub.off('ui.update', this.update) ;\n        Sway.eventHub.off('ui.update', this.update, {eventMode: Sway.EventHub.EVENT_MODE.CAPTURING}) ;\n        Sway.eventHub.off('ui') ;"
             ],
             "class": "Sway.EventHub"
         },
         {
             "file": "src/eventhub.js",
-            "line": 130,
+            "line": 215,
+            "description": "count the registered callbacks for an event or namespace",
+            "itemtype": "method",
+            "name": "countCallbacks",
+            "params": [
+                {
+                    "name": "eventName",
+                    "description": "the event name for which all registered callbacks are counted (including nested event names).",
+                    "type": "Sting"
+                },
+                {
+                    "name": "options",
+                    "description": "determine the count behavior",
+                    "type": "Object",
+                    "optional": true
+                },
+                {
+                    "name": "eventMode",
+                    "description": "the event mode; Sway.EventHub.CAPTURING or Sway.EventHub.BUBBLE",
+                    "type": "String",
+                    "optional": true
+                },
+                {
+                    "name": "traverse",
+                    "description": "traverse all nested namepsaces",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": "false"
+                }
+            ],
+            "return": {
+                "description": "the number of callback functions inside 'eventName'. Returns -1 if the event or namespace does not exists\nTODO: etype is not used",
+                "type": "Number"
+            },
+            "class": "Sway.EventHub"
+        },
+        {
+            "file": "src/eventhub.js",
+            "line": 234,
             "description": "returns the the trigger count for this event",
             "itemtype": "method",
-            "name": "triggerCount",
+            "name": "countTrigger",
             "params": [
                 {
                     "name": "eventName",
                     "description": "the event name",
                     "type": "Sting",
                     "optional": true
+                },
+                {
+                    "name": "options",
+                    "description": "",
+                    "type": "Object",
+                    "optional": true
+                },
+                {
+                    "name": "traverse",
+                    "description": "traverse all nested namepsaces",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": "false"
                 }
             ],
             "return": {
@@ -590,31 +1248,31 @@
     "warnings": [
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/data/activerecord.js:108"
+            "line": " src/data/activerecord.js:255"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/data/field.js:31"
+            "line": " src/di.js:109"
         },
         {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " src/di.js:56"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " src/di.js:79"
+            "message": "param name missing: {Object}",
+            "line": " src/eventhub.js:193"
         },
         {
             "message": "Missing item type\nFileEntry interface is provided for working with files:\nhttp://www.mosync.com/files/imports/doxygen/latest/html5/filewriter.md.html\nfileEntry.isFile === true\nfileEntry.isDirectory === false\nfileEntry.name\nfileEntry.fullPath\n...\n\nfileEntry.getMetadata(successCallback, opt_errorCallback);\nfileEntry.remove(successCallback, opt_errorCallback);\nfileEntry.moveTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);\nfileEntry.copyTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);\nfileEntry.getParent(successCallback, opt_errorCallback);\nfileEntry.toURI(opt_mimeType);  // Currently not implemented in Google Chrome 9.\n\nfileEntry.file(successCallback, opt_errorCallback);\nfileEntry.createWriter(successCallback, opt_errorCallback);",
-            "line": " src/persistance/fs.js:51"
+            "line": " src/data/storage/fs.js:51"
         },
         {
             "message": "Missing item type\nhttp://www.mosync.com/files/imports/doxygen/latest/html5/filereader.md.html",
-            "line": " src/persistance/fs.js:84"
+            "line": " src/data/storage/fs.js:84"
         },
         {
             "message": "Missing item type\nhttps://developer.mozilla.org/en-US/docs/DOM/File_API/File_System_API/FileError",
-            "line": " src/persistance/fs.js:169"
+            "line": " src/data/storage/fs.js:169"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/data/relation.js:5"
         }
     ]
 }

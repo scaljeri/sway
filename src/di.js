@@ -83,7 +83,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
          * will be replaced with the corresponding instance
          * @param {Object} [options] configuration
          *      @param {String} [options.singleton=false] create a new instance every time
-         *      @param {String} [options.description] describes the contract (used when {{#crossLink "Sway.DI/listContracts:method"}}{{/crossLink}} is called.
+         *      @param {String} [options.description] describes the contract (currently only used by {{#crossLink "Sway.DI/listContracts:method"}}{{/crossLink}}).
          * @return {Object} this
          * @example
          App.di.registerType("ajax", App.AJAX) ;

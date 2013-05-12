@@ -43,9 +43,15 @@
             
                 <li><a href="..&#x2F;classes/Sway.html">Sway</a></li>
             
-                <li><a href="..&#x2F;classes/Sway.data.ActiveRecord..html">Sway.data.ActiveRecord.</a></li>
+                <li><a href="..&#x2F;classes/Sway.Bindable.html">Sway.Bindable</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.data.ActiveRecord.html">Sway.data.ActiveRecord</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.data.Field.html">Sway.data.Field</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.data.Model.html">Sway.data.Model</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.data.Relation.html">Sway.data.Relation</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.DI.html">Sway.DI</a></li>
             
@@ -54,6 +60,16 @@
                 <li><a href="..&#x2F;classes/Sway.filter.Compress.html">Sway.filter.Compress</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.filter.Encrypt.html">Sway.filter.Encrypt</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.persistance.Cookie.html">Sway.persistance.Cookie</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.persistance.IndexedDb.html">Sway.persistance.IndexedDb</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.persistance.LocalStorage.html">Sway.persistance.LocalStorage</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.ux.D3Carousel.html">Sway.ux.D3Carousel</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.ux.Form.html">Sway.ux.Form</a></li>
             
             </ul>
 
@@ -101,72 +117,111 @@
 window.Sway = window.Sway || {}; &#x2F;&#x2F; make sure it exists
 window.Sway.data = window.Sway.data || {};
 
-(function (Ns) {
+(function (ns) {
     &quot;use strict&quot; ;
 
+    var DEFAULTS = {
+    }
+
     &#x2F;**
+     * A Field represents a single value of an {{#crossLink &quot;Sway.data.ActiveRecord&quot;}}{{&#x2F;crossLink}} model.
+     *
+     *     var username   = new Field(&#x27;username&#x27;, { friendlyName: &#x27;User name&#x27; })
+     *         , password = new Field(&#x27;password&#x27;, { type: &#x27;password&#x27;, friendlyName: &#x27;Password&#x27; })
+     *         , address  = new Field(&#x27;address&#x27;,  { FK: {model: Sway.data.Address}, friendlyName: &#x27;Address&#x27; }) ;
+     *
+     * Or if a field holds data which should be encrypted and compressed before persisted
+     *
+     *     var accountInfo = new Field( &#x27;accountInfo&#x27;, { type: &#x27;BLOB&#x27;, friendLyName: &#x27;Account info&#x27;, transformers: [encryptFilter, compressFilter] }) ;
+     *
+     * The constructor&#x27;s &lt;tt&gt;options&lt;&#x2F;tt&gt; parameter has many sub-options, however, it depends on the storage engine used which are used or ignored.
+     * Checkout the storage engine classes to find out which parameter are user&#x2F;required.
      *
      * @class Sway.data.Field
-     * @param {Array} [filters] list of filters
+     * @constructor
+     * @param {String} key name of the field
+     * @param {Object} [options] definition of this field
+     *      @param {String}  [options.type=TEXT] type of the field
+     *      @param {String}  [options.friendlyName] description of the field
+     *      @param {Object}  [options.PK] primary key field (there can only be one primary key field)
+     *          @param {Boolean} [options.PK.auto=true] Primary key field is auto-incremented (auto generated key)
+     *      @param {Object} [options.FK] foreign key configuration object
+     *          @param {Model} options.FK.model Model reference
+     *          @param {String} [options.FK.key=id] the key of the model it is referencing
+     *      @param {Object}  [options.index]
+     *         @param {Boolean} [options.index.unique=false] unique field
+     *         @param {Array}  [options.index.compound] names of the compound index. All fields with the same compound index name are used to create a compound index
+     *      @param {Boolean} [options.required=false] a required field
+     *      @param {Array}   [options.transformers] list of transformer objects. A transformer object can transform the data into a new form and also back
+     * into its original form. Think of, zipping and unzipping or encrypting and decrypting
+     *      @param {Array}   [options.validators] list of validation functions
      *&#x2F;
-     var f = function (filterList) {
-        this.filterList = filterList ;
-
-        Object.defineProperty(this, &#x27;_value&#x27;,
-            {
-                value: null
-                , enumerable: false &#x2F;&#x2F; hide it
+        , f = function (key, options) {
+            if ( !options ) {
+                options = {};
             }
-        ) ;
-        Object.defineProperty(this, &#x27;value&#x27;,
-            {
-                value: null
-                , set: this.setValue
-                , get: this.getValue
-            }
-        ) ;
-    } ;
+            this.key = key ;
+            this.type = options.type||&#x27;text&#x27; ;
+            this.friendlyName = options.friendlyName ;
+            this.transformers = options.transformers ;
+            this.validators = options.validators ;
+            return Object.freeze(this) ;
+        } ;
 
     f.prototype = {
         &#x2F;**
-         * @method getValue
-         * @returns {*}
+         * @method transform
+         * @param {*} value value to be transformed
+         * @param {Function} callback function called with the transformed data
          *&#x2F;
-        getValue: function() {
-            return this._value ;
+        transform: function(value, callback) {
+            if ( this.transformers ) {
+                transform(0, this.transformers, callback, value) ;
+            }
+            else {
+                callback(value) ;
+            }
         }
         &#x2F;**
-         * @method getFilteredValue
+         * @method validate
+         * @param {*} value value to be validated
+         * @return {Boolean}
          *&#x2F;
-        , getFilteredValue: function() {
-            return this._value ;
+        , validate: function(value) {
+            var i
+                , ok = true ;
 
+            if ( this.validators ) {
+                for( i = 0; i &lt; this.validators.length; i++ ) {
+                    if ( !this.validators[i].validate(value) ) {
+                        ok = false ;
+                        break ;
+                    }
+                }
+            }
+            return ok ;
         }
-        &#x2F;**
-         * @method setValue
-         * @param {Object|String|Blob|Array} value the value of the field instance
-         *&#x2F;
-        , setValue: function(input) {
-            this._value = input ;
-
-        }
-        &#x2F;**
-         * @method setFilteredValue
-         * @param {Object|String|Blob|Array} value the filtered value of the field instance
-         *&#x2F;
-        , setFilteredValue: function(input) {
-            this._value = input ;
-
-        }
-        &#x2F;**
+        &#x2F;*
+         * Returns the size of
          * @method size
          *&#x2F;
+        &#x2F;*
         , getSize: function() {
             return this.state === &quot;uncompressed&quot; ? encodeURI(this._inputStr).split(&#x2F;%..|.&#x2F;).length - 1 : this._zippedBlob.size ;
         }
+        *&#x2F;
     } ;
 
-    Ns.Field = f ;
+    function transform(index, transformers, callback, value) {
+        if ( transformers[index] ) {
+            transformers[index].transform(value, transform.bind(null, ++index, transformers,callback) ) ;
+        }
+        else {
+           callback(value) ;
+        }
+    }
+
+    ns.Field = f ;
 
 })(window.Sway.data) ;
 

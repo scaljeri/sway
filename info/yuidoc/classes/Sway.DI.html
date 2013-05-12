@@ -43,9 +43,15 @@
             
                 <li><a href="..&#x2F;classes/Sway.html">Sway</a></li>
             
-                <li><a href="..&#x2F;classes/Sway.data.ActiveRecord..html">Sway.data.ActiveRecord.</a></li>
+                <li><a href="..&#x2F;classes/Sway.Bindable.html">Sway.Bindable</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.data.ActiveRecord.html">Sway.data.ActiveRecord</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.data.Field.html">Sway.data.Field</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.data.Model.html">Sway.data.Model</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.data.Relation.html">Sway.data.Relation</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.DI.html">Sway.DI</a></li>
             
@@ -54,6 +60,16 @@
                 <li><a href="..&#x2F;classes/Sway.filter.Compress.html">Sway.filter.Compress</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.filter.Encrypt.html">Sway.filter.Encrypt</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.persistance.Cookie.html">Sway.persistance.Cookie</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.persistance.IndexedDb.html">Sway.persistance.IndexedDb</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.persistance.LocalStorage.html">Sway.persistance.LocalStorage</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.ux.D3Carousel.html">Sway.ux.D3Carousel</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.ux.Form.html">Sway.ux.Form</a></li>
             
             </ul>
 
@@ -115,7 +131,55 @@
 
 <div class="box intro">
     <p>DI makes classes accessible by a contract. Instances are created when requested and dependencies are injected into the constructor,
-        facilitating lazy initialization and loose coupling between classes.</p>
+facilitating lazy initialization and loose coupling between classes.</p>
+
+<p>As an example, register all contracts during the application initialization</p>
+
+<pre class="code prettyprint"><code> var di = new Sway.DI() ;
+ di.register( 'User'                                                                                 // contract name
+              , Sway.data.ActiveRecord                                                               // class definiton
+              , [ 'User', 'webSql', ['userNameField', 'passwordField', 'accountInfo'], 'websql' ]    // constructor parameters
+              , { singleton: TRUE }                                                                  // configuration: create a singleton
+            )
+   .register( 'userNameField'
+              , Sway.data.Field
+              , [{ type: 'TEXT',  key: 'username', friendlyName: 'User name' }]
+              , {singleton: TRUE}
+            )
+   .register( 'accountInfoField',
+              , Sway.data.Field
+              , [ { type: 'TEXT',  key: 'username', friendlyName: 'User name' }
+                   , ['encryptFilter', 'compressFilter']
+                ]
+              , { singleton: TRUE}
+            )
+   .register( 'userRecord'
+              , di.register('User')  // create the User model!!
+            )
+   ...
+</code></pre>
+
+<p>Now everywhere in the application create the instances as follows</p>
+
+<pre class="code prettyprint"><code>  var User = Sway.di.getInstance('User') ;
+  userRecord = new User({ username: 'John', password: 'Secret' }) ;
+  // or
+  userRecord = Sway.di.getInstance('userRecord', [{username: 'John', password: 'Secret'}]) ;
+</code></pre>
+
+<p>To give an idea of what this does, below is an example doing the exact same thing but without Sway.DI</p>
+
+<pre class="code prettyprint"><code>  var userNameField    = new Sway.data.Field( { type: 'TEXT',  key: 'username', friendlyName: 'User name' }] ) ;
+  var accountInfoField = new Sway.data.Field( { type: 'TEXT',  key: 'username', friendlyName: 'User name' }
+                                              , [encryptFilterInstance, compressFilterInstance] ) ;
+  ...
+</code></pre>
+
+<p>And create instances like</p>
+
+<pre class="code prettyprint"><code>  var User = new Sway.data.ActiveRecord( 'User', webSqlInstance, [userNameField, passwordField, accountInfoField] ) ;
+  var userRecord = new User({username: 'John', password: 'Secret'}) ;
+</code></pre>
 </div>
 
 
@@ -200,14 +264,14 @@
                     <ul class="index-list methods">
                         
                             <li class="index-item method">
-                                <a href="#method_createInstance">createInstance</a>
+                                <a href="#method_getInstance">getInstance</a>
 
                                 
                                 
                             </li>
                         
                             <li class="index-item method">
-                                <a href="#method_geInstancet">geInstancet</a>
+                                <a href="#method_listContracts">listContracts</a>
 
                                 
                                 
@@ -236,8 +300,8 @@
                 <h2 class="off-left">Methods</h2>
 
                 
-                    <div id="method_createInstance" class="method item">
-    <h3 class="name"><code>createInstance</code></h3>
+                    <div id="method_getInstance" class="method item">
+    <h3 class="name"><code>getInstance</code></h3>
 
     
         <div class="args">
@@ -251,7 +315,7 @@
             
                 <li class="arg">
                     
-                        <code>dependencies</code>
+                        <code class="optional">[params]</code>
                     
                 </li>
             
@@ -288,7 +352,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;src_di.js.html#l79"><code>src&#x2F;di.js:79</code></a>
+        <a href="..&#x2F;files&#x2F;src_di.js.html#l109"><code>src&#x2F;di.js:109</code></a>
         
         </p>
 
@@ -299,144 +363,8 @@
     </div>
 
     <div class="description">
-        <p>Returns a new instance of the class matched by the contract. If the contract does not exists an error is thrown.
-If one of the dependencies does not exists, 'null' is used instead.</p>
-    </div>
-
-    
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-            
-                <li class="param">
-                    
-                        <code class="param-name">contract</code>
-                        <span class="type">String</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <ul>
-<li>the contract name</li>
-</ul>
-                    </div>
-
-                    
-                </li>
-            
-                <li class="param">
-                    
-                        <code class="param-name">dependencies</code>
-                        <span class="type">Array</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <ul>
-<li>list of contracts passed to the constructor</li>
-</ul>
-                    </div>
-
-                    
-                </li>
-            
-            </ul>
-        </div>
-    
-
-    
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                
-                    
-                        <span class="type">Object</span>:
-                    
-                
-            </div>
-        </div>
-    
-
-    
-        <div class="example">
-            <h4>Example:</h4>
-
-            <div class="example-content">
-                <pre class="code prettyprint"><code>try {
-    var storage = App.di.createInstance("data", ["compress", "websql"]) ;
-}
-catch(e) { // will fail if contract does not exist
-    console.log(e.name + ': ' + e.message) ;
-}
-</code></pre>
-            </div>
-        </div>
-    
-</div>
-
-                
-                    <div id="method_geInstancet" class="method item">
-    <h3 class="name"><code>geInstancet</code></h3>
-
-    
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        <code>contract</code>
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
-    
-
-    
-        <span class="returns-inline">
-            <span class="type">Object</span>
-        </span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="..&#x2F;files&#x2F;src_di.js.html#l56"><code>src&#x2F;di.js:56</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>Returns an instance for the given contract.</p>
+        <p>Returns an instance for the given contract. Use <tt>params</tt> attribute to overwrite the default
+parameters for this contract. If <tt>params</tt> is defined, the singleton configuration option is ignored.</p>
     </div>
 
     
@@ -455,6 +383,22 @@ catch(e) { // will fail if contract does not exist
 
                     <div class="param-description">
                         <p>name</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[params]</code>
+                        <span class="type">Array</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>constructor parameters</p>
                     </div>
 
                     
@@ -492,6 +436,60 @@ catch(e) { // will fail if contract does not exist
 </div>
 
                 
+                    <div id="method_listContracts" class="method item">
+    <h3 class="name"><code>listContracts</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;src_di.js.html#l134"><code>src&#x2F;di.js:134</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>List all available contracts with their description to <tt>console.log</tt></p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
                     <div id="method_register" class="method item">
     <h3 class="name"><code>register</code></h3>
 
@@ -507,13 +505,13 @@ catch(e) { // will fail if contract does not exist
             
                 <li class="arg">
                     
-                        <code>class</code>
+                        <code>classRef</code>
                     
                 </li>
             
                 <li class="arg">
                     
-                        <code class="optional">[dependencies]</code>
+                        <code class="optional">[params]</code>
                     
                 </li>
             
@@ -527,6 +525,10 @@ catch(e) { // will fail if contract does not exist
         </div>
     
 
+    
+        <span class="returns-inline">
+            <span class="type">Object</span>
+        </span>
     
 
     
@@ -554,7 +556,7 @@ catch(e) { // will fail if contract does not exist
             
         
         
-        <a href="..&#x2F;files&#x2F;src_di.js.html#l29"><code>src&#x2F;di.js:29</code></a>
+        <a href="..&#x2F;files&#x2F;src_di.js.html#l73"><code>src&#x2F;di.js:73</code></a>
         
         </p>
 
@@ -565,9 +567,9 @@ catch(e) { // will fail if contract does not exist
     </div>
 
     <div class="description">
-        <p>Register a class by creating a contract. Use DI/getInstance:method to obtain
-an instance from this contract/class. The injected dependencies, if any, will be used as constructor parameter
-in the order provided by the dependencies array.</p>
+        <p>Register a class by creating a contract. Use <a href="../classes/Sway.DI.html#method_getInstance" class="crosslink">getInstance</a> to obtain
+an instance from this contract. The <tt>params</tt> parameter is a list of contracts,  and, if needed, normal
+constructor parameters can be mixed in.</p>
     </div>
 
     
@@ -585,7 +587,7 @@ in the order provided by the dependencies array.</p>
                     
 
                     <div class="param-description">
-                        <p>name of the contracta</p>
+                        <p>name of the contract</p>
                     </div>
 
                     
@@ -593,7 +595,7 @@ in the order provided by the dependencies array.</p>
             
                 <li class="param">
                     
-                        <code class="param-name">class</code>
+                        <code class="param-name">classRef</code>
                         <span class="type">Class</span>
                     
 
@@ -608,7 +610,7 @@ in the order provided by the dependencies array.</p>
             
                 <li class="param">
                     
-                        <code class="param-name optional">[dependencies]</code>
+                        <code class="param-name optional">[params]</code>
                         <span class="type">Array</span>
                         <span class="flag optional" title="This parameter is optional.">optional</span>
                     
@@ -616,7 +618,8 @@ in the order provided by the dependencies array.</p>
                     
 
                     <div class="param-description">
-                        <p>list of contracts; dependencies of this class</p>
+                        <p>list of constructor parameters. Only if a parameter is a string and matches a contract, it
+will be replaced with the corresponding instance</p>
                     </div>
 
                     
@@ -632,7 +635,7 @@ in the order provided by the dependencies array.</p>
                     
 
                     <div class="param-description">
-                        <p>addition setting used to create the instance.</p>
+                        <p>configuration</p>
                     </div>
 
                     
@@ -640,12 +643,27 @@ in the order provided by the dependencies array.</p>
                             
                             <li class="param">
                                 
-                                    <code class="param-name">singleton</code>
+                                    <code class="param-name optional">[singleton=false]</code>
                                     <span class="type">String</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
                                 
 
                                 <div class="param-description">
-                                    <p>set to TRUE if the class should be treated as a singleton class</p>
+                                    <p>create a new instance every time</p>
+                                </div>
+
+                                
+                            </li>
+                            
+                            <li class="param">
+                                
+                                    <code class="param-name optional">[description]</code>
+                                    <span class="type">String</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+                                
+
+                                <div class="param-description">
+                                    <p>describes the contract (currently only used by <a href="../classes/Sway.DI.html#method_listContracts" class="crosslink">listContracts</a>).</p>
                                 </div>
 
                                 
@@ -660,6 +678,19 @@ in the order provided by the dependencies array.</p>
     
 
     
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">Object</span>:
+                    
+                    this
+                
+            </div>
+        </div>
+    
 
     
         <div class="example">
@@ -668,7 +699,7 @@ in the order provided by the dependencies array.</p>
             <div class="example-content">
                 <pre class="code prettyprint"><code>    App.di.registerType("ajax", App.AJAX) ;
     App.di.registerType("ajax", App.AJAX, [], { singleton: true }) ;
-    App.di.registerType("util", App.Util, ["compress", "wsql"], { singleton: true } ) ;
+    App.di.registerType("util", App.Util, ["compress", true, ["wsql", "ls"] ], { singleton: true } ) ;
 </code></pre>
             </div>
         </div>

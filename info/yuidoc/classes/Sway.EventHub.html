@@ -43,9 +43,15 @@
             
                 <li><a href="..&#x2F;classes/Sway.html">Sway</a></li>
             
-                <li><a href="..&#x2F;classes/Sway.data.ActiveRecord..html">Sway.data.ActiveRecord.</a></li>
+                <li><a href="..&#x2F;classes/Sway.Bindable.html">Sway.Bindable</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.data.ActiveRecord.html">Sway.data.ActiveRecord</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.data.Field.html">Sway.data.Field</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.data.Model.html">Sway.data.Model</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.data.Relation.html">Sway.data.Relation</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.DI.html">Sway.DI</a></li>
             
@@ -54,6 +60,16 @@
                 <li><a href="..&#x2F;classes/Sway.filter.Compress.html">Sway.filter.Compress</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.filter.Encrypt.html">Sway.filter.Encrypt</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.persistance.Cookie.html">Sway.persistance.Cookie</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.persistance.IndexedDb.html">Sway.persistance.IndexedDb</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.persistance.LocalStorage.html">Sway.persistance.LocalStorage</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.ux.D3Carousel.html">Sway.ux.D3Carousel</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.ux.Form.html">Sway.ux.Form</a></li>
             
             </ul>
 
@@ -102,7 +118,7 @@
 
     
         <div class="foundat">
-            Defined in: <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l8"><code>src&#x2F;eventhub.js:8</code></a>
+            Defined in: <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l63"><code>src&#x2F;eventhub.js:63</code></a>
         </div>
     
 
@@ -115,7 +131,28 @@
 
 <div class="box intro">
     <p>EventHub facilitates event-based communication between different parts of an application (Event driven system).
-Events can be namespaced too, checkout the jQuery <a href="http://docs.jquery.com/Namespaced_Events ">documentation</a> on how to use these namespaces.</p>
+Events can be namespaced too.</p>
+
+<p>Namespaces are separated by a dot, like</p>
+
+<pre class="code prettyprint"><code>bar.foo1
+bar.foo2
+bar.bar1.foo1
+</code></pre>
+
+<p>A Namespace and an Eventname are actually more or less the same thing:</p>
+
+<pre class="code prettyprint"><code>eventHub.on('bar', myFunc1) ;
+eventHub.on('bar.foo1', myFunc2) ;
+eventHub.on('bar.bar1', myFunc3) ;
+eventHub.on('bar.bar1.foo1', myFunc4) ;
+</code></pre>
+
+<p>The advantage of namespaced events is that it facilitates triggering groups of events</p>
+
+<pre class="code prettyprint"><code>eventHub.trigger('bar') ;        // --&gt; triggers: myFunc1, myFunc2, myFunc3 and myFunc4
+eventHub.trigger('bar.bar1');    // --&gt; triggers: myFunc3 and myFunc4
+</code></pre>
 </div>
 
 
@@ -125,7 +162,17 @@ Events can be namespaced too, checkout the jQuery <a href="http://docs.jquery.co
     <h3 class="name"><code>Sway.EventHub</code></h3>
 
     
-        <span class="paren">()</span>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code class="optional">[options]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
     
 
     
@@ -153,7 +200,7 @@ Events can be namespaced too, checkout the jQuery <a href="http://docs.jquery.co
             
         
         
-        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l8"><code>src&#x2F;eventhub.js:8</code></a>
+        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l63"><code>src&#x2F;eventhub.js:63</code></a>
         
         </p>
 
@@ -167,6 +214,48 @@ Events can be namespaced too, checkout the jQuery <a href="http://docs.jquery.co
         
     </div>
 
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[options]</code>
+                        <span class="type">Object</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>configuration parameters</p>
+                    </div>
+
+                    
+                        <ul class="params-list">
+                            
+                            <li class="param">
+                                
+                                    <code class="param-name optional">[allowMultiple]</code>
+                                    <span class="type">Boolean</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+                                
+
+                                <div class="param-description">
+                                    <p>accept multiple registrations of a function for the same event name</p>
+                                </div>
+
+                                
+                            </li>
+                            
+                        </ul>
+                    
+                </li>
+            
+            </ul>
+        </div>
     
 
     
@@ -185,6 +274,8 @@ Events can be namespaced too, checkout the jQuery <a href="http://docs.jquery.co
             <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
         
         
+            <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
+        
         
         
     </ul>
@@ -200,14 +291,21 @@ Events can be namespaced too, checkout the jQuery <a href="http://docs.jquery.co
                     <ul class="index-list methods">
                         
                             <li class="index-item method">
-                                <a href="#method_count">count</a>
+                                <a href="#method_countCallbacks">countCallbacks</a>
 
                                 
                                 
                             </li>
                         
                             <li class="index-item method">
-                                <a href="#method_defineEvent">defineEvent</a>
+                                <a href="#method_countTrigger">countTrigger</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_generateUniqueEventName">generateUniqueEventName</a>
 
                                 
                                 
@@ -241,17 +339,54 @@ Events can be namespaced too, checkout the jQuery <a href="http://docs.jquery.co
                                 
                             </li>
                         
-                            <li class="index-item method">
-                                <a href="#method_triggerCount">triggerCount</a>
+                    </ul>
+                </div>
+            
 
+            
+                <div class="index-section properties">
+                    <h3>Properties</h3>
+
+                    <ul class="index-list properties">
+                        
+                            <li class="index-item property">
+                                <a href="#property_EVENT_MODE">EVENT_MODE</a>
+
+                                
+                                    <span class="flag static">static</span>
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item property">
+                                <a href="#property_EVENT_MODE.ALL">EVENT_MODE.ALL</a>
+
+                                
+                                    <span class="flag static">static</span>
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item property">
+                                <a href="#property_EVENT_MODE.BUBBLING">EVENT_MODE.BUBBLING</a>
+
+                                
+                                    <span class="flag static">static</span>
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item property">
+                                <a href="#property_EVENT_MODE.CAPTURING">EVENT_MODE.CAPTURING</a>
+
+                                
+                                    <span class="flag static">static</span>
                                 
                                 
                             </li>
                         
                     </ul>
                 </div>
-            
-
             
 
             
@@ -264,8 +399,8 @@ Events can be namespaced too, checkout the jQuery <a href="http://docs.jquery.co
                 <h2 class="off-left">Methods</h2>
 
                 
-                    <div id="method_count" class="method item">
-    <h3 class="name"><code>count</code></h3>
+                    <div id="method_countCallbacks" class="method item">
+    <h3 class="name"><code>countCallbacks</code></h3>
 
     
         <div class="args">
@@ -273,7 +408,25 @@ Events can be namespaced too, checkout the jQuery <a href="http://docs.jquery.co
             
                 <li class="arg">
                     
-                        <code class="optional">[eventName]</code>
+                        <code>eventName</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[options]</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[eventMode]</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[traverse=false]</code>
                     
                 </li>
             
@@ -310,7 +463,7 @@ Events can be namespaced too, checkout the jQuery <a href="http://docs.jquery.co
             
         
         
-        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l101"><code>src&#x2F;eventhub.js:101</code></a>
+        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l215"><code>src&#x2F;eventhub.js:215</code></a>
         
         </p>
 
@@ -332,15 +485,62 @@ Events can be namespaced too, checkout the jQuery <a href="http://docs.jquery.co
             
                 <li class="param">
                     
-                        <code class="param-name optional">[eventName]</code>
+                        <code class="param-name">eventName</code>
                         <span class="type">Sting</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>the event name for which all registered callbacks are counted (including nested event names).</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[options]</code>
+                        <span class="type">Object</span>
                         <span class="flag optional" title="This parameter is optional.">optional</span>
                     
 
                     
 
                     <div class="param-description">
-                        <p>if empty all registered callbacks are counted</p>
+                        <p>determine the count behavior</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[eventMode]</code>
+                        <span class="type">String</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>the event mode; Sway.EventHub.CAPTURING or Sway.EventHub.BUBBLE</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[traverse=false]</code>
+                        <span class="type">Boolean</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>traverse all nested namepsaces</p>
                     </div>
 
                     
@@ -360,6 +560,7 @@ Events can be namespaced too, checkout the jQuery <a href="http://docs.jquery.co
                         <span class="type">Number</span>:
                     
                     the number of callback functions inside 'eventName'. Returns -1 if the event or namespace does not exists
+TODO: etype is not used
                 
             </div>
         </div>
@@ -369,8 +570,8 @@ Events can be namespaced too, checkout the jQuery <a href="http://docs.jquery.co
 </div>
 
                 
-                    <div id="method_defineEvent" class="method item">
-    <h3 class="name"><code>defineEvent</code></h3>
+                    <div id="method_countTrigger" class="method item">
+    <h3 class="name"><code>countTrigger</code></h3>
 
     
         <div class="args">
@@ -378,13 +579,19 @@ Events can be namespaced too, checkout the jQuery <a href="http://docs.jquery.co
             
                 <li class="arg">
                     
-                        <code>eventName</code>
+                        <code class="optional">[eventName]</code>
                     
                 </li>
             
                 <li class="arg">
                     
-                        <code>etype</code>
+                        <code class="optional">[options]</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[traverse=false]</code>
                     
                 </li>
             
@@ -392,6 +599,10 @@ Events can be namespaced too, checkout the jQuery <a href="http://docs.jquery.co
         </div>
     
 
+    
+        <span class="returns-inline">
+            <span class="type">Number</span>
+        </span>
     
 
     
@@ -417,7 +628,7 @@ Events can be namespaced too, checkout the jQuery <a href="http://docs.jquery.co
             
         
         
-        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l31"><code>src&#x2F;eventhub.js:31</code></a>
+        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l234"><code>src&#x2F;eventhub.js:234</code></a>
         
         </p>
 
@@ -428,9 +639,7 @@ Events can be namespaced too, checkout the jQuery <a href="http://docs.jquery.co
     </div>
 
     <div class="description">
-        <p>Change the behavior of an event. By default, only the callbacks registered to an event are triggered. But the event can
-also be set to 'capturing' or 'bubbling' mode. Bubbling means the trigger starts at the root of the namespaces and bubbles
-up to the event in question. Capturing does the opposite.</p>
+        <p>returns the the trigger count for this event</p>
     </div>
 
     
@@ -441,14 +650,15 @@ up to the event in question. Capturing does the opposite.</p>
             
                 <li class="param">
                     
-                        <code class="param-name">eventName</code>
-                        <span class="type">Object</span>
+                        <code class="param-name optional">[eventName]</code>
+                        <span class="type">Sting</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
                     
 
                     
 
                     <div class="param-description">
-                        <p>name of the event</p>
+                        <p>the event name</p>
                     </div>
 
                     
@@ -456,14 +666,31 @@ up to the event in question. Capturing does the opposite.</p>
             
                 <li class="param">
                     
-                        <code class="param-name">etype</code>
+                        <code class="param-name optional">[options]</code>
                         <span class="type">Object</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
                     
 
                     
 
                     <div class="param-description">
-                        <p>event type. Supported options are: 'capturing' and 'bubbling'</p>
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[traverse=false]</code>
+                        <span class="type">Boolean</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>traverse all nested namepsaces</p>
                     </div>
 
                     
@@ -473,6 +700,89 @@ up to the event in question. Capturing does the opposite.</p>
         </div>
     
 
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">Number</span>:
+                    
+                    trigger count. -1 is returned if the event name does not exist
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_generateUniqueEventName" class="method item">
+    <h3 class="name"><code>generateUniqueEventName</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">String</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l110"><code>src&#x2F;eventhub.js:110</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Generates an unique event name</p>
+    </div>
+
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">String</span>:
+                    
+                
+            </div>
+        </div>
     
 
     
@@ -498,6 +808,24 @@ up to the event in question. Capturing does the opposite.</p>
                     
                 </li>
             
+                <li class="arg">
+                    
+                        <code>UNKNOWN</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[traverse=false]</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[options.eventMode=null]</code>
+                    
+                </li>
+            
             </ul><span class="paren">)</span>
         </div>
     
@@ -531,7 +859,7 @@ up to the event in question. Capturing does the opposite.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l113"><code>src&#x2F;eventhub.js:113</code></a>
+        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l193"><code>src&#x2F;eventhub.js:193</code></a>
         
         </p>
 
@@ -542,7 +870,8 @@ up to the event in question. Capturing does the opposite.</p>
     </div>
 
     <div class="description">
-        <p>Removes the given callback for a specific event.</p>
+        <p>Removes the given callback for a specific event. However, if a callback is registered with an 'eventMode', the
+callback can only be removed if that eventMode is specified too!</p>
     </div>
 
     
@@ -583,6 +912,53 @@ namespaces inside 'eventName' are removed</p>
                     
                 </li>
             
+                <li class="param">
+                    
+                        <code class="param-name">UNKNOWN</code>
+                        <span class="type">Object</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[traverse=false]</code>
+                        <span class="type">Boolean</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>traverse all nested namespaces</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[options.eventMode=null]</code>
+                        <span class="type">String</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>the event mode for which the callback is triggered too. Available modes are</p>
+                    </div>
+
+                    
+                </li>
+            
             </ul>
         </div>
     
@@ -608,6 +984,7 @@ namespaces inside 'eventName' are removed</p>
 
             <div class="example-content">
                 <pre class="code prettyprint"><code>    Sway.eventHub.off('ui.update', this.update) ;
+    Sway.eventHub.off('ui.update', this.update, {eventMode: Sway.EventHub.EVENT_MODE.CAPTURING}) ;
     Sway.eventHub.off('ui') ;
 </code></pre>
             </div>
@@ -637,7 +1014,7 @@ namespaces inside 'eventName' are removed</p>
             
                 <li class="arg">
                     
-                        <code class="optional">[prepend]</code>
+                        <code class="optional">[options]</code>
                     
                 </li>
             
@@ -645,6 +1022,10 @@ namespaces inside 'eventName' are removed</p>
         </div>
     
 
+    
+        <span class="returns-inline">
+            <span class="type">Boolean</span>
+        </span>
     
 
     
@@ -670,7 +1051,7 @@ namespaces inside 'eventName' are removed</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l66"><code>src&#x2F;eventhub.js:66</code></a>
+        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l150"><code>src&#x2F;eventhub.js:150</code></a>
         
         </p>
 
@@ -681,8 +1062,9 @@ namespaces inside 'eventName' are removed</p>
     </div>
 
     <div class="description">
-        <p>Register a callback to a specific event. Callbacks are executed in the order of
-registration. Set 'prepend' to TRUE to add the callback in front of the others.</p>
+        <p>Register a callback for a specific event. Callbacks are executed in the order of
+registration. Set 'prepend' to TRUE to add the callback in front of the others. With the 'options'
+parameter it is also possible to execute the callback in a capturing or bubbling phase.</p>
     </div>
 
     
@@ -723,17 +1105,50 @@ registration. Set 'prepend' to TRUE to add the callback in front of the others.<
             
                 <li class="param">
                     
-                        <code class="param-name optional">[prepend]</code>
-                        <span class="type">Boolean</span>
+                        <code class="param-name optional">[options]</code>
+                        <span class="type">Object</span>
                         <span class="flag optional" title="This parameter is optional.">optional</span>
                     
 
                     
 
                     <div class="param-description">
-                        <p>if TRUE, the callback is placed before all other registered callbacks.</p>
+                        <p>configuration</p>
                     </div>
 
+                    
+                        <ul class="params-list">
+                            
+                            <li class="param">
+                                
+                                    <code class="param-name optional">[prepend]</code>
+                                    <span class="type">Boolean</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+                                
+
+                                <div class="param-description">
+                                    <p>if TRUE, the callback is placed before all other registered callbacks.</p>
+                                </div>
+
+                                
+                            </li>
+                            
+                            <li class="param">
+                                
+                                    <code class="param-name optional">[eventMode]</code>
+                                    <span class="type">String</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+                                
+
+                                <div class="param-description">
+                                    <p>the event mode for which the callback is triggered too. Available modes are
+         <tt>capture</tt> and <tt>bubble</tt></p>
+                                </div>
+
+                                
+                            </li>
+                            
+                        </ul>
                     
                 </li>
             
@@ -742,6 +1157,19 @@ registration. Set 'prepend' to TRUE to add the callback in front of the others.<
     
 
     
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">Boolean</span>:
+                    
+                    TRUE if the callback is registered successfully. It will fail if the callback was already registered
+                
+            </div>
+        </div>
+    
 
     
         <div class="example">
@@ -749,7 +1177,7 @@ registration. Set 'prepend' to TRUE to add the callback in front of the others.<
 
             <div class="example-content">
                 <pre class="code prettyprint"><code>    Sway.eventHub.on( 'ui.update', this.update.bind(this) ) ;
-    Sway.eventHub.on( 'ui.update', this.update.bind(this), true ) ;
+    Sway.eventHub.on( 'ui.update', this.update.bind(this), {prepend: true, eventMode: Sway.EventHub.EVENT_MODE.CAPTURING} ) ;
 </code></pre>
             </div>
         </div>
@@ -778,7 +1206,7 @@ registration. Set 'prepend' to TRUE to add the callback in front of the others.<
             
                 <li class="arg">
                     
-                        <code class="optional">[prepend]</code>
+                        <code class="optional">[options]</code>
                     
                 </li>
             
@@ -786,6 +1214,10 @@ registration. Set 'prepend' to TRUE to add the callback in front of the others.<
         </div>
     
 
+    
+        <span class="returns-inline">
+            <span class="type">Boolean</span>
+        </span>
     
 
     
@@ -811,7 +1243,7 @@ registration. Set 'prepend' to TRUE to add the callback in front of the others.<
             
         
         
-        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l83"><code>src&#x2F;eventhub.js:83</code></a>
+        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l172"><code>src&#x2F;eventhub.js:172</code></a>
         
         </p>
 
@@ -822,7 +1254,7 @@ registration. Set 'prepend' to TRUE to add the callback in front of the others.<
     </div>
 
     <div class="description">
-        <p>Register a callback to a specific event. This function is identical to <a href="../classes/Sway.EventHub.html#method_on" class="crosslink">on</a>
+        <p>Register a callback for a specific event. This function is identical to <a href="../classes/Sway.EventHub.html#method_on" class="crosslink">on</a>
 except that this callback is removed from the list after it has been triggered.</p>
     </div>
 
@@ -864,17 +1296,50 @@ except that this callback is removed from the list after it has been triggered.<
             
                 <li class="param">
                     
-                        <code class="param-name optional">[prepend]</code>
-                        <span class="type">Boolean</span>
+                        <code class="param-name optional">[options]</code>
+                        <span class="type">Object</span>
                         <span class="flag optional" title="This parameter is optional.">optional</span>
                     
 
                     
 
                     <div class="param-description">
-                        <p>if TRUE, the callback is placed before all other registered callbacks.</p>
+                        <p>configuration</p>
                     </div>
 
+                    
+                        <ul class="params-list">
+                            
+                            <li class="param">
+                                
+                                    <code class="param-name optional">[prepend]</code>
+                                    <span class="type">Boolean</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+                                
+
+                                <div class="param-description">
+                                    <p>if TRUE, the callback is placed before all other registered callbacks.</p>
+                                </div>
+
+                                
+                            </li>
+                            
+                            <li class="param">
+                                
+                                    <code class="param-name optional">[eventMode=null]</code>
+                                    <span class="type">String</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+                                
+
+                                <div class="param-description">
+                                    <p>the event mode for which the callback is triggered too. Available modes are
+         <tt>capture</tt> and <tt>bubble</tt></p>
+                                </div>
+
+                                
+                            </li>
+                            
+                        </ul>
                     
                 </li>
             
@@ -882,6 +1347,19 @@ except that this callback is removed from the list after it has been triggered.<
         </div>
     
 
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">Boolean</span>:
+                    
+                    TRUE if the callback is registered successfully. It will fail if the callback was already registered
+                
+            </div>
+        </div>
     
 
     
@@ -904,6 +1382,12 @@ except that this callback is removed from the list after it has been triggered.<
                 <li class="arg">
                     
                         <code class="optional">[data]</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[options]</code>
                     
                 </li>
             
@@ -940,7 +1424,7 @@ except that this callback is removed from the list after it has been triggered.<
             
         
         
-        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l49"><code>src&#x2F;eventhub.js:49</code></a>
+        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l122"><code>src&#x2F;eventhub.js:122</code></a>
         
         </p>
 
@@ -951,7 +1435,7 @@ except that this callback is removed from the list after it has been triggered.<
     </div>
 
     <div class="description">
-        <p>Trigger one or more events. One event is triggered if the 'eventName' parameter targets a specific event, but if this parameter is a namespace, all nested events and
+        <p>Triggers one or more events. One event is triggered if the 'eventName' parameter targets a specific event, but if this parameter is a namespace, all nested events and
 namespaces will be triggered.</p>
     </div>
 
@@ -992,6 +1476,40 @@ namespaces will be triggered.</p>
                     
                 </li>
             
+                <li class="param">
+                    
+                        <code class="param-name optional">[options]</code>
+                        <span class="type">Opbject</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>configuration</p>
+                    </div>
+
+                    
+                        <ul class="params-list">
+                            
+                            <li class="param">
+                                
+                                    <code class="param-name optional">[traverse=false]</code>
+                                    <span class="type">String</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+                                
+
+                                <div class="param-description">
+                                    <p>trigger all callbacks in nested namespaces</p>
+                                </div>
+
+                                
+                            </li>
+                            
+                        </ul>
+                    
+                </li>
+            
             </ul>
         </div>
     
@@ -1016,8 +1534,8 @@ namespaces will be triggered.</p>
             <h4>Example:</h4>
 
             <div class="example-content">
-                <pre class="code prettyprint"><code>    Sway.eventHub.trigger('ui.update', {authenticated: true} ) ; // trigger the 'update' event inside the 'ui' namespace
-    Sway.eventHub.trigger('ui', {authenticated: true} ) ;        // trigger all nested events and namespaces inside the 'ui' namespace
+                <pre class="code prettyprint"><code>    Sway.eventHub.trigger('ui.update', {authenticated: true} ) ;               // trigger the 'update' event inside the 'ui' namespace
+    Sway.eventHub.trigger('ui', {authenticated: true} ) ;                      // trigger all nested events and namespaces inside the 'ui' namespace
 </code></pre>
             </div>
         </div>
@@ -1025,28 +1543,17 @@ namespaces will be triggered.</p>
 </div>
 
                 
-                    <div id="method_triggerCount" class="method item">
-    <h3 class="name"><code>triggerCount</code></h3>
+            </div>
+        
 
-    
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        <code class="optional">[eventName]</code>
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
-    
+        
+            <div id="properties" class="api-class-tabpanel">
+                <h2 class="off-left">Properties</h2>
 
-    
-        <span class="returns-inline">
-            <span class="type">Number</span>
-        </span>
-    
+                
+                    <div id="property_EVENT_MODE" class="property item">
+    <h3 class="name"><code>EVENT_MODE</code></h3>
+    <span class="type">Object</span>
 
     
 
@@ -1055,9 +1562,7 @@ namespaces will be triggered.</p>
     
 
     
-
-    
-
+        <span class="flag static">static</span>
     
 
     <div class="meta">
@@ -1071,10 +1576,9 @@ namespaces will be triggered.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l130"><code>src&#x2F;eventhub.js:130</code></a>
+        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l5"><code>src&#x2F;eventhub.js:5</code></a>
         
         </p>
-
 
         
 
@@ -1082,45 +1586,44 @@ namespaces will be triggered.</p>
     </div>
 
     <div class="description">
-        <p>returns the the trigger count for this event</p>
+        <p>Contains available event modes. For example, if <tt>bar.foo</tt> is triggered, both event modes do the opposite</p>
+
+<pre class="code prettyprint"><code>               | |                                     / \
+---------------| |-----------------     ---------------| |-----------------
+| bar          | |                |     | bar          | |                |
+|   -----------| |-----------     |     |   -----------| |-----------     |
+|   |bar.foo   \ /          |     |     |   |bar.foo   | |          |     |
+|   -------------------------     |     |   -------------------------     |
+|        Event CAPTURING          |     |        Event BUBBLING           |
+-----------------------------------     -----------------------------------
+</code></pre>
+
+<p>The event model implemented in this class does both, going from <tt>bubbling</tt> to the execution of all callbacks in <tt>bar.foo</tt>, then back in <tt>capturing</tt> mode</p>
+
+<pre class="code prettyprint"><code>                              | |  / \
+             -----------------| |--| |-----------------
+             | bar            | |  | |                |
+             |   -------------| |--| |-----------     |
+             |   |bar.foo     \ /  | |          |     |
+             |   --------------------------------     |
+             |               event model              |
+             ------------------------------------------
+
+eventHub.on('bar.foo', myFunc1) ;
+eventHub.on('bar', myFunc2, Sway.EventHub.EVENT_MODE.CAPTURING) ;
+eventHub.on('bar', myFunc3, Sway.EventHub.EVENT_MODE.BUBBLING) ;
+eventHub.on('bar', myFunc4, Sway.EventHub.EVENT_MODE.BOTH) ;
+eventHub.trigger('bar.foo') ; // -&gt; callback execution order: myFunc3, myFunc4, myFunc1, myFunc2 and myFunc4
+</code></pre>
     </div>
 
     
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-            
-                <li class="param">
-                    
-                        <code class="param-name optional">[eventName]</code>
-                        <span class="type">Sting</span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>the event name</p>
-                    </div>
-
-                    
-                </li>
-            
-            </ul>
-        </div>
-    
 
     
-        <div class="returns">
-            <h4>Returns:</h4>
+        <div class="example">
+            <h4>Example:</h4>
 
-            <div class="returns-description">
-                
-                    
-                        <span class="type">Number</span>:
-                    
-                    trigger count. -1 is returned if the event name does not exist
+            <div class="example-content">
                 
             </div>
         </div>
@@ -1130,9 +1633,145 @@ namespaces will be triggered.</p>
 </div>
 
                 
-            </div>
+                    <div id="property_EVENT_MODE.ALL" class="property item">
+    <h3 class="name"><code>EVENT_MODE.ALL</code></h3>
+    <span class="type">String</span>
+
+    
+
+    
+
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l51"><code>src&#x2F;eventhub.js:51</code></a>
+        
+        </p>
+
         
 
+        
+    </div>
+
+    <div class="description">
+        <p>Represent both capturing and bubbling event modes</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="property_EVENT_MODE.BUBBLING" class="property item">
+    <h3 class="name"><code>EVENT_MODE.BUBBLING</code></h3>
+    <span class="type">String</span>
+
+    
+
+    
+
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l45"><code>src&#x2F;eventhub.js:45</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Defines the bubbling event mode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="property_EVENT_MODE.CAPTURING" class="property item">
+    <h3 class="name"><code>EVENT_MODE.CAPTURING</code></h3>
+    <span class="type">String</span>
+
+    
+
+    
+
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l39"><code>src&#x2F;eventhub.js:39</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Defines the capturing event mode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+            </div>
         
 
         
