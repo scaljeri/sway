@@ -9,33 +9,20 @@ window.Sway.data = window.Sway.data || {} ;
     A reference to all registered model classes is kept here for two reasons, 1) you only need to define it once and
     2) relations can be created when available
      */
-    var models = {} ;
-    /*
-          ActiveRecord.define('User')
-                addField( new Field( { } )
-                addField( new Field( {} )
-                addRelation
-
-          keep reference to each 'User' class
-          ActiveRecord( 'User', [ new Relation( {key: orders, model: 'Order', type: 'has_many'}] ) ;
-          new ActiveRecord( 'User' ) ;  // return the reference
-     */
-
-
+    var models = {}
         /**
-         * ActiveRecord is the pattern used for this ORM implementation. This pattern encapsulates access
-         * to its resources, like a database.<br>
-         * This class is a helper class, because it creates new Model classes of type {{#crossLink "Sway.data.Model"}}{{/crossLink}}.
-         * It serves as a blue print and gives all models it creates everything they need to perform CRUD-like tasks
+         * Sway.data.ActiveRecord is the pattern used for this ORM implementation. This pattern encapsulates access
+         * to its resources, like a database or REST interface.<br>
+         * This class is a helper class, it creates new Model classes of type {{#crossLink "Sway.data.Model"}}{{/crossLink}}
+         * and serves as a blue print for all models. It gives them all they need to perform CRUD-like tasks
          *
-         *      var webSql = new WebSqlStorage() ;
+         *      var webSql = new WebSqlStorage() ;                          // WebSql persistence
          *      var UserModel = new ActiveRecord( 'User', webSql, [
          *                            new Field( {type: 'TEXT', key: 'username', friendlyName: 'User name'})
          *                          , new Field( {type: 'TEXT', key: 'password', friendlyName: 'Password'})
          *                          , new Field( {type: 'DATE', key: 'birthday', friendlyName: 'Birthday'})
-         *                          , new Relation( { key: 'posts', type: 'HAS_MANY', friendlyName: 'Posts', model: 'Post'})
+         *                          , new Relation( { key: 'posts', type: 'has_many', friendlyName: 'Posts', model: 'Post'})
          *                      ]) ;
-         *      var userRecord = new UserModel() ; // -> error, because model 'Post' does not exist
          *
          *      var PostModel = new ActiveRecord( 'Post', webSql, [
          *                            new Field( {type: 'Text', key: 'comment', friendlyName: 'Comment'})
@@ -44,19 +31,18 @@ window.Sway.data = window.Sway.data || {} ;
          *
          *      var userRecord = new UserModel() ; // OK
          *
-         * Make sure that all relations exists, before using a model. Furthermore, ActiveRecord remembers all models it creates,
-         * so you can recreate models
+         * To avoid problems with Models who have associations, just make sure all models are created. ActiveRecord keeps a reference to all models it creates,
+         * so it is not required to keep a reference to a model all the time. Anytime a model can be request again
          *
-         *      var UserModel = new ActiveRecord( 'User' ) ;
+         *      var UserModel = new ActiveRecord( 'User' ) ;    // only works if it has been created before
          *
          * @class Sway.data.ActiveRecord
          * @constructor
          * @param {String} modelName name of the model
          * @param {Object}[storage] object used to access the underlying data structure
-         * @param {Array} fieldList list of fields (see {{#crossLink "Sway.data.Field"}}{{/crossLink}}) ) ;
-         * @param {Array} [relations] list of Relations
+         * @param {Array} [fields] list of {{#crossLink "Sway.data.Field"}}{{/crossLink}}s and {{#crossLink "Sway.data.Relation"}}{{/crossLink}}s
          */
-       var ActiveRecord = function(modelName, storage, fields, relations ) {
+        , ActiveRecord = function(modelName, storage, fields, relations ) {
             var i, key ;
 
            function Model(data, options) {                              // define the model class/function

@@ -58,7 +58,7 @@ window.Sway.data = window.Sway.data || {} ;
      *      new Sway.data.Relation({ key: 'patients', type: 'has_many', through: 'Appointment', model: 'Patient' }) ;  // many-to-many
      *
      * <h4>HAS_AND_BELONGS_TO_MANY</h4>
-     * This relation is identical to HAS_MANY THROUGH, except it doesn't have a third model
+     * This relation is identical to <tt>HAS\_MANY THROUGH</tt> (many-to-many), except it doesn't have a third model
      *
      *      new Sway.data.Relation({ key: 'assemblies', type: 'has_and_belongs_to_many', model: 'Assembly' })
      *
@@ -71,8 +71,9 @@ window.Sway.data = window.Sway.data || {} ;
      * @param {String} key
      * @param {String} type type of association
      * @param {String} model name of the model
-     * @param {Object} options
+     * @param {Object} [options]
      *          @param {String} [options.through] specifies a join model. Only available for <tt>HAS\_ONE</tt> and <tt>HAS\_MANY</tt> associations
+     *          @param {String} [options.friendlyName] description of the field
      */
         , Relation = function( key, type, model, options) {
 
