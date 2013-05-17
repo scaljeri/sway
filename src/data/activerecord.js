@@ -5,18 +5,49 @@ window.Sway.data = window.Sway.data || {} ;
 (function(ns) {
     "use strict" ;
 
+    /*
+    A reference to all registered model classes is kept here for two reasons, 1) you only need to define it once and
+    2) relations can be created when available
+     */
+    var models = {} ;
+    /*
+          ActiveRecord.define('User')
+                addField( new Field( { } )
+                addField( new Field( {} )
+                addRelation
+
+          keep reference to each 'User' class
+          ActiveRecord( 'User', [ new Relation( {key: orders, model: 'Order', type: 'has_many'}] ) ;
+          new ActiveRecord( 'User' ) ;  // return the reference
+     */
+
 
         /**
          * ActiveRecord is the pattern used for this ORM implementation. This pattern encapsulates access
          * to its resources, like a database.<br>
          * This class is a helper class, because it creates new Model classes of type {{#crossLink "Sway.data.Model"}}{{/crossLink}}.
-         * Its a blue print and gives all models it creates everything they need to perform CRUD-like tasks
+         * It serves as a blue print and gives all models it creates everything they need to perform CRUD-like tasks
          *
-         *      var UserModel = new ActiveRecord( 'User', new WebSqlStorage('user-table'), [
+         *      var webSql = new WebSqlStorage() ;
+         *      var UserModel = new ActiveRecord( 'User', webSql, [
          *                            new Field( {type: 'TEXT', key: 'username', friendlyName: 'User name'})
          *                          , new Field( {type: 'TEXT', key: 'password', friendlyName: 'Password'})
          *                          , new Field( {type: 'DATE', key: 'birthday', friendlyName: 'Birthday'})
+         *                          , new Relation( { key: 'posts', type: 'HAS_MANY', friendlyName: 'Posts', model: 'Post'})
          *                      ]) ;
+         *      var userRecord = new UserModel() ; // -> error, because model 'Post' does not exist
+         *
+         *      var PostModel = new ActiveRecord( 'Post', webSql, [
+         *                            new Field( {type: 'Text', key: 'comment', friendlyName: 'Comment'})
+         *                            , new Relation( {type: 'BELONGS_TO', model: 'User'} )
+         *                      ]) ;
+         *
+         *      var userRecord = new UserModel() ; // OK
+         *
+         * Make sure that all relations exists, before using a model. Furthermore, ActiveRecord remembers all models it creates,
+         * so you can recreate models
+         *
+         *      var UserModel = new ActiveRecord( 'User' ) ;
          *
          * @class Sway.data.ActiveRecord
          * @constructor

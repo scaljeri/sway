@@ -12,6 +12,10 @@ window.Sway.data = window.Sway.data.storage || {} ;
 
     }
 
+    Base.RELATIONS_TYPES = {
+
+    } ;
+
     ns.Base = Base ;
 
 })(Sway.data.storage) ;

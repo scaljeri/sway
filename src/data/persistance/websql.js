@@ -36,32 +36,33 @@
 
  CASCADE: A "CASCADE" action propagates the delete or update operation on the parent key to each dependent child key. For an "ON DELETE CASCADE" action, this means that each row in the child table that was associated with the deleted parent row is also deleted. For an "ON UPDATE CASCADE" action, it means that the values stored in each dependent child key are modified to match the new parent key values.
  */
-(function(Ns) {
-    var defaults =  {
-        dbSize: 5
+(function(ns) {
+    var DEFAULTS =  {
+        DB_SIZE: 1
+        , DB_NAME: 'sway'
     } ;
 
-	var wsql = function(dbname, size, options) {
+    /**
+     * @class Sway.data.persistance.WebSql
+     * @param {Object} [options] configuration
+     *   @param {String} [options.dbname=sway] name of the database
+     *   @param {Number} [options.size=1] Size of the database in MB
+     */
+	var WebSql = function(options) {
 		if ( !options ) options = {} ;
-
-        //this._size = size||5 ;
 
         Object.defineProperty(this, '_dbSize',
             {
-                enumerable: false
-                /*
-                set: function(value) {},
-                get: function() {}
-                */
+                value: size||DEFAULTS.DB_SIZE
+                , enumerable: false
             }
         ) ;
-        this._dbSize = size||defaults.dbSize ;
-        this._db = openDatabase(dbname||'ScajeriDB', '1.0', options.description||'my database', this._dbSize * 1024 * 1024);
+        this._db = openDatabase(dbname||'sway', '1.0', options.description||'my database', this._dbSize * 1024 * 1024);
 
         Object.preventExtensions(this) ;
 	} ;
 
-	wsql.prototype = {
+	WebSql.prototype = {
 		createTable: function(tablename, fields, success, error) {
             if ( !fields ) {
                 fields = '(key text, data blob)' ;
@@ -95,5 +96,5 @@
 		console.dir(e) ;
 	}
 
-	Ns.Wsql = wsql ;
+	ns.WebSql = WebSql ;
 })(window.Sway) ;
