@@ -51,6 +51,12 @@
             
                 <li><a href="..&#x2F;classes/Sway.data.Model.html">Sway.data.Model</a></li>
             
+                <li><a href="..&#x2F;classes/Sway.data.persistance.IndexedDbResult.html">Sway.data.persistance.IndexedDbResult</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.data.persistance.WebSql.html">Sway.data.persistance.WebSql</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.data.persistance.WebSqlResult.html">Sway.data.persistance.WebSqlResult</a></li>
+            
                 <li><a href="..&#x2F;classes/Sway.data.Relation.html">Sway.data.Relation</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.DI.html">Sway.DI</a></li>
@@ -68,6 +74,8 @@
                 <li><a href="..&#x2F;classes/Sway.persistance.LocalStorage.html">Sway.persistance.LocalStorage</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.ux.D3Carousel.html">Sway.ux.D3Carousel</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.ux.Form.html">Sway.ux.Form</a></li>
             
             </ul>
 
@@ -116,7 +124,7 @@
 
     
         <div class="foundat">
-            Defined in: <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l9"><code>src&#x2F;data&#x2F;activerecord.js:9</code></a>
+            Defined in: <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l13"><code>src&#x2F;data&#x2F;activerecord.js:13</code></a>
         </div>
     
 
@@ -128,16 +136,31 @@
 
 
 <div class="box intro">
-    <p>ActiveRecord is the pattern used for this ORM implementation. This pattern encapsulates access
-to its resources, like a database.<br>
-This class is a helper class, because it creates new Model classes of type <a href="../classes/Sway.data.Model.html" class="crosslink">Sway.data.Model</a>.
-Its a blue print and gives all models it creates everything they need to perform CRUD-like tasks</p>
+    <p>Sway.data.ActiveRecord is the pattern used for this ORM implementation. This pattern encapsulates access
+to its resources, like a database or REST interface.<br>
+This class is a helper class, it creates new Model classes of type <a href="../classes/Sway.data.Model.html" class="crosslink">Sway.data.Model</a>
+and serves as a blue print for all models. It gives them all they need to perform CRUD-like tasks</p>
 
-<pre class="code prettyprint"><code> var UserModel = new ActiveRecord( 'User', new WebSqlStorage('user-table'), [
+<pre class="code prettyprint"><code> var webSql = new WebSqlStorage() ;                          // WebSql persistence
+ var UserModel = new ActiveRecord( 'User', webSql, [
                        new Field( {type: 'TEXT', key: 'username', friendlyName: 'User name'})
                      , new Field( {type: 'TEXT', key: 'password', friendlyName: 'Password'})
                      , new Field( {type: 'DATE', key: 'birthday', friendlyName: 'Birthday'})
+                     , new Relation( { key: 'posts', type: 'has_many', friendlyName: 'Posts', model: 'Post'})
                  ]) ;
+
+ var PostModel = new ActiveRecord( 'Post', webSql, [
+                       new Field( {type: 'Text', key: 'comment', friendlyName: 'Comment'})
+                       , new Relation( {type: 'BELONGS_TO', model: 'User'} )
+                 ]) ;
+
+ var userRecord = new UserModel() ; // OK
+</code></pre>
+
+<p>To avoid problems with Models who have associations, just make sure all models are created. ActiveRecord keeps a reference to all models it creates,
+so it is not required to keep a reference to a model all the time. Anytime a model can be request again</p>
+
+<pre class="code prettyprint"><code> var UserModel = new ActiveRecord( 'User' ) ;    // only works if it has been created before
 </code></pre>
 </div>
 
@@ -165,13 +188,7 @@ Its a blue print and gives all models it creates everything they need to perform
             
                 <li class="arg">
                     
-                        <code>fieldList</code>
-                    
-                </li>
-            
-                <li class="arg">
-                    
-                        <code class="optional">[relations]</code>
+                        <code class="optional">[fields]</code>
                     
                 </li>
             
@@ -204,7 +221,7 @@ Its a blue print and gives all models it creates everything they need to perform
             
         
         
-        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l9"><code>src&#x2F;data&#x2F;activerecord.js:9</code></a>
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l13"><code>src&#x2F;data&#x2F;activerecord.js:13</code></a>
         
         </p>
 
@@ -257,22 +274,7 @@ Its a blue print and gives all models it creates everything they need to perform
             
                 <li class="param">
                     
-                        <code class="param-name">fieldList</code>
-                        <span class="type">Array</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>list of fields (see <a href="../classes/Sway.data.Field.html" class="crosslink">Sway.data.Field</a>) ) ;</p>
-                    </div>
-
-                    
-                </li>
-            
-                <li class="param">
-                    
-                        <code class="param-name optional">[relations]</code>
+                        <code class="param-name optional">[fields]</code>
                         <span class="type">Array</span>
                         <span class="flag optional" title="This parameter is optional.">optional</span>
                     
@@ -280,7 +282,7 @@ Its a blue print and gives all models it creates everything they need to perform
                     
 
                     <div class="param-description">
-                        <p>list of Relations</p>
+                        <p>list of <a href="../classes/Sway.data.Field.html" class="crosslink">Sway.data.Field</a>s and <a href="../classes/Sway.data.Relation.html" class="crosslink">Sway.data.Relation</a>s</p>
                     </div>
 
                     

@@ -51,6 +51,12 @@
             
                 <li><a href="..&#x2F;classes/Sway.data.Model.html">Sway.data.Model</a></li>
             
+                <li><a href="..&#x2F;classes/Sway.data.persistance.IndexedDbResult.html">Sway.data.persistance.IndexedDbResult</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.data.persistance.WebSql.html">Sway.data.persistance.WebSql</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.data.persistance.WebSqlResult.html">Sway.data.persistance.WebSqlResult</a></li>
+            
                 <li><a href="..&#x2F;classes/Sway.data.Relation.html">Sway.data.Relation</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.DI.html">Sway.DI</a></li>
@@ -68,6 +74,8 @@
                 <li><a href="..&#x2F;classes/Sway.persistance.LocalStorage.html">Sway.persistance.LocalStorage</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.ux.D3Carousel.html">Sway.ux.D3Carousel</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.ux.Form.html">Sway.ux.Form</a></li>
             
             </ul>
 
@@ -112,6 +120,9 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
+&#x2F;&#x2F; Create the namespace -&gt; JS load order independent
+window.Sway = window.Sway || {} ;
+window.Sway.data = window.Sway.data || {} ;
 (function(ns){
     &#x2F;**
      *&#x2F;
@@ -124,38 +135,71 @@
      has_and_belongs_to_many    &#x2F;&#x2F; simple linker table (http:&#x2F;&#x2F;stackoverflow.com&#x2F;questions&#x2F;2780798&#x2F;has-and-belongs-to-many-vs-has-many-through)
      *&#x2F;
     var DEFAULTS = {
-            HAS_MANY: &#x27;has_many&#x27;
-            ,HAS_ONE: &#x27;has_one&#x27;
-            , BELONGS_TO: &#x27;belongs_to&#x27;
-            , HAS_MANY: &#x27;has_many&#x27;
-            , HAS_AND_BELONGS_TO_MANY: &#x27;has_and_belngs_to_many&#x27;
-
+            TYPES: {
+                BELONGS_TO: &#x27;belongs_to&#x27;
+                , HAS_ONE: &#x27;has_one&#x27;
+                , HAS_MANY: &#x27;has_many&#x27;
+                , HAS_AND_BELONGS_TO_MANY: &#x27;has_and_belngs_to_many&#x27;
+            }
         }
     &#x2F;**
-     * A Relation defines the relation between {{#crossLink &quot;Sway.data.Model&quot;}}{{&#x2F;crossLink}}s. The following relations types
-     * are available
-     * &lt;ul&gt;
-     *      &lt;li&gt;HAS_MANY&lt;&#x2F;li&gt;
-     *      &lt;li&gt;HAS_ONE&lt;&#x2F;li&gt;
-     *      &lt;li&gt;BELONGS_TO&lt;&#x2F;li&gt;
-     *      &lt;li&gt;HAS_MANY&lt;&#x2F;li&gt;
-     *      &lt;li&gt;HAS_AND_BELONGS_TO_MANY&lt;&#x2F;li&gt;
-     * &lt;&#x2F;ul&gt;
+     * Sway.data.Relation defines the association between two {{#crossLink &quot;Sway.data.Model&quot;}}{{&#x2F;crossLink}}s. It is based on the Ruby on Rails (RoR)
+     * &lt;a href=&quot;http:&#x2F;&#x2F;guides.rubyonrails.org&#x2F;association_basics.html&quot;&gt;ActiveRecord Associations&lt;&#x2F;a&gt;.&lt;br&gt;
+     * The following associations are available:
+     *
+     * &lt;h4&gt;BELONGS_TO and HAS_ONE (THROUGH) Association&lt;&#x2F;h4&gt;
+     * Assume an &#x27;Account&#x27; &lt;tt&gt;belongs\_to&lt;&#x2F;tt&gt; a &#x27;Supplier&#x27;. Or the other way around, a Supplier &lt;tt&gt;has\_one&lt;&#x2F;tt&gt; Account.
+     * Furthermore, if an &#x27;Account&#x27; and &#x27;Supplier&#x27; both &lt;tt&gt;has\_one&lt;&#x2F;tt&gt; &#x27;AccountHistory&#x27;, it will look like this
+     *
+     *      var Account = new Sway.data.ActiveRecord( &#x27;Account&#x27;, storage, [
+     *            new Sway.data.Relation({ key: &#x27;supplier&#x27;, type: &#x27;belongs_to&#x27;, model: &#x27;Supplier&#x27; }       &#x2F;&#x2F; creates a field &#x27;supplier_id&#x27;
+     *            new Sway.data.Relation({ type: &#x27;has_one&#x27;, model: &#x27;AccountHistory&#x27; }                     &#x2F;&#x2F; AccountHistory should have a account_id field
+     *            .....
+     *      ]) ;
+     *
+     *      var Supplier = new Sway.data.ActiveRecord( &#x27;Supplier&#x27;, storage, [
+     *           new Sway.data.Relation({ key: &#x27;account&#x27;, type: &#x27;has_one&#x27;, model: &#x27;Account&#x27; })
+     *           new Sway.data.Relation({ key: &#x27;accountHistory&#x27;, type: &#x27;has_one&#x27;, through: &#x27;AccountHistory&#x27;, model: &#x27;Account&#x27; })
+     *           ....
+     *      ]) ;
+     *
+     *      var AccountHistory = new Sway.data.ActiveRecord( &#x27;AccountHistory&#x27;, storage, [
+     *          new Sway.datat.Relation({ type: &#x27;belongs_to&#x27;, model: &#x27;Account&#x27; })                          &#x2F;&#x2F; creates an &#x27;account_id&#x27; field
+     *          ...
+     *      ]) ;
+     *
+     *      ...
+     *      supplierRecord.accountHistory = someAccountHistories
+     *
+     * An &lt;tt&gt;belongs_to&lt;&#x2F;tt&gt; field is always required!!
+     *
+     * &lt;h4&gt;HAS_MANY (THROUGH)&lt;&#x2F;h4&gt;
+     * This association define a one-to-many or a many-to-many relationship.
+     *
+     *      new Sway.data.Relation({ key: &#x27;orders&#x27;, type: &#x27;has_many&#x27;, model: &#x27;Order&#x27; }) ;            &#x2F;&#x2F; one-to-many
+     *      new Sway.data.Relation({ key: &#x27;patients&#x27;, type: &#x27;has_many&#x27;, through: &#x27;Appointment&#x27;, model: &#x27;Patient&#x27; }) ;  &#x2F;&#x2F; many-to-many
+     *
+     * &lt;h4&gt;HAS_AND_BELONGS_TO_MANY&lt;&#x2F;h4&gt;
+     * This relation is identical to &lt;tt&gt;HAS\_MANY THROUGH&lt;&#x2F;tt&gt; (many-to-many), except it doesn&#x27;t have a third model
+     *
+     *      new Sway.data.Relation({ key: &#x27;assemblies&#x27;, type: &#x27;has_and_belongs_to_many&#x27;, model: &#x27;Assembly&#x27; })
+     *
+     * And the association in the other moddel look like
+     *
+     *      new Sway.data.Relation({ key: &#x27;parts&#x27;, type: &#x27;has_and_belongs_to_many&#x27;, model: &#x27;Part&#x27; })
+     *
      * @class Sway.data.Relation
      * @constructor
      * @param {String} key
-     * @param {RelationType} relation type of relation. Available relations are
-     * @param {Object} options
-     * @example
-     var relation = new Sway.Relation(Sway.Relation.HAS_ONE, { model: Sway.Account, key: id }) ;
+     * @param {String} type type of association
+     * @param {String} model name of the model
+     * @param {Object} [options]
+     *          @param {String} [options.through] specifies a join model. Only available for &lt;tt&gt;HAS\_ONE&lt;&#x2F;tt&gt; and &lt;tt&gt;HAS\_MANY&lt;&#x2F;tt&gt; associations
+     *          @param {String} [options.friendlyName] description of the field
      *&#x2F;
-        , Relation = function( key,  relation, options) {
+        , Relation = function( key, type, model, options) {
 
         } ;
-
-    for ( var i in DEFAULTS ) {
-        Relation[i] = DEFAULTS[i] ;
-    }
 
     ns.Relation = Relation ;
 })(Sway.data) ;

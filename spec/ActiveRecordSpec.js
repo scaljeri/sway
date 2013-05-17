@@ -12,9 +12,17 @@ window.describe("Sway.data.ActiveRecord", function() {
         // create DI
         ns.persistance = {
             find: function(record, callback){
-                var json = {username: (record.username||'John'), password: (record.password||'Secret'), __id__: 1} ;
+                var json = [{username: (record.username||'John'), password: (record.password||'Secret'), birthday: new Date(79,5,24), __id__: 1}] ;
+                if ( !record.password )  {
+                    json = [
+                        {username: (record.username||'John'), password: 'Secret1', birthday: new Date(79,5,24), __id__: 1}
+                        , {username: (record.username||'John'), password: 'Secret2', birthday: new Date(80,5,24), __id__: 2}
+                    ];
+                }
                 if ( callback ) {
-                    callback(json) ;
+                    setTimeout(function(){ // fake async
+                        callback(json) ;
+                    }, 1) ;
                 }
                 return json ;
             }
@@ -107,21 +115,30 @@ window.describe("Sway.data.ActiveRecord", function() {
         expect(rec2.birthday).toBe(date) ;
     }) ;
 
-    it("should find a stored record without callbacks", function() {
+    it("should find 1 stored record without callbacks", function() {
         var newRec = null
             , newRec1 = null  ;
 
-        newRec = ns.User.find({username:'John'}) ;      // not async
+        newRec = ns.User.find({username:'John', password: 'Secret'}) ;      // not async
         expect(newRec).toBeDefined() ;
-        expect(newRec.password).toEqual('Secret') ;         // it worked :)
-
+        expect(newRec.birthday).toBeDefined() ;
+        expect(newRec.birthday).toBeInstanceof(Date) ;
+        expect(newRec.birthday).toEqual(new Date(79,5,24)) ;
 
         newRec.username = 'Sue' ;
         newRec1 = ns.User.find(newRec) ;
         expect(newRec1.username).toEqual('Sue') ;
         expect(newRec1.password).toEqual('Secret') ;
+        expect(newRec.birthday).toBeInstanceof(Date) ;
+        expect(newRec.birthday).toEqual(new Date(79,5,24)) ;
+    }) ;
 
-        expect()
+    it("should find/load multiple stored record", function() {
+        var newRec = null
+            , newRec1 = null  ;
+
+        newRec = ns.User.find({username:'John'}) ;      // not async
+        expect(newRec.getLength()).toEqual(2) ;
     }) ;
 
     xit("should find/load a stored record with callbacks", function() {

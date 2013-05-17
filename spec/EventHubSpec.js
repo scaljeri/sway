@@ -46,7 +46,7 @@ describe("Sway.EventHub", function() {
         expect(Sway.eventHub.generateUniqueEventName()).toEqual('--eh--1') ;
         expect(Sway.eventHub.generateUniqueEventName()).toEqual('--eh--2') ;
     }) ;
-    it("should be able to not allow the registration of the same callback for the same event", function() {
+    it("should not allow the registration of the same callback for the same event", function() {
         Sway.eventHub.setAllowMultiple(false) ;
 
         expect(Sway.eventHub.on( "bar", Sway.callbacks.cb1)).toBeTruthy() ;

@@ -9,12 +9,16 @@ YUI.add("yuidoc-meta", function(Y) {
         "Sway.data.Field",
         "Sway.data.Model",
         "Sway.data.Relation",
+        "Sway.data.persistance.IndexedDbResult",
+        "Sway.data.persistance.WebSql",
+        "Sway.data.persistance.WebSqlResult",
         "Sway.filter.Compress",
         "Sway.filter.Encrypt",
         "Sway.persistance.Cookie",
         "Sway.persistance.IndexedDb",
         "Sway.persistance.LocalStorage",
-        "Sway.ux.D3Carousel"
+        "Sway.ux.D3Carousel",
+        "Sway.ux.Form"
     ],
     "modules": [],
     "allModules": []

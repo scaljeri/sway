@@ -51,6 +51,12 @@
             
                 <li><a href="..&#x2F;classes/Sway.data.Model.html">Sway.data.Model</a></li>
             
+                <li><a href="..&#x2F;classes/Sway.data.persistance.IndexedDbResult.html">Sway.data.persistance.IndexedDbResult</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.data.persistance.WebSql.html">Sway.data.persistance.WebSql</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.data.persistance.WebSqlResult.html">Sway.data.persistance.WebSqlResult</a></li>
+            
                 <li><a href="..&#x2F;classes/Sway.data.Relation.html">Sway.data.Relation</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.DI.html">Sway.DI</a></li>
@@ -68,6 +74,8 @@
                 <li><a href="..&#x2F;classes/Sway.persistance.LocalStorage.html">Sway.persistance.LocalStorage</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.ux.D3Carousel.html">Sway.ux.D3Carousel</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.ux.Form.html">Sway.ux.Form</a></li>
             
             </ul>
 
@@ -196,7 +204,8 @@ window.Sway = window.Sway || {} ; &#x2F;&#x2F; make sure it exists
          * @param {Array} [params] list of constructor parameters. Only if a parameter is a string and matches a contract, it
          * will be replaced with the corresponding instance
          * @param {Object} [options] configuration
-         *      @param {string} [options.singleton=false] create a new instance every time
+         *      @param {String} [options.singleton=false] create a new instance every time
+         *      @param {String} [options.description] describes the contract (currently only used by {{#crossLink &quot;Sway.DI&#x2F;listContracts:method&quot;}}{{&#x2F;crossLink}}).
          * @return {Object} this
          * @example
          App.di.registerType(&quot;ajax&quot;, App.AJAX) ;
@@ -244,8 +253,17 @@ window.Sway = window.Sway || {} ; &#x2F;&#x2F; make sure it exists
             }
             return instance ;
         },
+        &#x2F;**
+         * List all available contracts with their description to &lt;tt&gt;console.log&lt;&#x2F;tt&gt;
+         * @method listContracts
+         *&#x2F;
+        listContracts: function() {
+            var keys = Object.keys(this._contracts) ;
+            keys.sort().forEach(function(v) {
+               console(v + &#x27;, &#x27; + this._contracts[v].options.description) ;
+            }.bind(this)) ;
+        }
     } ;
-
 
     &#x2F;* ***** PRIVATE HELPERS ***** *&#x2F;
 

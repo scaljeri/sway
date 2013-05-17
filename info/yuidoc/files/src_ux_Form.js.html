@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src&#x2F;persistance&#x2F;indexeddb.js</title>
+    <title>src&#x2F;ux&#x2F;Form.js</title>
     <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.8.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
     <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
@@ -51,6 +51,12 @@
             
                 <li><a href="..&#x2F;classes/Sway.data.Model.html">Sway.data.Model</a></li>
             
+                <li><a href="..&#x2F;classes/Sway.data.persistance.IndexedDbResult.html">Sway.data.persistance.IndexedDbResult</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.data.persistance.WebSql.html">Sway.data.persistance.WebSql</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.data.persistance.WebSqlResult.html">Sway.data.persistance.WebSqlResult</a></li>
+            
                 <li><a href="..&#x2F;classes/Sway.data.Relation.html">Sway.data.Relation</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.DI.html">Sway.DI</a></li>
@@ -68,6 +74,8 @@
                 <li><a href="..&#x2F;classes/Sway.persistance.LocalStorage.html">Sway.persistance.LocalStorage</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.ux.D3Carousel.html">Sway.ux.D3Carousel</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.ux.Form.html">Sway.ux.Form</a></li>
             
             </ul>
 
@@ -108,17 +116,34 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: src&#x2F;persistance&#x2F;indexeddb.js</h1>
+                        <h1 class="file-heading">File: src&#x2F;ux&#x2F;Form.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-(function(Sway) {
+&#x2F;&#x2F; Create the namespace -&gt; JS load order independent
+window.Sway = window.Sway || {} ;
+window.Sway.ux = window.Sway.ux || {} ;
+
+(function(ns){
     &#x2F;**
-     * @class Sway.persistance.IndexedDb
+     * Form generator. This class provides a Fluent API to construct forms.
+     *
+     *      new Form(json)
+     *          .fieldset()
+     *          .label(&#x27;username&#x27;).text()
+     *          .label(&#x27;password&#x27;).password()
+     *          .submit(callback)
+     *          .clear() ;
+     *
+     * @class Sway.ux.Form
      * @constructor
      *&#x2F;
-    var IndexedDb = function() {}
-})(Sway) ;
+    var Form = function(){
+
+   } ;
+
+   ns.Form = Form ;
+})(window.Sway.ux) ;
     </pre>
 </div>
 

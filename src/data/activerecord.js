@@ -5,27 +5,44 @@ window.Sway.data = window.Sway.data || {} ;
 (function(ns) {
     "use strict" ;
 
-
+    /*
+    A reference to all registered model classes is kept here for two reasons, 1) you only need to define it once and
+    2) relations can be created when available
+     */
+    var models = {}
         /**
-         * ActiveRecord is the pattern used for this ORM implementation. This pattern encapsulates access
-         * to its resources, like a database.<br>
-         * This class is a helper class, because it creates new Model classes of type {{#crossLink "Sway.data.Model"}}{{/crossLink}}.
-         * Its a blue print and gives all models it creates everything they need to perform CRUD-like tasks
+         * Sway.data.ActiveRecord is the pattern used for this ORM implementation. This pattern encapsulates access
+         * to its resources, like a database or REST interface.<br>
+         * This class is a helper class, it creates new Model classes of type {{#crossLink "Sway.data.Model"}}{{/crossLink}}
+         * and serves as a blue print for all models. It gives them all they need to perform CRUD-like tasks
          *
-         *      var UserModel = new ActiveRecord( 'User', new WebSqlStorage('user-table'), [
+         *      var webSql = new WebSqlStorage() ;                          // WebSql persistence
+         *      var UserModel = new ActiveRecord( 'User', webSql, [
          *                            new Field( {type: 'TEXT', key: 'username', friendlyName: 'User name'})
          *                          , new Field( {type: 'TEXT', key: 'password', friendlyName: 'Password'})
          *                          , new Field( {type: 'DATE', key: 'birthday', friendlyName: 'Birthday'})
+         *                          , new Relation( { key: 'posts', type: 'has_many', friendlyName: 'Posts', model: 'Post'})
          *                      ]) ;
+         *
+         *      var PostModel = new ActiveRecord( 'Post', webSql, [
+         *                            new Field( {type: 'Text', key: 'comment', friendlyName: 'Comment'})
+         *                            , new Relation( {type: 'BELONGS_TO', model: 'User'} )
+         *                      ]) ;
+         *
+         *      var userRecord = new UserModel() ; // OK
+         *
+         * To avoid problems with Models who have associations, just make sure all models are created. ActiveRecord keeps a reference to all models it creates,
+         * so it is not required to keep a reference to a model all the time. Anytime a model can be request again
+         *
+         *      var UserModel = new ActiveRecord( 'User' ) ;    // only works if it has been created before
          *
          * @class Sway.data.ActiveRecord
          * @constructor
          * @param {String} modelName name of the model
          * @param {Object}[storage] object used to access the underlying data structure
-         * @param {Array} fieldList list of fields (see {{#crossLink "Sway.data.Field"}}{{/crossLink}}) ) ;
-         * @param {Array} [relations] list of Relations
+         * @param {Array} [fields] list of {{#crossLink "Sway.data.Field"}}{{/crossLink}}s and {{#crossLink "Sway.data.Relation"}}{{/crossLink}}s
          */
-       var ActiveRecord = function(modelName, storage, fields, relations ) {
+        , ActiveRecord = function(modelName, storage, fields, relations ) {
             var i, key ;
 
            function Model(data, options) {                              // define the model class/function
@@ -56,11 +73,6 @@ window.Sway.data = window.Sway.data || {} ;
                        , writable: true
                    }) ;
 
-               Object.defineProperty(this, '__length',                  // if the data comes from storage, this number represents
-                   {                                                    // the number of items this record encapsulates
-                       value: 0
-                       , writable: false
-                   }) ;
                Object.defineProperty(this, '__dataSet',                 // al items
                    {
                        value: data
@@ -202,12 +214,15 @@ window.Sway.data = window.Sway.data || {} ;
              *  If the record is <tt>lazy</tt>, call {{#crossLink "Sway.data.Model/load:method"}}{{/crossLink}} first to make the data avaiable.
              */
             find: function(record, callback) {
-                if ( record.$className ) {
+                if ( record.$className ) {                                              // json required for searching
                     record = record.toJSON() ;
                 }
                 var json = this.storage.find(record, loadJSON.bind(this, callback) ) ;
-                if ( typeof(json) === 'object' ) {
-                    return new this(json, {state: DEFAULTS.STATE.TRANSFORMED}) ;
+                if ( typeof(json) === 'object' ) {                                      // not async ?
+                    var inst = new this(json, {state: DEFAULTS.STATE.TRANSFORMED}) ;
+                    if ( inst.setState(DEFAULTS.STATE.NORMAL, callback) ) {             // detect if async ? TODO
+                        return inst ;
+                    }
                 }
             }
             /**
@@ -270,12 +285,14 @@ window.Sway.data = window.Sway.data || {} ;
                 return json ;
             }
             /**
-             * TODO
+             * Save the data and its relations (See Relation TODO)
              * @method save
+             * @param {Boolean} [deep=true] save related data
+             * @param {Function} [callback] callback function
              *
              */
-            , save: function(callback) {
-
+            , save: function(deep, callback) {
+               return this.constructor.storage.save(this, deep, callback) ;
             }
             , getFields: function() {
                 return this.constructor.fields ;
@@ -344,12 +361,15 @@ window.Sway.data = window.Sway.data || {} ;
             , unlink: function() {
 
             }
+            , getLength: function() {
+                return this.__dataSet.length ;
+            }
         } ;
 
     /* Private helpers */
 
     function appendStaticProperties(Model, storage, fields, relations) {
-        var i, key ;
+        var i, key, hasTransformers = false ;
 
         for ( i in STATIC ) {                                   // create static methods
             Model[i] = STATIC[i].bind(Model) ;
@@ -358,12 +378,17 @@ window.Sway.data = window.Sway.data || {} ;
         Model.storage = storage ;                                   // reference to the storage object
         Model.relations = relations ;
         Model.fields = {} ;                                         // field container, referenced by their key value
+        Model.hasTransformers = false ;
+
 
         for( i = 0; i < fields.length; i++ ) {
             key = fields[i].key ;
             Model.fields[key] = fields[i] ;         // add field to fields object
             // create a 'findByXXX' function, like: findByUserName
             Model[['findBy', key.slice(0,1).toUpperCase(), key.slice(1)].join('')] = findBy.bind(Model, key);
+            if ( fields[i].transformers && fields[i].transformers.length > 0 ) {
+                Model.hasTransformers = true ;
+            }
         }
     }
 

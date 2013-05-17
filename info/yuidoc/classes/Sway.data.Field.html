@@ -51,6 +51,12 @@
             
                 <li><a href="..&#x2F;classes/Sway.data.Model.html">Sway.data.Model</a></li>
             
+                <li><a href="..&#x2F;classes/Sway.data.persistance.IndexedDbResult.html">Sway.data.persistance.IndexedDbResult</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.data.persistance.WebSql.html">Sway.data.persistance.WebSql</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.data.persistance.WebSqlResult.html">Sway.data.persistance.WebSqlResult</a></li>
+            
                 <li><a href="..&#x2F;classes/Sway.data.Relation.html">Sway.data.Relation</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.DI.html">Sway.DI</a></li>
@@ -68,6 +74,8 @@
                 <li><a href="..&#x2F;classes/Sway.persistance.LocalStorage.html">Sway.persistance.LocalStorage</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.ux.D3Carousel.html">Sway.ux.D3Carousel</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.ux.Form.html">Sway.ux.Form</a></li>
             
             </ul>
 
@@ -116,7 +124,7 @@
 
     
         <div class="foundat">
-            Defined in: <a href="..&#x2F;files&#x2F;src_data_field.js.html#l10"><code>src&#x2F;data&#x2F;field.js:10</code></a>
+            Defined in: <a href="..&#x2F;files&#x2F;src_data_field.js.html#l9"><code>src&#x2F;data&#x2F;field.js:9</code></a>
         </div>
     
 
@@ -139,6 +147,9 @@
 
 <pre class="code prettyprint"><code>var accountInfo = new Field( 'accountInfo', { type: 'BLOB', friendLyName: 'Account info', transformers: [encryptFilter, compressFilter] }) ;
 </code></pre>
+
+<p>The constructor's <tt>options</tt> parameter has many sub-options, however, it depends on the storage engine used which are used or ignored.
+Checkout the storage engine classes to find out which parameter are user/required.</p>
 </div>
 
 
@@ -192,7 +203,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;src_data_field.js.html#l10"><code>src&#x2F;data&#x2F;field.js:10</code></a>
+        <a href="..&#x2F;files&#x2F;src_data_field.js.html#l9"><code>src&#x2F;data&#x2F;field.js:9</code></a>
         
         </p>
 
@@ -273,27 +284,13 @@
                             
                             <li class="param">
                                 
-                                    <code class="param-name optional">[PK=false]</code>
-                                    <span class="type">Boolean</span>
-                                    <span class="flag optional" title="This parameter is optional.">optional</span>
-                                
-
-                                <div class="param-description">
-                                    <p>primary key field</p>
-                                </div>
-
-                                
-                            </li>
-                            
-                            <li class="param">
-                                
-                                    <code class="param-name optional">[FK]</code>
+                                    <code class="param-name optional">[PK]</code>
                                     <span class="type">Object</span>
                                     <span class="flag optional" title="This parameter is optional.">optional</span>
                                 
 
                                 <div class="param-description">
-                                    <p>foreign key configuration object</p>
+                                    <p>primary key field (there can only be one primary key field)</p>
                                 </div>
 
                                 
@@ -301,24 +298,55 @@
                                         
                                         <li class="param">
                                             
-                                                <code class="param-name">model</code>
-                                                <span class="type">Model</span>
+                                                <code class="param-name optional">[auto=true]</code>
+                                                <span class="type">Boolean</span>
+                                                <span class="flag optional" title="This parameter is optional.">optional</span>
                                             
 
                                             <div class="param-description">
-                                                Model reference
+                                                Primary key field is auto-incremented (auto generated key)
+                                            </div>
+                                        </li>
+                                        
+                                    </ul>
+                                
+                            </li>
+                            
+                            <li class="param">
+                                
+                                    <code class="param-name optional">[index]</code>
+                                    <span class="type">Object</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+                                
+
+                                <div class="param-description">
+                                    
+                                </div>
+
+                                
+                                    <ul class="params-list">
+                                        
+                                        <li class="param">
+                                            
+                                                <code class="param-name optional">[unique=false]</code>
+                                                <span class="type">Boolean</span>
+                                                <span class="flag optional" title="This parameter is optional.">optional</span>
+                                            
+
+                                            <div class="param-description">
+                                                unique field
                                             </div>
                                         </li>
                                         
                                         <li class="param">
                                             
-                                                <code class="param-name optional">[key=id]</code>
-                                                <span class="type">String</span>
+                                                <code class="param-name optional">[compound]</code>
+                                                <span class="type">Array</span>
                                                 <span class="flag optional" title="This parameter is optional.">optional</span>
                                             
 
                                             <div class="param-description">
-                                                the key of the model it is referencing
+                                                names of the compound ?composite? index it is part of.
                                             </div>
                                         </li>
                                         
@@ -485,7 +513,7 @@ into its original form. Think of, zipping and unzipping or encrypting and decryp
             
         
         
-        <a href="..&#x2F;files&#x2F;src_data_field.js.html#l49"><code>src&#x2F;data&#x2F;field.js:49</code></a>
+        <a href="..&#x2F;files&#x2F;src_data_field.js.html#l53"><code>src&#x2F;data&#x2F;field.js:53</code></a>
         
         </p>
 
@@ -591,7 +619,7 @@ into its original form. Think of, zipping and unzipping or encrypting and decryp
             
         
         
-        <a href="..&#x2F;files&#x2F;src_data_field.js.html#l62"><code>src&#x2F;data&#x2F;field.js:62</code></a>
+        <a href="..&#x2F;files&#x2F;src_data_field.js.html#l66"><code>src&#x2F;data&#x2F;field.js:66</code></a>
         
         </p>
 

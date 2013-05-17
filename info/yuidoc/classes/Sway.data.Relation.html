@@ -51,6 +51,12 @@
             
                 <li><a href="..&#x2F;classes/Sway.data.Model.html">Sway.data.Model</a></li>
             
+                <li><a href="..&#x2F;classes/Sway.data.persistance.IndexedDbResult.html">Sway.data.persistance.IndexedDbResult</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.data.persistance.WebSql.html">Sway.data.persistance.WebSql</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.data.persistance.WebSqlResult.html">Sway.data.persistance.WebSqlResult</a></li>
+            
                 <li><a href="..&#x2F;classes/Sway.data.Relation.html">Sway.data.Relation</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.DI.html">Sway.DI</a></li>
@@ -68,6 +74,8 @@
                 <li><a href="..&#x2F;classes/Sway.persistance.LocalStorage.html">Sway.persistance.LocalStorage</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.ux.D3Carousel.html">Sway.ux.D3Carousel</a></li>
+            
+                <li><a href="..&#x2F;classes/Sway.ux.Form.html">Sway.ux.Form</a></li>
             
             </ul>
 
@@ -116,7 +124,7 @@
 
     
         <div class="foundat">
-            Defined in: <a href="..&#x2F;files&#x2F;src_data_relation.js.html#l20"><code>src&#x2F;data&#x2F;relation.js:20</code></a>
+            Defined in: <a href="..&#x2F;files&#x2F;src_data_relation.js.html#l23"><code>src&#x2F;data&#x2F;relation.js:23</code></a>
         </div>
     
 
@@ -128,16 +136,57 @@
 
 
 <div class="box intro">
-    <p>A Relation defines the relation between <a href="../classes/Sway.data.Model.html" class="crosslink">Sway.data.Model</a>s. The following relations types
-are available</p>
+    <p>Sway.data.Relation defines the association between two <a href="../classes/Sway.data.Model.html" class="crosslink">Sway.data.Model</a>s. It is based on the Ruby on Rails (RoR)
+<a href="http://guides.rubyonrails.org/association_basics.html">ActiveRecord Associations</a>.<br>
+The following associations are available:</p>
 
-<ul>
-     <li>HAS_MANY</li>
-     <li>HAS_ONE</li>
-     <li>BELONGS_TO</li>
-     <li>HAS_MANY</li>
-     <li>HAS_AND_BELONGS_TO_MANY</li>
-</ul>
+<h4>BELONGS_TO and HAS_ONE (THROUGH) Association</h4>
+
+<p>Assume an 'Account' <tt>belongs_to</tt> a 'Supplier'. Or the other way around, a Supplier <tt>has_one</tt> Account.
+Furthermore, if an 'Account' and 'Supplier' both <tt>has_one</tt> 'AccountHistory', it will look like this</p>
+
+<pre class="code prettyprint"><code> var Account = new Sway.data.ActiveRecord( 'Account', storage, [
+       new Sway.data.Relation({ key: 'supplier', type: 'belongs_to', model: 'Supplier' }       // creates a field 'supplier_id'
+       new Sway.data.Relation({ type: 'has_one', model: 'AccountHistory' }                     // AccountHistory should have a account_id field
+       .....
+ ]) ;
+
+ var Supplier = new Sway.data.ActiveRecord( 'Supplier', storage, [
+      new Sway.data.Relation({ key: 'account', type: 'has_one', model: 'Account' })
+      new Sway.data.Relation({ key: 'accountHistory', type: 'has_one', through: 'AccountHistory', model: 'Account' })
+      ....
+ ]) ;
+
+ var AccountHistory = new Sway.data.ActiveRecord( 'AccountHistory', storage, [
+     new Sway.datat.Relation({ type: 'belongs_to', model: 'Account' })                          // creates an 'account_id' field
+     ...
+ ]) ;
+
+ ...
+ supplierRecord.accountHistory = someAccountHistories
+</code></pre>
+
+<p>An <tt>belongs_to</tt> field is always required!!</p>
+
+<h4>HAS_MANY (THROUGH)</h4>
+
+<p>This association define a one-to-many or a many-to-many relationship.</p>
+
+<pre class="code prettyprint"><code> new Sway.data.Relation({ key: 'orders', type: 'has_many', model: 'Order' }) ;            // one-to-many
+ new Sway.data.Relation({ key: 'patients', type: 'has_many', through: 'Appointment', model: 'Patient' }) ;  // many-to-many
+</code></pre>
+
+<h4>HAS_AND_BELONGS_TO_MANY</h4>
+
+<p>This relation is identical to <tt>HAS_MANY THROUGH</tt> (many-to-many), except it doesn't have a third model</p>
+
+<pre class="code prettyprint"><code> new Sway.data.Relation({ key: 'assemblies', type: 'has_and_belongs_to_many', model: 'Assembly' })
+</code></pre>
+
+<p>And the association in the other moddel look like</p>
+
+<pre class="code prettyprint"><code> new Sway.data.Relation({ key: 'parts', type: 'has_and_belongs_to_many', model: 'Part' })
+</code></pre>
 </div>
 
 
@@ -158,13 +207,19 @@ are available</p>
             
                 <li class="arg">
                     
-                        <code>relation</code>
+                        <code>type</code>
                     
                 </li>
             
                 <li class="arg">
                     
-                        <code>options</code>
+                        <code>model</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[options]</code>
                     
                 </li>
             
@@ -197,7 +252,7 @@ are available</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;src_data_relation.js.html#l20"><code>src&#x2F;data&#x2F;relation.js:20</code></a>
+        <a href="..&#x2F;files&#x2F;src_data_relation.js.html#l23"><code>src&#x2F;data&#x2F;relation.js:23</code></a>
         
         </p>
 
@@ -234,14 +289,14 @@ are available</p>
             
                 <li class="param">
                     
-                        <code class="param-name">relation</code>
-                        <span class="type">RelationType</span>
+                        <code class="param-name">type</code>
+                        <span class="type">String</span>
                     
 
                     
 
                     <div class="param-description">
-                        <p>type of relation. Available relations are</p>
+                        <p>type of association</p>
                     </div>
 
                     
@@ -249,8 +304,24 @@ are available</p>
             
                 <li class="param">
                     
-                        <code class="param-name">options</code>
+                        <code class="param-name">model</code>
+                        <span class="type">String</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>name of the model</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[options]</code>
                         <span class="type">Object</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
                     
 
                     
@@ -260,6 +331,38 @@ are available</p>
                     </div>
 
                     
+                        <ul class="params-list">
+                            
+                            <li class="param">
+                                
+                                    <code class="param-name optional">[through]</code>
+                                    <span class="type">String</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+                                
+
+                                <div class="param-description">
+                                    <p>specifies a join model. Only available for <tt>HAS_ONE</tt> and <tt>HAS_MANY</tt> associations</p>
+                                </div>
+
+                                
+                            </li>
+                            
+                            <li class="param">
+                                
+                                    <code class="param-name optional">[friendlyName]</code>
+                                    <span class="type">String</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+                                
+
+                                <div class="param-description">
+                                    <p>description of the field</p>
+                                </div>
+
+                                
+                            </li>
+                            
+                        </ul>
+                    
                 </li>
             
             </ul>
@@ -268,15 +371,6 @@ are available</p>
 
     
 
-    
-        <div class="example">
-            <h4>Example:</h4>
-
-            <div class="example-content">
-                <pre class="code prettyprint"><code>var relation = new Sway.Relation(Sway.Relation.HAS_ONE, { model: Sway.Account, key: id }) ;
-</code></pre>
-            </div>
-        </div>
     
 </div>
 

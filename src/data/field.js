@@ -6,7 +6,6 @@ window.Sway.data = window.Sway.data || {};
 
     var DEFAULTS = {
     }
-
     /**
      * A Field represents a single value of an {{#crossLink "Sway.data.ActiveRecord"}}{{/crossLink}} model.
      *
@@ -18,16 +17,21 @@ window.Sway.data = window.Sway.data || {};
      *
      *     var accountInfo = new Field( 'accountInfo', { type: 'BLOB', friendLyName: 'Account info', transformers: [encryptFilter, compressFilter] }) ;
      *
+     * The constructor's <tt>options</tt> parameter has many sub-options, however, it depends on the storage engine used which are used or ignored.
+     * Checkout the storage engine classes to find out which parameter are user/required.
+     *
      * @class Sway.data.Field
      * @constructor
      * @param {String} key name of the field
      * @param {Object} [options] definition of this field
      *      @param {String}  [options.type=TEXT] type of the field
      *      @param {String}  [options.friendlyName] description of the field
-     *      @param {Boolean} [options.PK=false] primary key field
-     *      @param {Object} [options.FK] foreign key configuration object
-     *          @param {Model} options.FK.model Model reference
-     *          @param {String} [options.FK.key=id] the key of the model it is referencing
+     *      @param {Object}  [options.PK] primary key field (there can only be one primary key field)
+     *          @param {Boolean} [options.PK.auto=true] Primary key field is auto-incremented (auto generated key)
+
+     *      @param {Object}  [options.index]
+     *         @param {Boolean} [options.index.unique=false] unique field
+     *         @param {Array}  [options.index.compound] names of the compound ?composite? index it is part of.
      *      @param {Boolean} [options.required=false] a required field
      *      @param {Array}   [options.transformers] list of transformer objects. A transformer object can transform the data into a new form and also back
      * into its original form. Think of, zipping and unzipping or encrypting and decrypting
