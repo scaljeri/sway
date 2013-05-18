@@ -154,13 +154,13 @@ and serves as a blue print for all models. It gives them all they need to perfor
                        , new Relation( {type: 'BELONGS_TO', model: 'User'} )
                  ]) ;
 
- var userRecord = new UserModel() ; // OK
+ var userRecord = new UserModel() ;
 </code></pre>
 
-<p>To avoid problems with Models who have associations, just make sure all models are created. ActiveRecord keeps a reference to all models it creates,
-so it is not required to keep a reference to a model all the time. Anytime a model can be request again</p>
+<p>To avoid problems with Model associations, make sure all involved models are created before any usage. Furthermore, a model only needs to
+be defined only once, and can easily be obtained later as follows</p>
 
-<pre class="code prettyprint"><code> var UserModel = new ActiveRecord( 'User' ) ;    // only works if it has been created before
+<pre class="code prettyprint"><code> var UserModel = ActiveRecord.get( 'User' ) ;
 </code></pre>
 </div>
 
@@ -182,13 +182,13 @@ so it is not required to keep a reference to a model all the time. Anytime a mod
             
                 <li class="arg">
                     
-                        <code class="optional">[storage]</code>
+                        <code>storage</code>
                     
                 </li>
             
                 <li class="arg">
                     
-                        <code class="optional">[fields]</code>
+                        <code>fields</code>
                     
                 </li>
             
@@ -258,9 +258,8 @@ so it is not required to keep a reference to a model all the time. Anytime a mod
             
                 <li class="param">
                     
-                        <code class="param-name optional">[storage]</code>
+                        <code class="param-name">storage</code>
                         <span class="type">Object</span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
                     
 
                     
@@ -274,9 +273,8 @@ so it is not required to keep a reference to a model all the time. Anytime a mod
             
                 <li class="param">
                     
-                        <code class="param-name optional">[fields]</code>
+                        <code class="param-name">fields</code>
                         <span class="type">Array</span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
                     
 
                     

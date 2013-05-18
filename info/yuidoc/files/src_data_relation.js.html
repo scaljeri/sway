@@ -123,6 +123,7 @@
 &#x2F;&#x2F; Create the namespace -&gt; JS load order independent
 window.Sway = window.Sway || {} ;
 window.Sway.data = window.Sway.data || {} ;
+
 (function(ns){
     &#x2F;**
      *&#x2F;
@@ -134,14 +135,7 @@ window.Sway.data = window.Sway.data || {} ;
      has_one :through    ( goes one-to-one through other model)
      has_and_belongs_to_many    &#x2F;&#x2F; simple linker table (http:&#x2F;&#x2F;stackoverflow.com&#x2F;questions&#x2F;2780798&#x2F;has-and-belongs-to-many-vs-has-many-through)
      *&#x2F;
-    var DEFAULTS = {
-            TYPES: {
-                BELONGS_TO: &#x27;belongs_to&#x27;
-                , HAS_ONE: &#x27;has_one&#x27;
-                , HAS_MANY: &#x27;has_many&#x27;
-                , HAS_AND_BELONGS_TO_MANY: &#x27;has_and_belngs_to_many&#x27;
-            }
-        }
+
     &#x2F;**
      * Sway.data.Relation defines the association between two {{#crossLink &quot;Sway.data.Model&quot;}}{{&#x2F;crossLink}}s. It is based on the Ruby on Rails (RoR)
      * &lt;a href=&quot;http:&#x2F;&#x2F;guides.rubyonrails.org&#x2F;association_basics.html&quot;&gt;ActiveRecord Associations&lt;&#x2F;a&gt;.&lt;br&gt;
@@ -197,12 +191,23 @@ window.Sway.data = window.Sway.data || {} ;
      *          @param {String} [options.through] specifies a join model. Only available for &lt;tt&gt;HAS\_ONE&lt;&#x2F;tt&gt; and &lt;tt&gt;HAS\_MANY&lt;&#x2F;tt&gt; associations
      *          @param {String} [options.friendlyName] description of the field
      *&#x2F;
-        , Relation = function( key, type, model, options) {
+     var Relation = function( key, type, model, options) {
+            this.key = key ;
+            this.type = type ;
+            this.model = model ;
 
+            &#x2F;&#x2F; TODO process options
         } ;
 
+
+    Relation.prototype = {
+        isField: function() {
+            return false ;
+        }
+    } ;
+
     ns.Relation = Relation ;
-})(Sway.data) ;
+})(window.Sway.data) ;
     </pre>
 </div>
 

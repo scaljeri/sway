@@ -126,8 +126,6 @@ window.Sway.data = window.Sway.data || {};
 (function (ns) {
     &quot;use strict&quot; ;
 
-    var DEFAULTS = {
-    }
     &#x2F;**
      * A Field represents a single value of an {{#crossLink &quot;Sway.data.ActiveRecord&quot;}}{{&#x2F;crossLink}} model.
      *
@@ -148,30 +146,30 @@ window.Sway.data = window.Sway.data || {};
      * @param {Object} [options] definition of this field
      *      @param {String}  [options.type=TEXT] type of the field
      *      @param {String}  [options.friendlyName] description of the field
-     *      @param {Object}  [options.PK] primary key field (there can only be one primary key field)
-     *          @param {Boolean} [options.PK.auto=true] Primary key field is auto-incremented (auto generated key)
+     *      @param {Boolean} [options.PK=false] primary key field (there can only be one primary key field)
+     *      @param {Boolean} [options.autoIncrement=true] Primary key field is auto-incremented (auto generated key)
 
-     *      @param {Object}  [options.index]
-     *         @param {Boolean} [options.index.unique=false] unique field
-     *         @param {Array}  [options.index.compound] names of the compound ?composite? index it is part of.
+     *      @param {Boolean} [options.index=false]
+     *      @param {Boolean} [options.unique=false] unique field
+     *      @param {Array}   [options.compoundIndex] names of the compound index it is part of.
      *      @param {Boolean} [options.required=false] a required field
      *      @param {Array}   [options.transformers] list of transformer objects. A transformer object can transform the data into a new form and also back
      * into its original form. Think of, zipping and unzipping or encrypting and decrypting
      *      @param {Array}   [options.validators] list of validation functions
      *&#x2F;
-        , f = function (key, options) {
+     var Field = function (key, options) {
             if ( !options ) {
                 options = {};
             }
+            for ( var i in options ) {
+                this[i] = options[i] ;
+            }
             this.key = key ;
-            this.type = options.type||&#x27;text&#x27; ;
-            this.friendlyName = options.friendlyName ;
-            this.transformers = options.transformers ;
-            this.validators = options.validators ;
+            this.type = options.type||&#x27;text&#x27; ;  &#x2F;&#x2F; define default type
             return Object.freeze(this) ;
         } ;
 
-    f.prototype = {
+    Field.prototype = {
         &#x2F;**
          * @method transform
          * @param {*} value value to be transformed
@@ -204,6 +202,10 @@ window.Sway.data = window.Sway.data || {};
             }
             return ok ;
         }
+
+        , isField: function() {
+            return true ;
+        }
         &#x2F;*
          * Returns the size of
          * @method size
@@ -224,7 +226,7 @@ window.Sway.data = window.Sway.data || {};
         }
     }
 
-    ns.Field = f ;
+    ns.Field = Field ;
 
 })(window.Sway.data) ;
 

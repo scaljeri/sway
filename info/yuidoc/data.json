@@ -256,7 +256,20 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/data/persistance/websqlresult.js",
-            "line": 6
+            "line": 6,
+            "params": [
+                {
+                    "name": "WebSql",
+                    "description": "result",
+                    "type": "Object"
+                },
+                {
+                    "name": "model",
+                    "description": "",
+                    "type": "Object",
+                    "optional": true
+                }
+            ]
         },
         "Sway.data.ActiveRecord": {
             "name": "Sway.data.ActiveRecord",
@@ -268,7 +281,7 @@
             "extension_for": [],
             "file": "src/data/activerecord.js",
             "line": 13,
-            "description": "Sway.data.ActiveRecord is the pattern used for this ORM implementation. This pattern encapsulates access\nto its resources, like a database or REST interface.<br>\nThis class is a helper class, it creates new Model classes of type {{#crossLink \"Sway.data.Model\"}}{{/crossLink}}\nand serves as a blue print for all models. It gives them all they need to perform CRUD-like tasks\n\n     var webSql = new WebSqlStorage() ;                          // WebSql persistence\n     var UserModel = new ActiveRecord( 'User', webSql, [\n                           new Field( {type: 'TEXT', key: 'username', friendlyName: 'User name'})\n                         , new Field( {type: 'TEXT', key: 'password', friendlyName: 'Password'})\n                         , new Field( {type: 'DATE', key: 'birthday', friendlyName: 'Birthday'})\n                         , new Relation( { key: 'posts', type: 'has_many', friendlyName: 'Posts', model: 'Post'})\n                     ]) ;\n\n     var PostModel = new ActiveRecord( 'Post', webSql, [\n                           new Field( {type: 'Text', key: 'comment', friendlyName: 'Comment'})\n                           , new Relation( {type: 'BELONGS_TO', model: 'User'} )\n                     ]) ;\n\n     var userRecord = new UserModel() ; // OK\n\nTo avoid problems with Models who have associations, just make sure all models are created. ActiveRecord keeps a reference to all models it creates,\nso it is not required to keep a reference to a model all the time. Anytime a model can be request again\n\n     var UserModel = new ActiveRecord( 'User' ) ;    // only works if it has been created before",
+            "description": "Sway.data.ActiveRecord is the pattern used for this ORM implementation. This pattern encapsulates access\nto its resources, like a database or REST interface.<br>\nThis class is a helper class, it creates new Model classes of type {{#crossLink \"Sway.data.Model\"}}{{/crossLink}}\nand serves as a blue print for all models. It gives them all they need to perform CRUD-like tasks\n\n     var webSql = new WebSqlStorage() ;                          // WebSql persistence\n     var UserModel = new ActiveRecord( 'User', webSql, [\n                           new Field( {type: 'TEXT', key: 'username', friendlyName: 'User name'})\n                         , new Field( {type: 'TEXT', key: 'password', friendlyName: 'Password'})\n                         , new Field( {type: 'DATE', key: 'birthday', friendlyName: 'Birthday'})\n                         , new Relation( { key: 'posts', type: 'has_many', friendlyName: 'Posts', model: 'Post'})\n                     ]) ;\n\n     var PostModel = new ActiveRecord( 'Post', webSql, [\n                           new Field( {type: 'Text', key: 'comment', friendlyName: 'Comment'})\n                           , new Relation( {type: 'BELONGS_TO', model: 'User'} )\n                     ]) ;\n\n     var userRecord = new UserModel() ;\n\nTo avoid problems with Model associations, make sure all involved models are created before any usage. Furthermore, a model only needs to\nbe defined only once, and can easily be obtained later as follows\n\n     var UserModel = ActiveRecord.get( 'User' ) ;",
             "is_constructor": 1,
             "params": [
                 {
@@ -279,14 +292,12 @@
                 {
                     "name": "storage",
                     "description": "object used to access the underlying data structure",
-                    "type": "Object",
-                    "optional": true
+                    "type": "Object"
                 },
                 {
                     "name": "fields",
                     "description": "list of {{#crossLink \"Sway.data.Field\"}}{{/crossLink}}s and {{#crossLink \"Sway.data.Relation\"}}{{/crossLink}}s",
-                    "type": "Array",
-                    "optional": true
+                    "type": "Array"
                 }
             ]
         },
@@ -299,15 +310,29 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/data/activerecord.js",
-            "line": 100,
+            "line": 293,
             "description": "Use the Model class to create instances which represent your data records. These will speed up your develement\nwhen CRUD-like tasks need to be done.<br>\nTo create a Model class, use {{#crossLink \"Sway.data.ActiveRecord\"}}{{/crossLink}}.\n\n<h3>The basics</h3>\nTo perform a search, a couple of static methods are available. Use the <tt>findByX</tt> methods to search on\na specific field\n\n    UserModel.findByUsername('John', function(userRecord) {\n         // this === UserModel\n    }) ;\n\nOf course, the same can be achieved using the more general search method\n\n    UserModel.find( {username: 'John'}, function(userRecord) {\n         // this === UserModel\n    }) ;\n\nWith <tt>find</tt> it is also possible to define more fields to search for.<br>\nA Model instance, on the otherhand, can be used to create or manipulate data\n\n    userRecord = new User() ;                            // create a blank record\n    userRecord.username = 'John' ;                       // set the username\n    userRecord.password = 'Secret' ;                     // set the password\n    userRecord.save(successCallback, errorCallback) ;    // check the result, because this action might fail\n\n<h3>Multiple result-sets</h3>\nIn {{#crossLink \"Sway\"}}{{/crossLink}} a Model instance can also represent multiple records. Although it always\nrepresent a single record, internally this has the whole result set.\n\nits current\nstate will always be a single record, it is possible to navigate from one state to an other\n\n    User.search({username: 'John'}, function(record) {   // record is a model instance representing more than on result\n          while( record.hasNext() ) {                    // check if there is an other record\n               record.next() ;                           // move on record up\n               ....\n          }\n          record.item(1) ;                               // go to second record\n          record.prev() ;                                // go to first record. Use 'prev' in combination with 'hasPrev'\n    }) ;\n\n<h3>Advanced</h3>\n\n\n\nAn instance represents one or more records, which depends on how it was created. For example, if a database search returns multiple records,\nthe Model instance represent them all, holding in its current state the first record's values\n\n     User.find({ username: 'John' }, function(ar) {  // ActiveRecord instance, holding multiple records\n         console.log(\"Found \" + ar.length + \" records) ;\n     }) ;\n\nCheckout {{#crossLink \"Sway.data.Model/next:method\"}}{{/crossLink}}, {{#crossLink \"Sway.data.Model/prev:method\"}}{{/crossLink}}\n{{#crossLink \"Sway.data.Model/item:method\"}}{{/crossLink}} and {{#crossLink \"Sway.data.Model/hasNext:method\"}}{{/crossLink}} to\nunderstand how to deal with multi-record result-sets.\n\n\n    var userRecord = new User({username: 'John', password: 'Secret'}) ;\n    ....\n    userRecord.save() ;\n\nAll fields are accessible as a property of a record\n\n    var userRecord = new User() ;\n    userRecord.username = 'John' ;\n    userRecord.password = 'Secret' ;",
             "is_constructor": 1,
             "params": [
                 {
                     "name": "data",
-                    "description": "JSON data or a model instance to be cloned",
+                    "description": "ActiveRecord object or JSON data",
                     "type": "Object",
                     "optional": true
+                },
+                {
+                    "name": "options",
+                    "description": "",
+                    "type": "Object",
+                    "optional": true,
+                    "props": [
+                        {
+                            "name": "state",
+                            "description": "initial state",
+                            "type": "String",
+                            "optional": true
+                        }
+                    ]
                 }
             ]
         },
@@ -320,7 +345,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/data/field.js",
-            "line": 9,
+            "line": 7,
             "description": "A Field represents a single value of an {{#crossLink \"Sway.data.ActiveRecord\"}}{{/crossLink}} model.\n\n    var username   = new Field('username', { friendlyName: 'User name' })\n        , password = new Field('password', { type: 'password', friendlyName: 'Password' })\n        , address  = new Field('address',  { FK: {model: Sway.data.Address}, friendlyName: 'Address' }) ;\n\nOr if a field holds data which should be encrypted and compressed before persisted\n\n    var accountInfo = new Field( 'accountInfo', { type: 'BLOB', friendLyName: 'Account info', transformers: [encryptFilter, compressFilter] }) ;\n\nThe constructor's <tt>options</tt> parameter has many sub-options, however, it depends on the storage engine used which are used or ignored.\nCheckout the storage engine classes to find out which parameter are user/required.",
             "is_constructor": 1,
             "params": [
@@ -351,38 +376,36 @@
                         {
                             "name": "PK",
                             "description": "primary key field (there can only be one primary key field)",
-                            "type": "Object",
+                            "type": "Boolean",
                             "optional": true,
-                            "props": [
-                                {
-                                    "name": "auto",
-                                    "description": "Primary key field is auto-incremented (auto generated key)",
-                                    "type": "Boolean",
-                                    "optional": true,
-                                    "optdefault": "true"
-                                }
-                            ]
+                            "optdefault": "false"
+                        },
+                        {
+                            "name": "autoIncrement",
+                            "description": "Primary key field is auto-incremented (auto generated key)",
+                            "type": "Boolean",
+                            "optional": true,
+                            "optdefault": "true"
                         },
                         {
                             "name": "index",
                             "description": "",
-                            "type": "Object",
+                            "type": "Boolean",
                             "optional": true,
-                            "props": [
-                                {
-                                    "name": "unique",
-                                    "description": "unique field",
-                                    "type": "Boolean",
-                                    "optional": true,
-                                    "optdefault": "false"
-                                },
-                                {
-                                    "name": "compound",
-                                    "description": "names of the compound ?composite? index it is part of.",
-                                    "type": "Array",
-                                    "optional": true
-                                }
-                            ]
+                            "optdefault": "false"
+                        },
+                        {
+                            "name": "unique",
+                            "description": "unique field",
+                            "type": "Boolean",
+                            "optional": true,
+                            "optdefault": "false"
+                        },
+                        {
+                            "name": "compoundIndex",
+                            "description": "names of the compound index it is part of.",
+                            "type": "Array",
+                            "optional": true
                         },
                         {
                             "name": "required",
@@ -416,7 +439,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/data/relation.js",
-            "line": 23,
+            "line": 17,
             "description": "Sway.data.Relation defines the association between two {{#crossLink \"Sway.data.Model\"}}{{/crossLink}}s. It is based on the Ruby on Rails (RoR)\n<a href=\"http://guides.rubyonrails.org/association_basics.html\">ActiveRecord Associations</a>.<br>\nThe following associations are available:\n\n<h4>BELONGS_TO and HAS_ONE (THROUGH) Association</h4>\nAssume an 'Account' <tt>belongs\\_to</tt> a 'Supplier'. Or the other way around, a Supplier <tt>has\\_one</tt> Account.\nFurthermore, if an 'Account' and 'Supplier' both <tt>has\\_one</tt> 'AccountHistory', it will look like this\n\n     var Account = new Sway.data.ActiveRecord( 'Account', storage, [\n           new Sway.data.Relation({ key: 'supplier', type: 'belongs_to', model: 'Supplier' }       // creates a field 'supplier_id'\n           new Sway.data.Relation({ type: 'has_one', model: 'AccountHistory' }                     // AccountHistory should have a account_id field\n           .....\n     ]) ;\n\n     var Supplier = new Sway.data.ActiveRecord( 'Supplier', storage, [\n          new Sway.data.Relation({ key: 'account', type: 'has_one', model: 'Account' })\n          new Sway.data.Relation({ key: 'accountHistory', type: 'has_one', through: 'AccountHistory', model: 'Account' })\n          ....\n     ]) ;\n\n     var AccountHistory = new Sway.data.ActiveRecord( 'AccountHistory', storage, [\n         new Sway.datat.Relation({ type: 'belongs_to', model: 'Account' })                          // creates an 'account_id' field\n         ...\n     ]) ;\n\n     ...\n     supplierRecord.accountHistory = someAccountHistories\n\nAn <tt>belongs_to</tt> field is always required!!\n\n<h4>HAS_MANY (THROUGH)</h4>\nThis association define a one-to-many or a many-to-many relationship.\n\n     new Sway.data.Relation({ key: 'orders', type: 'has_many', model: 'Order' }) ;            // one-to-many\n     new Sway.data.Relation({ key: 'patients', type: 'has_many', through: 'Appointment', model: 'Patient' }) ;  // many-to-many\n\n<h4>HAS_AND_BELONGS_TO_MANY</h4>\nThis relation is identical to <tt>HAS\\_MANY THROUGH</tt> (many-to-many), except it doesn't have a third model\n\n     new Sway.data.Relation({ key: 'assemblies', type: 'has_and_belongs_to_many', model: 'Assembly' })\n\nAnd the association in the other moddel look like\n\n     new Sway.data.Relation({ key: 'parts', type: 'has_and_belongs_to_many', model: 'Part' })",
             "is_constructor": 1,
             "params": [
@@ -611,7 +634,7 @@
         },
         {
             "file": "src/data/persistance/websqlresult.js",
-            "line": 16,
+            "line": 18,
             "itemtype": "method",
             "name": "forEach",
             "params": [
@@ -625,7 +648,7 @@
         },
         {
             "file": "src/data/activerecord.js",
-            "line": 174,
+            "line": 131,
             "description": "a record can be in two states; NORMAL (default) or TRANSFORMED ...... TODO\n\n     userRecord.setState(User.TRANSFORMED, callback) ; // change the state of the record",
             "itemtype": "property",
             "name": "STATE",
@@ -634,7 +657,7 @@
         },
         {
             "file": "src/data/activerecord.js",
-            "line": 182,
+            "line": 139,
             "itemtype": "property",
             "name": "STATE.TRANFORMED",
             "type": "Number",
@@ -643,7 +666,7 @@
         },
         {
             "file": "src/data/activerecord.js",
-            "line": 187,
+            "line": 144,
             "itemtype": "property",
             "name": "STATE.NORMAL",
             "type": "Number",
@@ -652,7 +675,7 @@
         },
         {
             "file": "src/data/activerecord.js",
-            "line": 195,
+            "line": 152,
             "description": "Use find to perform searches\n\n     User.find( {\n          'username':   'John'\n          , 'password': 'Secret'\n     }, function(user) { ... } ) ;\n\nOr simply create a new instance of a Model and use it for a search or save action\n\n     var userRecord = new User({ username: 'John', password: 'Secret'}) ;\n     User.find(userRecord, callback) ;\n     // or\n     userRecord.save() ;",
             "itemtype": "method",
             "name": "find",
@@ -681,7 +704,7 @@
         },
         {
             "file": "src/data/activerecord.js",
-            "line": 228,
+            "line": 185,
             "itemtype": "method",
             "name": "save",
             "static": 1,
@@ -696,28 +719,28 @@
         },
         {
             "file": "src/data/activerecord.js",
-            "line": 241,
+            "line": 195,
             "itemtype": "method",
             "name": "item",
             "class": "Sway.data.Model"
         },
         {
             "file": "src/data/activerecord.js",
-            "line": 244,
+            "line": 198,
             "itemtype": "method",
             "name": "hasNext",
             "class": "Sway.data.Model"
         },
         {
             "file": "src/data/activerecord.js",
-            "line": 248,
+            "line": 202,
             "itemtype": "method",
             "name": "getState",
             "class": "Sway.data.Model"
         },
         {
             "file": "src/data/activerecord.js",
-            "line": 254,
+            "line": 208,
             "description": "change the state of a record. See ......",
             "itemtype": "method",
             "name": "setState",
@@ -744,26 +767,19 @@
         },
         {
             "file": "src/data/activerecord.js",
-            "line": 272,
-            "description": "returns all the data in JSON format (unfiltered)",
+            "line": 226,
+            "description": "returns all data in JSON format",
             "itemtype": "method",
             "name": "toJSON",
-            "params": [
-                {
-                    "name": "key",
-                    "description": "",
-                    "type": "String"
-                }
-            ],
             "return": {
                 "description": "",
-                "type": "Number"
+                "type": "Object"
             },
             "class": "Sway.data.Model"
         },
         {
             "file": "src/data/activerecord.js",
-            "line": 287,
+            "line": 235,
             "description": "Save the data and its relations (See Relation TODO)",
             "itemtype": "method",
             "name": "save",
@@ -786,42 +802,7 @@
         },
         {
             "file": "src/data/activerecord.js",
-            "line": 300,
-            "itemtype": "method",
-            "name": "next",
-            "class": "Sway.data.Model"
-        },
-        {
-            "file": "src/data/activerecord.js",
-            "line": 306,
-            "itemtype": "method",
-            "name": "prev",
-            "class": "Sway.data.Model"
-        },
-        {
-            "file": "src/data/activerecord.js",
-            "line": 312,
-            "itemtype": "method",
-            "name": "item",
-            "class": "Sway.data.Model"
-        },
-        {
-            "file": "src/data/activerecord.js",
-            "line": 318,
-            "itemtype": "method",
-            "name": "hasNext",
-            "class": "Sway.data.Model"
-        },
-        {
-            "file": "src/data/activerecord.js",
-            "line": 324,
-            "itemtype": "method",
-            "name": "hasPrev",
-            "class": "Sway.data.Model"
-        },
-        {
-            "file": "src/data/activerecord.js",
-            "line": 330,
+            "line": 248,
             "itemtype": "method",
             "name": "load",
             "params": [
@@ -841,7 +822,7 @@
         },
         {
             "file": "src/data/activerecord.js",
-            "line": 345,
+            "line": 263,
             "description": "Call this function to make it aware of changes made to the data it relates to. Because a Model instance\nhas no direct link with, for example, a database, this mechanism only works when all changes made to the data are performed\nby one and the same storage object. This storage object is responsible for the notifications.\n\nAlways call {{#crossLink \"Sway.data.Model/unlink:method\"}}{{/crossLink}} to disable this behavior, or when the Model instance\notherwise, the\nIf the record or this <tt>link</tt> is not needed anymore, make sure to remove by calling {{#crossLink \"Sway.data.Model/unlink:method\"}}{{/crossLink}},",
             "itemtype": "method",
             "name": "link",
@@ -849,14 +830,14 @@
         },
         {
             "file": "src/data/activerecord.js",
-            "line": 358,
+            "line": 276,
             "itemtype": "method",
             "name": "unlink",
             "class": "Sway.data.Model"
         },
         {
             "file": "src/data/field.js",
-            "line": 53,
+            "line": 51,
             "itemtype": "method",
             "name": "transform",
             "params": [
@@ -875,7 +856,7 @@
         },
         {
             "file": "src/data/field.js",
-            "line": 66,
+            "line": 64,
             "itemtype": "method",
             "name": "validate",
             "params": [
@@ -893,7 +874,7 @@
         },
         {
             "file": "src/data/relation.js",
-            "line": 5,
+            "line": 6,
             "class": "Sway.data.Relation"
         },
         {
@@ -1352,7 +1333,7 @@
     "warnings": [
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/data/activerecord.js:272"
+            "line": " src/data/activerecord.js:226"
         },
         {
             "message": "replacing incorrect tag: returns with return",
@@ -1376,7 +1357,7 @@
         },
         {
             "message": "Missing item type",
-            "line": " src/data/relation.js:5"
+            "line": " src/data/relation.js:6"
         }
     ]
 }

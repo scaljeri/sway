@@ -1,0 +1,327 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en-US">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>./src/data/relation.js Report</title>
+    <style type="text/css">
+/*
+Copyright (c) 2009, Yahoo! Inc. All rights reserved.
+Code licensed under the BSD License:
+http://developer.yahoo.net/yui/license.txt
+version: 3.0.0
+build: 1549
+*/
+html{color:#000;background:#FFF;}body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td{margin:0;padding:0;}table{border-collapse:collapse;border-spacing:0;}fieldset,img{border:0;}address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal;}li{list-style:none;}caption,th{text-align:left;}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}q:before,q:after{content:'';}abbr,acronym{border:0;font-variant:normal;}sup{vertical-align:text-top;}sub{vertical-align:text-bottom;}input,textarea,select{font-family:inherit;font-size:inherit;font-weight:inherit;}input,textarea,select{*font-size:100%;}legend{color:#000;}
+body{font:13px/1.231 arial,helvetica,clean,sans-serif;*font-size:small;*font:x-small;}select,input,button,textarea{font:99% arial,helvetica,clean,sans-serif;}table{font-size:inherit;font:100%;}pre,code,kbd,samp,tt{font-family:monospace;*font-size:108%;line-height:100%;}
+h1{font-size:138.5%;}h2{font-size:123.1%;}h3{font-size:108%;}h1,h2,h3{margin:1em 0;}h1,h2,h3,h4,h5,h6,strong{font-weight:bold;}
+    </style>
+    <style type="text/css">
+
+    .page {
+        width: 63em;
+        margin: 0 auto;
+    }
+
+    .page .ft {
+        font-size: 85%;
+        margin-bottom: 1.5em;
+        padding-top: 0.3em;
+        border-top: 1px solid #d8d8d8;
+    }
+
+    .file-summary {
+        background: #f0f0f0;
+        border: 1px solid #d8d8d8;
+        margin-bottom: 1em;
+    }
+
+    .file-summary .category {
+        width: 10em;
+        border-right: 1px solid #d8d8d8;
+    }
+
+    .file-summary .results {
+        width: 4em;
+        text-align: center;
+    }
+
+    .file-summary td,
+    .file-summary th {
+        padding: 0.2em;
+    }
+
+    .file-summary td {
+        text-align: right;
+    }
+
+    .file-summary thead th {
+        font-weight: bold;
+        border-bottom: 1px solid #d8d8d8;
+    }
+
+    .source-code-sec {
+        overflow: auto;
+        border: 1px solid #d8d8d8;
+        margin-bottom: 1em;
+    }
+
+    .source-code {
+        width: 100%;
+        font-family: monospace;
+    }
+
+    .source-code .line-number {
+        text-align: right;
+        background: #f0f0f0;
+        border-right: 1px solid #d8d8d8;
+        width: 3em;
+        padding: 0 0.2em;
+    }
+
+    .source-code .line-calls {
+        text-align: right;
+        border-right: 1px solid #d8d8d8;
+        width: 3em;
+        padding: 0 0.2em;
+    }
+
+    .source-code .not-called {
+        background: #f99;
+    }
+
+    .source-code .called {
+        background: #9f9;
+    }
+    </style>
+</head>
+<body>
+    <div class="page">
+
+        <div class="hd">
+            <!-- title -->
+            <h1>./src/data/relation.js Report</h1>
+            <h2>Date Generated: Sat May 18 22:22:24 CEST 2013</h2>
+        </div>
+
+        <div class="bd">
+
+            <!-- summary table -->
+            <table class="file-summary">
+                <col class="category"></col>
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th class="results">Called</th>
+                        <th class="results">Total</th>
+                        <th class="results">Coverage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>Lines</th>
+                        <td class="results">10</td>
+                        <td class="results">10</td>
+                        <td class="results">100.0%</td>
+                    </tr>
+                    <tr>
+                        <th>Functions</th>
+                        <td class="results">3</td>
+                        <td class="results">3</td>
+                        <td class="results">100.0%</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- source code --->
+            <div class="source-code-sec">
+                <table class="source-code">
+                    <tr class="uncovered">
+                        <td class="line-number">1</td><td class="line-calls">&nbsp;</td><td class="line-code">//&nbsp;Create&nbsp;the&nbsp;namespace&nbsp;-&gt;&nbsp;JS&nbsp;load&nbsp;order&nbsp;independent</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">2</td><td class="line-calls">1</td><td class="line-code">window.Sway&nbsp;=&nbsp;window.Sway&nbsp;||&nbsp;{}&nbsp;;</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">3</td><td class="line-calls">1</td><td class="line-code">window.Sway.data&nbsp;=&nbsp;window.Sway.data&nbsp;||&nbsp;{}&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">4</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">5</td><td class="line-calls">1</td><td class="line-code">(function(ns){</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">6</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;/**</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">7</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">8</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;/*</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">9</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;belongs_to&nbsp;(&nbsp;===&nbsp;foreign&nbsp;key&nbsp;)&nbsp;(http://stackoverflow.com/questions/3808926/whats-the-difference-between-belongs-to-and-has-one)</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">10</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;has_one</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">11</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;has_many</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">12</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;has_many&nbsp;:through&nbsp;&nbsp;&nbsp;(the&nbsp;thirt&nbsp;table&nbsp;is&nbsp;also&nbsp;a&nbsp;model)</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">13</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;has_one&nbsp;:through&nbsp;&nbsp;&nbsp;&nbsp;(&nbsp;goes&nbsp;one-to-one&nbsp;through&nbsp;other&nbsp;model)</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">14</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;has_and_belongs_to_many&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;simple&nbsp;linker&nbsp;table&nbsp;(http://stackoverflow.com/questions/2780798/has-and-belongs-to-many-vs-has-many-through)</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">15</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">16</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">17</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;/**</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">18</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Sway.data.Relation&nbsp;defines&nbsp;the&nbsp;association&nbsp;between&nbsp;two&nbsp;{{#crossLink&nbsp;&quot;Sway.data.Model&quot;}}{{/crossLink}}s.&nbsp;It&nbsp;is&nbsp;based&nbsp;on&nbsp;the&nbsp;Ruby&nbsp;on&nbsp;Rails&nbsp;(RoR)</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">19</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&lt;a&nbsp;href=&quot;http://guides.rubyonrails.org/association_basics.html&quot;&gt;ActiveRecord&nbsp;Associations&lt;/a&gt;.&lt;br&gt;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">20</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;The&nbsp;following&nbsp;associations&nbsp;are&nbsp;available:</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">21</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">22</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&lt;h4&gt;BELONGS_TO&nbsp;and&nbsp;HAS_ONE&nbsp;(THROUGH)&nbsp;Association&lt;/h4&gt;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">23</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Assume&nbsp;an&nbsp;'Account'&nbsp;&lt;tt&gt;belongs\_to&lt;/tt&gt;&nbsp;a&nbsp;'Supplier'.&nbsp;Or&nbsp;the&nbsp;other&nbsp;way&nbsp;around,&nbsp;a&nbsp;Supplier&nbsp;&lt;tt&gt;has\_one&lt;/tt&gt;&nbsp;Account.</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">24</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Furthermore,&nbsp;if&nbsp;an&nbsp;'Account'&nbsp;and&nbsp;'Supplier'&nbsp;both&nbsp;&lt;tt&gt;has\_one&lt;/tt&gt;&nbsp;'AccountHistory',&nbsp;it&nbsp;will&nbsp;look&nbsp;like&nbsp;this</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">25</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">26</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;Account&nbsp;=&nbsp;new&nbsp;Sway.data.ActiveRecord(&nbsp;'Account',&nbsp;storage,&nbsp;[</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">27</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Sway.data.Relation({&nbsp;key:&nbsp;'supplier',&nbsp;type:&nbsp;'belongs_to',&nbsp;model:&nbsp;'Supplier'&nbsp;}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;creates&nbsp;a&nbsp;field&nbsp;'supplier_id'</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">28</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Sway.data.Relation({&nbsp;type:&nbsp;'has_one',&nbsp;model:&nbsp;'AccountHistory'&nbsp;}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;AccountHistory&nbsp;should&nbsp;have&nbsp;a&nbsp;account_id&nbsp;field</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">29</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.....</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">30</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;])&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">31</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">32</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;Supplier&nbsp;=&nbsp;new&nbsp;Sway.data.ActiveRecord(&nbsp;'Supplier',&nbsp;storage,&nbsp;[</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">33</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Sway.data.Relation({&nbsp;key:&nbsp;'account',&nbsp;type:&nbsp;'has_one',&nbsp;model:&nbsp;'Account'&nbsp;})</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">34</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Sway.data.Relation({&nbsp;key:&nbsp;'accountHistory',&nbsp;type:&nbsp;'has_one',&nbsp;through:&nbsp;'AccountHistory',&nbsp;model:&nbsp;'Account'&nbsp;})</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">35</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;....</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">36</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;])&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">37</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">38</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;AccountHistory&nbsp;=&nbsp;new&nbsp;Sway.data.ActiveRecord(&nbsp;'AccountHistory',&nbsp;storage,&nbsp;[</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">39</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Sway.datat.Relation({&nbsp;type:&nbsp;'belongs_to',&nbsp;model:&nbsp;'Account'&nbsp;})&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;creates&nbsp;an&nbsp;'account_id'&nbsp;field</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">40</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">41</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;])&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">42</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">43</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">44</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;supplierRecord.accountHistory&nbsp;=&nbsp;someAccountHistories</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">45</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">46</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;An&nbsp;&lt;tt&gt;belongs_to&lt;/tt&gt;&nbsp;field&nbsp;is&nbsp;always&nbsp;required!!</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">47</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">48</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&lt;h4&gt;HAS_MANY&nbsp;(THROUGH)&lt;/h4&gt;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">49</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;This&nbsp;association&nbsp;define&nbsp;a&nbsp;one-to-many&nbsp;or&nbsp;a&nbsp;many-to-many&nbsp;relationship.</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">50</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">51</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Sway.data.Relation({&nbsp;key:&nbsp;'orders',&nbsp;type:&nbsp;'has_many',&nbsp;model:&nbsp;'Order'&nbsp;})&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;one-to-many</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">52</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Sway.data.Relation({&nbsp;key:&nbsp;'patients',&nbsp;type:&nbsp;'has_many',&nbsp;through:&nbsp;'Appointment',&nbsp;model:&nbsp;'Patient'&nbsp;})&nbsp;;&nbsp;&nbsp;//&nbsp;many-to-many</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">53</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">54</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&lt;h4&gt;HAS_AND_BELONGS_TO_MANY&lt;/h4&gt;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">55</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;This&nbsp;relation&nbsp;is&nbsp;identical&nbsp;to&nbsp;&lt;tt&gt;HAS\_MANY&nbsp;THROUGH&lt;/tt&gt;&nbsp;(many-to-many),&nbsp;except&nbsp;it&nbsp;doesn't&nbsp;have&nbsp;a&nbsp;third&nbsp;model</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">56</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">57</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Sway.data.Relation({&nbsp;key:&nbsp;'assemblies',&nbsp;type:&nbsp;'has_and_belongs_to_many',&nbsp;model:&nbsp;'Assembly'&nbsp;})</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">58</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">59</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;And&nbsp;the&nbsp;association&nbsp;in&nbsp;the&nbsp;other&nbsp;moddel&nbsp;look&nbsp;like</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">60</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">61</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Sway.data.Relation({&nbsp;key:&nbsp;'parts',&nbsp;type:&nbsp;'has_and_belongs_to_many',&nbsp;model:&nbsp;'Part'&nbsp;})</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">62</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">63</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@class&nbsp;Sway.data.Relation</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">64</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@constructor</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">65</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;{String}&nbsp;key</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">66</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;{String}&nbsp;type&nbsp;type&nbsp;of&nbsp;association</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">67</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;{String}&nbsp;model&nbsp;name&nbsp;of&nbsp;the&nbsp;model</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">68</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;{Object}&nbsp;[options]</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">69</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@param&nbsp;{String}&nbsp;[options.through]&nbsp;specifies&nbsp;a&nbsp;join&nbsp;model.&nbsp;Only&nbsp;available&nbsp;for&nbsp;&lt;tt&gt;HAS\_ONE&lt;/tt&gt;&nbsp;and&nbsp;&lt;tt&gt;HAS\_MANY&lt;/tt&gt;&nbsp;associations</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">70</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@param&nbsp;{String}&nbsp;[options.friendlyName]&nbsp;description&nbsp;of&nbsp;the&nbsp;field</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">71</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">72</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;Relation&nbsp;=&nbsp;function(&nbsp;key,&nbsp;type,&nbsp;model,&nbsp;options)&nbsp;{</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">73</td><td class="line-calls">42</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.key&nbsp;=&nbsp;key&nbsp;;</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">74</td><td class="line-calls">42</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.type&nbsp;=&nbsp;type&nbsp;;</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">75</td><td class="line-calls">42</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.model&nbsp;=&nbsp;model&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">76</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">77</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;TODO&nbsp;process&nbsp;options</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">78</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">79</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">80</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">81</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;Relation.prototype&nbsp;=&nbsp;{</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">82</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isField:&nbsp;function()&nbsp;{</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">83</td><td class="line-calls">42</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;false&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">84</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">85</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">86</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">87</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;ns.Relation&nbsp;=&nbsp;Relation&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">88</td><td class="line-calls">&nbsp;</td><td class="line-code">})(window.Sway.data)&nbsp;;</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- footer -->
+        <div class="ft">
+            <p>Code coverage for ./src/data/relation.js generated on Sat May 18 22:22:24 CEST 2013 by YUI Test.</p>
+        </div>
+    </div>
+
+</body>
+</html>

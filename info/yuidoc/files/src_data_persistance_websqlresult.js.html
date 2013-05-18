@@ -127,6 +127,8 @@ window.Sway.data.persistance = window.Sway.data.persistance || {} ;
 (function(ns){
     &#x2F;**
      * @class Sway.data.persistance.WebSqlResult
+     * @param {Object} WebSql result
+     * @param {Object} [model]
      *&#x2F;
     var WebSqlResult = function(result, model) {
         this.result = result ;
@@ -141,13 +143,13 @@ window.Sway.data.persistance = window.Sway.data.persistance || {} ;
          *&#x2F;
         forEach: function(callback) {
             for( var i = 0; i &lt; this.result.rows.length; i++) {
-                callback(new this.model(this.result.rows.item(i)), i) ;
+                callback(this.model ? new this.model(this.result.rows.item(i)) : this.result.rows.item(i), i) ;
             }
         }
     } ;
 
     ns.WebSqlResult = WebSqlResult ;
-})(window.Sway.data.util) ;
+})(window.Sway.data.persistance) ;
 
     </pre>
 </div>
