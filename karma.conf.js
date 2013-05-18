@@ -13,13 +13,16 @@ files = [
   'src/appinit.js',
   'src/di.js',
   'src/eventhub.js',
-  'src/data/activerecord.js',
   'src/data/field.js',
+  'src/data/relation.js',
+  'src/data/activerecord.js',
+  'src/data/persistance/websqlresult.js',
 
   'spec/SpecHelper.js',
   'spec/DISpec.js',
   'spec/EventHubSpec.js',
-  'spec/ActiveRecordSpec.js'
+  'spec/ActiveRecordSpec.js',
+  'spec/WebSqlResultSpec.js'
 ];
 
 
