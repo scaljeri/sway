@@ -9,78 +9,75 @@ window.describe("Sway.data.ActiveRecord", function() {
         , ns = {} ;
 
     beforeEach(function() {
-        // create DI
-        ns.persistance = {
-            find: function(record, callback){
-                var json = [{username: (record.username||'John'), password: (record.password||'Secret'), birthday: new Date(79,5,24), __id__: 1}] ;
-                if ( !record.password )  {
-                    json = [
-                        {username: (record.username||'John'), password: 'Secret1', birthday: new Date(79,5,24), __id__: 1}
-                        , {username: (record.username||'John'), password: 'Secret2', birthday: new Date(80,5,24), __id__: 2}
-                    ];
-                }
-                if ( callback ) {
-                    setTimeout(function(){ // fake async
-                        callback(json) ;
-                    }, 1) ;
-                }
-                return json ;
-            }
-            , save: function(record, callback) {
-                // TODO
-            }
-        } ;
-        spyOn(ns.persistance, 'find').andCallThrough() ;
-        spyOn(ns.persistance, 'save').andCallThrough() ;
+        createMocksAndStubs(ns) ;
+        /*class Physician < ActiveRecord::Base
+         has_many :appointments
+         has_many :patients, :through => :appointments
+         end
 
-        ns.persistanceAsync = {
-            find: function(record, callback){
-                setTimeout( function() {
-                    callback({username: (record.username||'John'), password: (record.password||'Secret'), __id__: 2} ) ;
-                }, 10) ;
-            }
-            , save: function(record) {
-               // TODO
-            }
-        } ;
+         class Appointment < ActiveRecord::Base
+         belongs_to :physician
+         belongs_to :patient
+         end
 
-        ns.Field = function(key, options) {
-            if ( !options ) {
-                options = {} ;
-            }
-            if ( options.type ) {
-                options.type = 'TEXT' ;
-            }
+         class Patient < ActiveRecord::Base
+         has_many :appointments
+         has_many :physicians, :through => :appointments
+         end
 
-            this.key = key ;
-            for( var i in options)   {
-                this[i] = options[i] ;
-            }
-            this.load = function(key, callback) { // fake loading an Address record
-                this[key] = new ns.Address( { address: '350 Fifth Avenue'}) ;
-                callback(this) ;
-            } ;
-            this.transform = function(value, callback) {
-                setTimeout(function(){callback(value + '-transformed');},1) ; // modify value by adding '-transformed'
-            } ;
-            this.validate = function() {
-                return true ;
-            } ;
-            return Object.freeze(this) ;
-        } ;
-        spyOn(ns.persistanceAsync, 'find').andCallThrough(); // andReturn({username: 'John', password: 'Secret'}) ;
-        spyOn(ns.persistanceAsync, 'save').andCallThrough();
+         class Supplier < ActiveRecord::Base
+         has_one :account
+         has_one :account_history, :through => :account
+         end
 
-        ns.field0 = new ns.Field('address', {friendlyName: 'Address'});
-        ns.Address = new Sway.data.ActiveRecord( 'Address', ns.persistance, [ns.field0] ) ;
+         class Account < ActiveRecord::Base
+         belongs_to :supplier
+         has_one :account_history
+         end
 
-        ns.field1 = new ns.Field('username', {friendlyName: 'User name'});
-        ns.field2 = new ns.Field('password', {friendlyName: 'Password'}) ;
-        ns.field3 = new ns.Field('birthday', {type: 'DATE', friendlyName: 'Birthday'}) ;
-        ns.field4 = new ns.Field('address', {FK: { model: ns.Address, key: 'address'}, friendlyName: 'Address'}) ;
+         class AccountHistory < ActiveRecord::Base
+         belongs_to :account
+         end
+         */
 
-        ns.User = new Sway.data.ActiveRecord( 'User', ns.persistance, [ns.field1, ns.field2, ns.field3, ns.field4] ) ;
-        ns.UserAsync = new Sway.data.ActiveRecord( 'User', ns.persistanceAsync, [ns.field1, ns.field2, ns.field3, ns.field4] ) ;
+        new Sway.data.ActiveRecord( 'Physician', ns.persistance, [
+            new Sway.data.Field( 'name' )
+            , new Sway.data.Relation( 'appointments', 'has_many', 'Appointment', { friendlyName: 'Appointments' })
+            , new Sway.data.Relation( 'patients', 'has_many', 'Patient', { through: 'Appointment', friendlyName: 'Patients' })
+            , new Sway.data.Relation( 'hospitals', 'has_and_belongs_to_many', 'Hospital', { friendlyName: 'Hospitals' })
+        ]) ;
+
+        new Sway.data.ActiveRecord( 'Appointment', ns.persistance, [
+            new Sway.data.Field( 'appointment_date', {type: 'date'} )
+            , new Sway.data.Relation( 'physician', 'belongs_to', 'Physician', { friendlyName: 'Physician' })
+            , new Sway.data.Relation( 'patients', 'belongs_to', 'Patient', { friendlyName: 'Patient' })
+        ]) ;
+
+        new Sway.data.ActiveRecord( 'Patient', ns.persistance, [
+            new Sway.data.Field( 'name' )
+            , new Sway.data.Relation( 'address', 'has_one', 'Address', { friendlyName: 'Address'})
+            , new Sway.data.Relation( 'account', 'has_one', 'Account', { friendlyName: 'Account'})
+            , new Sway.data.Relation( 'accountHistory', 'has_one', 'AccountHistory', { through: 'Account', friendlyName: 'Account History'})
+            , new Sway.data.Relation( 'appointments', 'has_many', 'Appointment', { friendlyName: 'Appointments' })
+            , new Sway.data.Relation( 'physicians', 'has_many', 'Physician', { through: 'Appointment', friendlyName: 'Physicians' })
+        ]) ;
+
+        new Sway.data.ActiveRecord( 'Account', ns.persistance, [
+            new Sway.data.Field( 'name' )
+            , new Sway.data.Relation( 'patient', 'belongs_to', 'Patient', { friendlyName: 'Patient' })
+            , new Sway.data.Relation( 'accountHistory', 'has_one', 'AccountHistory', { friendlyName: 'Account History' })
+        ]) ;
+
+        new Sway.data.ActiveRecord( 'AccountHistory', ns.persistance, [
+            new Sway.data.Field( 'message' )
+            , new Sway.data.Relation( 'account', 'belongs_to', 'Account', { friendlyName: 'Account' })
+        ]) ;
+
+        new Sway.data.ActiveRecord( 'Hospital', ns.persistance, [
+            new Sway.data.Field( 'name' )
+            , new Sway.data.Relation( 'physicians', 'has_and_belongs_to_many', 'Physician', { friendlyName: 'Physician' })
+        ]) ;
+
     });
 
     it("should exist", function() {
@@ -88,34 +85,34 @@ window.describe("Sway.data.ActiveRecord", function() {
     }) ;
 
     it("should create a model class", function(){
-        expect(ns.User).toBeDefined() ;
-        expect(ns.User.fields).toBeDefined() ;
-        expect(ns.User.fields['username']).toBe(ns.field1) ;
-        expect(ns.User.fields['password']).toBe(ns.field2) ;
-        expect(ns.User.fields['birthday']).toBe(ns.field3) ;
+        expect(Sway.data.ActiveRecord.get('Physician')).toBeDefined() ;
+        expect(Sway.data.ActiveRecord.get('Appointment')).toBeDefined() ;
+        expect(Sway.data.ActiveRecord.get('Patient')).toBeDefined() ;
+        expect(Sway.data.ActiveRecord.get('Account')).toBeDefined() ;
+        expect(Sway.data.ActiveRecord.get('AccountHistory')).toBeDefined() ;
+        expect(Sway.data.ActiveRecord.get('Hospital')).toBeDefined() ;
     });
 
     it("should create a record", function() {
-        var rec1 = new ns.User( {username: 'John', password: 'Secret'} )
-            , rec2
-            , date = new Date() ;
+        var Physician
+            , physician
+            , Patient
+            , patient ;
 
-        expect(rec1).toBeDefined() ;
-        expect(rec1.username).toEqual('John') ;
-        expect(rec1.password).toEqual('Secret') ;
-        rec1.birthday = date ;
-        expect(rec1.birthday).toBe(date) ;
+        Physician = Sway.data.ActiveRecord.get('Physician') ;
+        physician = new Physician({ name: 'John'}) ;
 
-        rec2 = new ns.User(rec1) ;              // this also test the toJSON function
-        expect(rec2).toBeDefined() ;
-        expect(rec2).not.toBe(rec1) ;
-        expect(rec2).toBeInstanceof(ns.User) ;
-        expect(rec2.username).toEqual('John') ;
-        expect(rec2.password).toEqual('Secret') ;
-        expect(rec2.birthday).toBe(date) ;
+        expect(physician).toBeDefined() ;
+        expect(physician.name).toEqual('John') ;
+
+        Patient = new Sway.data.ActiveRecord.get('Patient') ;
+        patient = new Patient({ name: 'Sue'}) ;
+
+        //physician.patients = patient ;
+        //expect(physician.patients).toBeDefined() ;
     }) ;
 
-    it("should find 1 stored record without callbacks", function() {
+    xit("should find 1 stored record without callbacks", function() {
         var newRec = null
             , newRec1 = null  ;
 
@@ -133,7 +130,7 @@ window.describe("Sway.data.ActiveRecord", function() {
         expect(newRec.birthday).toEqual(new Date(79,5,24)) ;
     }) ;
 
-    it("should find/load multiple stored record", function() {
+    xit("should find/load multiple stored record", function() {
         var newRec = null
             , newRec1 = null  ;
 
@@ -182,4 +179,44 @@ window.describe("Sway.data.ActiveRecord", function() {
     xit("should update a record", function() {
         var rec = new ns.User( { username: 'John', password: 'Secret'}) ;
     }) ;
+
+    function createMocksAndStubs(ns) {
+        // fake Persitance
+        ns.persistance = {
+            find: function(record, callback){
+                var json = [{username: (record.username||'John'), password: (record.password||'Secret'), birthday: new Date(79,5,24), __id__: 1}] ;
+                if ( !record.password )  {
+                    json = [
+                        {username: (record.username||'John'), password: 'Secret1', birthday: new Date(79,5,24), __id__: 1}
+                        , {username: (record.username||'John'), password: 'Secret2', birthday: new Date(80,5,24), __id__: 2}
+                    ];
+                }
+                if ( callback ) {
+                    setTimeout(function(){ // fake async
+                        callback(json) ;
+                    }, 1) ;
+                }
+                return json ;
+            }
+            , save: function(record, callback) {
+                // TODO
+            }
+        } ;
+        spyOn(ns.persistance, 'find').andCallThrough() ;
+        spyOn(ns.persistance, 'save').andCallThrough() ;
+
+        ns.persistanceAsync = {
+            find: function(record, callback){
+                setTimeout( function() {
+                    callback({username: (record.username||'John'), password: (record.password||'Secret'), __id__: 2} ) ;
+                }, 10) ;
+            }
+            , save: function(record) {
+                // TODO
+            }
+        } ;
+
+        spyOn(ns.persistanceAsync, 'find').andCallThrough(); // andReturn({username: 'John', password: 'Secret'}) ;
+        spyOn(ns.persistanceAsync, 'save').andCallThrough();
+    }
 }) ;

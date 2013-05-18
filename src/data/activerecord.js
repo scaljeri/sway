@@ -29,67 +29,26 @@ window.Sway.data = window.Sway.data || {} ;
          *                            , new Relation( {type: 'BELONGS_TO', model: 'User'} )
          *                      ]) ;
          *
-         *      var userRecord = new UserModel() ; // OK
+         *      var userRecord = new UserModel() ;
          *
-         * To avoid problems with Models who have associations, just make sure all models are created. ActiveRecord keeps a reference to all models it creates,
-         * so it is not required to keep a reference to a model all the time. Anytime a model can be request again
+         * To avoid problems with Model associations, make sure all involved models are created before any usage. Furthermore, a model only needs to
+         * be defined only once, and can easily be obtained later as follows
          *
-         *      var UserModel = new ActiveRecord( 'User' ) ;    // only works if it has been created before
+         *      var UserModel = ActiveRecord.get( 'User' ) ;
          *
          * @class Sway.data.ActiveRecord
          * @constructor
          * @param {String} modelName name of the model
-         * @param {Object}[storage] object used to access the underlying data structure
-         * @param {Array} [fields] list of {{#crossLink "Sway.data.Field"}}{{/crossLink}}s and {{#crossLink "Sway.data.Relation"}}{{/crossLink}}s
+         * @param {Object} storage  object used to access the underlying data structure
+         * @param {Array}  fields  list of {{#crossLink "Sway.data.Field"}}{{/crossLink}}s and {{#crossLink "Sway.data.Relation"}}{{/crossLink}}s
          */
-        , ActiveRecord = function(modelName, storage, fields, relations ) {
-            var i, key ;
+        , ActiveRecord = function(modelName, storage, fields ) {
+            var  Model = createModel() ;
 
-           function Model(data, options) {                              // define the model class/function
-               if ( !options) {                                         // fix input
-                    options = {} ;
-               }
-               if ( !data ) {
-                   data = {} ;
-               }
-               else if ( data.$className ) {
-                   data = data.toJSON() ;
-               }
-
-               Object.defineProperty(this, '__state__',
-                   {
-                       value: typeof(options.state) === 'boolean' ? options.state : DEFAULTS.STATE.NORMAL
-                       , enumarable: false
-                   }) ;
-               Object.defineProperty(this, '$className',                // name of the class it belongs too
-                   {
-                       value: this.constructor.name
-                       , writable: false
-                   }) ;
-               Object.defineProperty(this, '__id__',                    // if none of the fields is unique, this field is
-                   {                                                    // added to the record
-                       value: null
-                       , enumarable: false
-                       , writable: true
-                   }) ;
-
-               Object.defineProperty(this, '__dataSet',                 // al items
-                   {
-                       value: data
-                       , writable: false
-                   }) ;
-
-               for( i in this.constructor.fields ) {                // TODO: initialize with first item
-                   this[i] = data[i] ;
-
-               }
-               return Object.seal(this) ;                               // make sure no properties can be added
-            }
-
-            appendStaticProperties(Model, storage, fields, relations ) ;
+            appendStaticProperties(Model, storage, fields ) ;
             appendPrototypeProperties(Model) ;
 
-
+            models[modelName] = Model ;
 
             return Model ;
         }
@@ -167,8 +126,6 @@ window.Sway.data = window.Sway.data || {} ;
      *     userRecord.password = 'Secret' ;
      *
      * @class Sway.data.Model
-     * @constructor
-     * @param {Object} [data] JSON data or a model instance to be cloned
      */
         , DEFAULTS = {
                 /**
@@ -235,9 +192,6 @@ window.Sway.data = window.Sway.data || {} ;
             }
         }
 
-
-
-
     /**
      * @method item
      */
@@ -271,18 +225,12 @@ window.Sway.data = window.Sway.data || {} ;
             }
             /**
              *
-             * returns all the data in JSON format (unfiltered)
+             * returns all data in JSON format
              * @method toJSON
-             * @param {String} key
-             * @returns {Number}
+             * @returns {Object}
              */
-            , toJSON: function() { // ale
-                var json = {}
-                    , i ;
-                for( i in this.constructor.fields ) {
-                    json[i] = this[i] ;
-                }
-                return json ;
+            , toJSON: function() {
+                return this.__data ;
             }
             /**
              * Save the data and its relations (See Relation TODO)
@@ -291,41 +239,11 @@ window.Sway.data = window.Sway.data || {} ;
              * @param {Function} [callback] callback function
              *
              */
-            , save: function(deep, callback) {
-               return this.constructor.storage.save(this, deep, callback) ;
+            , save: function(deep, success, error) {
+               //return this.constructor.storage.save(this, deep, callback) ;
             }
             , getFields: function() {
                 return this.constructor.fields ;
-            }
-            /**
-             * @method next
-             */
-            , next: function() {
-
-            }
-            /**
-             * @method prev
-             */
-            , prev: function() {
-
-            }
-            /**
-             * @method item
-             */
-            , item: function() {
-
-            }
-            /**
-             * @method hasNext
-             */
-            , hasNext: function() {
-
-            }
-            /**
-             * @method hasPrev
-             */
-            , hasPrev: function() {
-
             }
                 /**
                  * @method load
@@ -366,33 +284,108 @@ window.Sway.data = window.Sway.data || {} ;
             }
         } ;
 
+    ActiveRecord.get = function(modelName) {
+       return models[modelName] ;
+    } ;
+
     /* Private helpers */
 
-    function appendStaticProperties(Model, storage, fields, relations) {
-        var i, key, hasTransformers = false ;
+    /**
+     * @class Sway.data.Model
+     * @constructor
+     * @param {Object} [data] ActiveRecord object or JSON data
+     * @param {Object} [options]
+     *      @param {String} [options.state] initial state
+     */
+    function createModel() {
+        return function Model(data, options) {                              // define the model class/function
+            options = options||{} ;                                         // fix input
+            data    = data   ||{} ;
+
+            if ( data.$className ) {                                        // check if data is an ActiveRecord instance
+                data = data.toJSON() ;
+            }
+
+            Object.defineProperty(this, '__state__',
+                {
+                    value: typeof(options.state) === 'boolean' ? options.state : DEFAULTS.STATE.NORMAL
+                    , enumarable: false
+                }) ;
+            Object.defineProperty(this, '$className',                // name of the class it belongs too
+                {
+                    value: this.constructor.name
+                    , writable: false
+                }) ;
+            Object.defineProperty(this, '__id__',                    // if none of the fields is unique, this field is
+                {                                                    // added to the record
+                    value: null
+                    , enumarable: false
+                    , writable: true
+                }) ;
+
+            Object.defineProperty(this, '__data',                 // al items
+                {
+                    value: data
+                    , writable: false
+                }) ;
+
+           for( var i in this.constructor.fields) {
+               (function(i){
+                  Object.defineProperty(this, i, {
+                      set:  updateProperty.bind(this, i)
+                      , get: getProperty.bind(this, i)
+                  }) ;
+               }.bind(this))(i) ;
+           }
+
+           return Object.preventExtensions(this) ;                               // make sure no properties can be added
+        } ;
+    }
+
+    function getProperty(key) {
+        return this.__data[key] ;
+    }
+
+    function updateProperty(key, value) {
+        this.__data[key] = value ;
+    }
+
+    function appendStaticProperties(Model, storage, fields) {
+        var i, hasPK = false;
 
         for ( i in STATIC ) {                                   // create static methods
             Model[i] = STATIC[i].bind(Model) ;
         }
 
         Model.storage = storage ;                                   // reference to the storage object
-        Model.relations = relations ;
         Model.fields = {} ;                                         // field container, referenced by their key value
-        Model.hasTransformers = false ;
+        Model.relations = {} ;                                         // field container, referenced by their key value
 
 
         for( i = 0; i < fields.length; i++ ) {
-            key = fields[i].key ;
-            Model.fields[key] = fields[i] ;         // add field to fields object
-            // create a 'findByXXX' function, like: findByUserName
-            Model[['findBy', key.slice(0,1).toUpperCase(), key.slice(1)].join('')] = findBy.bind(Model, key);
-            if ( fields[i].transformers && fields[i].transformers.length > 0 ) {
-                Model.hasTransformers = true ;
+            if ( fields[i].isField() ) {
+                Model.fields[fields[i].key] = fields[i] ;         // add field to fields object
+                createFindByXXX(Model, fields[i]) ;
             }
+            else {
+
+            }
+
+            if ( fields[i].PK ) {
+                hasPK = true ;
+            }
+        }
+
+        if ( !hasPK ) {
+            createFindByXXX(Model, new ns.Field('id', {autoIncrement: true })) ;
         }
     }
 
-    function appendPrototypeProperties(Model) {
+    function createFindByXXX(Model, field) {
+        Model[['findBy', field.key.slice(0,1).toUpperCase(), field.key.slice(1)].join('')] = findBy.bind(Model, field.key);
+    }
+
+    function appendPrototypeProperties(Model, data) {
         var i ;
 
         for( i in INSTANCE ){
