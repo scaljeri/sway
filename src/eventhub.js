@@ -87,7 +87,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
      * @param {Object} [options] configuration parameters
      *      @param {Boolean} [options.allowMultiple] accept multiple registrations of a function for the same event name
      */
-        , eh = function(options) {
+        , Eventhub = function(options) {
             Object.defineProperty(this, '_rootStack',
                 {
                     value: { __stack: { triggers: 0, on:[], one:[]} }
@@ -104,9 +104,9 @@ window.Sway = window.Sway || {} ; // make sure it exists
             this.allowMultiple = options && typeof(options.allowMultiple) === 'boolean' ? options.allowMultiple : DEFAULTS.ALLOW_MULTIPLE ;
         } ;
 
-    eh.EVENT_MODE = DEFAULTS.EVENT_MODE ;                   // set static properies
+    Eventhub.EVENT_MODE = DEFAULTS.EVENT_MODE ;                   // set static properies
 
-    eh.prototype = {
+    Eventhub.prototype = {
         /**
          * Generates an unique event name
          * @method generateUniqueEventName
@@ -497,6 +497,6 @@ window.Sway = window.Sway || {} ; // make sure it exists
         return retVal ;
     }
 
-    ns.EventHub = eh ;
+    ns.EventHub = Eventhub ;
 
 })(window.Sway) ;
