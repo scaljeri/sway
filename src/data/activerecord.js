@@ -329,14 +329,14 @@ window.Sway.data = window.Sway.data || {} ;
                     , writable: false
                 }) ;
 
-           for( var i in this.constructor.fields) {
+            for( var i in this.constructor.fields) {
                (function(i){
                   Object.defineProperty(this, i, {
                       set:  updateProperty.bind(this, i)
                       , get: getProperty.bind(this, i)
                   }) ;
                }.bind(this))(i) ;
-           }
+            }
 
            return Object.preventExtensions(this) ;                               // make sure no properties can be added
         } ;
@@ -363,11 +363,11 @@ window.Sway.data = window.Sway.data || {} ;
 
 
         for( i = 0; i < fields.length; i++ ) {
+            Model.fields[fields[i].key] = fields[i] ;         // add field to fields object
             if ( fields[i].isField() ) {
-                Model.fields[fields[i].key] = fields[i] ;         // add field to fields object
                 createFindByXXX(Model, fields[i]) ;
             }
-            else {
+            else {  // do something with associations
 
             }
 

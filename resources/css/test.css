@@ -1,0 +1,59 @@
+/* line 1, ../sass/test.scss */
+body {
+  background: #e6e6e6;
+}
+
+/* tucked corners */
+/* line 6, ../sass/test.scss */
+.corners {
+  background: #f6f6f6;
+  height: auto;
+  margin: 50px auto;
+  padding: 10px;
+  min-width: 1024px;
+  position: relative;
+  width: 80%;
+  -webkit-box-shadow: 0 1px 7px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 1px 7px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 7px rgba(0, 0, 0, 0.2);
+}
+
+/* Corner Effect */
+/* line 20, ../sass/test.scss */
+.corners:after,
+.corners:before {
+  background: #e6e6e6;
+  content: '';
+  height: 50px;
+  position: absolute;
+  top: -25px;
+  width: 100px;
+  -webkit-box-shadow: 0 5px 10px -7px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0 5px 10px -7px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 5px 10px -7px rgba(0, 0, 0, 0.5);
+}
+
+/* line 31, ../sass/test.scss */
+.corners:after {
+  left: -50px;
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+
+/* line 39, ../sass/test.scss */
+.corners:before {
+  right: -50px;
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+/* line 48, ../sass/test.scss */
+#content-title {
+  margin-left: 20px;
+}

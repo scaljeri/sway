@@ -1,14 +1,32 @@
 window.describe("Sway.data.ActiveRecord", function() {
     "use strict";
 
-    var Sway            = window.Sway
-        , beforeEach    = window.beforeEach
-        , expect        = window.expect
-        , spyOn         = window.spyOn
-        , it            = window.it
-        , ns = {} ;
+    var ns = {}
+        , Physician
+        , Appointment
+        , Patient
+        , Account
+        , AccountHistory
+        , Address
+        , Hospital
+        , physician
+        , appointment
+        , appointmentDate
+        , appointment1
+        , appointmentDate1
+        , patient
+        , patient1
+        , address
+        , address1
+        , hospital
+        , account
+        , account1
+        , accountHistory
+        , accountHistory1 ;
 
     beforeEach(function() {
+
+
         createMocksAndStubs(ns) ;
         /*class Physician < ActiveRecord::Base
          has_many :appointments
@@ -48,7 +66,7 @@ window.describe("Sway.data.ActiveRecord", function() {
         ]) ;
 
         new Sway.data.ActiveRecord( 'Appointment', ns.persistance, [
-            new Sway.data.Field( 'appointment_date', {type: 'date'} )
+            new Sway.data.Field( 'appointmentDate', {type: 'date'} )
             , new Sway.data.Relation( 'physician', 'belongs_to', 'Physician', { friendlyName: 'Physician' })
             , new Sway.data.Relation( 'patients', 'belongs_to', 'Patient', { friendlyName: 'Patient' })
         ]) ;
@@ -60,6 +78,11 @@ window.describe("Sway.data.ActiveRecord", function() {
             , new Sway.data.Relation( 'accountHistory', 'has_one', 'AccountHistory', { through: 'Account', friendlyName: 'Account History'})
             , new Sway.data.Relation( 'appointments', 'has_many', 'Appointment', { friendlyName: 'Appointments' })
             , new Sway.data.Relation( 'physicians', 'has_many', 'Physician', { through: 'Appointment', friendlyName: 'Physicians' })
+        ]) ;
+
+        new Sway.data.ActiveRecord( 'Address', ns.persistance, [
+            new Sway.data.Field('street')
+            , new Sway.data.Relation( 'patient', 'belongs_to', 'Patient')
         ]) ;
 
         new Sway.data.ActiveRecord( 'Account', ns.persistance, [
@@ -78,6 +101,38 @@ window.describe("Sway.data.ActiveRecord", function() {
             , new Sway.data.Relation( 'physicians', 'has_and_belongs_to_many', 'Physician', { friendlyName: 'Physician' })
         ]) ;
 
+        Physician = Sway.data.ActiveRecord.get('Physician') ;
+        Appointment = Sway.data.ActiveRecord.get('Appointment') ;
+        Patient = Sway.data.ActiveRecord.get('Patient') ;
+        Account = Sway.data.ActiveRecord.get('Account') ;
+        AccountHistory = Sway.data.ActiveRecord.get('AccountHistory') ;
+        Address = Sway.data.ActiveRecord.get('Address') ;
+        Hospital = Sway.data.ActiveRecord.get('Address') ;
+
+        /*
+        Below all possible relations are created. Also, the order in which they are established differ
+         */
+        account = new Account({ name: 'Foo Account' })  ;                       // create an account without the belongs_to association
+        account1 = new Account({ name: 'Bar Account' })  ;                      // create an account without the belongs_to association
+        accountHistory = new AccountHistory({ message: 'log message'}) ;
+        accountHistory1 = new AccountHistory({ message: 'log message'}) ;
+        address = new Address({ street: 'Avenue Princess Grace' }) ;
+        address1 = new Address({ street: 'Severn Road' }) ;
+        appointmentDate = new Date() ;
+        appointment = new Appointment( { appointmentDate: appointmentDate }) ;
+        appointmentDate1 = new Date() ;
+        appointment1 = new Appointment( { appointmentDate: appointmentDate }) ;
+        hospital = new Hospital() ;
+        hospital.street = 'Cardiology & Heart Surgery' ;
+        physician = new Physician({ name: 'John'}) ;
+        physician.hospitals = hospital ;
+        patient = new Patient( { name: 'Sue', address: address, account: account, accountHistory: accountHistory }) ;
+        patient1 = new Patient( { name: 'Alexia', address: address1, account: account1, accountHistory: accountHistory1, appointment: appointment1 }) ;
+        physician.appointments = appointment ;                                   // should link a patient
+        patient.appointments = appointment ;
+
+        physician.patients = patient1 ;                                          // should link appointment to physician
+
     });
 
     it("should exist", function() {
@@ -94,25 +149,95 @@ window.describe("Sway.data.ActiveRecord", function() {
     });
 
     it("should create a record", function() {
-        var Physician
-            , physician
-            , Patient
-            , patient ;
 
-        Physician = Sway.data.ActiveRecord.get('Physician') ;
-        physician = new Physician({ name: 'John'}) ;
+
 
         expect(physician).toBeDefined() ;
         expect(physician.name).toEqual('John') ;
 
+    }) ;
+
+    describe("should support HAS_ONE/BELONGS_TO association", function(){
+       it("and be able to create one", function(){
+
+       }) ;
+
+       it("and be able to save one", function(){
+
+       }) ;
+
+       it("and be able to load one", function(){
+
+       }) ;
+    }) ;
+
+    describe("should support HAS_ONE/BELONGS_TO THROUGH association", function(){
+        it("and be able to create one", function(){
+
+        }) ;
+
+        it("and be able to save one", function(){
+
+        }) ;
+
+        it("and be able to load one", function(){
+
+        }) ;
+    }) ;
+
+    describe("should support HAS_MANY association", function(){
+        it("and be able to create one", function(){
+
+        }) ;
+
+        it("and be able to save one", function(){
+
+        }) ;
+
+        it("and be able to load one", function(){
+
+        }) ;
+    }) ;
+
+    describe("should support HAS_MANY THROUGH association", function(){
+        it("and be able to create one", function(){
+
+        }) ;
+
+        it("and be able to save one", function(){
+
+        }) ;
+
+        it("and be able to load one", function(){
+
+        }) ;
+    }) ;
+
+    xit("should create a HAS_AND_BELONGS_TO_MANY association", function(){
+
+        /*
         Patient = new Sway.data.ActiveRecord.get('Patient') ;
         patient = new Patient({ name: 'Sue'}) ;
 
-        //physician.patients = patient ;
-        //expect(physician.patients).toBeDefined() ;
+        // check HAS_MANY
+        physician.patients = patient ;
+        expect(physician.patients).toEqual([patient]) ;
+        physician.patients = patient ;
+        expect(physician.patients).toEqual([patient, patient]) ;
+        physician.patients = [patient] ;
+        expect(physician.patients).toEqual([patient]) ;
+        */
+    }) ;
+
+    xit("should find a stored record with callbacks", function(){
+
+    }) ;
+    xit("should find a stored record without callbacks", function() {
+
     }) ;
 
     xit("should find 1 stored record without callbacks", function() {
+        /*
         var newRec = null
             , newRec1 = null  ;
 
@@ -128,17 +253,21 @@ window.describe("Sway.data.ActiveRecord", function() {
         expect(newRec1.password).toEqual('Secret') ;
         expect(newRec.birthday).toBeInstanceof(Date) ;
         expect(newRec.birthday).toEqual(new Date(79,5,24)) ;
+        */
     }) ;
 
     xit("should find/load multiple stored record", function() {
+        /*
         var newRec = null
             , newRec1 = null  ;
 
         newRec = ns.User.find({username:'John'}) ;      // not async
         expect(newRec.getLength()).toEqual(2) ;
+        */
     }) ;
 
     xit("should find/load a stored record with callbacks", function() {
+        /*
         var newRec = null
             , isReady = false ;
 
@@ -172,12 +301,13 @@ window.describe("Sway.data.ActiveRecord", function() {
             expect(newRec.username).toEqual('Sue') ;
             expect(newRec.password).toEqual('Secret') ;
         }) ;
+        */
     }) ;
     xit("should save a new record", function() {
-        var rec = new ns.User( { username: 'John', password: 'Secret'}) ;
+        //var rec = new ns.User( { username: 'John', password: 'Secret'}) ;
     }) ;
     xit("should update a record", function() {
-        var rec = new ns.User( { username: 'John', password: 'Secret'}) ;
+        //var rec = new ns.User( { username: 'John', password: 'Secret'}) ;
     }) ;
 
     function createMocksAndStubs(ns) {

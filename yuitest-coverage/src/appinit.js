@@ -26,7 +26,7 @@ _yuitest_coverage["./src/appinit.js"] = {
     path: "/Volumes/DATA/dev/ws/zipped/src/appinit.js",
     code: []
 };
-_yuitest_coverage["./src/appinit.js"].code=["/**"," * Namespace"," * @class Sway"," */","window.Sway = window.Sway || {} ;","","/**","  * Version of the framework","  * @property VERSION","  * @type String","  **/","window.Sway.VERSION = '1.0alpha' ;","","/**","  * If TRUE, debugging is enabled. In PRODUCTION this property should be set to FALSE!!","  * @property DEBUG","  * @type boolean","  **/","window.Sway.DEBUG = true ;","","// zip.js settings","if ( !window.zip ){","    window.zip = {} ;","}","zip.useWebWorkers     = true ;","zip.workerScriptsPath = \"lib/zip.js/\" ;"];
+_yuitest_coverage["./src/appinit.js"].code=["/**"," * Namespace"," * @class Sway"," */","window.Sway = window.Sway || { data: { persistance: {}}, filter: {}, ux: {}} ;","","/**","  * Version of the framework","  * @property VERSION","  * @type String","  **/","window.Sway.VERSION = '1.0alpha' ;","","/**","  * If TRUE, debugging is enabled. In PRODUCTION this property should be set to FALSE!!","  * @property DEBUG","  * @type boolean","  **/","window.Sway.DEBUG = true ;","","// zip.js settings","if ( !window.zip ){","    window.zip = {} ;","}","zip.useWebWorkers     = true ;","zip.workerScriptsPath = \"lib/zip.js/\" ;"];
 /**
  * Namespace
  * @class Sway
@@ -36,7 +36,7 @@ _yuitest_coverage["./src/appinit.js"].functions = {};
 _yuitest_coverage["./src/appinit.js"].coveredLines = 7;
 _yuitest_coverage["./src/appinit.js"].coveredFunctions = 0;
 _yuitest_coverline("./src/appinit.js", 5);
-window.Sway = window.Sway || {} ;
+window.Sway = window.Sway || { data: { persistance: {}}, filter: {}, ux: {}} ;
 
 /**
   * Version of the framework
