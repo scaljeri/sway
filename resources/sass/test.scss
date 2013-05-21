@@ -1,50 +1,44 @@
-body {
+@import "mixins" ;
+@import "tucked-corners" ;
+@import "menu" ;
+
+* {
+  @include prefix-experimental(box-sizing, border-box) ;
+}
+h1, h2, h3 { text-rendering: optimizeLegibility; }
+
+body, html {
   background: #e6e6e6;
+  height: 100% ;
 }
 
-/* tucked corners */
-.corners {
-  background: #f6f6f6;
-  height: auto;
-  margin: 50px auto;
-  padding:10px ;
-  min-width: 1024px;
-  position: relative;
-  width: 80%;
-  -webkit-box-shadow: 0 1px 7px hsla(0,0%,0%,.2);
-  -moz-box-shadow: 0 1px 7px hsla(0,0%,0%,.2);
-  box-shadow: 0 1px 7px hsla(0,0%,0%,.2);
+iframe {
+  position: absolute ;
+  top: 100px ;
+  left: 25px ;
+  height: 0px ;
+  width: 96% ;
+  border: none ;
+  background-color: white ;
 }
-/* Corner Effect */
-.corners:after,
-.corners:before {
-  background: #e6e6e6;
-  content: '';
-  height: 50px;
-  position: absolute;
-  top: -25px;
-  width: 100px;
-  -webkit-box-shadow: 0 5px 10px -7px hsla(0,0%,0%,.5);
-  -moz-box-shadow: 0 5px 10px -7px hsla(0,0%,0%,.5);
-  box-shadow: 0 5px 10px -7px hsla(0,0%,0%,.5);
-}
-.corners:after {
-  left: -50px;
-  -webkit-transform: rotate(-45deg);
-  -moz-transform: rotate(-45deg);
-  -ms-transform: rotate(-45deg);
-  -o-transform: rotate(-45deg);
-  transform: rotate(-45deg);
-}
-.corners:before {
-  right: -50px;
-  -webkit-transform: rotate(45deg);
-  -moz-transform: rotate(45deg);
-  -ms-transform: rotate(45deg);
-  -o-transform: rotate(45deg);
-  transform: rotate(45deg);
+
+#content {
+  background: white ;
+  position: relative ;
+  height: 100% ;
+  widht: 100% ;
+  z-index: 1 ;
+  padding: 30px ;
+  z-index: 10 ;
 }
 
 #content-title {
   margin-left: 20px ;
+}
+
+.to-front {
+  z-index: 100 ;
+}
+.to-back {
+  z-index: 0 ;
 }
