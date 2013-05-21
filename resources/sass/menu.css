@@ -1,0 +1,48 @@
+/* Example:
+ *   @include experimental(tap-highlight-color, rgba(0,0,0,0), false) ;
+ *  -->
+ *  	tap-highlight-color, rgba(0,0,0,0) ;
+ *  	-webkit-tap-highlight-color, rgba(0,0,0,0) ;
+ *  	-ms-tap-highlight-color, rgba(0,0,0,0) ;
+ */
+.menu {
+  position: absolute;
+  z-index: -1; }
+
+#menu-action {
+  position: absolute;
+  top: 250px;
+  left: -18px;
+  z-index: 3;
+  transform: rotate(90deg);
+  -webkit-transform: rotate(90deg);
+  -khtml-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  box-shadow: 3px -2px 10px grey;
+  text-transform: uppercase;
+  background-color: grey;
+  padding: 3px;
+  border: 2px solid black;
+  transition: box-shadow 0.1s linear;
+  -webkit-transition: box-shadow 0.1s linear;
+  -khtml-transition: box-shadow 0.1s linear;
+  -moz-transition: box-shadow 0.1s linear;
+  -ms-transition: box-shadow 0.1s linear;
+  -o-transition: box-shadow 0.1s linear;
+  touch-callout: none;
+  -webkit-touch-callout: none;
+  -khtml-touch-callout: none;
+  -moz-touch-callout: none;
+  -ms-touch-callout: none;
+  -o-touch-callout: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none; }
+
+#menu-action:active {
+  box-shadow: 2px 1px 5px grey; }

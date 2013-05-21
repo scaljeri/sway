@@ -1,0 +1,83 @@
+@import "mixins" ;
+
+#menu {
+  position: absolute ;
+  top: 190px ;
+  left: 0px ;
+  @include prefix-experimental(border-radius, 5px) ;
+  @include prefix-experimental(perspective, 850px) ;
+
+  &.init .menu-item {
+    @include prefix-experimental(transition, transform 800ms cubic-bezier(0.000, 1.455, 1.000, 1.650), true) ;
+    @include prefix-experimental(transform, translateX(-5px)) ;
+  }
+
+  .menu-item {
+    background-color: black ;
+    color: white ;
+    padding: 3px ;
+    margin: 2px ;
+    border: 0px ;
+    a, a:link { text-decoration: none; color: white ;}
+    @include prefix-experimental(border-radius, 5px);
+    @include prefix-experimental(tranform-origin, top left 0) ;
+    @include prefix-experimental(transform-style, preserve-3d) ;
+      //-webkit-transform-style: preserve-3d ;
+      //-webkit-transition: -webkit-transform 5s linear ;
+      width: 250px ;
+      -webkit-transform-origin: top left 0;
+    &.show-item-step1 {
+        @include prefix-experimental(transition, transform 400ms linear, true) ;
+        @include prefix-experimental(transform, rotateY(180deg)) ;
+    }
+    &.show-item-step2 {
+      @include prefix-experimental(transition, transform 800ms cubic-bezier(0.000, 1.455, 1.000, 1.650), true) ;
+      @include prefix-experimental(transform, rotateY(360deg)) ;
+    }
+    &.done {
+
+    }
+  }
+
+  .close {
+    display: none ;
+
+  }
+}
+#menu-button {
+  position: absolute ;
+  color: black ;
+  font-weight: bold ;
+  width: 58px;
+  height: 28px ;
+  z-index: 1 ;
+  top: 250px ;
+  left: 0 ;
+  @include prefix-experimental(transform, rotate(90deg) ) ;
+  box-shadow:3px -2px 10px grey ;
+  text-transform: uppercase;
+  background-color: lightgrey ;
+  padding: 3px ;
+  border: 2px solid black ;
+
+  @include prefix-experimental(transition, box-shadow .1s linear, width .1s linear, height .1s linear) ;
+  @include prefix-experimental(touch-callout, none) ;
+  @include prefix-experimental(user-select, none) ;
+
+  -webkit-transition: -webkit-transform 500ms cubic-bezier(0.390, -0.600, 1.000, -0.600), left 500ms cubic-bezier(0.270, 0.875, 0.575, 0.870) ;
+
+  //@include prefix-experimental(transition, transform 3s cubic-bezier(0.390, -0.600, 1.000, -0.600), true);
+  //@include prefix-experimental(transition, left 3s cubic-bezier(0.270, 0.875, 0.575, 0.870)) ;
+
+  &.step1 {
+      left: -70px ;
+      @include prefix-experimental(transform, scale(1.2) rotate(90deg)) ;
+  }
+  &.step2 {
+    z-index: 11 ;
+    left: -18px ;
+  }
+}
+#menu-button:active {
+  box-shadow: 2px 1px 5px grey ;
+}

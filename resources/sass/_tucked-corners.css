@@ -1,0 +1,41 @@
+/* Example:
+ *   @include experimental(tap-highlight-color, rgba(0,0,0,0), false) ;
+ *  -->
+ *  	tap-highlight-color, rgba(0,0,0,0) ;
+ *  	-webkit-tap-highlight-color, rgba(0,0,0,0) ;
+ *  	-ms-tap-highlight-color, rgba(0,0,0,0) ;
+ */
+/* tucked corners */
+.corners {
+  background: white;
+  height: 88%;
+  margin: 10px auto;
+  min-width: 1024px;
+  position: relative;
+  width: 80%;
+  box-shadow: 0 1px 7px rgba(0, 0, 0, 0.2); }
+  .corners:after, .corners:before {
+    z-index: 20;
+    background: #e6e6e6;
+    content: '';
+    height: 50px;
+    position: absolute;
+    top: -25px;
+    width: 100px;
+    box-shadow: 0 5px 10px -7px rgba(0, 0, 0, 0.5); }
+  .corners:after {
+    left: -50px;
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    -khtml-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg); }
+  .corners:before {
+    right: -50px;
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    -khtml-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg); }

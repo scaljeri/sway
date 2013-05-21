@@ -1,0 +1,31 @@
+@import "mixins" ;
+
+/* tucked corners */
+.corners {
+  background: white;
+  height: 88%;
+  margin: 10px auto;
+  //padding:30px ;
+  min-width: 1024px;
+  position: relative;
+  width: 80%;
+  box-shadow: 0 1px 7px hsla(0,0%,0%,.2);
+  &:after, &:before {
+    z-index: 20 ;
+    background: #e6e6e6;
+    content: '';
+    height: 50px;
+    position: absolute;
+    top: -25px;
+    width: 100px;
+    box-shadow: 0 5px 10px -7px hsla(0,0%,0%,.5);
+  }
+  &:after {
+    left: -50px;
+    @include prefix-experimental(transform, rotate(-45deg)) ;
+  }
+  &:before {
+    right: -50px;
+    @include prefix-experimental(transform, rotate(45deg)) ;
+  }
+}
