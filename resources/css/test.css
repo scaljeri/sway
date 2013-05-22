@@ -16,14 +16,15 @@
 /* line 4, ../sass/_tucked-corners.scss */
 .corners {
   background: white;
-  height: 88%;
+  height: 100%;
   margin: 10px auto;
+  margin-bottom: 0;
   min-width: 1024px;
   position: relative;
   width: 80%;
   box-shadow: 0 1px 7px rgba(0, 0, 0, 0.2);
 }
-/* line 13, ../sass/_tucked-corners.scss */
+/* line 14, ../sass/_tucked-corners.scss */
 .corners:after, .corners:before {
   z-index: 20;
   background: #e6e6e6;
@@ -34,7 +35,7 @@
   width: 100px;
   box-shadow: 0 5px 10px -7px rgba(0, 0, 0, 0.5);
 }
-/* line 23, ../sass/_tucked-corners.scss */
+/* line 24, ../sass/_tucked-corners.scss */
 .corners:after {
   left: -50px;
   transform: rotate(-45deg);
@@ -44,7 +45,7 @@
   -ms-transform: rotate(-45deg);
   -o-transform: rotate(-45deg);
 }
-/* line 27, ../sass/_tucked-corners.scss */
+/* line 28, ../sass/_tucked-corners.scss */
 .corners:before {
   right: -50px;
   transform: rotate(45deg);
@@ -130,12 +131,12 @@
 }
 /* line 29, ../sass/menu.scss */
 #menu .menu-item.show-item-step1 {
-  transition: transform 400ms linear;
-  -webkit-transition: -webkit-transform 400ms linear;
-  -khtml-transition: -khtml-transform 400ms linear;
-  -moz-transition: -moz-transform 400ms linear;
-  -ms-transition: -ms-transform 400ms linear;
-  -o-transition: -o-transform 400ms linear;
+  transition: transform 300ms linear;
+  -webkit-transition: -webkit-transform 300ms linear;
+  -khtml-transition: -khtml-transform 300ms linear;
+  -moz-transition: -moz-transform 300ms linear;
+  -ms-transition: -ms-transform 300ms linear;
+  -o-transition: -o-transform 300ms linear;
   transform: rotateY(180deg);
   -webkit-transform: rotateY(180deg);
   -khtml-transform: rotateY(180deg);
@@ -145,12 +146,12 @@
 }
 /* line 33, ../sass/menu.scss */
 #menu .menu-item.show-item-step2 {
-  transition: transform 800ms cubic-bezier(0, 1.455, 1, 1.65);
-  -webkit-transition: -webkit-transform 800ms cubic-bezier(0, 1.455, 1, 1.65);
-  -khtml-transition: -khtml-transform 800ms cubic-bezier(0, 1.455, 1, 1.65);
-  -moz-transition: -moz-transform 800ms cubic-bezier(0, 1.455, 1, 1.65);
-  -ms-transition: -ms-transform 800ms cubic-bezier(0, 1.455, 1, 1.65);
-  -o-transition: -o-transform 800ms cubic-bezier(0, 1.455, 1, 1.65);
+  transition: transform 500ms cubic-bezier(0, 1.455, 1, 1.65);
+  -webkit-transition: -webkit-transform 500ms cubic-bezier(0, 1.455, 1, 1.65);
+  -khtml-transition: -khtml-transform 500ms cubic-bezier(0, 1.455, 1, 1.65);
+  -moz-transition: -moz-transform 500ms cubic-bezier(0, 1.455, 1, 1.65);
+  -ms-transition: -ms-transform 500ms cubic-bezier(0, 1.455, 1, 1.65);
+  -o-transition: -o-transform 500ms cubic-bezier(0, 1.455, 1, 1.65);
   transform: rotateY(360deg);
   -webkit-transform: rotateY(360deg);
   -khtml-transform: rotateY(360deg);
@@ -239,9 +240,15 @@ h1, h2, h3 {
 body, html {
   background: #e6e6e6;
   height: 100%;
+overflow: hidden ;
 }
 
 /* line 15, ../sass/test.scss */
+body {
+  padding-top: 40px;
+}
+
+/* line 19, ../sass/test.scss */
 iframe {
   position: absolute;
   top: 100px;
@@ -249,31 +256,31 @@ iframe {
   height: 0px;
   width: 96%;
   border: none;
-  background-color: wh;
+  background-color: white;
 }
 
-/* line 25, ../sass/test.scss */
+/* line 29, ../sass/test.scss */
 #content {
   background: white;
   position: relative;
-  height: 100%;
+  height: 90%;
   widht: 100%;
   z-index: 1;
   padding: 30px;
   z-index: 10;
 }
 
-/* line 35, ../sass/test.scss */
+/* line 39, ../sass/test.scss */
 #content-title {
   margin-left: 20px;
 }
 
-/* line 39, ../sass/test.scss */
+/* line 43, ../sass/test.scss */
 .to-front {
   z-index: 100;
 }
 
-/* line 42, ../sass/test.scss */
+/* line 46, ../sass/test.scss */
 .to-back {
   z-index: 0;
 }
