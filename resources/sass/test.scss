@@ -12,6 +12,10 @@ body, html {
   height: 100% ;
 }
 
+body {
+  padding-top:40px ;
+}
+
 iframe {
   position: absolute ;
   top: 100px ;
@@ -25,7 +29,7 @@ iframe {
 #content {
   background: white ;
   position: relative ;
-  height: 100% ;
+  height: 90% ;
   widht: 100% ;
   z-index: 1 ;
   padding: 30px ;

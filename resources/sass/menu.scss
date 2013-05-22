@@ -27,11 +27,11 @@
       width: 250px ;
       -webkit-transform-origin: top left 0;
     &.show-item-step1 {
-        @include prefix-experimental(transition, transform 400ms linear, true) ;
+        @include prefix-experimental(transition, transform 300ms linear, true) ;
         @include prefix-experimental(transform, rotateY(180deg)) ;
     }
     &.show-item-step2 {
-      @include prefix-experimental(transition, transform 800ms cubic-bezier(0.000, 1.455, 1.000, 1.650), true) ;
+      @include prefix-experimental(transition, transform 500ms cubic-bezier(0.000, 1.455, 1.000, 1.650), true) ;
       @include prefix-experimental(transform, rotateY(360deg)) ;
     }
     &.done {
