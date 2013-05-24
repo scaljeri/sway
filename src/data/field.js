@@ -2,7 +2,7 @@ window.Sway = window.Sway || {}; // make sure it exists
 window.Sway.data = window.Sway.data || {};
 
 (function (ns) {
-    "use strict" ;
+    "use strict";
 
     /**
      * A Field represents a single value of an {{#crossLink "Sway.data.ActiveRecord"}}{{/crossLink}} model.
@@ -35,77 +35,85 @@ window.Sway.data = window.Sway.data || {};
      * into its original form. Think of, zipping and unzipping or encrypting and decrypting
      *      @param {Array}   [options.validators] list of validation functions
      */
-     var Field = function (key, options) {
-            if ( !options ) {
-                options = {};
-            }
-            for ( var i in options ) {
-                this[i] = options[i] ;
-            }
-            this.key = key ;
-            this.type = options.type||'text' ;  // define default type
-            return Object.freeze(this) ;
-        } ;
+    var Field = function (key, options) {
+        if (!options) {
+            options = {};
+        }
+        for (var i in options) {
+            this[i] = options[i];
+        }
+        this.key = key;
+        this.type = options.type || 'text';  // define default type
+        this.isSearchable = true ;
+
+        return Object.freeze(this);
+    };
+
+    /* this function is called by ActiveRecord, which will also be the context/this */
+    function set(key, value) {
+        this[key] = value ;
+    }
 
     Field.prototype = {
+
+        set: function(value) {
+
+        },
         /**
          * @method transform
          * @param {*} value value to be transformed
          * @param {Function} callback function called with the transformed data
          */
-        transform: function(value, callback) {
-            if ( this.transformers ) {
-                transform(0, this.transformers, callback, value) ;
+        transform: function (value, callback) {
+            if (this.transformers) {
+                transform(0, this.transformers, callback, value);
             }
             else {
-                callback(value) ;
+                callback(value);
             }
         }
         /**
          * @method validate
          * @param {*} value value to be validated
          * @return {Boolean}
-         */
-        , validate: function(value) {
+         */, validate: function (value) {
             var i
-                , ok = true ;
+                , ok = true;
 
-            if ( this.validators ) {
-                for( i = 0; i < this.validators.length; i++ ) {
-                    if ( !this.validators[i].validate(value) ) {
-                        ok = false ;
-                        break ;
+            if (this.validators) {
+                for (i = 0; i < this.validators.length; i++) {
+                    if (!this.validators[i].validate(value)) {
+                        ok = false;
+                        break;
                     }
                 }
             }
-            return ok ;
-        }
-
-        , isField: function() {
-            return true ;
+            return ok;
+        }, isField: function () {
+            return true;
         }
         /*
          * Returns the size of
          * @method size
          */
         /*
-        , getSize: function() {
-            return this.state === "uncompressed" ? encodeURI(this._inputStr).split(/%..|./).length - 1 : this._zippedBlob.size ;
-        }
-        */
-    } ;
+         , getSize: function() {
+         return this.state === "uncompressed" ? encodeURI(this._inputStr).split(/%..|./).length - 1 : this._zippedBlob.size ;
+         }
+         */
+    };
 
     function transform(index, transformers, callback, value) {
-        if ( transformers[index] ) {
-            transformers[index].transform(value, transform.bind(null, ++index, transformers,callback) ) ;
+        if (transformers[index]) {
+            transformers[index].transform(value, transform.bind(null, ++index, transformers, callback));
         }
         else {
-           callback(value) ;
+            callback(value);
         }
     }
 
-    ns.Field = Field ;
+    ns.Field = Field;
 
-})(window.Sway.data) ;
+})(window.Sway.data);
 
 

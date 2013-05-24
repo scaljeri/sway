@@ -329,13 +329,15 @@ window.Sway.data = window.Sway.data || {} ;
                     , writable: false
                 }) ;
 
-            for( var i in this.constructor.fields) {
-               (function(i){
+            var field, i ;
+            for( i in this.constructor.fields) {
+                field = this.constructor.fields[i] ;
+               (function(i, field){
                   Object.defineProperty(this, i, {
-                      set:  updateProperty.bind(this, i)
+                      set:  field.set.bind(this)
                       , get: getProperty.bind(this, i)
                   }) ;
-               }.bind(this))(i) ;
+               }.bind(this))(i, field) ;
             }
 
            return Object.preventExtensions(this) ;                               // make sure no properties can be added
@@ -344,10 +346,6 @@ window.Sway.data = window.Sway.data || {} ;
 
     function getProperty(key) {
         return this.__data[key] ;
-    }
-
-    function updateProperty(key, value) {
-        this.__data[key] = value ;
     }
 
     function appendStaticProperties(Model, storage, fields) {
@@ -364,7 +362,7 @@ window.Sway.data = window.Sway.data || {} ;
 
         for( i = 0; i < fields.length; i++ ) {
             Model.fields[fields[i].key] = fields[i] ;         // add field to fields object
-            if ( fields[i].isField() ) {
+            if ( fields[i].isSearchable ) {
                 createFindByXXX(Model, fields[i]) ;
             }
             else {  // do something with associations

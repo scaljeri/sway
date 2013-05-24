@@ -34,8 +34,12 @@
       @include prefix-experimental(transition, transform 500ms cubic-bezier(0.000, 1.455, 1.000, 1.650), true) ;
       @include prefix-experimental(transform, rotateY(360deg)) ;
     }
-    &.done {
-
+    &.show-item-step2:hover {
+      @include prefix-experimental(transform, rotateY(350deg)) ;
+    }
+    &.show-item-step2:active {
+      @include prefix-experimental(transform, rotateY(370deg)) ;
+      @include prefix-experimental(transition, transform 100ms linear, true) ;
     }
   }
 

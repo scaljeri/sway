@@ -1,8 +1,8 @@
 // Create the namespace -> JS load order independent
-window.Sway = window.Sway || {} ;
-window.Sway.data = window.Sway.data || {} ;
+window.Sway = window.Sway || {};
+window.Sway.data = window.Sway.data || {};
 
-(function(ns){
+(function (ns) {
     /**
      */
     /*
@@ -69,20 +69,44 @@ window.Sway.data = window.Sway.data || {} ;
      *          @param {String} [options.through] specifies a join model. Only available for <tt>HAS\_ONE</tt> and <tt>HAS\_MANY</tt> associations
      *          @param {String} [options.friendlyName] description of the field
      */
-     var Relation = function( key, type, model, options) {
-            this.key = key ;
-            this.type = type ;
-            this.model = model ;
-
-            // TODO process options
-        } ;
-
-
-    Relation.prototype = {
-        isField: function() {
-            return false ;
+    var Relation = function (key, type, model, options) {
+        if ( !options ) {
+            options = {} ;
         }
-    } ;
+        this.key = key;
+        this.type = type;
+        this.model = model;
+        this.isSearchable = false ;
 
-    ns.Relation = Relation ;
-})(window.Sway.data) ;
+        switch (type) {
+            case 'belongs_to' :
+                this.set = setBelongsTo ;
+                break ;
+            case 'has_one':
+                this.set = options.through ? setHasOneThrough : setHasOne ;
+                break ;
+            case 'has_many':
+                this.set = options.through ? setHasManyThrough : setHasMany ;
+                break;
+            case 'has_and_belongs_to_many':
+                this.set = setHasAndBelongsToMany;
+                break;
+            default:
+                this.set = function(){ throw("Associtation " + type  + " is not supported");};
+        }
+
+        return Object.freeze(this);
+    };
+
+    Relation.prototype = {} ;
+
+    function setBelongsTo(value) {
+    }
+    function setHasOne(value){}
+    function setHasOneThrough(value){}
+    function setHasMany(value) {}
+    function setHasManyThrough(value) {}
+    function setHasAndBelongsToMany(value) {}
+
+    ns.Relation = Relation;
+})(window.Sway.data);
