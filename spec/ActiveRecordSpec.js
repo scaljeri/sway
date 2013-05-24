@@ -130,6 +130,7 @@ window.describe("Sway.data.ActiveRecord", function () {
         hospital.street = 'Cardiology & Heart Surgery';
         physician = new Physician({ name: 'John'});
         physician.hospitals = hospital;
+        debugger ;
         patient = new Patient({ name: 'Sue', address: address, account: account, accountHistory: accountHistory });
         patient1 = new Patient({ name: 'Alexia', address: address1, account: account1, accountHistory: accountHistory1, appointment: appointment1 });
         physician.appointments = appointment;                                   // should link a patient

@@ -80,16 +80,16 @@ window.Sway.data = window.Sway.data || {};
 
         switch (type) {
             case 'belongs_to' :
-                this.set = setBelongsTo ;
+                this.set = setBelongsTo.bind(this) ;        // set the context
                 break ;
             case 'has_one':
-                this.set = options.through ? setHasOneThrough : setHasOne ;
+                this.set = options.through ? setHasOneThrough.bind(this) : setHasOne.bind(this) ;
                 break ;
             case 'has_many':
-                this.set = options.through ? setHasManyThrough : setHasMany ;
+                this.set = options.through ? setHasManyThrough.bind(this) : setHasMany.bind(this) ;
                 break;
             case 'has_and_belongs_to_many':
-                this.set = setHasAndBelongsToMany;
+                this.set = setHasAndBelongsToMany.bind(this);
                 break;
             default:
                 this.set = function(){ throw("Associtation " + type  + " is not supported");};
@@ -100,13 +100,14 @@ window.Sway.data = window.Sway.data || {};
 
     Relation.prototype = {} ;
 
-    function setBelongsTo(value) {
+    function setBelongsTo(data, value) {
     }
-    function setHasOne(value){}
-    function setHasOneThrough(value){}
-    function setHasMany(value) {}
-    function setHasManyThrough(value) {}
-    function setHasAndBelongsToMany(value) {}
+    function setHasOne(data, value){
+    }
+    function setHasOneThrough(data, value){}
+    function setHasMany(data, value) {}
+    function setHasManyThrough(data, value) {}
+    function setHasAndBelongsToMany(data, value) {}
 
     ns.Relation = Relation;
 })(window.Sway.data);
