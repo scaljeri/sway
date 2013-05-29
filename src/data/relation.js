@@ -80,7 +80,7 @@ window.Sway.data = window.Sway.data || {};
 
         switch (type) {
             case 'belongs_to' :
-                this.set = setBelongsTo.bind(this) ;        // set the context
+                this.set = setBelongsTo.bind(this) ;        // force context === this
                 break ;
             case 'has_one':
                 this.set = options.through ? setHasOneThrough.bind(this) : setHasOne.bind(this) ;

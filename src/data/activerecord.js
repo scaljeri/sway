@@ -334,7 +334,7 @@ window.Sway.data = window.Sway.data || {} ;
                 field = this.constructor.fields[i] ;
                (function(i, field){
                   Object.defineProperty(this, i, {
-                      set:  field.set.bind(null, this.__data)
+                      set:  field.set.bind(null, this.__data)                   // set is handled by the field itself
                       , get: getProperty.bind(this, i)
                   }) ;
                   field.set(data[field.key]) ;
