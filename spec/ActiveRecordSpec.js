@@ -116,11 +116,14 @@ window.describe("Sway.data.ActiveRecord", function () {
         /*
          Below all possible relations are created. Also, the order in which they are established differ
          */
-        /*
+
         account = new Account({ name: 'Foo Account' });                       // create an account without the belongs_to association
         account1 = new Account({ name: 'Bar Account' });                      // create an account without the belongs_to association
         accountHistory = new AccountHistory({ message: 'log message'});
         accountHistory1 = new AccountHistory({ message: 'log message'});
+        accountHistory.account = account ;
+        account1.accountHistory = accountHistory1 ;
+
         address = new Address({ street: 'Avenue Princess Grace' });
         address1 = new Address({ street: 'Severn Road' });
         appointmentDate = new Date();
@@ -131,13 +134,12 @@ window.describe("Sway.data.ActiveRecord", function () {
         hospital.street = 'Cardiology & Heart Surgery';
         physician = new Physician({ name: 'John'});
         physician.hospitals = hospital;
-        debugger ;
         patient = new Patient({ name: 'Sue', address: address, account: account, accountHistory: accountHistory });
         patient1 = new Patient({ name: 'Alexia', address: address1, account: account1, accountHistory: accountHistory1, appointment: appointment1 });
         physician.appointments = appointment;                                   // should link a patient
         patient.appointments = appointment;
         physician.patients = patient1;                                          // should link appointment to physician
-        */
+
 
     });
 
@@ -155,14 +157,17 @@ window.describe("Sway.data.ActiveRecord", function () {
     });
 
     it("should create a record", function () {
-        var p = new Physician( { name: 'John'} ) ;
-        expect(p).toBeDefined() ;
-        expect(p).toBeInstanceof(Physician) ;
-        expect(p.name).toEqual('John') ;
+        expect(physician).toBeDefined() ;
+        expect(physician).toBeInstanceof(Physician) ;
+        expect(physician.name).toEqual('John') ;
     });
 
     describe("should support HAS_ONE/BELONGS_TO association", function () {
         it("and be able to create one", function () {
+            expect(accountHistory.account).toBe(account) ;
+            expect(account.accountHistory).toBe(accountHistory) ;
+            expect(accountHistory1.account).toBe(account1) ;
+            expect(account1.accountHistory).toBe(accountHistory1) ;
         });
 
         it("and be able to save one", function () {

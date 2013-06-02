@@ -3,8 +3,6 @@ window.Sway = window.Sway || {};
 window.Sway.data = window.Sway.data || {};
 
 (function (ns) {
-    /**
-     */
     /*
      belongs_to ( === foreign key ) (http://stackoverflow.com/questions/3808926/whats-the-difference-between-belongs-to-and-has-one)
      has_one
@@ -14,7 +12,7 @@ window.Sway.data = window.Sway.data || {};
      has_and_belongs_to_many    // simple linker table (http://stackoverflow.com/questions/2780798/has-and-belongs-to-many-vs-has-many-through)
      */
 
-    /**
+    /*
      * Sway.data.Relation defines the association between two {{#crossLink "Sway.data.Model"}}{{/crossLink}}s. It is based on the Ruby on Rails (RoR)
      * <a href="http://guides.rubyonrails.org/association_basics.html">ActiveRecord Associations</a>.<br>
      * The following associations are available:

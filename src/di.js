@@ -8,7 +8,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
      * As an example, register all contracts during the application initialization
      *
      *      var di = new Sway.DI() ;
-     *      di.register( 'User'                                                                                 // contract name
+     *      di.register( 'UserModel'                                                                                 // contract name
      *                   , Sway.data.ActiveRecord                                                               // class definiton
      *                   , [ 'User', 'webSql', ['userNameField', 'passwordField', 'accountInfo'], 'websql' ]    // constructor parameters
      *                   , { singleton: TRUE }                                                                  // configuration: create a singleton
@@ -26,7 +26,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
      *                   , { singleton: TRUE}
      *                 )
      *        .register( 'userRecord'
-     *                   , di.register('User')  // create the User model!!
+     *                   , di.getInstance('UserModel')  // create the User model!!
      *                 )
      *        ...
      *
