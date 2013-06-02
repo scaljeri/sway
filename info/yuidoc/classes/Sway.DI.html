@@ -57,8 +57,6 @@
             
                 <li><a href="..&#x2F;classes/Sway.data.persistance.WebSqlResult.html">Sway.data.persistance.WebSqlResult</a></li>
             
-                <li><a href="..&#x2F;classes/Sway.data.Relation.html">Sway.data.Relation</a></li>
-            
                 <li><a href="..&#x2F;classes/Sway.DI.html">Sway.DI</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.EventHub.html">Sway.EventHub</a></li>
@@ -142,7 +140,7 @@ facilitating lazy initialization and loose coupling between classes.</p>
 <p>As an example, register all contracts during the application initialization</p>
 
 <pre class="code prettyprint"><code> var di = new Sway.DI() ;
- di.register( 'User'                                                                                 // contract name
+ di.register( 'UserModel'                                                                                 // contract name
               , Sway.data.ActiveRecord                                                               // class definiton
               , [ 'User', 'webSql', ['userNameField', 'passwordField', 'accountInfo'], 'websql' ]    // constructor parameters
               , { singleton: TRUE }                                                                  // configuration: create a singleton
@@ -160,7 +158,7 @@ facilitating lazy initialization and loose coupling between classes.</p>
               , { singleton: TRUE}
             )
    .register( 'userRecord'
-              , di.register('User')  // create the User model!!
+              , di.getInstance('UserModel')  // create the User model!!
             )
    ...
 </code></pre>

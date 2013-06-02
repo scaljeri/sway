@@ -11,8 +11,9 @@ window.Sway.data = window.Sway.data || {} ;
      */
     var models = {}
         /**
-         * Sway.data.ActiveRecord is the pattern used for this ORM implementation. This pattern encapsulates access
-         * to its resources, like a database or REST interface.<br>
+         * Sway.data.ActiveRecord is the pattern used for this ORM implementation and based on the Ruby on Rails (RoR)
+         * <a href="http://guides.rubyonrails.org/association_basics.html">ActiveRecord Associations</a>. This pattern
+         * encapsulates access to its resources, like a database or REST interface.<br>
          * This class is a helper class, it creates new Model classes of type {{#crossLink "Sway.data.Model"}}{{/crossLink}}
          * and serves as a blue print for all models. It gives them all they need to perform CRUD-like tasks
          *
@@ -21,18 +22,18 @@ window.Sway.data = window.Sway.data || {} ;
          *                            new Field( {type: 'TEXT', key: 'username', friendlyName: 'User name'})
          *                          , new Field( {type: 'TEXT', key: 'password', friendlyName: 'Password'})
          *                          , new Field( {type: 'DATE', key: 'birthday', friendlyName: 'Birthday'})
-         *                          , new Relation( { key: 'posts', type: 'has_many', friendlyName: 'Posts', model: 'Post'})
+         *                          , new Field( { key: 'posts', type: 'has_many', friendlyName: 'Posts', model: 'Post'})
          *                      ]) ;
          *
          *      var PostModel = new ActiveRecord( 'Post', webSql, [
          *                            new Field( {type: 'Text', key: 'comment', friendlyName: 'Comment'})
-         *                            , new Relation( {type: 'BELONGS_TO', model: 'User'} )
+         *                            , new Field( {type: 'belongs_to', model: 'User'} )
          *                      ]) ;
          *
          *      var userRecord = new UserModel() ;
          *
-         * To avoid problems with Model associations, make sure all involved models are created before any usage. Furthermore, a model only needs to
-         * be defined only once, and can easily be obtained later as follows
+         * To avoid problems with Model associations, make sure all involved models are created before any usage. A defined model can be accessed
+         * as follows
          *
          *      var UserModel = ActiveRecord.get( 'User' ) ;
          *
@@ -51,7 +52,17 @@ window.Sway.data = window.Sway.data || {} ;
             models[modelName] = Model ;
 
             return Model ;
-        }
+        } ;
+    /**
+     * Returns a model class
+     * @method get
+     * @static
+     * @param {String} modelName name of the model
+     * @returns {Class} a model
+     */
+    ActiveRecord.get = function(modelName) {
+        return models[modelName] ;
+    } ;
 
 
     /* Define the Model class here */
@@ -127,7 +138,7 @@ window.Sway.data = window.Sway.data || {} ;
      *
      * @class Sway.data.Model
      */
-        , DEFAULTS = {
+     var DEFAULTS = {
                 /**
                  * a record can be in two states; NORMAL (default) or TRANSFORMED ...... TODO
                  *
@@ -284,9 +295,7 @@ window.Sway.data = window.Sway.data || {} ;
             }
         } ;
 
-    ActiveRecord.get = function(modelName) {
-       return models[modelName] ;
-    } ;
+
 
     /* Private helpers */
 
@@ -329,13 +338,16 @@ window.Sway.data = window.Sway.data || {} ;
                     , writable: false
                 }) ;
 
-            for( var i in this.constructor.fields) {
-               (function(i){
+            var field, i ;
+            for( i in this.constructor.fields) {
+                field = this.constructor.fields[i] ;
+               (function(i, field){
                   Object.defineProperty(this, i, {
-                      set:  updateProperty.bind(this, i)
+                      set:  field.set.bind(null, this.__data)                   // set is handled by the field itself
                       , get: getProperty.bind(this, i)
                   }) ;
-               }.bind(this))(i) ;
+                  field.set(data[field.key]) ;
+               }.bind(this))(i, field) ;
             }
 
            return Object.preventExtensions(this) ;                               // make sure no properties can be added
@@ -344,10 +356,6 @@ window.Sway.data = window.Sway.data || {} ;
 
     function getProperty(key) {
         return this.__data[key] ;
-    }
-
-    function updateProperty(key, value) {
-        this.__data[key] = value ;
     }
 
     function appendStaticProperties(Model, storage, fields) {
@@ -364,7 +372,7 @@ window.Sway.data = window.Sway.data || {} ;
 
         for( i = 0; i < fields.length; i++ ) {
             Model.fields[fields[i].key] = fields[i] ;         // add field to fields object
-            if ( fields[i].isField() ) {
+            if ( fields[i].isSearchable ) {
                 createFindByXXX(Model, fields[i]) ;
             }
             else {  // do something with associations

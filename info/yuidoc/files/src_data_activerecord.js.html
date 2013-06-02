@@ -57,8 +57,6 @@
             
                 <li><a href="..&#x2F;classes/Sway.data.persistance.WebSqlResult.html">Sway.data.persistance.WebSqlResult</a></li>
             
-                <li><a href="..&#x2F;classes/Sway.data.Relation.html">Sway.data.Relation</a></li>
-            
                 <li><a href="..&#x2F;classes/Sway.DI.html">Sway.DI</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.EventHub.html">Sway.EventHub</a></li>
@@ -133,8 +131,9 @@ window.Sway.data = window.Sway.data || {} ;
      *&#x2F;
     var models = {}
         &#x2F;**
-         * Sway.data.ActiveRecord is the pattern used for this ORM implementation. This pattern encapsulates access
-         * to its resources, like a database or REST interface.&lt;br&gt;
+         * Sway.data.ActiveRecord is the pattern used for this ORM implementation and based on the Ruby on Rails (RoR)
+         * &lt;a href=&quot;http:&#x2F;&#x2F;guides.rubyonrails.org&#x2F;association_basics.html&quot;&gt;ActiveRecord Associations&lt;&#x2F;a&gt;. This pattern
+         * encapsulates access to its resources, like a database or REST interface.&lt;br&gt;
          * This class is a helper class, it creates new Model classes of type {{#crossLink &quot;Sway.data.Model&quot;}}{{&#x2F;crossLink}}
          * and serves as a blue print for all models. It gives them all they need to perform CRUD-like tasks
          *
@@ -143,18 +142,18 @@ window.Sway.data = window.Sway.data || {} ;
          *                            new Field( {type: &#x27;TEXT&#x27;, key: &#x27;username&#x27;, friendlyName: &#x27;User name&#x27;})
          *                          , new Field( {type: &#x27;TEXT&#x27;, key: &#x27;password&#x27;, friendlyName: &#x27;Password&#x27;})
          *                          , new Field( {type: &#x27;DATE&#x27;, key: &#x27;birthday&#x27;, friendlyName: &#x27;Birthday&#x27;})
-         *                          , new Relation( { key: &#x27;posts&#x27;, type: &#x27;has_many&#x27;, friendlyName: &#x27;Posts&#x27;, model: &#x27;Post&#x27;})
+         *                          , new Field( { key: &#x27;posts&#x27;, type: &#x27;has_many&#x27;, friendlyName: &#x27;Posts&#x27;, model: &#x27;Post&#x27;})
          *                      ]) ;
          *
          *      var PostModel = new ActiveRecord( &#x27;Post&#x27;, webSql, [
          *                            new Field( {type: &#x27;Text&#x27;, key: &#x27;comment&#x27;, friendlyName: &#x27;Comment&#x27;})
-         *                            , new Relation( {type: &#x27;BELONGS_TO&#x27;, model: &#x27;User&#x27;} )
+         *                            , new Field( {type: &#x27;belongs_to&#x27;, model: &#x27;User&#x27;} )
          *                      ]) ;
          *
          *      var userRecord = new UserModel() ;
          *
-         * To avoid problems with Model associations, make sure all involved models are created before any usage. Furthermore, a model only needs to
-         * be defined only once, and can easily be obtained later as follows
+         * To avoid problems with Model associations, make sure all involved models are created before any usage. A defined model can be accessed
+         * as follows
          *
          *      var UserModel = ActiveRecord.get( &#x27;User&#x27; ) ;
          *
@@ -173,7 +172,17 @@ window.Sway.data = window.Sway.data || {} ;
             models[modelName] = Model ;
 
             return Model ;
-        }
+        } ;
+    &#x2F;**
+     * Returns a model class
+     * @method get
+     * @static
+     * @param {String} modelName name of the model
+     * @returns {Class} a model
+     *&#x2F;
+    ActiveRecord.get = function(modelName) {
+        return models[modelName] ;
+    } ;
 
 
     &#x2F;* Define the Model class here *&#x2F;
@@ -249,7 +258,7 @@ window.Sway.data = window.Sway.data || {} ;
      *
      * @class Sway.data.Model
      *&#x2F;
-        , DEFAULTS = {
+     var DEFAULTS = {
                 &#x2F;**
                  * a record can be in two states; NORMAL (default) or TRANSFORMED ...... TODO
                  *
@@ -406,9 +415,7 @@ window.Sway.data = window.Sway.data || {} ;
             }
         } ;
 
-    ActiveRecord.get = function(modelName) {
-       return models[modelName] ;
-    } ;
+
 
     &#x2F;* Private helpers *&#x2F;
 
@@ -451,13 +458,16 @@ window.Sway.data = window.Sway.data || {} ;
                     , writable: false
                 }) ;
 
-            for( var i in this.constructor.fields) {
-               (function(i){
+            var field, i ;
+            for( i in this.constructor.fields) {
+                field = this.constructor.fields[i] ;
+               (function(i, field){
                   Object.defineProperty(this, i, {
-                      set:  updateProperty.bind(this, i)
+                      set:  field.set.bind(null, this.__data)                   &#x2F;&#x2F; set is handled by the field itself
                       , get: getProperty.bind(this, i)
                   }) ;
-               }.bind(this))(i) ;
+                  field.set(data[field.key]) ;
+               }.bind(this))(i, field) ;
             }
 
            return Object.preventExtensions(this) ;                               &#x2F;&#x2F; make sure no properties can be added
@@ -466,10 +476,6 @@ window.Sway.data = window.Sway.data || {} ;
 
     function getProperty(key) {
         return this.__data[key] ;
-    }
-
-    function updateProperty(key, value) {
-        this.__data[key] = value ;
     }
 
     function appendStaticProperties(Model, storage, fields) {
@@ -486,7 +492,7 @@ window.Sway.data = window.Sway.data || {} ;
 
         for( i = 0; i &lt; fields.length; i++ ) {
             Model.fields[fields[i].key] = fields[i] ;         &#x2F;&#x2F; add field to fields object
-            if ( fields[i].isField() ) {
+            if ( fields[i].isSearchable ) {
                 createFindByXXX(Model, fields[i]) ;
             }
             else {  &#x2F;&#x2F; do something with associations

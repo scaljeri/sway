@@ -8,7 +8,6 @@ YUI.add("yuidoc-meta", function(Y) {
         "Sway.data.ActiveRecord",
         "Sway.data.Field",
         "Sway.data.Model",
-        "Sway.data.Relation",
         "Sway.data.persistance.IndexedDbResult",
         "Sway.data.persistance.WebSql",
         "Sway.data.persistance.WebSqlResult",

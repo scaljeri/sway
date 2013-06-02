@@ -57,8 +57,6 @@
             
                 <li><a href="..&#x2F;classes/Sway.data.persistance.WebSqlResult.html">Sway.data.persistance.WebSqlResult</a></li>
             
-                <li><a href="..&#x2F;classes/Sway.data.Relation.html">Sway.data.Relation</a></li>
-            
                 <li><a href="..&#x2F;classes/Sway.DI.html">Sway.DI</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.EventHub.html">Sway.EventHub</a></li>
@@ -130,7 +128,7 @@ window.Sway = window.Sway || {} ; &#x2F;&#x2F; make sure it exists
      * As an example, register all contracts during the application initialization
      *
      *      var di = new Sway.DI() ;
-     *      di.register( &#x27;User&#x27;                                                                                 &#x2F;&#x2F; contract name
+     *      di.register( &#x27;UserModel&#x27;                                                                                 &#x2F;&#x2F; contract name
      *                   , Sway.data.ActiveRecord                                                               &#x2F;&#x2F; class definiton
      *                   , [ &#x27;User&#x27;, &#x27;webSql&#x27;, [&#x27;userNameField&#x27;, &#x27;passwordField&#x27;, &#x27;accountInfo&#x27;], &#x27;websql&#x27; ]    &#x2F;&#x2F; constructor parameters
      *                   , { singleton: TRUE }                                                                  &#x2F;&#x2F; configuration: create a singleton
@@ -148,7 +146,7 @@ window.Sway = window.Sway || {} ; &#x2F;&#x2F; make sure it exists
      *                   , { singleton: TRUE}
      *                 )
      *        .register( &#x27;userRecord&#x27;
-     *                   , di.register(&#x27;User&#x27;)  &#x2F;&#x2F; create the User model!!
+     *                   , di.getInstance(&#x27;UserModel&#x27;)  &#x2F;&#x2F; create the User model!!
      *                 )
      *        ...
      *

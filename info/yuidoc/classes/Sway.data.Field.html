@@ -57,8 +57,6 @@
             
                 <li><a href="..&#x2F;classes/Sway.data.persistance.WebSqlResult.html">Sway.data.persistance.WebSqlResult</a></li>
             
-                <li><a href="..&#x2F;classes/Sway.data.Relation.html">Sway.data.Relation</a></li>
-            
                 <li><a href="..&#x2F;classes/Sway.DI.html">Sway.DI</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.EventHub.html">Sway.EventHub</a></li>
@@ -136,20 +134,71 @@
 
 
 <div class="box intro">
-    <p>A Field represents a single value of an <a href="../classes/Sway.data.ActiveRecord.html" class="crosslink">Sway.data.ActiveRecord</a> model.</p>
+    <p>A Field represents a single value of an <a href="../classes/Sway.data.ActiveRecord.html" class="crosslink">Sway.data.ActiveRecord</a> model.
+It can represent a simple field definition, or an association; an relation between two models.</p>
 
 <pre class="code prettyprint"><code>var username   = new Field('username', { friendlyName: 'User name' })
     , password = new Field('password', { type: 'password', friendlyName: 'Password' })
-    , address  = new Field('address',  { FK: {model: Sway.data.Address}, friendlyName: 'Address' }) ;
+    , address  = new Field('address',  { key: 'address', type: 'belongs_to', model: Sway.data.Address, friendlyName: 'Address' }) ;
 </code></pre>
 
-<p>Or if a field holds data which should be encrypted and compressed before persisted</p>
+<p>Furthermore, a Field can also hold information about data transformation, which is used by the persistence layer</p>
 
 <pre class="code prettyprint"><code>var accountInfo = new Field( 'accountInfo', { type: 'BLOB', friendLyName: 'Account info', transformers: [encryptFilter, compressFilter] }) ;
 </code></pre>
 
-<p>The constructor's <tt>options</tt> parameter has many sub-options, however, it depends on the storage engine used which are used or ignored.
-Checkout the storage engine classes to find out which parameter are user/required.</p>
+<h3>Associations</h3>
+
+<p>This Active Record implementation is based on the Ruby on Rails (RoR) <a href="http://guides.rubyonrails.org/association_basics.html">ActiveRecord Associations</a>.<br>
+The following associations are available:</p>
+
+<h4>BELONGS_TO and HAS_ONE (THROUGH) Association</h4>
+
+<p>Assume an 'Account' <tt>belongs_to</tt> a 'Supplier'. Or the other way around, a Supplier <tt>has_one</tt> Account.
+Furthermore, if an 'Account' and 'Supplier' both <tt>has_one</tt> 'AccountHistory', it could look like this</p>
+
+<pre class="code prettyprint"><code> var Account = new Sway.data.ActiveRecord( 'Account', storage, [
+       new Sway.data.Relation({ key: 'supplier', type: 'belongs_to', model: 'Supplier' }       // creates a field 'supplier_id'
+       new Sway.data.Relation({ type: 'has_one', model: 'AccountHistory' }                     // AccountHistory should have a account_id field
+       .....
+ ]) ;
+
+ var Supplier = new Sway.data.ActiveRecord( 'Supplier', storage, [
+      new Sway.data.Relation({ key: 'account', type: 'has_one', model: 'Account' })
+      new Sway.data.Relation({ key: 'accountHistory', type: 'has_one', through: 'AccountHistory', model: 'Account' })
+      ....
+ ]) ;
+
+ var AccountHistory = new Sway.data.ActiveRecord( 'AccountHistory', storage, [
+     new Sway.datat.Relation({ type: 'belongs_to', model: 'Account' })                          // creates an 'account_id' field
+     ...
+ ]) ;
+
+ ...
+ supplierRecord.accountHistory = someAccountHistories
+</code></pre>
+
+<p>An <tt>belongs_to</tt> field is always required!!</p>
+
+<h4>HAS_MANY (THROUGH)</h4>
+
+<p>This association define a one-to-many or a many-to-many relationship.</p>
+
+<pre class="code prettyprint"><code> new Sway.data.Relation({ key: 'orders', type: 'has_many', model: 'Order' }) ;            // one-to-many
+ new Sway.data.Relation({ key: 'patients', type: 'has_many', through: 'Appointment', model: 'Patient' }) ;  // many-to-many
+</code></pre>
+
+<h4>HAS_AND_BELONGS_TO_MANY</h4>
+
+<p>This relation is identical to <tt>HAS_MANY THROUGH</tt> (many-to-many), except it doesn't have a third model</p>
+
+<pre class="code prettyprint"><code> new Sway.data.Relation({ key: 'assemblies', type: 'has_and_belongs_to_many', model: 'Assembly' })
+</code></pre>
+
+<p>And the association in the other moddel look like</p>
+
+<pre class="code prettyprint"><code> new Sway.data.Relation({ key: 'parts', type: 'has_and_belongs_to_many', model: 'Part' })
+</code></pre>
 </div>
 
 
@@ -262,7 +311,35 @@ Checkout the storage engine classes to find out which parameter are user/require
                                 
 
                                 <div class="param-description">
-                                    <p>type of the field</p>
+                                    <p>type of the field or association</p>
+                                </div>
+
+                                
+                            </li>
+                            
+                            <li class="param">
+                                
+                                    <code class="param-name optional">[model]</code>
+                                    <span class="type">String</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+                                
+
+                                <div class="param-description">
+                                    <p>referenced model</p>
+                                </div>
+
+                                
+                            </li>
+                            
+                            <li class="param">
+                                
+                                    <code class="param-name optional">[through]</code>
+                                    <span class="type">String</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+                                
+
+                                <div class="param-description">
+                                    <p>specifies a join model. Only available for <tt>HAS_ONE</tt> and <tt>HAS_MANY</tt> associations</p>
                                 </div>
 
                                 
@@ -318,7 +395,7 @@ Checkout the storage engine classes to find out which parameter are user/require
                                 
 
                                 <div class="param-description">
-                                    
+                                    <p>put an index on the field</p>
                                 </div>
 
                                 
@@ -434,14 +511,14 @@ into its original form. Think of, zipping and unzipping or encrypting and decryp
                     <ul class="index-list methods">
                         
                             <li class="index-item method">
-                                <a href="#method_transform">transform</a>
+                                <a href="#method_size">size</a>
 
                                 
                                 
                             </li>
                         
                             <li class="index-item method">
-                                <a href="#method_validate">validate</a>
+                                <a href="#method_transform">transform</a>
 
                                 
                                 
@@ -461,6 +538,129 @@ into its original form. Think of, zipping and unzipping or encrypting and decryp
         
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
+
+                
+                    <div id="method_size" class="method item">
+    <h3 class="name"><code>size</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>value</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">Boolean</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;src_data_field.js.html#l121"><code>src&#x2F;data&#x2F;field.js:121</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">value</code>
+                        <span class="type"></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>value to be validated</p>
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">Boolean</span>:
+                    
+                    /, validate: function (value) {
+           var i
+               , ok = true;
+
+<pre><code>       if (this.validators) {
+           for (i = 0; i &lt; this.validators.length; i++) {
+               if (!this.validators[i].validate(value)) {
+                   ok = false;
+                   break;
+               }
+           }
+       }
+       return ok;
+   }, isField: function () {
+       return true;
+   }
+   /*
+</code></pre>
+
+Returns the size of
+                
+            </div>
+        </div>
+    
+
+    
+</div>
 
                 
                     <div id="method_transform" class="method item">
@@ -511,7 +711,7 @@ into its original form. Think of, zipping and unzipping or encrypting and decryp
             
         
         
-        <a href="..&#x2F;files&#x2F;src_data_field.js.html#l51"><code>src&#x2F;data&#x2F;field.js:51</code></a>
+        <a href="..&#x2F;files&#x2F;src_data_field.js.html#l108"><code>src&#x2F;data&#x2F;field.js:108</code></a>
         
         </p>
 
@@ -565,109 +765,6 @@ into its original form. Think of, zipping and unzipping or encrypting and decryp
         </div>
     
 
-    
-
-    
-</div>
-
-                
-                    <div id="method_validate" class="method item">
-    <h3 class="name"><code>validate</code></h3>
-
-    
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        <code>value</code>
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
-    
-
-    
-        <span class="returns-inline">
-            <span class="type">Boolean</span>
-        </span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="..&#x2F;files&#x2F;src_data_field.js.html#l64"><code>src&#x2F;data&#x2F;field.js:64</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-    
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-            
-                <li class="param">
-                    
-                        <code class="param-name">value</code>
-                        <span class="type"></span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>value to be validated</p>
-                    </div>
-
-                    
-                </li>
-            
-            </ul>
-        </div>
-    
-
-    
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                
-                    
-                        <span class="type">Boolean</span>:
-                    
-                
-            </div>
-        </div>
     
 
     

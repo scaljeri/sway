@@ -57,8 +57,6 @@
             
                 <li><a href="..&#x2F;classes/Sway.data.persistance.WebSqlResult.html">Sway.data.persistance.WebSqlResult</a></li>
             
-                <li><a href="..&#x2F;classes/Sway.data.Relation.html">Sway.data.Relation</a></li>
-            
                 <li><a href="..&#x2F;classes/Sway.DI.html">Sway.DI</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.EventHub.html">Sway.EventHub</a></li>
@@ -136,8 +134,9 @@
 
 
 <div class="box intro">
-    <p>Sway.data.ActiveRecord is the pattern used for this ORM implementation. This pattern encapsulates access
-to its resources, like a database or REST interface.<br>
+    <p>Sway.data.ActiveRecord is the pattern used for this ORM implementation and based on the Ruby on Rails (RoR)
+<a href="http://guides.rubyonrails.org/association_basics.html">ActiveRecord Associations</a>. This pattern
+encapsulates access to its resources, like a database or REST interface.<br>
 This class is a helper class, it creates new Model classes of type <a href="../classes/Sway.data.Model.html" class="crosslink">Sway.data.Model</a>
 and serves as a blue print for all models. It gives them all they need to perform CRUD-like tasks</p>
 
@@ -146,19 +145,19 @@ and serves as a blue print for all models. It gives them all they need to perfor
                        new Field( {type: 'TEXT', key: 'username', friendlyName: 'User name'})
                      , new Field( {type: 'TEXT', key: 'password', friendlyName: 'Password'})
                      , new Field( {type: 'DATE', key: 'birthday', friendlyName: 'Birthday'})
-                     , new Relation( { key: 'posts', type: 'has_many', friendlyName: 'Posts', model: 'Post'})
+                     , new Field( { key: 'posts', type: 'has_many', friendlyName: 'Posts', model: 'Post'})
                  ]) ;
 
  var PostModel = new ActiveRecord( 'Post', webSql, [
                        new Field( {type: 'Text', key: 'comment', friendlyName: 'Comment'})
-                       , new Relation( {type: 'BELONGS_TO', model: 'User'} )
+                       , new Field( {type: 'belongs_to', model: 'User'} )
                  ]) ;
 
  var userRecord = new UserModel() ;
 </code></pre>
 
-<p>To avoid problems with Model associations, make sure all involved models are created before any usage. Furthermore, a model only needs to
-be defined only once, and can easily be obtained later as follows</p>
+<p>To avoid problems with Model associations, make sure all involved models are created before any usage. A defined model can be accessed
+as follows</p>
 
 <pre class="code prettyprint"><code> var UserModel = ActiveRecord.get( 'User' ) ;
 </code></pre>
@@ -280,7 +279,7 @@ be defined only once, and can easily be obtained later as follows</p>
                     
 
                     <div class="param-description">
-                        <p>list of <a href="../classes/Sway.data.Field.html" class="crosslink">Sway.data.Field</a>s and <a href="../classes/Sway.data.Relation.html" class="crosslink">Sway.data.Relation</a>s</p>
+                        <p>list of <a href="../classes/Sway.data.Field.html" class="crosslink">Sway.data.Field</a>s and Sway.data.Relations</p>
                     </div>
 
                     
@@ -303,6 +302,8 @@ be defined only once, and can easily be obtained later as follows</p>
         <li class="api-class-tab index"><a href="#index">Index</a></li>
 
         
+            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
+        
         
         
         
@@ -313,6 +314,23 @@ be defined only once, and can easily be obtained later as follows</p>
             <h2 class="off-left">Item Index</h2>
 
             
+                <div class="index-section methods">
+                    <h3>Methods</h3>
+
+                    <ul class="index-list methods">
+                        
+                            <li class="index-item method">
+                                <a href="#method_get">get</a>
+
+                                
+                                    <span class="flag static">static</span>
+                                
+                                
+                            </li>
+                        
+                    </ul>
+                </div>
+            
 
             
 
@@ -321,6 +339,118 @@ be defined only once, and can easily be obtained later as follows</p>
             
         </div>
 
+        
+            <div id="methods" class="api-class-tabpanel">
+                <h2 class="off-left">Methods</h2>
+
+                
+                    <div id="method_get" class="method item">
+    <h3 class="name"><code>get</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>modelName</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">Class</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l56"><code>src&#x2F;data&#x2F;activerecord.js:56</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Returns a model class</p>
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">modelName</code>
+                        <span class="type">String</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>name of the model</p>
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">Class</span>:
+                    
+                    a model
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+            </div>
         
 
         

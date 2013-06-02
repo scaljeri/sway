@@ -1,10 +1,8 @@
 // Create the namespace -> JS load order independent
-window.Sway = window.Sway || {} ;
-window.Sway.data = window.Sway.data || {} ;
+window.Sway = window.Sway || {};
+window.Sway.data = window.Sway.data || {};
 
-(function(ns){
-    /**
-     */
+(function (ns) {
     /*
      belongs_to ( === foreign key ) (http://stackoverflow.com/questions/3808926/whats-the-difference-between-belongs-to-and-has-one)
      has_one
@@ -14,7 +12,7 @@ window.Sway.data = window.Sway.data || {} ;
      has_and_belongs_to_many    // simple linker table (http://stackoverflow.com/questions/2780798/has-and-belongs-to-many-vs-has-many-through)
      */
 
-    /**
+    /*
      * Sway.data.Relation defines the association between two {{#crossLink "Sway.data.Model"}}{{/crossLink}}s. It is based on the Ruby on Rails (RoR)
      * <a href="http://guides.rubyonrails.org/association_basics.html">ActiveRecord Associations</a>.<br>
      * The following associations are available:
@@ -69,20 +67,45 @@ window.Sway.data = window.Sway.data || {} ;
      *          @param {String} [options.through] specifies a join model. Only available for <tt>HAS\_ONE</tt> and <tt>HAS\_MANY</tt> associations
      *          @param {String} [options.friendlyName] description of the field
      */
-     var Relation = function( key, type, model, options) {
-            this.key = key ;
-            this.type = type ;
-            this.model = model ;
-
-            // TODO process options
-        } ;
-
-
-    Relation.prototype = {
-        isField: function() {
-            return false ;
+    var Relation = function (key, type, model, options) {
+        if ( !options ) {
+            options = {} ;
         }
-    } ;
+        this.key = key;
+        this.type = type;
+        this.model = model;
+        this.isSearchable = false ;
 
-    ns.Relation = Relation ;
-})(window.Sway.data) ;
+        switch (type) {
+            case 'belongs_to' :
+                this.set = setBelongsTo.bind(this) ;        // force context === this
+                break ;
+            case 'has_one':
+                this.set = options.through ? setHasOneThrough.bind(this) : setHasOne.bind(this) ;
+                break ;
+            case 'has_many':
+                this.set = options.through ? setHasManyThrough.bind(this) : setHasMany.bind(this) ;
+                break;
+            case 'has_and_belongs_to_many':
+                this.set = setHasAndBelongsToMany.bind(this);
+                break;
+            default:
+                this.set = function(){ throw("Associtation " + type  + " is not supported");};
+        }
+
+        return Object.freeze(this);
+    };
+
+    Relation.prototype = {} ;
+
+    function setBelongsTo(data, value) {
+    }
+    function setHasOne(data, value){
+    }
+    function setHasOneThrough(data, value){}
+    function setHasMany(data, value) {}
+    function setHasManyThrough(data, value) {}
+    function setHasAndBelongsToMany(data, value) {}
+
+    ns.Relation = Relation;
+})(window.Sway.data);
