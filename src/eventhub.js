@@ -14,7 +14,8 @@ window.Sway = window.Sway || {} ; // make sure it exists
          *     |        Event CAPTURING          |     |        Event BUBBLING           |
          *     -----------------------------------     -----------------------------------
          *
-         * The event model implemented in this class does both, going from <tt>bubbling</tt> to the execution of all callbacks in <tt>bar.foo</tt>, then back in <tt>capturing</tt> mode
+         * The event model implemented in this class does both, going from <tt>bubbling</tt> to the execution of all callbacks in <tt>bar.foo</tt>,
+         * then back in <tt>capturing</tt> mode
          *
          *                                   | |  / \
          *                  -----------------| |--| |-----------------
@@ -85,7 +86,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
      * @class Sway.EventHub
      * @constructor
      * @param {Object} [options] configuration parameters
-     *      @param {Boolean} [options.allowMultiple] accept multiple registrations of a function for the same event name
+     *      @param {Boolean} [options.allowMultiple] accept multiple registrations of the same function for the same event
      */
         , Eventhub = function(options) {
             Object.defineProperty(this, '_rootStack',
@@ -116,18 +117,57 @@ window.Sway = window.Sway || {} ; // make sure it exists
             return '--eh--' + this._eventNameIndex++ ;     // first event-name will be: --eh--0
         }
 
+        /**
+         *
+         * @method setAllowMultiple
+         * @param {Boolean} state accept multiple registrations of the same function for the same event
+         */
         , setAllowMultiple: function(state) {
             this.allowMultiple = state ;
         }
+        /**
+         * Enable an event name. See {{#crossLink "Sway.EventHub/disable:method"}}{{/crossLink}}
+         * @method enable
+         * @param {String} eventName name of the event
+         */
+        , enable: function(eventName) {
+            var namespace = getStack.call(this, eventName) ;
+            if ( namespace ) {
+                delete namespace.disabled ;
+            }
+        }
+        /**
+         * Disable an event. All triggers on a disabled event are ignored and no event propagation takes place.
+         * @method disable
+         * @param {String} eventNname name of the event
+         */
+        , disable: function(eventName) {
+            var namespace = getStack.call(this, eventName) ;
+            if ( namespace ) {
+                namespace.disabled = true ;
+            }
+        }
+        /**
+         * check if a specific event is disabled
+         * @method isDisabled
+         * @param {String} eventName name of the event
+         * @return {Boolean} TRUE if the event is disabled
+         */
+        , isDisabled: function(eventName) {
+            var namespace = getStack.call(this, eventName) ;
+            return namespace ? !!namespace.disabled : false ;
+        }
+
         /**
          * Triggers one or more events. One event is triggered if the 'eventName' parameter targets a specific event, but if this parameter is a namespace, all nested events and
          * namespaces will be triggered.
          *
          * @method trigger
          * @param {string} eventName    name of the event or namespace
-         * @param {Object|Array|Number|String|Boolean|Function} [data]   data passed to the triggered callback function
-         * @param {Opbject} [options] configuration
-         *      @param {String} [options.traverse=false] trigger all callbacks in nested namespaces
+         * @param {*} [data]   data passed to the triggered callback function
+         * @param {Object} [options] configuration
+         *      @param {Boolean} [options.traverse=false] trigger all callbacks in nested namespaces
+         *      @param {Boolean} [options.eventModes=true] run the BUBBLE and CAPTURE event modes
          * @return {Number} the count of triggered callbacks
          * @example
          Sway.eventHub.trigger('ui.update', {authenticated: true} ) ;               // trigger the 'update' event inside the 'ui' namespace
@@ -136,15 +176,15 @@ window.Sway = window.Sway || {} ; // make sure it exists
         , trigger: function(eventName, data, options){
             var retVal = 0
                 , namespace ;
-            if ( (namespace = getStack.call(this, eventName)) ) {                   // check if the eventName exists
-                retVal = triggerEventCapture.call(this, eventName||'', data) +      // NOTE that eventName can be empty!
+            if ( (namespace = getStack.call(this, eventName)) && !!!namespace.disabled ) {  // check if the eventName exists and not being disabled
+                retVal = triggerEventCapture.call(this, eventName||'', data) +              // NOTE that eventName can be empty!
                          triggerEvent(namespace, data, options||{}) +
-                        ((eventName||'').match(/\./) !== null ? triggerEventBubble(namespace, data) : 0) ;
+                         ((eventName||'').match(/\./) !== null ? triggerEventBubble(namespace, data) : 0) ;
 
-                namespace.__stack.triggers ++ ;                                     // count the trigger
-                namespace.__stack.one = [] ;                                        // cleanup
+                namespace.__stack.triggers ++ ;                                             // count the trigger
+                namespace.__stack.one = [] ;                                                // cleanup
             }
-            return retVal ;                                                         // return the number of triggered callback functions
+            return retVal ;                                                                 // return the number of triggered callback functions
         }
 
         /**
@@ -416,6 +456,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
                         on: []                              // callback stack
                         , parent: stack                     // parent namespace/object
                         , triggers: 0                       // count triggers
+                        , disabled: false                   // by default the namespace/event is enabled
                     }
                 } ;
             }
@@ -432,7 +473,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
             , retVal = 0 ; // callCallbacks(namespace, eventMode) ; -> because you cannot bind callbacks to the root
 
         if ( parts.length > 1 ) {
-            for( i = 0; i < parts.length -1; i++ ) { // loop through namespace (not the last part)
+            for( i = 0; i < parts.length -1; i++ ) {        // loop through namespace (not the last part)
                 namespace = namespace[parts[i]] ;
                 retVal += callCallbacks(namespace, data, eventMode) ;
             }
@@ -460,13 +501,15 @@ window.Sway = window.Sway || {} ; // make sure it exists
         var  retVal = 0
             , ns ;                                                  // loop index
 
-        for( ns in stack ) {
-            if ( ns === "__stack" ) {
-               retVal += callCallbacks(stack, data) ;
-           }
-           else if ( options.traverse ) {                           // found a deeper nested namespace
-                retVal += triggerEvent(stack[ns], data, options) ;  // nested namespaces. NOTE that the 'eventName' is omitted!!
-           }
+        if ( !stack.disabled ) {                                    // if this node/event is disabled, don't traverse the namespace deeper
+            for( ns in stack ) {
+                if ( ns === "__stack" ) {
+                    retVal += callCallbacks(stack, data) ;
+                }
+                else if ( options.traverse ) {                           // found a deeper nested namespace
+                    retVal += triggerEvent(stack[ns], data, options) ;  // nested namespaces. NOTE that the 'eventName' is omitted!!
+                }
+            }
         }
         return retVal ;
     }
