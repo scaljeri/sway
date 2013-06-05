@@ -148,9 +148,15 @@ describe("Sway.EventHub", function() {
             expect(Sway.eventHub.trigger("bar", [])).toEqual(2) ;
             expect(Sway.callbacks.cb1).toHaveBeenCalledWith(['cb1','cb4']) ;
             expect(Sway.callbacks.cb1).toHaveBeenCalled() ;
+            expect(Sway.callbacks.cb2).not.toHaveBeenCalled() ;
+            expect(Sway.callbacks.cb3).not.toHaveBeenCalled() ;
         }) ;
-        it("and be able to disable/enable events", function(){
-
+        it("with disable/enable functionality", function(){
+            Sway.eventHub.on( "bar", Sway.callbacks.cb1) ;
+            Sway.eventHub.disable('bar') ;
+            expect(Sway.eventHub.trigger("bar", [])).toEqual(0) ;
+            Sway.eventHub.enable('bar') ;
+            expect(Sway.eventHub.trigger("bar", [])).toEqual(1) ;
         }) ;
     });
 
@@ -258,6 +264,19 @@ describe("Sway.EventHub", function() {
             expect(Sway.callbacks.cb3.calls.length).toEqual(1) ;        // only in capturing phase
             expect(Sway.callbacks.cb4.calls.length).toEqual(2) ;        // only in capturing phase
             expect(Sway.callbacks.cb1).toHaveBeenCalledWith(['cb1','cb4', 'cb4', 'cb3']) ;
+        }) ;
+        it("with disable/enable functionality", function(){
+            Sway.eventHub.on("bar", Sway.callbacks.cb1) ;
+            Sway.eventHub.on("bar", Sway.callbacks.cb2, { eventMode: Sway.EventHub.EVENT_MODE.CAPTURING}) ;
+            Sway.eventHub.on("bar", Sway.callbacks.cb3, { eventMode: Sway.EventHub.EVENT_MODE.BUBBLING}) ;
+            Sway.eventHub.on("bar.foo", Sway.callbacks.cb4) ;
+            Sway.eventHub.disable("bar") ;
+            expect(Sway.eventHub.trigger("bar", [])).toEqual(0) ;
+            expect(Sway.callbacks.cb1).not.toHaveBeenCalled() ;
+            expect(Sway.callbacks.cb2).not.toHaveBeenCalled() ;
+            expect(Sway.callbacks.cb3).not.toHaveBeenCalled() ;
+            expect(Sway.callbacks.cb4).not.toHaveBeenCalled() ;
+            expect(Sway.eventHub.trigger("bar.foo", [])).toEqual(1) ;   // TODO: of course its 3
         }) ;
     }) ;
 
