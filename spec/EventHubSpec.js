@@ -149,6 +149,9 @@ describe("Sway.EventHub", function() {
             expect(Sway.callbacks.cb1).toHaveBeenCalledWith(['cb1','cb4']) ;
             expect(Sway.callbacks.cb1).toHaveBeenCalled() ;
         }) ;
+        it("and be able to disable/enable events", function(){
+
+        }) ;
     });
 
     // events with a namespace

@@ -111,7 +111,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
         /**
          * Generates an unique event name
          * @method generateUniqueEventName
-         * @return {String}
+         * @return {String} unique event name
          */
         generateUniqueEventName: function() {
             return '--eh--' + this._eventNameIndex++ ;     // first event-name will be: --eh--0
@@ -120,32 +120,42 @@ window.Sway = window.Sway || {} ; // make sure it exists
         /**
          *
          * @method setAllowMultiple
+         * @chainable
          * @param {Boolean} state accept multiple registrations of the same function for the same event
          */
         , setAllowMultiple: function(state) {
             this.allowMultiple = state ;
+            return this ;
         }
         /**
          * Enable an event name. See {{#crossLink "Sway.EventHub/disable:method"}}{{/crossLink}}
          * @method enable
+         * @chainable
          * @param {String} eventName name of the event
+         * @param {Object} [options] configuration
+         *  @param {Boolean} [options.traverse=false] disable nested events as wel if set to TRUE
          */
-        , enable: function(eventName) {
+        , enable: function(eventName, options) {
             var namespace = getStack.call(this, eventName) ;
             if ( namespace ) {
                 delete namespace.disabled ;
             }
+            return this ;
         }
         /**
          * Disable an event. All triggers on a disabled event are ignored and no event propagation takes place.
          * @method disable
+         * @chainable
          * @param {String} eventNname name of the event
+         * @param {Object} [options] configuration
+         *  @param {Boolean} [options.traverse=false] disable nested events as wel if set to TRUE
          */
-        , disable: function(eventName) {
+        , disable: function(eventName, options) {
             var namespace = getStack.call(this, eventName) ;
             if ( namespace ) {
                 namespace.disabled = true ;
             }
+            return this ;
         }
         /**
          * check if a specific event is disabled
