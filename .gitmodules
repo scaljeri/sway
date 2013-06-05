@@ -10,3 +10,6 @@
 [submodule "external/zip.js"]
 	path = external/zip.js
 	url = git://github.com/gildas-lormeau/zip.js
+[submodule "external/javascript-sandbox-console"]
+	path = external/javascript-sandbox-console
+	url = https://github.com/josscrowcroft/javascript-sandbox-console.git
