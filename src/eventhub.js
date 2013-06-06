@@ -27,9 +27,9 @@ window.Sway = window.Sway || {} ; // make sure it exists
          *                  ------------------------------------------
          *
          *     eventHub.on('bar.foo', myFunc1) ;
-         *     eventHub.on('bar', myFunc2, Sway.EventHub.EVENT_MODE.CAPTURING) ;
-         *     eventHub.on('bar', myFunc3, Sway.EventHub.EVENT_MODE.BUBBLING) ;
-         *     eventHub.on('bar', myFunc4, Sway.EventHub.EVENT_MODE.BOTH) ;
+         *     eventHub.on('bar', myFunc2, { eventMode: Sway.EventHub.EVENT_MODE.CAPTURING }) ;
+         *     eventHub.on('bar', myFunc3, { eventMode: Sway.EventHub.EVENT_MODE.BUBBLING }) ;
+         *     eventHub.on('bar', myFunc4, { eventMode: Sway.EventHub.EVENT_MODE.BOTH }) ;
          *     eventHub.trigger('bar.foo') ; // -> callback execution order: myFunc3, myFunc4, myFunc1, myFunc2 and myFunc4
          *
          * @property {Object} EVENT_MODE
@@ -137,13 +137,21 @@ window.Sway = window.Sway || {} ; // make sure it exists
          */
         , enable: function(eventName, options) {
             var namespace = getStack.call(this, eventName) ;
-            if ( namespace ) {
-                delete namespace.disabled ;
-            }
+
+            changeStateEvent.call(this, namespace||{}, false, options||{}) ;
             return this ;
         }
         /**
-         * Disable an event. All triggers on a disabled event are ignored and no event propagation takes place.
+         * Disable an event. All triggers on a disabled event are ignored and no event propagation takes place. For example
+         *
+         *     eventHub.on('bar', callback1) ;
+         *     eventHub.on('bar', callback2, { eventMode: Sway.EventHub.EVENT_MODE.BOTH }) ;
+         *     eventHub.on('bar.foo', callback3) ;
+         *     eventHub.disable('bar') ;
+         *
+         *     eventHub.trigger('bar')          // -> no callbacks called
+         *     eventHub.trigger('bar.foo')      // -> callback execution order: callback2, callback3, callback2
+         *
          * @method disable
          * @chainable
          * @param {String} eventNname name of the event
@@ -152,20 +160,19 @@ window.Sway = window.Sway || {} ; // make sure it exists
          */
         , disable: function(eventName, options) {
             var namespace = getStack.call(this, eventName) ;
-            if ( namespace ) {
-                namespace.disabled = true ;
-            }
+
+            changeStateEvent.call(this, namespace||{}, true, options||{}) ;
             return this ;
         }
         /**
-         * check if a specific event is disabled
+         * check if a specific event is disabled.
          * @method isDisabled
          * @param {String} eventName name of the event
-         * @return {Boolean} TRUE if the event is disabled
+         * @return {Boolean} TRUE if the event is disabled. If the event does not exists, FALSE is returned
          */
         , isDisabled: function(eventName) {
             var namespace = getStack.call(this, eventName) ;
-            return namespace ? !!namespace.disabled : false ;
+            return namespace ? namespace.__stack.disabled : false ;
         }
 
         /**
@@ -186,7 +193,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
         , trigger: function(eventName, data, options){
             var retVal = 0
                 , namespace ;
-            if ( (namespace = getStack.call(this, eventName)) && !!!namespace.disabled ) {  // check if the eventName exists and not being disabled
+            if ( (namespace = getStack.call(this, eventName)) && !!!namespace.__stack.disabled ) {  // check if the eventName exists and not being disabled
                 retVal = triggerEventCapture.call(this, eventName||'', data) +              // NOTE that eventName can be empty!
                          triggerEvent(namespace, data, options||{}) +
                          ((eventName||'').match(/\./) !== null ? triggerEventBubble(namespace, data) : 0) ;
@@ -300,6 +307,24 @@ window.Sway = window.Sway || {} ; // make sure it exists
 
     /* ******** PRIVATE HELPER FUNCTION *********** */
 
+    /*
+     * An event can be in two states: disabled or enabled. The 'state' parameter holds the new state. This state
+     * will be applied to all nested events.
+     * @param {Object} namespace
+     * @param {Boolean} state TRUE to disable the events
+     */
+    function changeStateEvent(namespace, state, options) {
+        var i ;
+
+        for( i in namespace ) {
+            if ( i === '__stack') {
+                namespace.__stack.disabled = state ;
+            }
+            else if ( options.traverse ) {
+                changeStateEvent.call(this, namespace[i], state) ;
+            }
+        }
+    }
     /*
         Returns the sum of a stack property. The specific property is implemented in propertyFunc
      */

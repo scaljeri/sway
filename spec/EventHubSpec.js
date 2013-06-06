@@ -276,7 +276,7 @@ describe("Sway.EventHub", function() {
             expect(Sway.callbacks.cb2).not.toHaveBeenCalled() ;
             expect(Sway.callbacks.cb3).not.toHaveBeenCalled() ;
             expect(Sway.callbacks.cb4).not.toHaveBeenCalled() ;
-            expect(Sway.eventHub.trigger("bar.foo", [])).toEqual(1) ;   // TODO: of course its 3
+            expect(Sway.eventHub.trigger("bar.foo", [])).toEqual(3) ;
         }) ;
     }) ;
 
