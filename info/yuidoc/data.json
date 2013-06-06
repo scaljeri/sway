@@ -531,7 +531,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/eventhub.js",
-            "line": 63,
+            "line": 64,
             "description": "EventHub facilitates event-based communication between different parts of an application (Event driven system).\nEvents can be namespaced too.\n\nNamespaces are separated by a dot, like\n\n    bar.foo1\n    bar.foo2\n    bar.bar1.foo1\n\nA Namespace and an Eventname are actually more or less the same thing:\n\n    eventHub.on('bar', myFunc1) ;\n    eventHub.on('bar.foo1', myFunc2) ;\n    eventHub.on('bar.bar1', myFunc3) ;\n    eventHub.on('bar.bar1.foo1', myFunc4) ;\n\nThe advantage of namespaced events is that it facilitates triggering groups of events\n\n    eventHub.trigger('bar') ;        // --> triggers: myFunc1, myFunc2, myFunc3 and myFunc4\n    eventHub.trigger('bar.bar1');    // --> triggers: myFunc3 and myFunc4",
             "is_constructor": 1,
             "params": [
@@ -543,7 +543,7 @@
                     "props": [
                         {
                             "name": "allowMultiple",
-                            "description": "accept multiple registrations of a function for the same event name",
+                            "description": "accept multiple registrations of the same function for the same event",
                             "type": "Boolean",
                             "optional": true
                         }
@@ -992,7 +992,7 @@
         {
             "file": "src/eventhub.js",
             "line": 5,
-            "description": "Contains available event modes. For example, if <tt>bar.foo</tt> is triggered, both event modes do the opposite\n\n                   | |                                     / \\\n    ---------------| |-----------------     ---------------| |-----------------\n    | bar          | |                |     | bar          | |                |\n    |   -----------| |-----------     |     |   -----------| |-----------     |\n    |   |bar.foo   \\ /          |     |     |   |bar.foo   | |          |     |\n    |   -------------------------     |     |   -------------------------     |\n    |        Event CAPTURING          |     |        Event BUBBLING           |\n    -----------------------------------     -----------------------------------\n\nThe event model implemented in this class does both, going from <tt>bubbling</tt> to the execution of all callbacks in <tt>bar.foo</tt>, then back in <tt>capturing</tt> mode\n\n                                  | |  / \\\n                 -----------------| |--| |-----------------\n                 | bar            | |  | |                |\n                 |   -------------| |--| |-----------     |\n                 |   |bar.foo     \\ /  | |          |     |\n                 |   --------------------------------     |\n                 |               event model              |\n                 ------------------------------------------\n\n    eventHub.on('bar.foo', myFunc1) ;\n    eventHub.on('bar', myFunc2, Sway.EventHub.EVENT_MODE.CAPTURING) ;\n    eventHub.on('bar', myFunc3, Sway.EventHub.EVENT_MODE.BUBBLING) ;\n    eventHub.on('bar', myFunc4, Sway.EventHub.EVENT_MODE.BOTH) ;\n    eventHub.trigger('bar.foo') ; // -> callback execution order: myFunc3, myFunc4, myFunc1, myFunc2 and myFunc4",
+            "description": "Contains available event modes. For example, if <tt>bar.foo</tt> is triggered, both event modes do the opposite\n\n                   | |                                     / \\\n    ---------------| |-----------------     ---------------| |-----------------\n    | bar          | |                |     | bar          | |                |\n    |   -----------| |-----------     |     |   -----------| |-----------     |\n    |   |bar.foo   \\ /          |     |     |   |bar.foo   | |          |     |\n    |   -------------------------     |     |   -------------------------     |\n    |        Event CAPTURING          |     |        Event BUBBLING           |\n    -----------------------------------     -----------------------------------\n\nThe event model implemented in this class does both, going from <tt>bubbling</tt> to the execution of all callbacks in <tt>bar.foo</tt>,\nthen back in <tt>capturing</tt> mode\n\n                                  | |  / \\\n                 -----------------| |--| |-----------------\n                 | bar            | |  | |                |\n                 |   -------------| |--| |-----------     |\n                 |   |bar.foo     \\ /  | |          |     |\n                 |   --------------------------------     |\n                 |               event model              |\n                 ------------------------------------------\n\n    eventHub.on('bar.foo', myFunc1) ;\n    eventHub.on('bar', myFunc2, { eventMode: Sway.EventHub.EVENT_MODE.CAPTURING }) ;\n    eventHub.on('bar', myFunc3, { eventMode: Sway.EventHub.EVENT_MODE.BUBBLING }) ;\n    eventHub.on('bar', myFunc4, { eventMode: Sway.EventHub.EVENT_MODE.BOTH }) ;\n    eventHub.trigger('bar.foo') ; // -> callback execution order: myFunc3, myFunc4, myFunc1, myFunc2 and myFunc4",
             "itemtype": "property",
             "name": "EVENT_MODE",
             "type": "Object",
@@ -1004,7 +1004,7 @@
         },
         {
             "file": "src/eventhub.js",
-            "line": 39,
+            "line": 40,
             "description": "Defines the capturing event mode",
             "itemtype": "property",
             "name": "EVENT_MODE.CAPTURING",
@@ -1014,7 +1014,7 @@
         },
         {
             "file": "src/eventhub.js",
-            "line": 45,
+            "line": 46,
             "description": "Defines the bubbling event mode",
             "itemtype": "property",
             "name": "EVENT_MODE.BUBBLING",
@@ -1024,7 +1024,7 @@
         },
         {
             "file": "src/eventhub.js",
-            "line": 51,
+            "line": 52,
             "description": "Represent both capturing and bubbling event modes",
             "itemtype": "property",
             "name": "EVENT_MODE.ALL",
@@ -1034,19 +1034,115 @@
         },
         {
             "file": "src/eventhub.js",
-            "line": 110,
+            "line": 111,
             "description": "Generates an unique event name",
             "itemtype": "method",
             "name": "generateUniqueEventName",
             "return": {
-                "description": "",
+                "description": "unique event name",
                 "type": "String"
             },
             "class": "Sway.EventHub"
         },
         {
             "file": "src/eventhub.js",
-            "line": 122,
+            "line": 120,
+            "itemtype": "method",
+            "name": "setAllowMultiple",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "state",
+                    "description": "accept multiple registrations of the same function for the same event",
+                    "type": "Boolean"
+                }
+            ],
+            "class": "Sway.EventHub"
+        },
+        {
+            "file": "src/eventhub.js",
+            "line": 130,
+            "description": "Enable an event name. See {{#crossLink \"Sway.EventHub/disable:method\"}}{{/crossLink}}",
+            "itemtype": "method",
+            "name": "enable",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "eventName",
+                    "description": "name of the event",
+                    "type": "String"
+                },
+                {
+                    "name": "options",
+                    "description": "configuration",
+                    "type": "Object",
+                    "optional": true,
+                    "props": [
+                        {
+                            "name": "traverse",
+                            "description": "disable nested events as wel if set to TRUE",
+                            "type": "Boolean",
+                            "optional": true,
+                            "optdefault": "false"
+                        }
+                    ]
+                }
+            ],
+            "class": "Sway.EventHub"
+        },
+        {
+            "file": "src/eventhub.js",
+            "line": 144,
+            "description": "Disable an event. All triggers on a disabled event are ignored and no event propagation takes place. For example\n\n    eventHub.on('bar', callback1) ;\n    eventHub.on('bar', callback2, { eventMode: Sway.EventHub.EVENT_MODE.BOTH }) ;\n    eventHub.on('bar.foo', callback3) ;\n    eventHub.disable('bar') ;\n\n    eventHub.trigger('bar')          // -> no callbacks called\n    eventHub.trigger('bar.foo')      // -> callback execution order: callback2, callback3, callback2",
+            "itemtype": "method",
+            "name": "disable",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "eventNname",
+                    "description": "name of the event",
+                    "type": "String"
+                },
+                {
+                    "name": "options",
+                    "description": "configuration",
+                    "type": "Object",
+                    "optional": true,
+                    "props": [
+                        {
+                            "name": "traverse",
+                            "description": "disable nested events as wel if set to TRUE",
+                            "type": "Boolean",
+                            "optional": true,
+                            "optdefault": "false"
+                        }
+                    ]
+                }
+            ],
+            "class": "Sway.EventHub"
+        },
+        {
+            "file": "src/eventhub.js",
+            "line": 167,
+            "description": "check if a specific event is disabled.",
+            "itemtype": "method",
+            "name": "isDisabled",
+            "params": [
+                {
+                    "name": "eventName",
+                    "description": "name of the event",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "TRUE if the event is disabled. If the event does not exists, FALSE is returned",
+                "type": "Boolean"
+            },
+            "class": "Sway.EventHub"
+        },
+        {
+            "file": "src/eventhub.js",
+            "line": 178,
             "description": "Triggers one or more events. One event is triggered if the 'eventName' parameter targets a specific event, but if this parameter is a namespace, all nested events and\nnamespaces will be triggered.",
             "itemtype": "method",
             "name": "trigger",
@@ -1059,21 +1155,28 @@
                 {
                     "name": "data",
                     "description": "data passed to the triggered callback function",
-                    "type": "Object|Array|Number|String|Boolean|Function",
+                    "type": "*",
                     "optional": true
                 },
                 {
                     "name": "options",
                     "description": "configuration",
-                    "type": "Opbject",
+                    "type": "Object",
                     "optional": true,
                     "props": [
                         {
                             "name": "traverse",
                             "description": "trigger all callbacks in nested namespaces",
-                            "type": "String",
+                            "type": "Boolean",
                             "optional": true,
                             "optdefault": "false"
+                        },
+                        {
+                            "name": "eventModes",
+                            "description": "run the BUBBLE and CAPTURE event modes",
+                            "type": "Boolean",
+                            "optional": true,
+                            "optdefault": "true"
                         }
                     ]
                 }
@@ -1089,7 +1192,7 @@
         },
         {
             "file": "src/eventhub.js",
-            "line": 150,
+            "line": 207,
             "description": "Register a callback for a specific event. Callbacks are executed in the order of\nregistration. Set 'prepend' to TRUE to add the callback in front of the others. With the 'options'\nparameter it is also possible to execute the callback in a capturing or bubbling phase.",
             "itemtype": "method",
             "name": "on",
@@ -1136,7 +1239,7 @@
         },
         {
             "file": "src/eventhub.js",
-            "line": 172,
+            "line": 229,
             "description": "Register a callback for a specific event. This function is identical to {{#crossLink \"Sway.EventHub/on:method\"}}{{/crossLink}}\nexcept that this callback is removed from the list after it has been triggered.",
             "itemtype": "method",
             "name": "one",
@@ -1181,7 +1284,7 @@
         },
         {
             "file": "src/eventhub.js",
-            "line": 193,
+            "line": 250,
             "description": "Removes the given callback for a specific event. However, if a callback is registered with an 'eventMode', the\ncallback can only be removed if that eventMode is specified too!",
             "itemtype": "method",
             "name": "off",
@@ -1228,7 +1331,7 @@
         },
         {
             "file": "src/eventhub.js",
-            "line": 215,
+            "line": 272,
             "description": "count the registered callbacks for an event or namespace",
             "itemtype": "method",
             "name": "countCallbacks",
@@ -1266,7 +1369,7 @@
         },
         {
             "file": "src/eventhub.js",
-            "line": 234,
+            "line": 291,
             "description": "returns the the trigger count for this event",
             "itemtype": "method",
             "name": "countTrigger",
@@ -1313,7 +1416,7 @@
         },
         {
             "message": "param name missing: {Object}",
-            "line": " src/eventhub.js:193"
+            "line": " src/eventhub.js:250"
         },
         {
             "message": "Missing item type\nFileEntry interface is provided for working with files:\nhttp://www.mosync.com/files/imports/doxygen/latest/html5/filewriter.md.html\nfileEntry.isFile === true\nfileEntry.isDirectory === false\nfileEntry.name\nfileEntry.fullPath\n...\n\nfileEntry.getMetadata(successCallback, opt_errorCallback);\nfileEntry.remove(successCallback, opt_errorCallback);\nfileEntry.moveTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);\nfileEntry.copyTo(dirEntry, opt_newName, opt_successCallback, opt_errorCallback);\nfileEntry.getParent(successCallback, opt_errorCallback);\nfileEntry.toURI(opt_mimeType);  // Currently not implemented in Google Chrome 9.\n\nfileEntry.file(successCallback, opt_errorCallback);\nfileEntry.createWriter(successCallback, opt_errorCallback);",

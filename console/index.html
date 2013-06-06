@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+	<meta charset="utf-8">
+	<title>javascript sandbox console demo - joss crowcroft</title>
+	<meta name="description" content="an interactive javascript console built on backbone.js, perfect for js library/plugin demos and homepages" />
+	<meta name="keywords" content="javascript, console, sandbox, playground, demo, interactive, plugin, backbone.js, jquery, underscore.js" />
+	<link rel="shortcut icon" href="http://faviconist.com/icons/c8d9b014e98028d3f2432482a1fbb48b/favicon.ico" />
+	<link rel="canonical" href="http://josscrowcroft.github.com/javascript-sandbox-console/" />
+
+	<!-- The demo styles: -->
+	<link href="demo-resources/demo.css" rel="stylesheet"/>
+	
+	<!-- The Sandbox stylesheet: -->
+	<link href="src/sandbox.css" rel="stylesheet"/>
+
+
+</head>
+
+<body>
+
+	<!-- HTML -->
+	
+	<h1>js sandbox console</h1>
+
+	<div id="sandbox">sandbox loading...</div></div>
+
+
+	<!-- Templates -->
+	
+	<!-- The sandbox template: -->
+	<script type="text/template" id="tplSandbox">
+		<pre class="output"></pre>
+		<div class="input">
+			<textarea rows="1" placeholder="<%= placeholder %>"></textarea>
+		</div>
+	</script>
+
+	<!-- The command/result template (NB whitespace/line breaks matter inside <pre> tag): -->
+	<script type="text/template" id="tplCommand"><% if (! _hidden) { %><span class="command"><%= command %></span>
+<span class="prefix"><%= this.resultPrefix %></span><span class="<%= _class %>"><%= result %></span>
+<% } %></script>
+
+
+	<!-- Scripts -->
+
+	<!-- Underscore, Backbone, backbone-localStorage, jQuery -->
+	<script src="src/libs/underscore.min.js"></script>
+	<script src="src/libs/backbone.min.js"></script>
+	<script src="src/libs/backbone-localStorage.min.js"></script>
+	<script src="src/libs/jquery.min.js"></script>
+
+	<!-- Some extras for the demo: -->
+	<script src="demo-resources/js/lettering.js"></script>
+	<script src="demo-resources/js/prettify.js"></script>
+	<script src="demo-resources/js/DAT.GUI.min.js"></script>
+
+	<!-- The JS Sandbox Console script (requires underscore, backbone and jquery): -->
+	<script src="src/sandbox-console.js"></script>
+
+	<script src="../src/eventhub.js"></script>
+	
+	<!-- When ready, create the model and view -->
+	<script type="text/javascript">
+		jQuery(document).ready(function($) {
+			// Create the sandbox:
+			window.sandbox = new Sandbox.View({
+				el : $('#sandbox'),
+				model : new Sandbox.Model()
+			});
+			
+			// Lettering.js:
+			$('h1').add('h2').add('h3').lettering();
+
+			// prettify code blocks:
+			prettyPrint();
+
+
+			// GUI demo controls:
+			DAT.GUI.autoPlace = false;
+			DAT.GUI.supressHotKeys = true;
+
+			window.gui = new DAT.GUI();
+
+			gui.name('Commands to try out');
+			gui.close();
+
+			$(gui.domElement).css({
+				position:"absolute",
+				top:0,
+				right:-10
+			}).appendTo('body');
+
+			// Some custom callback functions for dat.gui:
+			sandbox.custom1 = function() {  sandbox.currentHistory = ":help"; sandbox.update(); sandbox.textarea.focus(); };
+			sandbox.custom2 = function() {  sandbox.currentHistory = ":clear"; sandbox.update(); sandbox.textarea.focus(); };
+			sandbox.custom3 = function() {  sandbox.currentHistory = "JSON.stringify(sandbox.model.get('history'), 0, 4);"; sandbox.update(); sandbox.textarea.focus(); };
+			sandbox.custom4 = function() {  sandbox.currentHistory = "sandbox.resultPrefix = '&raquo; '"; sandbox.update(); sandbox.textarea.focus(); };
+			sandbox.custom5 = function() {  sandbox.currentHistory = "var who = 'joss', where = 'hong kong';"; sandbox.update(); sandbox.textarea.focus(); };
+			sandbox.custom6 = function() { sandbox.currentHistory = "function doYaFeelLucky() {\n\treturn 'well do ya, punk?';\n};\ndoYaFeelLucky(); // hit return!"; sandbox.update(); sandbox.textarea.focus(); };
+			sandbox.custom7 = function() {  sandbox.currentHistory = "somethingUndefined; // hit enter!"; sandbox.update(); sandbox.textarea.focus(); };
+			sandbox.custom8 = function() {  sandbox.model.set({ iframe : true }); sandbox.model.addHistory({ command : " ", result : "Commands are now being evaluated inside a sandboxed iframe." }); sandbox.model.iframeSetup(); };
+			sandbox.custom9 = function() {  sandbox.currentHistory = ":load http://code.jquery.com/jquery-1.6.4.js"; sandbox.update(); sandbox.textarea.focus(); };
+			
+			gui.add(sandbox, 'custom1').name('Show <code>:help</code> menu');
+			gui.add(sandbox, 'custom2').name('<code>:clear</code> the command history');
+			gui.add(sandbox, 'custom3').name('View all history');
+			gui.add(sandbox, 'custom4').name('Set the result/response prefix');
+			gui.add(sandbox, 'custom5').name('Define some variables');
+			gui.add(sandbox, 'custom6').name('Multi-line input (use <code>alt</code> + <code>return</code>/<code>up</code>/<code>down</code>)');
+			gui.add(sandbox, 'custom7').name('Throw an error');
+			gui.add(sandbox, 'custom8').name('Switch on <code>iFrame</code> sandboxing');
+			gui.add(sandbox, 'custom9').name('<code>:load</code> a script (jQuery)');
+
+			gui.open();
+
+
+			// twitter:
+			(function(d, t) {
+				var g = d.createElement(t),
+					s = d.getElementsByTagName(t)[0];
+				g.async = true;
+				g.src = 'http://platform.twitter.com/widgets.js';
+				s.parentNode.insertBefore(g, s);
+			})(document, 'script');
+	
+			// google plus:
+			window.___gcfg = {lang: 'en-GB'};
+			(function() {
+				var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+				po.src = 'https://apis.google.com/js/plusone.js';
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+			})();
+		});
+	</script>
+
+</body>
+</html>
