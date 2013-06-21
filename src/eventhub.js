@@ -86,7 +86,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
      * @class Sway.EventHub
      * @constructor
      * @param {Object} [options] configuration parameters
-     *      @param {Boolean} [options.allowMultiple] accept multiple registrations of the same function for the same event
+     *      @param {Boolean} [options.allowMultiple=TRUE] accept multiple registrations of the same function for the same event
      */
         , Eventhub = function(options) {
             Object.defineProperty(this, '_rootStack',
@@ -144,9 +144,12 @@ window.Sway = window.Sway || {} ; // make sure it exists
         /**
          * Disable an event. All triggers on a disabled event are ignored and no event propagation takes place. For example
          *
-         *     eventHub.on('bar', callback1) ;
-         *     eventHub.on('bar', callback2, { eventMode: Sway.EventHub.EVENT_MODE.BOTH }) ;
-         *     eventHub.on('bar.foo', callback3) ;
+         *     eventHub.on('bar', callback1, { eventMode: Sway.EventHub.EVENT_MODE.BOTH }) ;
+         *     eventHub.on('bar', callback2) ;
+         *     eventHub.on('bar.foo', callback3, { eventMode: Sway.EventHub.EVENT_MODE.BOTH }) ;
+         *     eventHub.on('bar.foo', callback4) ;
+         *     eventHub.on('bar.foo.do', callback5 { eventMode: Sway.EventHub.EVENT_MODE.BOTH }) ;
+         *     eventHub.on('bar.foo.do', callback6) ;
          *     eventHub.disable('bar') ;
          *
          *     eventHub.trigger('bar')          // -> no callbacks called
@@ -180,15 +183,17 @@ window.Sway = window.Sway || {} ; // make sure it exists
          * namespaces will be triggered.
          *
          * @method trigger
-         * @param {string} eventName    name of the event or namespace
-         * @param {*} [data]   data passed to the triggered callback function
+         * @param {string} eventName name of the event or namespace
+         * @param {*} data data passed to the triggered callback function
          * @param {Object} [options] configuration
          *      @param {Boolean} [options.traverse=false] trigger all callbacks in nested namespaces
-         *      @param {Boolean} [options.eventModes=true] run the BUBBLE and CAPTURE event modes
+         *      @param {String}  [options.eventMode] define the event mode to be used
          * @return {Number} the count of triggered callbacks
          * @example
+         Sway.eventHub.trigger('ui.update' ) ;                                      // trigger the 'update' event inside the 'ui' namespace
+         Sway.eventHub.trigger('ui', null, {traverse: true} ) ;                     // trigger all nested events and namespaces inside the 'ui' namespace
          Sway.eventHub.trigger('ui.update', {authenticated: true} ) ;               // trigger the 'update' event inside the 'ui' namespace
-         Sway.eventHub.trigger('ui', {authenticated: true} ) ;                      // trigger all nested events and namespaces inside the 'ui' namespace
+         Sway.eventHub.trigger('ui', {authenticated: true}, {traverse: true} ) ;    // trigger all nested events and namespaces inside the 'ui' namespace
          */
         , trigger: function(eventName, data, options){
             var retVal = 0
@@ -215,7 +220,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
          * @param {Object} [options] configuration
          *      @param {Boolean} [options.prepend] if TRUE, the callback is placed before all other registered callbacks.
          *      @param {String} [options.eventMode] the event mode for which the callback is triggered too. Available modes are
-         *          <tt>capture</tt> and <tt>bubble</tt>
+         *          <tt>capture</tt>, <tt>bubble</tt> or both
          * @return {Boolean} TRUE if the callback is registered successfully. It will fail if the callback was already registered
          * @example
          Sway.eventHub.on( 'ui.update', this.update.bind(this) ) ;
@@ -252,12 +257,13 @@ window.Sway = window.Sway || {} ; // make sure it exists
          * callback can only be removed if that eventMode is specified too!
          *
          * @method off
-         * @param {string} eventName
-         * @param {function} [callback] the callback function to be removed. If omitted, all registered events and nested
+         * @param {String} eventName
+         * @param {Function} [callback] the callback function to be removed. If omitted, all registered events and nested
          * namespaces inside 'eventName' are removed
-         * @param {Object}
-         *      @param {Boolean} [traverse=false] traverse all nested namespaces
-         *      @param {String} [options.eventMode=null] the event mode for which the callback is triggered too. Available modes are
+         * @param {Object} options configuration
+         *      @param {Boolean} [options.traverse=false] traverse all nested namespaces
+         *      @param {String} [options.eventMode=null] the event mode of the callback to be removed
+         *      @param {Boolean} [options.isOne]
          * @return {Number} the count of removed callback functions
          * @example
          Sway.eventHub.off('ui.update', this.update) ;
@@ -321,7 +327,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
                 namespace.__stack.disabled = state ;
             }
             else if ( options.traverse ) {
-                changeStateEvent.call(this, namespace[i], state) ;
+                changeStateEvent.call(this, namespace[i], state, options) ;
             }
         }
     }
@@ -446,9 +452,16 @@ window.Sway = window.Sway || {} ; // make sure it exists
             , retVal = 0 ;
 
         for( i = list.length-1; i >= 0; i-- ){
-            if ( (list[i].fn === callback || !callback) && list[i].eventMode === options.eventMode ) {
-                list.splice(i, 1) ;
-                retVal ++ ;
+            if ( (list[i].fn === callback || !callback) && list[i].eventMode === options.eventMode
+                 && (options.isOne === list[i].isOne || options.isOne === undefined || options.isOne === null)
+                /*
+                && ( options.isOne === undefined || options.isOne === null || options.isOne === list[i].isOne
+                     || (options.isOne === false && list[i].isOne === undefined)
+                   )
+                   */
+               ) {
+                    list.splice(i, 1) ;
+                    retVal ++ ;
             }
         }
         return retVal ;
@@ -492,6 +505,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
                         , parent: stack                     // parent namespace/object
                         , triggers: 0                       // count triggers
                         , disabled: false                   // by default the namespace/event is enabled
+                        , isOne: false
                     }
                 } ;
             }
@@ -562,13 +576,15 @@ window.Sway = window.Sway || {} ; // make sure it exists
             , retVal = 0
             , callback ;
 
-        for( i = 0; i < namespace.__stack.on.length ; i++ ) {           // loop through all callbacks
-            callback = namespace.__stack.on[i] ;
-            if ( callback.eventMode === eventMode ) {                   // trigger callbacks depending on their event-mode
-                retVal ++ ;                                             // count this trigger
-                callback.fn(data) ;                                     // call the callback
-                if ( callback.isOne ) {
-                    namespace.__stack.on.splice(i--, 1) ;               // remove callback for index is i, and afterwards fix loop index with i--
+        if ( !namespace.__stack.disabled ) {
+            for( i = 0; i < namespace.__stack.on.length ; i++ ) {           // loop through all callbacks
+                callback = namespace.__stack.on[i] ;
+                if ( callback.eventMode === eventMode ) {                   // trigger callbacks depending on their event-mode
+                    retVal ++ ;                                             // count this trigger
+                    callback.fn(data) ;                                     // call the callback
+                    if ( callback.isOne ) {
+                        namespace.__stack.on.splice(i--, 1) ;               // remove callback for index is i, and afterwards fix loop index with i--
+                    }
                 }
             }
         }
@@ -576,5 +592,4 @@ window.Sway = window.Sway || {} ; // make sure it exists
     }
 
     ns.EventHub = Eventhub ;
-
 })(window.Sway) ;
