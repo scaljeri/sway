@@ -1,5 +1,6 @@
 describe("Sway.EventHub", function() {
 
+    // globals
     var eh
         , cbs = {
             cb1: function(data) {
@@ -21,7 +22,7 @@ describe("Sway.EventHub", function() {
         } ;
 
 
-    // mock some classes
+    // mock some functions
     beforeEach(function() {
         // create DI
         eh = new Sway.EventHub() ; // allowMultiple === true
@@ -31,6 +32,26 @@ describe("Sway.EventHub", function() {
         spyOn(cbs, 'cb2').andCallThrough() ;
         spyOn(cbs, 'cb3').andCallThrough() ;
         spyOn(cbs, 'cb4').andCallThrough() ;
+
+        var on = [
+            { fn: cbs.cb1,   isOne: false }
+            , { fn: cbs.cb1, isOne: true  }
+            , { fn: cbs.cb2, isOne: false }
+            , { fn: cbs.cb2, isOne: true  }
+            , { fn: cbs.cb2, isOne: true,  eventMode: Sway.EventHub.EVENT_MODE.BOTH      }
+            , { fn: cbs.cb3, isOne: false, eventMode: Sway.EventHub.EVENT_MODE.CAPTURING }
+            , { fn: cbs.cb3, isOne: true,  eventMode: Sway.EventHub.EVENT_MODE.BUBBLING  }
+        ] ;
+
+        // create event 'bar'
+        eh._rootStack.bar = {
+            __stack: {
+                on: on                              // callback stack
+                , parent: eh._rootStack             // parent namespace/object
+                , triggers: 0                       // count triggers
+                , disabled: false                   // by default the namespace/event is enabled
+            }
+        } ;
 
     });
 
@@ -51,8 +72,8 @@ describe("Sway.EventHub", function() {
     }) ;
 
     // events without a namespace
-    describe("should handle simple events", function() {
-        describe("for callbacks registered with 'on'", function(){
+    describe("should register callbacks for simple events (not namespaced)", function() {
+        describe("using 'on'", function(){
             it("without options", function() {
                 eh.on("go", cbs.cb1) ;
                 eh.on("go", cbs.cb2) ;
@@ -95,25 +116,28 @@ describe("Sway.EventHub", function() {
             it("with 'allowMultiple' set to TRUE", function(){
                 expect(eh.allowMultiple).toBeTruthy() ;                                 // by default this value is set to TRUE
                 expect(eh.setAllowMultiple(true)).toBe(eh) ;                            // chainable
-                expect(eh.on( "bar", cbs.cb1)).toBeTruthy() ;                           // default behavior is to accept
-                expect(eh.on( "bar", cbs.cb1)).toBeTruthy() ;                           // the same callback multiple times
-                expect(eh._rootStack.bar.__stack.on.length).toEqual(2) ;                // check the internal stack
+                expect(eh.on( "go", cbs.cb1)).toBeTruthy() ;                           // default behavior is to accept
+                expect(eh.on( "go", cbs.cb1)).toBeTruthy() ;                           // the same callback multiple times
+                expect(eh._rootStack.go.__stack.on.length).toEqual(2) ;                // check the internal stack
             }) ;
             it("with 'allowMultiple' set to FALSE", function(){
                 expect(eh.setAllowMultiple(false)).toBe(eh) ;                           // chainable
-                expect(eh.on( "bar", cbs.cb2)).toBeTruthy() ;
-                expect(eh.on( "bar", cbs.cb2)).toBeFalsy() ;                            // nope, its registered already
-                expect(eh.on( "bar", cbs.cb2, {})).toBeFalsy() ;                        // idem
-                expect(eh.on( "bar", cbs.cb2, {eventMode: Sway.EventHub.EVENT_MODE.CAPTURING})).toBeTruthy() ;      // accepted, because it has an event-mode defined
-                expect(eh.on( "bar", cbs.cb2, {eventMode: Sway.EventHub.EVENT_MODE.BOTH})).toBeFalsy() ;            // falsy, because 'BOTH' includes 'CAPTURING' too
-                expect(eh.on( "bar", cbs.cb2, {eventMode: Sway.EventHub.EVENT_MODE.CAPTURING})).toBeFalsy() ;       // nope
-                expect(eh.on( "bar", cbs.cb2, {eventMode: Sway.EventHub.EVENT_MODE.BUBBLING})).toBeTruthy() ;       // different event mode
+                expect(eh.on( "go", cbs.cb2)).toBeTruthy() ;
+                expect(eh.on( "go", cbs.cb2)).toBeFalsy() ;                            // nope, its registered already
+                expect(eh.on( "go", cbs.cb2, {})).toBeFalsy() ;                        // idem
+                expect(eh.on( "go", cbs.cb2, {eventMode: Sway.EventHub.EVENT_MODE.CAPTURING})).toBeTruthy() ;      // accepted, because it has an event-mode defined
+                expect(eh.on( "go", cbs.cb2, {eventMode: Sway.EventHub.EVENT_MODE.BOTH})).toBeFalsy() ;            // falsy, because 'BOTH' includes 'CAPTURING' too
+                expect(eh.on( "go", cbs.cb2, {eventMode: Sway.EventHub.EVENT_MODE.CAPTURING})).toBeFalsy() ;       // nope
+                expect(eh.on( "go", cbs.cb2, {eventMode: Sway.EventHub.EVENT_MODE.BUBBLING})).toBeTruthy() ;       // different event mode
 
-                expect(eh.on( "bar", cbs.cb3, {eventMode: Sway.EventHub.EVENT_MODE.BOTH})).toBeTruthy() ;
-                expect(eh.on( "bar", cbs.cb3, {eventMode: Sway.EventHub.EVENT_MODE.CAPTURING})).toBeFalsy() ;       // 'BOTH' includes 'CAPTURING'
-                expect(eh.on( "bar", cbs.cb3, {eventMode: Sway.EventHub.EVENT_MODE.BUBBLING})).toBeFalsy() ;        // and 'BUBBLING'
-                expect(eh.on( "bar", cbs.cb3)).toBeTruthy() ;                                                       // true because no event mode is defined
+                expect(eh.on( "go", cbs.cb3, {eventMode: Sway.EventHub.EVENT_MODE.BOTH})).toBeTruthy() ;
+                expect(eh.on( "go", cbs.cb3, {eventMode: Sway.EventHub.EVENT_MODE.CAPTURING})).toBeFalsy() ;       // 'BOTH' includes 'CAPTURING'
+                expect(eh.on( "go", cbs.cb3, {eventMode: Sway.EventHub.EVENT_MODE.BUBBLING})).toBeFalsy() ;        // and 'BUBBLING'
+                expect(eh.on( "go", cbs.cb3)).toBeTruthy() ;                                                       // true because no event mode is defined
             }) ;
+
+        }) ;
+        it("using 'one'", function(){
 
         }) ;
         it("with a correct callback count", function(){
@@ -136,24 +160,19 @@ describe("Sway.EventHub", function() {
                 expect(Sway.eventHub.countTriggers("go")).toEqual(1) ;
                 */
         }) ;
-        it("for callbacks removed using 'off'", function() {
-            var on = [
-                { fn: cbs.cb1,   isOne: false }
-                , { fn: cbs.cb1, isOne: true }
-                , { fn: cbs.cb2, isOne: false }
-                , { fn: cbs.cb2, isOne: true }
-                , { fn: cbs.cb2, isOne: true, eventMode: Sway.EventHub.EVENT_MODE.BOTH }
-                , { fn: cbs.cb3, isOne: false, eventMode: Sway.EventHub.EVENT_MODE.CAPTURING }
-                , { fn: cbs.cb3, isOne: true, eventMode: Sway.EventHub.EVENT_MODE.BUBBLING }
-            ] ;
-            eh._rootStack.bar = {
-                __stack: {
-                    on: on                              // callback stack
-                    , parent: eh._rootStack             // parent namespace/object
-                    , triggers: 0                       // count triggers
-                    , disabled: false                   // by default the namespace/event is enabled
-                }
-            } ;
+        /*
+         var on = [
+         { fn: cbs.cb1,   isOne: false }
+         , { fn: cbs.cb1, isOne: true  }
+         , { fn: cbs.cb2, isOne: false }
+         , { fn: cbs.cb2, isOne: true  }
+         , { fn: cbs.cb2, isOne: true,  eventMode: Sway.EventHub.EVENT_MODE.BOTH      }
+         , { fn: cbs.cb3, isOne: false, eventMode: Sway.EventHub.EVENT_MODE.CAPTURING }
+         , { fn: cbs.cb3, isOne: true,  eventMode: Sway.EventHub.EVENT_MODE.BUBBLING  }
+         ] ;
+         */
+        it("and be able to remove callbacks using 'off'", function() {
+            var on = eh._rootStack.bar.__stack.on ;
 
             expect(eh.off('bar', cbs.cb1)).toEqual(2) ;
             expect(eh.off('bar', cbs.cb1)).toEqual(0) ;
@@ -175,57 +194,215 @@ describe("Sway.EventHub", function() {
 
             expect(eh._rootStack.bar.__stack.on.length).toEqual(1) ;
         }) ;
-        describe("and trigger callbacks", function(){
-            it("registered with 'on'", function(){
-
+        describe("and triggers them", function(){
+            it("without an event mode", function(){
+                expect('bar.foo', { eventMode: null })
             }) ;
-            it("registered with 'one'", function(){
+            it("in the Capturing event mode", function(){
                 eh.one("go", cbs.cb1) ;
                 expect(eh._rootStack.go.__stack.on.length).toEqual(1) ;
                 expect(eh._rootStack.go.__stack.on[0].fn).toEqual(cbs.cb1) ;
                 expect(eh._rootStack.go.__stack.on[0].isOne).toBeTruthy() ;
             });
-            it("with a correct trigger count", function(){
+            it("in the Bubbling event mode", function(){}) ;
+            it("in the Capturing and Bubbling event mode (BOTH)", function(){}) ;
+
+            it("and validate the trigger count", function(){
 
             });
         });
+    });
 
-        describe("with correct trigger behavior for", function(){
-            beforeEach(function(){
-                var onBar = [
+        // events without a namespace
+        describe("should register callbacks for namespaced events", function() {
+            beforeEach(function(){ // NOTE That the event 'bar' is already set by the first 'beforeEach'!
+                var onFoo1 = [
                         { fn: cbs.cb1,   isOne: false }
+                        , { fn: cbs.cb1,   isOne: true }
                         , { fn: cbs.cb2, isOne: true, eventMode: Sway.EventHub.EVENT_MODE.BOTH }
                         , { fn: cbs.cb3, isOne: false, eventMode: Sway.EventHub.EVENT_MODE.CAPTURING }
                         , { fn: cbs.cb4, isOne: true, eventMode: Sway.EventHub.EVENT_MODE.BUBBLING }
                     ]
-                    , onFoo = [
-                        { fn: cbs.cb1,   isOne: false }
+                    , onFoo2 = [
+                        { fn: cbs.cb1,   isOne: true }
+                        , { fn: cbs.cb1,   isOne: false }
                         , { fn: cbs.cb2, isOne: true, eventMode: Sway.EventHub.EVENT_MODE.BOTH }
                         , { fn: cbs.cb3, isOne: false, eventMode: Sway.EventHub.EVENT_MODE.CAPTURING }
                         , { fn: cbs.cb4, isOne: true, eventMode: Sway.EventHub.EVENT_MODE.BUBBLING }
                     ] ;
-                eh._rootStack.bar = {
+                eh._rootStack.bar.foo1 = {
                     __stack: {
-                        on: onBar                           // callback stack
-                        , parent: eh._rootStack             // parent namespace/object
+                        on: onFoo1                          // callback stack
+                        , parent: eh._rootStack.bar         // parent namespace/object
                         , triggers: 0                       // count triggers
                         , disabled: false                   // by default the namespace/event is enabled
                     }
                 } ;
                 eh._rootStack.bar.foo = {
                     __stack: {
-                        on: onFoo                           // callback stack
+                        on: onFoo2                          // callback stack
                         , parent: eh._rootStack.bar         // parent namespace/object
                         , triggers: 0                       // count triggers
                         , disabled: false                   // by default the namespace/event is enabled
                     }
                 } ;
             });
+            describe("using 'on'", function(){
+                it("without options", function() {
+                    eh.on("go", cbs.cb1) ;
+                    eh.on("go", cbs.cb2) ;
+                    expect(eh._rootStack.go.__stack.on.length).toEqual(2) ;
+                    expect(eh._rootStack.go.__stack.on[0].fn).toEqual(cbs.cb1) ;
+                    expect(eh._rootStack.go.__stack.on[1].fn).toEqual(cbs.cb2) ;
+                }) ;
+                it("with the 'eventMode' option", function(){
+                    eh.on("go", cbs.cb1) ;
+                    eh.on("go", cbs.cb2, { eventMode: Sway.EventHub.EVENT_MODE.BOTH}) ;
+                    eh.on("go", cbs.cb3, { eventMode: Sway.EventHub.EVENT_MODE.CAPTURING}) ;
+                    eh.on("go", cbs.cb4, { eventMode: Sway.EventHub.EVENT_MODE.BUBBLING}) ;
 
-            it("registered callbacks", function() {
-                expect(eh.countCallbacks('bar')).toEqual(3) ;
+                    expect(eh._rootStack.go.__stack.on.length).toEqual(4) ;
+
+                    expect(eh._rootStack.go.__stack.on[0].fn).toEqual(cbs.cb1) ;
+                    expect(eh._rootStack.go.__stack.on[0].eventMode).toBeUndefined() ;
+
+                    expect(eh._rootStack.go.__stack.on[1].fn).toEqual(cbs.cb2) ;
+                    expect(eh._rootStack.go.__stack.on[1].eventMode).toEqual(Sway.EventHub.EVENT_MODE.BOTH) ;
+
+                    expect(eh._rootStack.go.__stack.on[2].fn).toEqual(cbs.cb3) ;
+                    expect(eh._rootStack.go.__stack.on[2].eventMode).toEqual(Sway.EventHub.EVENT_MODE.CAPTURING) ;
+
+                    expect(eh._rootStack.go.__stack.on[3].fn).toEqual(cbs.cb4) ;
+                    expect(eh._rootStack.go.__stack.on[3].eventMode).toEqual(Sway.EventHub.EVENT_MODE.BUBBLING) ;
+                }) ;
+                it("with the 'prepend' option", function(){
+                    expect(eh.on("go", cbs.cb1)).toBeTruthy() ;
+                    expect(eh.on("go", cbs.cb2, { prepend: false})).toBeTruthy() ;
+                    expect(eh.on("go", cbs.cb3, { prepend: true })).toBeTruthy() ;
+                    expect(eh.on("go", cbs.cb4, { prepend: true })).toBeTruthy() ;
+
+                    expect(eh._rootStack.go.__stack.on.length).toEqual(4) ;
+                    expect(eh._rootStack.go.__stack.on[0].fn).toEqual(cbs.cb4) ;
+                    expect(eh._rootStack.go.__stack.on[1].fn).toEqual(cbs.cb3) ;
+                    expect(eh._rootStack.go.__stack.on[2].fn).toEqual(cbs.cb1) ;
+                    expect(eh._rootStack.go.__stack.on[3].fn).toEqual(cbs.cb2) ;
+                }) ;
+                it("with 'allowMultiple' set to TRUE", function(){
+                    expect(eh.allowMultiple).toBeTruthy() ;                                 // by default this value is set to TRUE
+                    expect(eh.setAllowMultiple(true)).toBe(eh) ;                            // chainable
+                    expect(eh.on( "bar", cbs.cb1)).toBeTruthy() ;                           // default behavior is to accept
+                    expect(eh.on( "bar", cbs.cb1)).toBeTruthy() ;                           // the same callback multiple times
+                    expect(eh._rootStack.bar.__stack.on.length).toEqual(2) ;                // check the internal stack
+                }) ;
+                it("with 'allowMultiple' set to FALSE", function(){
+                    expect(eh.setAllowMultiple(false)).toBe(eh) ;                           // chainable
+                    expect(eh.on( "bar", cbs.cb2)).toBeTruthy() ;
+                    expect(eh.on( "bar", cbs.cb2)).toBeFalsy() ;                            // nope, its registered already
+                    expect(eh.on( "bar", cbs.cb2, {})).toBeFalsy() ;                        // idem
+                    expect(eh.on( "bar", cbs.cb2, {eventMode: Sway.EventHub.EVENT_MODE.CAPTURING})).toBeTruthy() ;      // accepted, because it has an event-mode defined
+                    expect(eh.on( "bar", cbs.cb2, {eventMode: Sway.EventHub.EVENT_MODE.BOTH})).toBeFalsy() ;            // falsy, because 'BOTH' includes 'CAPTURING' too
+                    expect(eh.on( "bar", cbs.cb2, {eventMode: Sway.EventHub.EVENT_MODE.CAPTURING})).toBeFalsy() ;       // nope
+                    expect(eh.on( "bar", cbs.cb2, {eventMode: Sway.EventHub.EVENT_MODE.BUBBLING})).toBeTruthy() ;       // different event mode
+
+                    expect(eh.on( "bar", cbs.cb3, {eventMode: Sway.EventHub.EVENT_MODE.BOTH})).toBeTruthy() ;
+                    expect(eh.on( "bar", cbs.cb3, {eventMode: Sway.EventHub.EVENT_MODE.CAPTURING})).toBeFalsy() ;       // 'BOTH' includes 'CAPTURING'
+                    expect(eh.on( "bar", cbs.cb3, {eventMode: Sway.EventHub.EVENT_MODE.BUBBLING})).toBeFalsy() ;        // and 'BUBBLING'
+                    expect(eh.on( "bar", cbs.cb3)).toBeTruthy() ;                                                       // true because no event mode is defined
+                }) ;
+
             }) ;
-            it("the capturing and bubbling phase", function() {}) ;
+            it("using 'one'", function(){
+
+            }) ;
+            it("with a correct callback count", function(){
+                /*
+                 Sway.eventHub.on("go", Sway.callbacks.cb1) ;
+                 Sway.eventHub.on("go", Sway.callbacks.cb2, { eventMode: Sway.EventHub.EVENT_MODE.CAPTURING}) ;
+                 Sway.eventHub.on("go", Sway.callbacks.cb2, { eventMode: Sway.EventHub.EVENT_MODE.BUBBLING}) ;
+                 Sway.eventHub.on("go", Sway.callbacks.cb3) ;
+                 Sway.eventHub.on("go", Sway.callbacks.cb4) ;
+
+                 expect(Sway.eventHub.countCallbacks()).toEqual(3) ;
+                 expect(Sway.eventHub.countCallbacks("go")).toEqual(3) ;
+                 expect(Sway.eventHub.countCallbacks("", { eventMode: Sway.EventHub.EVENT_MODE.CAPTURING})).toEqual(1) ;
+                 expect(Sway.eventHub.countCallbacks("go", { eventMode: Sway.EventHub.EVENT_MODE.CAPTURING})).toEqual(1) ;
+                 expect(Sway.eventHub.countCallbacks("", { eventMode: Sway.EventHub.EVENT_MODE.BUBBLING})).toEqual(1) ;
+                 expect(Sway.eventHub.countCallbacks("go", { eventMode: Sway.EventHub.EVENT_MODE.BUBBLING})).toEqual(1) ;
+
+                 expect(Sway.eventHub.trigger("go")).toEqual(3) ;
+                 expect(Sway.eventHub.countTriggers()).toEqual(1) ;
+                 expect(Sway.eventHub.countTriggers("go")).toEqual(1) ;
+                 */
+            }) ;
+            it("and be able to remove callbacks using 'off'", function() {
+                var on = [
+                    { fn: cbs.cb1,   isOne: false }
+                    , { fn: cbs.cb1, isOne: true }
+                    , { fn: cbs.cb2, isOne: false }
+                    , { fn: cbs.cb2, isOne: true }
+                    , { fn: cbs.cb2, isOne: true, eventMode: Sway.EventHub.EVENT_MODE.BOTH }
+                    , { fn: cbs.cb3, isOne: false, eventMode: Sway.EventHub.EVENT_MODE.CAPTURING }
+                    , { fn: cbs.cb3, isOne: true, eventMode: Sway.EventHub.EVENT_MODE.BUBBLING }
+                ] ;
+                eh._rootStack.bar = {
+                    __stack: {
+                        on: on                              // callback stack
+                        , parent: eh._rootStack             // parent namespace/object
+                        , triggers: 0                       // count triggers
+                        , disabled: false                   // by default the namespace/event is enabled
+                    }
+                } ;
+
+                expect(eh.off('bar', cbs.cb1)).toEqual(2) ;
+                expect(eh.off('bar', cbs.cb1)).toEqual(0) ;
+                expect(on[0].fn).toBe(cbs.cb2) ;
+
+                expect(eh.off('bar', cbs.cb2, { isOne: false})).toEqual(1) ;
+                expect(on[0].fn).toBe(cbs.cb2) ;
+                expect(on[0].isOne).toBeTruthy() ;
+                expect(eh.off('bar', cbs.cb2, { isOne: false, eventMode: Sway.EventHub.EVENT_MODE.BOTH })).toEqual(0) ;
+                expect(eh.off('bar', cbs.cb2, { isOne: true, eventMode: Sway.EventHub.EVENT_MODE.BOTH })).toEqual(1) ;
+                expect(on[0].fn).toBe(cbs.cb2) ;
+                expect(on[0].isOne).toBeTruthy() ;
+
+                expect(eh.off('bar', cbs.cb3, { isOne: false})).toEqual(0) ;
+                expect(eh.off('bar', cbs.cb3, { isOne: false, eventMode: Sway.EventHub.EVENT_MODE.CAPTURING })).toEqual(1) ;
+
+                expect(eh.off('bar', cbs.cb3, { isOne: false, eventMode: Sway.EventHub.EVENT_MODE.BUBBLING })).toEqual(0) ;
+                expect(eh.off('bar', cbs.cb3, { eventMode: Sway.EventHub.EVENT_MODE.BUBBLING })).toEqual(1) ;
+
+                expect(eh._rootStack.bar.__stack.on.length).toEqual(1) ;
+            }) ;
+            describe("and triggers them", function(){
+
+                it("without an event mode", function(){
+                    expect('bar.foo', { eventMode: null });
+                }) ;
+                it("in the Capturing event mode", function(){
+                    eh.one("go", cbs.cb1) ;
+                    expect(eh._rootStack.go.__stack.on.length).toEqual(1) ;
+                    expect(eh._rootStack.go.__stack.on[0].fn).toEqual(cbs.cb1) ;
+                    expect(eh._rootStack.go.__stack.on[0].isOne).toBeTruthy() ;
+                });
+                it("in the Bubbling event mode", function(){}) ;
+                it("in the Capturing and Bubbling event mode (BOTH)", function(){}) ;
+
+                it("and validate the trigger count", function(){
+
+                });
+            });
+        });
+
+            /*
+        describe("with triggers for", function(){
+
+
+            describe("registered callbacks", function() {
+                it("without an event-mode definition", function() {});
+                it("with  callbacks forthe capturing and bubbling phase", function() {}) ;
+                it("the capturing and bubbling phase", function() {}) ;
+                //expect(eh.countCallbacks('bar')).toEqual(3) ;
+            }) ;
 
         }) ;
 
@@ -574,4 +751,5 @@ describe("Sway.EventHub", function() {
             expect(Sway.eventHub.trigger("bar", null, {traverse: true})).toEqual(3) ;
         }) ;
     }) ;
+    */
 });
