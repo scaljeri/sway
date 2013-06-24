@@ -268,8 +268,8 @@ window.Sway = window.Sway || {}; // make sure it exists
          * @method countCallbacks
          * @param {Sting} eventName the event name for which all registered callbacks are counted (including nested event names).
          * @param {Object} [options] determine the count behavior
-         *      @param {String} [eventMode] the event mode; Sway.EventHub.CAPTURING or Sway.EventHub.BUBBLE
-         *      @param {Boolean} [traverse=false] traverse all nested namepsaces
+         *      @param {String} [options.eventMode] the event mode; Sway.EventHub.CAPTURING or Sway.EventHub.BUBBLE
+         *      @param {Boolean} [options.traverse=false] traverse all nested namepsaces
          * @return {Number} the number of callback functions inside 'eventName'. Returns -1 if the event or namespace does not exists
          * TODO: etype is not used
          */, countCallbacks: function (eventName, options) {
