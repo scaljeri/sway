@@ -165,32 +165,30 @@ describe("Sway.EventHub", function() {
             expect(on.length).toEqual(0) ;
 
         }) ;
-        /*
-         var on = [
-         { fn: cbs.cb1,   isOne: false }
-         , { fn: cbs.cb1, isOne: true  }
-         , { fn: cbs.cb2, isOne: false }
-         , { fn: cbs.cb2, isOne: true  }
-         , { fn: cbs.cb2, isOne: true,  eventMode: Sway.EventHub.EVENT_MODE.BOTH      }
-         , { fn: cbs.cb3, isOne: false, eventMode: Sway.EventHub.EVENT_MODE.CAPTURING }
-         , { fn: cbs.cb3, isOne: true,  eventMode: Sway.EventHub.EVENT_MODE.BUBBLING  }
-         ] ;
-         */
         describe("and triggers them", function(){
             it("without an event mode", function(){
-                expect('bar.foo', { eventMode: null })
+                expect(eh.trigger('bar')).toEqual(4) ;
+                expect(eh._rootStack.bar.__stack.on.length).toEqual(5) ; // 2 callbacks should have been removed
+                expect(eh.trigger('bar')).toEqual(2) ;
             }) ;
             it("in the Capturing event mode", function(){
-                eh.one("go", cbs.cb1) ;
-                expect(eh._rootStack.go.__stack.on.length).toEqual(1) ;
-                expect(eh._rootStack.go.__stack.on[0].fn).toEqual(cbs.cb1) ;
-                expect(eh._rootStack.go.__stack.on[0].isOne).toBeTruthy() ;
+                expect(eh.trigger('bar', {eventMode: Sway.EventHub.EVENT_MODE.CAPTURING })).toEqual(4) ;
+                expect(cbs.cb3).not.toHaveBeenCalled() ;
             });
-            it("in the Bubbling event mode", function(){}) ;
-            it("in the Capturing and Bubbling event mode (BOTH)", function(){}) ;
+            it("in the Bubbling event mode", function(){
+                expect(eh.trigger('bar', {eventMode: Sway.EventHub.EVENT_MODE.BUBBLING })).toEqual(4) ;
+                expect(cbs.cb3).not.toHaveBeenCalled() ;
+            }) ;
+            it("in the Capturing and Bubbling event mode (BOTH)", function(){
+                expect(eh.trigger('bar', {eventMode: Sway.EventHub.EVENT_MODE.BOTH })).toEqual(4) ;
+                expect(cbs.cb3).not.toHaveBeenCalled() ;
+            }) ;
 
             it("and validate the trigger count", function(){
-
+                eh.trigger('bar') ;
+                expect(eh.countTriggers()).toEqual(1) ;
+                eh.trigger('bar') ;
+                expect(eh.countTriggers()).toEqual(2) ;
             });
         });
     });
