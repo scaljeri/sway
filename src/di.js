@@ -113,7 +113,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
          * @method getInstance
          * @param  {String} contract name
          * @param  {Array} [params] constructor parameters
-         * @returns {Object} Class instance
+         * @return {Object} Class instance
          * @example
          var ajax = App.di.getInstance("ajax") ;
          **/

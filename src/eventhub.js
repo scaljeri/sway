@@ -47,12 +47,14 @@ window.Sway = window.Sway || {}; // make sure it exists
                  * Defines the bubbling event mode
                  * @property {String} EVENT_MODE.BUBBLING
                  * @static
-                 */, BUBBLING: 'bubble'            // event goes from target to root
+                 */
+                , BUBBLING: 'bubble'            // event goes from target to root
                 /**
                  * Represent both capturing and bubbling event modes
                  * @property {String} EVENT_MODE.ALL
                  * @static
-                 */, BOTH: 'both'
+                 */
+                , BOTH: 'both'
             }
             /* PRIVATE PROPERTY
              * Default setting, to allow the same callback to be registered multiple times to the same event
@@ -117,7 +119,8 @@ window.Sway = window.Sway || {}; // make sure it exists
          * @method setAllowMultiple
          * @chainable
          * @param {Boolean} state accept multiple registrations of the same function for the same event
-         */, setAllowMultiple: function (state) {
+         */
+        , setAllowMultiple: function (state) {
             this.allowMultiple = state;
             return this;
         }
@@ -128,7 +131,8 @@ window.Sway = window.Sway || {}; // make sure it exists
          * @param {String} eventName name of the event
          * @param {Object} [options] configuration
          *  @param {Boolean} [options.traverse=false] disable nested events as wel if set to TRUE
-         */, enable: function (eventName, options) {
+         */
+        , enable: function (eventName, options) {
             var namespace = getStack.call(this, eventName);
 
             changeStateEvent.call(this, namespace || {}, false, options || {});
@@ -153,7 +157,8 @@ window.Sway = window.Sway || {}; // make sure it exists
          * @param {String} eventNname name of the event
          * @param {Object} [options] configuration
          *  @param {Boolean} [options.traverse=false] disable nested events as wel if set to TRUE
-         */, disable: function (eventName, options) {
+         */
+        , disable: function (eventName, options) {
             var namespace = getStack.call(this, eventName);
 
             changeStateEvent.call(this, namespace || {}, true, options || {});
@@ -185,7 +190,8 @@ window.Sway = window.Sway || {}; // make sure it exists
          Sway.eventHub.trigger('ui', null, {traverse: true} ) ;                     // trigger all nested events and namespaces inside the 'ui' namespace
          Sway.eventHub.trigger('ui.update', {authenticated: true} ) ;               // trigger the 'update' event inside the 'ui' namespace
          Sway.eventHub.trigger('ui', {authenticated: true}, {traverse: true} ) ;    // trigger all nested events and namespaces inside the 'ui' namespace
-         */, trigger: function (eventName, data, options) {
+         */
+        , trigger: function (eventName, data, options) {
             var retVal = 0
                 , namespace;
             if ((namespace = getStack.call(this, eventName)) && !!!namespace.__stack.disabled) {  // check if the eventName exists and not being disabled
@@ -215,7 +221,8 @@ window.Sway = window.Sway || {}; // make sure it exists
          * @example
          Sway.eventHub.on( 'ui.update', this.update.bind(this) ) ;
          Sway.eventHub.on( 'ui.update', this.update.bind(this), {prepend: true, eventMode: Sway.EventHub.EVENT_MODE.CAPTURING} ) ;
-         */, on: function (eventName, callback, options) {
+         */
+        , on: function (eventName, callback, options) {
             return addCallbackToStack.call(this, eventName, callback, options || {}) !== null;
         }
 
@@ -232,7 +239,8 @@ window.Sway = window.Sway || {}; // make sure it exists
          *      @param {String} [options.eventMode=null] the event mode for which the callback is triggered too. Available modes are
          *          <tt>capture</tt> and <tt>bubble</tt>
          * @return {Boolean} TRUE if the callback is registered successfully. It will fail if the callback was already registered
-         */, one: function (eventName, callback, options) {
+         */
+        , one: function (eventName, callback, options) {
             var obj = addCallbackToStack.call(this, eventName, callback, options || {});
             if (obj) { // if obj exists, the callback was added.
                 obj.isOne = true;
@@ -257,7 +265,8 @@ window.Sway = window.Sway || {}; // make sure it exists
          Sway.eventHub.off('ui.update', this.update) ;
          Sway.eventHub.off('ui.update', this.update, {eventMode: Sway.EventHub.EVENT_MODE.CAPTURING}) ;
          Sway.eventHub.off('ui') ;
-         */, off: function (eventName, callback, options) {
+         */
+        , off: function (eventName, callback, options) {
             var stack = getStack.call(this, eventName);
             return removeFromNamespace(stack, callback, options || {});
         }
@@ -267,12 +276,13 @@ window.Sway = window.Sway || {}; // make sure it exists
          *
          * @method countCallbacks
          * @param {Sting} eventName the event name for which all registered callbacks are counted (including nested event names).
-         * @param {Object} [options] determine the count behavior
+         * @param {Object} [options] configuration
          *      @param {String} [options.eventMode] the event mode; Sway.EventHub.CAPTURING or Sway.EventHub.BUBBLE
          *      @param {Boolean} [options.traverse=false] traverse all nested namepsaces
          * @return {Number} the number of callback functions inside 'eventName'. Returns -1 if the event or namespace does not exists
          * TODO: etype is not used
-         */, countCallbacks: function (eventName, options) {
+         */
+        , countCallbacks: function (eventName, options) {
             if (!eventName) { // => count all callback function within this namespace
                 (options = options || {}).traverse = true;
             }
@@ -285,9 +295,10 @@ window.Sway = window.Sway || {}; // make sure it exists
          * @method countTrigger
          * @param {sting} [eventName] the event name
          * @param {Object} [options]
-         *      @param {Boolean} [traverse=false] traverse all nested namepsaces
+         *      @param {Boolean} [options.traverse=false] traverse all nested namepsaces
          * @return {Number} trigger count. -1 is returned if the event name does not exist
-         */, countTriggers: function (eventName, options) {
+         */
+        , countTriggers: function (eventName, options) {
             if (!eventName) { // => count all triggers
                 (options = options || {}).traverse = true;
             }

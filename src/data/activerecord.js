@@ -58,7 +58,7 @@ window.Sway.data = window.Sway.data || {} ;
      * @method get
      * @static
      * @param {String} modelName name of the model
-     * @returns {Class} a model
+     * @return {Class} a model
      */
     ActiveRecord.get = function(modelName) {
         return models[modelName] ;
@@ -238,7 +238,7 @@ window.Sway.data = window.Sway.data || {} ;
              *
              * returns all data in JSON format
              * @method toJSON
-             * @returns {Object}
+             * @return {Object}
              */
             , toJSON: function() {
                 return this.__data ;

@@ -46,9 +46,9 @@
 				append: function(content, callback) {},
 				exists: function(callback) { self.fileExists(filename, path, callback); },
 				remove: function(callback) { self.removeFile(filename, path, callback); }
-			}
+			};
 		},
-		/**
+		/*
 FileEntry interface is provided for working with files:
 http://www.mosync.com/files/imports/doxygen/latest/html5/filewriter.md.html
 fileEntry.isFile === true
@@ -81,7 +81,7 @@ fileEntry.createWriter(successCallback, opt_errorCallback);
 		appendFile: function(content, filename, path, callback) {
 			this.writeFile(content, filename, path, callback, { append: true }) ;
 		},
-		/**
+		/*
 			http://www.mosync.com/files/imports/doxygen/latest/html5/filereader.md.html
 		*/
 		readFile: function(filename, path, callback) {
@@ -166,9 +166,9 @@ fs.root.getDirectory('music/genres/jazz', {}, function(dirEntry) {
   				}, errorHandler);
 				*/
 
-	/**
+	/*
 		https://developer.mozilla.org/en-US/docs/DOM/File_API/File_System_API/FileError
-	**/
+	*/
 	function errorHandler(e) {
   		var msg = '';
 			
