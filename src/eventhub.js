@@ -195,9 +195,9 @@ window.Sway = window.Sway || {}; // make sure it exists
             var retVal = 0
                 , namespace;
             if ((namespace = getStack.call(this, eventName)) && !!!namespace.__stack.disabled) {  // check if the eventName exists and not being disabled
-                retVal = triggerEventCapture.call(this, eventName || '', data) +              // NOTE that eventName can be empty!
+                retVal = triggerEventCapture.call(this, eventName || '', data, options||{}) +              // NOTE that eventName can be empty!
                     triggerEvent(namespace, data, options || {}) +
-                    ((eventName || '').match(/\./) !== null ? triggerEventBubble(namespace, data) : 0);
+                    ((eventName || '').match(/\./) !== null ? triggerEventBubble(namespace, data, options||{}) : 0);
 
                 namespace.__stack.triggers++;                                             // count the trigger
                 namespace.__stack.one = [];                                                // cleanup
@@ -514,14 +514,14 @@ window.Sway = window.Sway || {}; // make sure it exists
         return stack;
     }
 
-    function triggerEventCapture(eventName, data) {
+    function triggerEventCapture(eventName, data, options) {
         var i
             , namespace = this._rootStack
             , parts = eventName.split('.') || []
             , eventMode = DEFAULTS.EVENT_MODE.CAPTURING
             , retVal = 0; // callCallbacks(namespace, eventMode) ; -> because you cannot bind callbacks to the root
 
-        if (parts.length > 1) {
+        if (parts.length > 1 && (!options.eventMode || options.eventMode === DEFAULTS.EVENT_MODE.BOTH || options.eventMode === DEFAULTS.EVENT_MODE.CAPTURING)) {
             for (i = 0; i < parts.length - 1; i++) {        // loop through namespace (not the last part)
                 namespace = namespace[parts[i]];
                 retVal += callCallbacks(namespace, data, eventMode);
@@ -530,14 +530,16 @@ window.Sway = window.Sway || {}; // make sure it exists
         return retVal;
     }
 
-    function triggerEventBubble(namespace, data) {
+    function triggerEventBubble(namespace, data, options) {
         //var namespace = namespaces.__stack.parent ;
         var eventMode = DEFAULTS.EVENT_MODE.BUBBLING
             , retVal = 0;
 
-        while (namespace.__stack.parent) {
-            namespace = namespace.__stack.parent;
-            retVal += callCallbacks(namespace, data, eventMode);
+        if ( !options.eventMode || options.eventMode === DEFAULTS.EVENT_MODE.BOTH || options.eventMode === DEFAULTS.EVENT_MODE.BUBBLING) {
+            while (namespace.__stack.parent) {
+                namespace = namespace.__stack.parent;
+                retVal += callCallbacks(namespace, data, eventMode);
+            }
         }
         return retVal;
     }
@@ -579,7 +581,7 @@ window.Sway = window.Sway || {}; // make sure it exists
         if (!namespace.__stack.disabled) {
             for (i = 0; i < namespace.__stack.on.length; i++) {           // loop through all callbacks
                 callback = namespace.__stack.on[i];
-                if (callback.eventMode === eventMode) {                   // trigger callbacks depending on their event-mode
+                if (callback.eventMode === eventMode || eventMode && callback.eventMode === DEFAULTS.EVENT_MODE.BOTH ) { // trigger callbacks depending on their event-mode
                     retVal++;                                             // count this trigger
                     callback.fn(data);                                     // call the callback
                     if (callback.isOne) {
