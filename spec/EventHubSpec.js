@@ -156,14 +156,25 @@ describe("Sway.EventHub", function() {
 
             expect(eh.off('bar', cbs.cb1)).toEqual(2) ;
             expect(on[0].fn).toBe(cbs.cb2) ;
-            expect(eh.off('bar', cbs.cb2)).toEqual(2) ;
-            expect(on[0].fn).toBe(cbs.cb2) ;
+            //expect(eh.off('bar', cbs.cb2)).toEqual(2) ;
+            //expect(on[0].fn).toBe(cbs.cb2) ;
             expect(eh.off('bar', cbs.cb2, { eventMode: Sway.EventHub.EVENT_MODE.BOTH })).toEqual(1) ;
             expect(eh.off('bar', cbs.cb3, { isOne: false, eventMode: Sway.EventHub.EVENT_MODE.CAPTURING })).toEqual(1) ;
             expect(eh.off('bar', cbs.cb4, { isOne: true, eventMode: Sway.EventHub.EVENT_MODE.BUBBLING })).toEqual(0) ;
             expect(eh.off('bar', cbs.cb4, { isOne: false, eventMode: Sway.EventHub.EVENT_MODE.BUBBLING })).toEqual(1) ;
-            expect(on.length).toEqual(0) ;
+            expect(on.length).toEqual(2) ;
+            expect(eh.off('bar')).toEqual(2) ;
 
+        }) ;
+        it("and possible to disable/enable events", function(){
+            expect(eh._rootStack.bar.__stack.disabled).toBeFalsy() ;
+            expect(eh.isDisabled('bar')).toBeFalsy() ;
+            expect(eh.disable('bar')).toBe(eh) ;
+            expect(eh._rootStack.bar.__stack.disabled).toBeTruthy() ;
+            expect(eh.isDisabled('bar')).toBeTruthy() ;
+            expect(eh.enable('bar')).toBe(eh) ;
+            expect(eh._rootStack.bar.__stack.disabled).toBeFalsy() ;
+            expect(eh.isDisabled('bar')).toBeFalsy() ;
         }) ;
         describe("and triggers them", function(){
             it("without an event mode", function(){
@@ -182,6 +193,10 @@ describe("Sway.EventHub", function() {
             it("in the Capturing and Bubbling event mode (BOTH)", function(){
                 expect(eh.trigger('bar', {eventMode: Sway.EventHub.EVENT_MODE.BOTH })).toEqual(4) ;
                 expect(cbs.cb3).not.toHaveBeenCalled() ;
+            }) ;
+            it("when the event is disabled", function(){
+                eh.disable('bar') ;
+                expect(eh.trigger('bar')).toEqual(0) ;
             }) ;
 
             it("and validate the trigger count", function(){
@@ -318,6 +333,12 @@ describe("Sway.EventHub", function() {
                 expect(eh.countCallbacks('bar.foo', { eventMode: Sway.EventHub.EVENT_MODE.BOTH })).toEqual(1) ;
                 expect(eh.countCallbacks('bar.foo', { eventMode: Sway.EventHub.EVENT_MODE.CAPTURING })).toEqual(1) ;
                 expect(eh.countCallbacks('bar.foo', { eventMode: Sway.EventHub.EVENT_MODE.BUBBLING })).toEqual(1) ;
+
+                expect(eh.countCallbacks()).toEqual(10) ;
+                expect(eh.countCallbacks('bar', {traverse: true})).toEqual(10) ;
+                expect(eh.countCallbacks('bar', { traverse: true, eventMode: Sway.EventHub.EVENT_MODE.BOTH })).toEqual(4) ;
+                expect(eh.countCallbacks('bar', { traverse: true, eventMode: Sway.EventHub.EVENT_MODE.CAPTURING })).toEqual(4) ;
+                expect(eh.countCallbacks('bar', { traverse: true, eventMode: Sway.EventHub.EVENT_MODE.BUBBLING })).toEqual(4) ;
             }) ;
 
             it("and be able to remove callbacks using 'off'", function() {
@@ -333,6 +354,27 @@ describe("Sway.EventHub", function() {
                 expect(eh.off('bar.foo', cbs.cb3, { isOne: false, eventMode: Sway.EventHub.EVENT_MODE.BUBBLING })).toEqual(0) ;
                 expect(eh.off('bar.foo', cbs.cb4, { isOne: true, eventMode: Sway.EventHub.EVENT_MODE.BUBBLING })).toEqual(1) ;
                 expect(on.length).toEqual(0) ;
+
+                // TODO
+                expect(eh.off('bar', cbs.cb1, {traverse:true})).toEqual(4) ;
+                expect(eh.off('bar')).toEqual(4) ;
+                expect(eh.off('bar', {traverse:true})).toEqual(4) ;
+            }) ;
+            it("and possible to disable/enable events", function(){
+                expect(eh._rootStack.bar.foo.__stack.disabled).toBeFalsy() ;
+                expect(eh.isDisabled('bar.foo')).toBeFalsy() ;
+                expect(eh.disable('bar.foo')).toBe(eh) ;
+                expect(eh._rootStack.bar.foo.__stack.disabled).toBeTruthy() ;
+                expect(eh.isDisabled('bar.foo')).toBeTruthy() ;
+                expect(eh.enable('bar.foo')).toBe(eh) ;
+                expect(eh._rootStack.bar.foo.__stack.disabled).toBeFalsy() ;
+                expect(eh.isDisabled('bar.foo')).toBeFalsy() ;
+
+                expect(eh.disable('bar.foo', {traverse: true})).toBe(eh) ;
+                expect(eh._rootStack.bar.__stack.disabled).toBeFalsy() ;
+                expect(eh._rootStack.bar.foo.__stack.disabled).toBeTruthy() ;
+                expect(eh._rootStack.bar.foo.foo3.__stack.disabled).toBeTruthy() ;
+
             }) ;
 
         describe("and triggers them", function(){
@@ -359,6 +401,14 @@ describe("Sway.EventHub", function() {
             it("with the 'traverse' option", function(){
                 expect(eh.trigger('bar.foo', [], {traverse: true})).toEqual(7) ;
                 expect(cbs.cb1).toHaveBeenCalledWith(["cb2", "cb3", "cb1", "cb1", "cb1", "cb1", "cb4"]);
+            }) ;
+            it("when the event is disabled", function(){
+                eh.disable('bar.foo') ;
+                expect(eh.trigger('bar.foo')).toEqual(0) ;
+                expect(eh.trigger('bar.foo'), {traverse: true}).toEqual(0) ;
+                expect(eh.trigger('bar.foo.foo3', [])).toEqual(5) ;
+                expect(cbs.cb1).toHaveBeenCalledWith(["cb2", "cb3", "cb1", "cb1", "cb4"]);
+
             }) ;
             it("and validate the trigger count", function(){
                 eh.trigger('bar.foo') ;
