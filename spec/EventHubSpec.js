@@ -355,10 +355,10 @@ describe("Sway.EventHub", function() {
                 expect(eh.off('bar.foo', cbs.cb4, { isOne: true, eventMode: Sway.EventHub.EVENT_MODE.BUBBLING })).toEqual(1) ;
                 expect(on.length).toEqual(0) ;
 
-                // TODO
-                expect(eh.off('bar', cbs.cb1, {traverse:true})).toEqual(4) ;
-                expect(eh.off('bar')).toEqual(4) ;
-                expect(eh.off('bar', {traverse:true})).toEqual(4) ;
+                expect(eh.off('bar', cbs.cb1, {traverse:true})).toEqual(6) ;
+                expect(eh.off('bar', {traverse:true})).toEqual(2) ;
+                expect(eh.off('bar', {traverse:true, eventMode: Sway.EventHub.EVENT_MODE.BUBBLING })).toEqual(3) ;
+                expect(eh.off('bar', cbs.cb3, {traverse:true, eventMode: Sway.EventHub.EVENT_MODE.CAPTURING })).toEqual(3) ;
             }) ;
             it("and possible to disable/enable events", function(){
                 expect(eh._rootStack.bar.foo.__stack.disabled).toBeFalsy() ;
