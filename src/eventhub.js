@@ -1,6 +1,6 @@
 window.Sway = window.Sway || {}; // make sure it exists
 
-(function (ns) {
+(function (ns, DEBUG) {
     var DEFAULTS = {
             /**
              * Contains available event modes. For example, if <tt>bar.foo</tt> is triggered, both event modes do the opposite
@@ -267,6 +267,10 @@ window.Sway = window.Sway || {}; // make sure it exists
          Sway.eventHub.off('ui') ;
          */
         , off: function (eventName, callback, options) {
+            if ( typeof callback !== 'function' ) {                         // fix input
+                options = callback ;
+                callback = null ;
+            }
             var stack = getStack.call(this, eventName);
             return removeFromNamespace(stack, callback, options || {});
         }
@@ -417,7 +421,7 @@ window.Sway = window.Sway || {}; // make sure it exists
         if (typeof(eventName) === "string" && callback && typeof(callback) === "function") { // OK
             retVal = true;
         }
-        else if (ns.DEBUG) { // Wrong...
+        else if (DEBUG) { // Wrong...
             console.warn("Cannot bind the callback function to the event nam ( eventName=" + eventName + ",  callback=" + callback + ")");
         }
         return retVal;
@@ -594,4 +598,4 @@ window.Sway = window.Sway || {}; // make sure it exists
     }
 
     ns.EventHub = Eventhub;
-})(window.Sway);
+})(window.Sway, window.Sway.DEBUG);
