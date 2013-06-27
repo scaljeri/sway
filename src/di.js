@@ -1,6 +1,6 @@
 window.Sway = window.Sway || {} ; // make sure it exists
 
-(function(console, ns) {
+(function(ns, console, DEBUG) {
 
     var depCheck = []                                   // used to check for circular dependencies
     /**
@@ -87,17 +87,12 @@ window.Sway = window.Sway || {} ; // make sure it exists
          **/
         register: function(contract, classRef, params, options)
         {
-            if ( !options && !Array.isArray(params) ) { // fix input
+            if ( params && !Array.isArray(params) ) { // fix input
                 options = params ;
                 params = [] ;
             }
 
-            if ( !classRef ) {
-                console.warn('the Class is undefined for contract ' + contract ) ;
-            }
-            else {
-                this._contracts[contract] = { classRef: classRef, params: params||[], options: options||{} } ;
-            }
+            this._contracts[contract] = { classRef: classRef, params: params||[], options: options||{} } ;
             return this ;
         },
 
@@ -107,21 +102,23 @@ window.Sway = window.Sway || {} ; // make sure it exists
          *
          * @method getInstance
          * @param  {String} contract name
-         * @param  {Array} [params] constructor parameters
+         * @param  {Array} [params] constructor parameters which, if defined, replaces its default arguments (see {{#crossLink "Sway.DI/register:method"}}{{/crossLink}} )
          * @return {Object} Class instance
          * @example
+         App.di.register("ajax", ["rest"]) ;
          var ajax = App.di.getInstance("ajax") ;
+         ajax = App.di.getInstance("ajax", ["rest", true]) ;    //
          **/
         getInstance: function(contract, params) {
             var instance = null ;
 
             if ( this._contracts[contract]  ) {                                      // it should exist
-                if (this._contracts[contract].options.singleton )                    // if singleton, params arg is not used!!
+                if (this._contracts[contract].options.singleton )
                 {
-                    instance = getSingletonInstance.call(this, contract) ;
+                    instance = getSingletonInstance.call(this, contract, params) ;
                 } else //create a new instance every time
                 {
-                    instance = createInstance.call(this, contract, params||this._contracts[contract].params||[]) ;
+                    instance = createInstance.call(this, contract, params) ;
                 }
             }
             return instance ;
@@ -141,10 +138,13 @@ window.Sway = window.Sway || {} ; // make sure it exists
     /* ***** PRIVATE HELPERS ***** */
 
     /* Create or reuse a singleton instance */
-    function getSingletonInstance(contract) {
+    function getSingletonInstance(contract, params) {
         var config = this._contracts[contract] ;
+        if ( params ) {
+            config.params = params ;
+        }
 
-        if ( config.instance === undefined ) {
+        if ( config.instance === undefined || params ) {
             config.instance = createInstance.call(this, contract, config.params);
         }
         return config.instance ;
@@ -218,7 +218,7 @@ window.Sway = window.Sway || {} ; // make sure it exists
             instance = new Dependency() ;           // done
             depCheck.pop() ;
         }
-        else {
+        else if ( DEBUG ) {
             console.warn( 'Contract ' + contract + ' does not exist') ;
         }
         return instance ;
@@ -226,4 +226,4 @@ window.Sway = window.Sway || {} ; // make sure it exists
 
     ns.DI = di ;
 
-})(window.console, window.Sway) ;
+})(window.Sway, window.console, window.Sway.DEBUG) ;
