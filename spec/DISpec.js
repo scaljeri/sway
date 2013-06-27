@@ -32,7 +32,7 @@ window.describe("Sway.DI", function() {
         // create default contracts
         ns.di._contracts.ajax = { classRef: ns.Obj1, params: ['rest', true], options: {singleton:true}} ;
         ns.di._contracts.rest = { classRef: ns.Obj2, params: ['http://bar.foo.com'], options: {singleton:true}} ;
-        ns.di._contracts.basket = { classRef: ns.Obj3, params: [[1,2], ['ajax', 'rest'], 'test'], options: {}} ;
+        ns.di._contracts.basket = { classRef: ns.Obj3, params: [[1,2], ['rest'], 'test'], options: {}} ;
     });
 
     it("should exist", function() {
@@ -80,6 +80,7 @@ window.describe("Sway.DI", function() {
         expect(ajax.args[0]).toBeInstanceof(ns.Obj2) ;                  // check constructor arguments
         expect(ajax.args[0].args[0]).toEqual('http://bar.foo.com') ;    // and the constructor argument arguments
 
+
         // inject 1 dependency at creation time
         ajax1 = ns.di.getInstance('ajax', ['basket', 'rest']) ;
         expect(ajax1).not.toBe(ajax) ;
@@ -93,8 +94,7 @@ window.describe("Sway.DI", function() {
         expect(basket.args.length).toEqual(3) ;
         expect(basket.args[0][0]).toEqual(1) ;
         expect(basket.args[0][1]).toEqual(2) ;
-        expect(basket.args[1][0]).toBe(ajax) ;
-        expect(basket.args[1][1]).toBe(ajax.args[0]) ;
+        expect(basket.args[1][0]).toEqual(ns.di.getInstance('rest')) ;
         expect(basket.args[2]).toEqual('test') ;
     }) ;
     it("should detect circular dependencies", function() {
