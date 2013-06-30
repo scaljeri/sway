@@ -1,58 +1,58 @@
 // Create the namespace -> JS load order independent
-window.Sway = window.Sway || {} ;
-window.Sway.data = window.Sway.data || {} ;
+window.Sway = window.Sway || {};
+window.Sway.data = window.Sway.data || {};
 
-(function(ns) {
-    "use strict" ;
+(function (ns) {
+    "use strict";
 
     /*
-    A reference to all registered model classes is kept here for two reasons, 1) you only need to define it once and
-    2) relations can be created when available
+     A reference to all registered model classes is kept here for two reasons, 1) you only need to define it once and
+     2) relations can be created when available
      */
     var models = {}
-        /**
-         * Sway.data.ActiveRecord is the pattern used for this ORM implementation and based on the Ruby on Rails (RoR)
-         * <a href="http://guides.rubyonrails.org/association_basics.html">ActiveRecord Associations</a>. This pattern
-         * encapsulates access to its resources, like a database or REST interface.<br>
-         * This class is a helper class, it creates new Model classes of type {{#crossLink "Sway.data.Model"}}{{/crossLink}}
-         * and serves as a blue print for all models. It gives them all they need to perform CRUD-like tasks
-         *
-         *      var webSql = new WebSqlStorage() ;                          // WebSql persistence
-         *      var UserModel = new ActiveRecord( 'User', webSql, [
-         *                            new Field( {type: 'TEXT', key: 'username', friendlyName: 'User name'})
-         *                          , new Field( {type: 'TEXT', key: 'password', friendlyName: 'Password'})
-         *                          , new Field( {type: 'DATE', key: 'birthday', friendlyName: 'Birthday'})
-         *                          , new Field( { key: 'posts', type: 'has_many', friendlyName: 'Posts', model: 'Post'})
-         *                      ]) ;
-         *
-         *      var PostModel = new ActiveRecord( 'Post', webSql, [
-         *                            new Field( {type: 'Text', key: 'comment', friendlyName: 'Comment'})
-         *                            , new Field( {type: 'belongs_to', model: 'User'} )
-         *                      ]) ;
-         *
-         *      var userRecord = new UserModel() ;
-         *
-         * To avoid problems with Model associations, make sure all involved models are created before any usage. A defined model can be accessed
-         * as follows
-         *
-         *      var UserModel = ActiveRecord.get( 'User' ) ;
-         *
-         * @class Sway.data.ActiveRecord
-         * @constructor
-         * @param {String} modelName name of the model
-         * @param {Object} storage  object used to access the underlying data structure
-         * @param {Array}  fields  list of {{#crossLink "Sway.data.Field"}}{{/crossLink}}s and {{#crossLink "Sway.data.Relation"}}{{/crossLink}}s
-         */
-        , ActiveRecord = function(modelName, storage, fields ) {
-            var  Model = createModel() ;
+    /**
+     * Sway.data.ActiveRecord is the pattern used for this ORM implementation and based on the Ruby on Rails (RoR)
+     * <a href="http://guides.rubyonrails.org/association_basics.html">ActiveRecord Associations</a>. This pattern
+     * encapsulates access to its resources, like a database or REST interface.<br>
+     * This class is a helper class, it creates new Model classes of type {{#crossLink "Sway.data.Model"}}{{/crossLink}}
+     * and serves as a blue print for all models. It gives them all they need to perform CRUD-like tasks
+     *
+     *      var webSql = new WebSqlStorage() ;                          // WebSql persistence
+     *      var UserModel = new ActiveRecord( 'User', webSql, [
+     *                            new Field( {type: 'TEXT', key: 'username', friendlyName: 'User name'})
+     *                          , new Field( {type: 'TEXT', key: 'password', friendlyName: 'Password'})
+     *                          , new Field( {type: 'DATE', key: 'birthday', friendlyName: 'Birthday'})
+     *                          , new Field( { key: 'posts', type: 'has_many', friendlyName: 'Posts', model: 'Post'})
+     *                      ]) ;
+     *
+     *      var PostModel = new ActiveRecord( 'Post', webSql, [
+     *                            new Field( {type: 'Text', key: 'comment', friendlyName: 'Comment'})
+     *                            , new Field( {type: 'belongs_to', model: 'User'} )
+     *                      ]) ;
+     *
+     *      var userRecord = new UserModel() ;
+     *
+     * To avoid problems with Model associations, make sure all involved models are created before any usage. A defined model can be accessed
+     * as follows
+     *
+     *      var UserModel = ActiveRecord.get( 'User' ) ;
+     *
+     * @class Sway.data.ActiveRecord
+     * @constructor
+     * @param {String} modelName name of the model
+     * @param {Object} storage  object used to access the underlying data structure
+     * @param {Array}  fields  list of {{#crossLink "Sway.data.Field"}}{{/crossLink}}s and {{#crossLink "Sway.data.Relation"}}{{/crossLink}}s
+     */
+        , ActiveRecord = function (modelName, storage, fields) {
+            var Model = createModel();
 
-            appendStaticProperties(Model, storage, fields ) ;
-            appendPrototypeProperties(Model) ;
+            appendStaticProperties(Model, storage, fields);
+            appendPrototypeProperties(Model);
 
-            models[modelName] = Model ;
+            models[modelName] = Model;
 
-            return Model ;
-        } ;
+            return Model;
+        };
     /**
      * Returns a model class
      * @method get
@@ -60,9 +60,9 @@ window.Sway.data = window.Sway.data || {} ;
      * @param {String} modelName name of the model
      * @return {Class} a model
      */
-    ActiveRecord.get = function(modelName) {
-        return models[modelName] ;
-    } ;
+    ActiveRecord.get = function (modelName) {
+        return models[modelName];
+    };
 
 
     /* Define the Model class here */
@@ -138,14 +138,14 @@ window.Sway.data = window.Sway.data || {} ;
      *
      * @class Sway.data.Model
      */
-     var DEFAULTS = {
-                /**
-                 * a record can be in two states; NORMAL (default) or TRANSFORMED ...... TODO
-                 *
-                 *      userRecord.setState(User.TRANSFORMED, callback) ; // change the state of the record
-                 *
-                 * @property {Object} STATE
-                 */
+    var DEFAULTS = {
+            /**
+             * a record can be in two states; NORMAL (default) or TRANSFORMED ...... TODO
+             *
+             *      userRecord.setState(User.TRANSFORMED, callback) ; // change the state of the record
+             *
+             * @property {Object} STATE
+             */
             STATE: {
                 /**
                  * @property {Number} STATE.TRANFORMED
@@ -155,8 +155,7 @@ window.Sway.data = window.Sway.data || {} ;
                 /**
                  * @property {Number} STATE.NORMAL
                  * @static
-                 */
-                , NORMAL: 0
+                 */, NORMAL: 0
             }
         }
         , STATIC = {
@@ -181,25 +180,40 @@ window.Sway.data = window.Sway.data || {} ;
              *  @param {Boolean} [lazy=true] If false, <tt>find</tt> returns a model which will have all its data, including foreign key data, loaded.
              *  If the record is <tt>lazy</tt>, call {{#crossLink "Sway.data.Model/load:method"}}{{/crossLink}} first to make the data avaiable.
              */
-            find: function(record, callback) {
-                if ( record.$className ) {                                              // json required for searching
-                    record = record.toJSON() ;
+            find: function (record, callback) {
+                if (record.$className) {                                              // json required for searching
+                    record = record.toJSON();
                 }
-                var json = this.storage.find(record, loadJSON.bind(this, callback) ) ;
-                if ( typeof(json) === 'object' ) {                                      // not async ?
-                    var inst = new this(json, {state: DEFAULTS.STATE.TRANSFORMED}) ;
-                    if ( inst.setState(DEFAULTS.STATE.NORMAL, callback) ) {             // detect if async ? TODO
-                        return inst ;
+                var json = this.storage.find(record, loadJSON.bind(this, callback));
+                if (typeof(json) === 'object') {                                      // not async ?
+                    var inst = new this(json, {state: DEFAULTS.STATE.TRANSFORMED});
+                    if (inst.setState(DEFAULTS.STATE.NORMAL, callback)) {             // detect if async ? TODO
+                        return inst;
                     }
                 }
             }
             /**
+             * save json data instead of an active record
              * @method save
              * @static
+             * @param {Object} data json data
              * @param {Object} options
-             */
-            , save: function(json, callback) {
+             * @return {Object} active record
+             */, save: function (json, callback) {
                 // for performance (no instance required
+            }
+            /**
+             * Load relations for defined field(s). By default relations are lazy loaded.
+             * @method include
+             * @static
+             * @param {Array} fieldNames define the relations which should be loaded
+             * @return Model class
+             * @example
+             ModeClass.include('comments').findByName('John') ;
+             */, include: function (fieldName) {
+                return {
+                    //find
+                };
             }
         }
 
@@ -213,8 +227,8 @@ window.Sway.data = window.Sway.data || {} ;
             /**
              * @method getState
              */
-            getState: function() {
-                return this.__state__ ;
+            getState: function () {
+                return this.__state__;
             }
             /**
              * change the state of a record. See ......
@@ -224,52 +238,62 @@ window.Sway.data = window.Sway.data || {} ;
              * values are transformed immediately.
              * @param {Function} [callback] if <tt>isLazy</tt> is set to TRUE the callback is called when all values
              * are transformed.
-             */
-            , setState: function(state, isLazy, callback) {
-                this.state = state ;
-                if ( typeof(isLazy) === 'function') {
-                    callback = isLazy ;
-                    isLazy = true ;
+             */, setState: function (state, isLazy, callback) {
+                this.state = state;
+                if (typeof(isLazy) === 'function') {
+                    callback = isLazy;
+                    isLazy = true;
                 }
                 // TODO: applie transformers
-                callback() ;
+                callback();
             }
             /**
              *
              * returns all data in JSON format
              * @method toJSON
              * @return {Object}
-             */
-            , toJSON: function() {
-                return this.__data ;
+             */, toJSON: function () {
+                return this.__data;
             }
             /**
-             * Save the data and its relations (See Relation TODO)
+             * Save the data and its relations
              * @method save
-             * @param {Boolean} [deep=true] save related data
-             * @param {Function} [callback] callback function
+             * @param {Object} [options] configuration
+             * @param {Function} [options.success] success callback function
+             * @param {Function} [options.error] error callback function
              *
              */
-            , save: function(deep, success, error) {
-               //return this.constructor.storage.save(this, deep, callback) ;
+            , save: function (options) {
+                //return this.constructor.storage.save(this, deep, callback) ;
             }
-            , getFields: function() {
-                return this.constructor.fields ;
+            , getFields: function () {
+                return this.constructor.fields;
             }
-                /**
-                 * @method load
-                 * @param {String} key name of the field
-                 * @param {Function} [callback] callback function, called when the data is available
-                 */
-            , load: function(key, callback) {
-                var json = {} ;
-                if ( this.fields[key].FK ) {
-                    json[key] = this[key] ;
-                    this.fields[key].model.find(json, function(records){
-                            this[key] = records ;
-                            callback(this) ;
-                        }.bind(this) ) ;
+            /**
+             * load all properties of the model instance.
+             * @method load
+             * @param {Function} [callback] callback function, called when the data is available
+             * @param {Object} [options] configuration options
+             *  @param {Boolnea} [options.lazy=true] lazy loading
+             */
+            , load: function (callback, options) {
+                var json = {};
+                if (this.fields[key].FK) {
+                    json[key] = this[key];
+                    this.fields[key].model.find(json, function (records) {
+                        this[key] = records;
+                        callback(this);
+                    }.bind(this));
                 }
+            }
+            /**
+             * set all values back to their original value
+             * @method reset
+             * @chainable
+             * return {Object} self
+             */
+            , reset: function () {
+
             }
             /**
              * Call this function to make it aware of changes made to the data it relates to. Because a Model instance
@@ -281,20 +305,17 @@ window.Sway.data = window.Sway.data || {} ;
              * If the record or this <tt>link</tt> is not needed anymore, make sure to remove by calling {{#crossLink "Sway.data.Model/unlink:method"}}{{/crossLink}},
              * @method link
              */
-            , link: function() {
+            , link: function () {
 
             }
             /**
              * @method unlink
-             */
-            , unlink: function() {
+             */, unlink: function () {
 
+            }, getLength: function () {
+                return this.__dataSet.length;
             }
-            , getLength: function() {
-                return this.__dataSet.length ;
-            }
-        } ;
-
+        };
 
 
     /* Private helpers */
@@ -308,118 +329,144 @@ window.Sway.data = window.Sway.data || {} ;
      */
     function createModel() {
         return function Model(data, options) {                              // define the model class/function
-            options = options||{} ;                                         // fix input
-            data    = data   ||{} ;
+            options = options || {};                                         // fix input
+            data = data || {};
 
-            if ( data.$className ) {                                        // check if data is an ActiveRecord instance
-                data = data.toJSON() ;
+            if (data.$className) {                                        // check if data is an ActiveRecord instance
+                data = data.toJSON();
             }
 
             Object.defineProperty(this, '__state__',
                 {
-                    value: typeof(options.state) === 'boolean' ? options.state : DEFAULTS.STATE.NORMAL
-                    , enumarable: false
-                }) ;
+                    value: typeof(options.state) === 'boolean' ? options.state : DEFAULTS.STATE.NORMAL, enumarable: false
+                });
             Object.defineProperty(this, '$className',                // name of the class it belongs too
                 {
-                    value: this.constructor.name
-                    , writable: false
-                }) ;
+                    value: this.constructor.name, writable: false
+                });
             Object.defineProperty(this, '__id__',                    // if none of the fields is unique, this field is
                 {                                                    // added to the record
-                    value: null
-                    , enumarable: false
-                    , writable: true
-                }) ;
+                    value: null, enumarable: false, writable: true
+                });
 
-            Object.defineProperty(this, '__data',                 // al items
+            Object.defineProperty(this, '__data',
                 {
-                    value: data
-                    , writable: false
-                }) ;
+                    value: data, writable: false                    // make only the properties of data writable
+                });
 
-            var field, i ;
-            for( i in this.constructor.fields) {
-                field = this.constructor.fields[i] ;
-               (function(i, field){
-                  Object.defineProperty(this, i, {
-                      set:  field.set.bind(null, this.__data)                   // set is handled by the field itself
-                      , get: getProperty.bind(this, i)
-                  }) ;
-                  field.set(data[field.key]) ;
-               }.bind(this))(i, field) ;
+            /**
+             * bla bla
+             * @property {Boolean} isDirty
+             */
+            Object.defineProperty(this, 'isDirty',{value: false} ) ;
+            Object.defineProperty(this, '__isNew',{value: true} ) ;
+            /**
+             * bla bla
+             * @property {Boolean} isNew
+             */
+            Object.defineProperty(this, 'isNew',{
+                set: isNew.bind(this)
+                , get: isNew.bind(this)
+            }) ;
+
+            var field, i;
+            for (i in this.constructor.fields) {
+                field = this.constructor.fields[i];
+                (function (i, field) {
+                    Object.defineProperty(this, i, {
+                        set: field.set.bind(null, this.__data, i)                   // set is handled by the field itself
+                        , get: getProperty.bind(this, i)
+                    });
+                    //field.set(data[field.key]) ;
+                    this[i] = data[field.key];
+                }.bind(this))(i, field);
             }
 
-           return Object.preventExtensions(this) ;                               // make sure no properties can be added
-        } ;
+            return Object.preventExtensions(this);                               // make sure no properties can be added
+        };
     }
 
+
     function getProperty(key) {
-        return this.__data[key] ;
+        return this.__data[key];
     }
 
     function appendStaticProperties(Model, storage, fields) {
-        var i, hasPK = false;
+        var i
+            , hasPK = false;                                    // used to determine if a PK is defined, if not create findById function
 
-        for ( i in STATIC ) {                                   // create static methods
-            Model[i] = STATIC[i].bind(Model) ;
+        for (i in STATIC) {                                   // create static methods
+            Model[i] = STATIC[i].bind(Model);
         }
 
-        Model.storage = storage ;                                   // reference to the storage object
-        Model.fields = {} ;                                         // field container, referenced by their key value
-        Model.relations = {} ;                                         // field container, referenced by their key value
+        Model.storage = storage;                                   // reference to the storage object
+        Model.fields = {};                                         // field container, referenced by their key value
+        Model.relations = {};                                         // field container, referenced by their key value
 
+        Object.defineProperty(Model, 'findLookup', {
+            value: {}
+            , enumerable: false
+        }) ;
 
-        for( i = 0; i < fields.length; i++ ) {
-            Model.fields[fields[i].key] = fields[i] ;         // add field to fields object
-            if ( fields[i].isSearchable ) {
-                createFindByXXX(Model, fields[i]) ;
+        for (i = 0; i < fields.length; i++) {
+            Model.fields[fields[i].key] = fields[i];         // add field to fields object
+            if (fields[i].isSearchable) {
+                createFindByXXX(Model, fields[i]);
             }
             else {  // do something with associations
 
             }
-
-            if ( fields[i].PK ) {
-                hasPK = true ;
-            }
+            hasPK = hasPK | !!fields[i].PK;                // bitwise OR to determine if PK is defined (hasPK is 1 or 0)
         }
 
-        if ( !hasPK ) {
-            createFindByXXX(Model, new ns.Field('id', {autoIncrement: true })) ;
+        if (hasPK === 0) {
+            // TODO add id Field to Model too!!
+            createFindByXXX(Model, new ns.Field('id', {autoIncrement: true }));
         }
     }
 
     function createFindByXXX(Model, field) {
-        Model[['findBy', field.key.slice(0,1).toUpperCase(), field.key.slice(1)].join('')] = findBy.bind(Model, field.key);
+        var name = ['findBy', field.key.slice(0, 1).toUpperCase(), field.key.slice(1)].join('');
+        Model[name] = (Model.findLookup[name] = findBy.bind(Model, field.key)) ;
     }
 
     function appendPrototypeProperties(Model, data) {
-        var i ;
+        var i;
 
-        for( i in INSTANCE ){
-            Model.prototype[i] = INSTANCE[i] ;                                // create instance function
+        for (i in INSTANCE) {
+            Model.prototype[i] = INSTANCE[i];                                // create instance function
         }
     }
 
     function findBy(property, value) {
-        console.log("find by " + property + " with value=" + value) ;
+        console.log("find by " + property + " with value=" + value);
     }
 
     /*
      * loadJSON receives json from a storage object. It converts this into an active record object.
      */
     function loadJSON(callback, json) {
-        var newRec = new this(json, {state: DEFAULTS.STATE.TRANSFORMED}) ;
-        newRec.__id__ = json.__id__ ;                                   // existing records get a unique id
-        if ( callback ) {
-            callback(newRec) ;                                              // return a new record
+        var newRec = new this(json, {state: DEFAULTS.STATE.TRANSFORMED});
+        newRec.__id__ = json.__id__;                                   // existing records get a unique id
+        if (callback) {
+            callback(newRec);                                              // return a new record
         }
-        return newRec ;
+        return newRec;
     }
 
-	ns.ActiveRecord = ActiveRecord ;
+    function isNew(state) {
+       if ( state === undefined )  {
+           return this.__isNew ;
+       }
+       else if (state === false) {
+           // TODO: remove PK value
+           this.__isNew = true ;
+       }
+    }
 
-})(window.Sway.data) ;
+    ns.ActiveRecord = ActiveRecord;
+
+})(window.Sway.data);
 
 
 

@@ -1,4 +1,5 @@
 echo generate yuidoc documentation
+rm -rf info/yuidoc
 yuidoc -o info/yuidoc src/
 
 echo generate checkstyle - Cyclomatic Complexity

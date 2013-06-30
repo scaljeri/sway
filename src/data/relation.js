@@ -98,14 +98,21 @@ window.Sway.data = window.Sway.data || {};
 
     Relation.prototype = {} ;
 
-    function setBelongsTo(data, value) {
+    /*
+    is the ID of the ref model
+     */
+    function setBelongsTo(obj, options, key, value) {
     }
     function setHasOne(data, value){
     }
-    function setHasOneThrough(data, value){}
-    function setHasMany(data, value) {}
-    function setHasManyThrough(data, value) {}
-    function setHasAndBelongsToMany(data, value) {}
+    function setHasOneThrough(data, value){
+    }
+    function setHasMany(data, value) {
+    }
+    function setHasManyThrough(data, value) {
+    }
+    function setHasAndBelongsToMany(data, value) {
+    }
 
     ns.Relation = Relation;
 })(window.Sway.data);
