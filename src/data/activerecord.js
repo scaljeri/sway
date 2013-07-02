@@ -44,7 +44,7 @@ window.Sway.data = window.Sway.data || {};
      * @param {Array}  fields  list of {{#crossLink "Sway.data.Field"}}{{/crossLink}}s and {{#crossLink "Sway.data.Relation"}}{{/crossLink}}s
      */
         , ActiveRecord = function (modelName, storage, fields) {
-            var Model = createModel();
+            var Model = createModel(modelName);
 
             appendStaticProperties(Model, storage, fields);
             appendPrototypeProperties(Model);
@@ -327,8 +327,8 @@ window.Sway.data = window.Sway.data || {};
      * @param {Object} [options]
      *      @param {String} [options.state] initial state
      */
-    function createModel() {
-        return function Model(data, options) {                              // define the model class/function
+    function createModel(modelName) {
+        var model = function Model(data, options) {                              // define the model class/function
             options = options || {};                                         // fix input
             data = data || {};
 
@@ -340,10 +340,6 @@ window.Sway.data = window.Sway.data || {};
                 {
                     value: typeof(options.state) === 'boolean' ? options.state : DEFAULTS.STATE.NORMAL, enumarable: false
                 });
-            Object.defineProperty(this, '$className',                // name of the class it belongs too
-                {
-                    value: this.constructor.name, writable: false
-                });
             Object.defineProperty(this, '__id__',                    // if none of the fields is unique, this field is
                 {                                                    // added to the record
                     value: null, enumarable: false, writable: true
@@ -354,12 +350,19 @@ window.Sway.data = window.Sway.data || {};
                     value: data, writable: false                    // make only the properties of data writable
                 });
 
+            Object.defineProperty(this, '$className',                // name of the class it belongs too
+                {
+                    value: modelName, writable: false
+                });
+
             /**
              * bla bla
              * @property {Boolean} isDirty
              */
             Object.defineProperty(this, 'isDirty',{value: false} ) ;
             Object.defineProperty(this, '__isNew',{value: true} ) ;
+
+
             /**
              * bla bla
              * @property {Boolean} isNew
@@ -374,16 +377,20 @@ window.Sway.data = window.Sway.data || {};
                 field = this.constructor.fields[i];
                 (function (i, field) {
                     Object.defineProperty(this, i, {
-                        set: field.set.bind(null, this.__data, i)                   // set is handled by the field itself
+                        set: function(value){field.set( this, i, value);}.bind(this)    // set is handled by the field itself
                         , get: getProperty.bind(this, i)
                     });
-                    //field.set(data[field.key]) ;
-                    this[i] = data[field.key];
+                    if ( data[field.key] ) {
+                        this[i] = data[field.key];
+                    }
                 }.bind(this))(i, field);
-            }
 
+
+            }
             return Object.preventExtensions(this);                               // make sure no properties can be added
         };
+        model.$name = modelName ;
+        return model ;
     }
 
 
@@ -393,11 +400,20 @@ window.Sway.data = window.Sway.data || {};
 
     function appendStaticProperties(Model, storage, fields) {
         var i
+            , field
             , hasPK = false;                                    // used to determine if a PK is defined, if not create findById function
 
         for (i in STATIC) {                                   // create static methods
             Model[i] = STATIC[i].bind(Model);
         }
+
+        /*
+         A relation needs to be set on both object. For example, if a patient has an address, an address belongs to
+         a patient. In code
+         patient.address = address ;
+         address.__reverseRelation.belongs_to['patient'] = this ; // note that
+         */
+        Object.defineProperty(Model, '__reverseRelation', { value: {}, enumarable: false}) ;
 
         Model.storage = storage;                                   // reference to the storage object
         Model.fields = {};                                         // field container, referenced by their key value
@@ -409,14 +425,14 @@ window.Sway.data = window.Sway.data || {};
         }) ;
 
         for (i = 0; i < fields.length; i++) {
-            Model.fields[fields[i].key] = fields[i];         // add field to fields object
-            if (fields[i].isSearchable) {
-                createFindByXXX(Model, fields[i]);
-            }
-            else {  // do something with associations
+            field = fields[i] ;
+            Model.fields[field.key] = field;         // add field to fields object
+            createFindByXXX(Model, field);
+            hasPK = hasPK | !!field.PK;                // bitwise OR to determine if PK is defined (hasPK is 1 or 0)
 
+            if ( field.model ) { // if defined, its a relation between two models
+                Model.__reverseRelation[field.model.$className||field.model] = field ;
             }
-            hasPK = hasPK | !!fields[i].PK;                // bitwise OR to determine if PK is defined (hasPK is 1 or 0)
         }
 
         if (hasPK === 0) {
