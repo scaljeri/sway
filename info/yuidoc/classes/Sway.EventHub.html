@@ -122,7 +122,7 @@
 
     
         <div class="foundat">
-            Defined in: <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l64"><code>src&#x2F;eventhub.js:64</code></a>
+            Defined in: <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l63"><code>src&#x2F;eventhub.js:63</code></a>
         </div>
     
 
@@ -204,7 +204,7 @@ eventHub.trigger('bar.bar1');    // --&gt; triggers: myFunc3 and myFunc4
             
         
         
-        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l64"><code>src&#x2F;eventhub.js:64</code></a>
+        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l63"><code>src&#x2F;eventhub.js:63</code></a>
         
         </p>
 
@@ -242,7 +242,7 @@ eventHub.trigger('bar.bar1');    // --&gt; triggers: myFunc3 and myFunc4
                             
                             <li class="param">
                                 
-                                    <code class="param-name optional">[allowMultiple]</code>
+                                    <code class="param-name optional">[allowMultiple=TRUE]</code>
                                     <span class="type">Boolean</span>
                                     <span class="flag optional" title="This parameter is optional.">optional</span>
                                 
@@ -330,13 +330,6 @@ eventHub.trigger('bar.bar1');    // --&gt; triggers: myFunc3 and myFunc4
                             </li>
                         
                             <li class="index-item method">
-                                <a href="#method_isDisabled">isDisabled</a>
-
-                                
-                                
-                            </li>
-                        
-                            <li class="index-item method">
                                 <a href="#method_off">off</a>
 
                                 
@@ -391,7 +384,7 @@ eventHub.trigger('bar.bar1');    // --&gt; triggers: myFunc3 and myFunc4
                             </li>
                         
                             <li class="index-item property">
-                                <a href="#property_EVENT_MODE.ALL">EVENT_MODE.ALL</a>
+                                <a href="#property_EVENT_MODE.BOTH">EVENT_MODE.BOTH</a>
 
                                 
                                     <span class="flag static">static</span>
@@ -450,18 +443,6 @@ eventHub.trigger('bar.bar1');    // --&gt; triggers: myFunc3 and myFunc4
                     
                 </li>
             
-                <li class="arg">
-                    
-                        <code class="optional">[eventMode]</code>
-                    
-                </li>
-            
-                <li class="arg">
-                    
-                        <code class="optional">[traverse=false]</code>
-                    
-                </li>
-            
             </ul><span class="paren">)</span>
         </div>
     
@@ -495,7 +476,7 @@ eventHub.trigger('bar.bar1');    // --&gt; triggers: myFunc3 and myFunc4
             
         
         
-        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l272"><code>src&#x2F;eventhub.js:272</code></a>
+        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l278"><code>src&#x2F;eventhub.js:278</code></a>
         
         </p>
 
@@ -540,41 +521,41 @@ eventHub.trigger('bar.bar1');    // --&gt; triggers: myFunc3 and myFunc4
                     
 
                     <div class="param-description">
-                        <p>determine the count behavior</p>
+                        <p>configuration</p>
                     </div>
 
                     
-                </li>
-            
-                <li class="param">
-                    
-                        <code class="param-name optional">[eventMode]</code>
-                        <span class="type">String</span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-                    
+                        <ul class="params-list">
+                            
+                            <li class="param">
+                                
+                                    <code class="param-name optional">[eventMode]</code>
+                                    <span class="type">String</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+                                
 
-                    
+                                <div class="param-description">
+                                    <p>the event mode; Sway.EventHub.CAPTURING or Sway.EventHub.BUBBLE</p>
+                                </div>
 
-                    <div class="param-description">
-                        <p>the event mode; Sway.EventHub.CAPTURING or Sway.EventHub.BUBBLE</p>
-                    </div>
+                                
+                            </li>
+                            
+                            <li class="param">
+                                
+                                    <code class="param-name optional">[traverse=false]</code>
+                                    <span class="type">Boolean</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+                                
 
-                    
-                </li>
-            
-                <li class="param">
-                    
-                        <code class="param-name optional">[traverse=false]</code>
-                        <span class="type">Boolean</span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-                    
+                                <div class="param-description">
+                                    <p>traverse all nested namepsaces</p>
+                                </div>
 
-                    
-
-                    <div class="param-description">
-                        <p>traverse all nested namepsaces</p>
-                    </div>
-
+                                
+                            </li>
+                            
+                        </ul>
                     
                 </li>
             
@@ -621,12 +602,6 @@ TODO: etype is not used
                     
                 </li>
             
-                <li class="arg">
-                    
-                        <code class="optional">[traverse=false]</code>
-                    
-                </li>
-            
             </ul><span class="paren">)</span>
         </div>
     
@@ -660,7 +635,7 @@ TODO: etype is not used
             
         
         
-        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l291"><code>src&#x2F;eventhub.js:291</code></a>
+        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l297"><code>src&#x2F;eventhub.js:297</code></a>
         
         </p>
 
@@ -710,21 +685,23 @@ TODO: etype is not used
                     </div>
 
                     
-                </li>
-            
-                <li class="param">
-                    
-                        <code class="param-name optional">[traverse=false]</code>
-                        <span class="type">Boolean</span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-                    
+                        <ul class="params-list">
+                            
+                            <li class="param">
+                                
+                                    <code class="param-name optional">[traverse=false]</code>
+                                    <span class="type">Boolean</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+                                
 
-                    
+                                <div class="param-description">
+                                    <p>traverse all nested namepsaces</p>
+                                </div>
 
-                    <div class="param-description">
-                        <p>traverse all nested namepsaces</p>
-                    </div>
-
+                                
+                            </li>
+                            
+                        </ul>
                     
                 </li>
             
@@ -801,7 +778,7 @@ TODO: etype is not used
             
         
         
-        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l144"><code>src&#x2F;eventhub.js:144</code></a>
+        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l141"><code>src&#x2F;eventhub.js:141</code></a>
         
         </p>
 
@@ -814,9 +791,12 @@ TODO: etype is not used
     <div class="description">
         <p>Disable an event. All triggers on a disabled event are ignored and no event propagation takes place. For example</p>
 
-<pre class="code prettyprint"><code>eventHub.on('bar', callback1) ;
-eventHub.on('bar', callback2, { eventMode: Sway.EventHub.EVENT_MODE.BOTH }) ;
-eventHub.on('bar.foo', callback3) ;
+<pre class="code prettyprint"><code>eventHub.on('bar', callback1, { eventMode: Sway.EventHub.EVENT_MODE.BOTH }) ;
+eventHub.on('bar', callback2) ;
+eventHub.on('bar.foo', callback3, { eventMode: Sway.EventHub.EVENT_MODE.BOTH }) ;
+eventHub.on('bar.foo', callback4) ;
+eventHub.on('bar.foo.do', callback5 { eventMode: Sway.EventHub.EVENT_MODE.BOTH }) ;
+eventHub.on('bar.foo.do', callback6) ;
 eventHub.disable('bar') ;
 
 eventHub.trigger('bar')          // -&gt; no callbacks called
@@ -939,7 +919,7 @@ eventHub.trigger('bar.foo')      // -&gt; callback execution order: callback2, c
             
         
         
-        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l130"><code>src&#x2F;eventhub.js:130</code></a>
+        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l127"><code>src&#x2F;eventhub.js:127</code></a>
         
         </p>
 
@@ -1054,7 +1034,7 @@ eventHub.trigger('bar.foo')      // -&gt; callback execution order: callback2, c
             
         
         
-        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l111"><code>src&#x2F;eventhub.js:111</code></a>
+        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l108"><code>src&#x2F;eventhub.js:108</code></a>
         
         </p>
 
@@ -1089,110 +1069,6 @@ eventHub.trigger('bar.foo')      // -&gt; callback execution order: callback2, c
 </div>
 
                 
-                    <div id="method_isDisabled" class="method item">
-    <h3 class="name"><code>isDisabled</code></h3>
-
-    
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        <code>eventName</code>
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
-    
-
-    
-        <span class="returns-inline">
-            <span class="type">Boolean</span>
-        </span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l167"><code>src&#x2F;eventhub.js:167</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>check if a specific event is disabled.</p>
-    </div>
-
-    
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-            
-                <li class="param">
-                    
-                        <code class="param-name">eventName</code>
-                        <span class="type">String</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>name of the event</p>
-                    </div>
-
-                    
-                </li>
-            
-            </ul>
-        </div>
-    
-
-    
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                
-                    
-                        <span class="type">Boolean</span>:
-                    
-                    TRUE if the event is disabled. If the event does not exists, FALSE is returned
-                
-            </div>
-        </div>
-    
-
-    
-</div>
-
-                
                     <div id="method_off" class="method item">
     <h3 class="name"><code>off</code></h3>
 
@@ -1214,19 +1090,7 @@ eventHub.trigger('bar.foo')      // -&gt; callback execution order: callback2, c
             
                 <li class="arg">
                     
-                        <code>UNKNOWN</code>
-                    
-                </li>
-            
-                <li class="arg">
-                    
-                        <code class="optional">[traverse=false]</code>
-                    
-                </li>
-            
-                <li class="arg">
-                    
-                        <code class="optional">[options.eventMode=null]</code>
+                        <code>options</code>
                     
                 </li>
             
@@ -1263,7 +1127,7 @@ eventHub.trigger('bar.foo')      // -&gt; callback execution order: callback2, c
             
         
         
-        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l250"><code>src&#x2F;eventhub.js:250</code></a>
+        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l251"><code>src&#x2F;eventhub.js:251</code></a>
         
         </p>
 
@@ -1318,48 +1182,62 @@ namespaces inside 'eventName' are removed</p>
             
                 <li class="param">
                     
-                        <code class="param-name">UNKNOWN</code>
+                        <code class="param-name">options</code>
                         <span class="type">Object</span>
                     
 
                     
 
                     <div class="param-description">
-                         
+                        <p>configuration</p>
                     </div>
 
                     
-                </li>
-            
-                <li class="param">
-                    
-                        <code class="param-name optional">[traverse=false]</code>
-                        <span class="type">Boolean</span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-                    
+                        <ul class="params-list">
+                            
+                            <li class="param">
+                                
+                                    <code class="param-name optional">[traverse=false]</code>
+                                    <span class="type">Boolean</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+                                
 
-                    
+                                <div class="param-description">
+                                    <p>traverse all nested namespaces</p>
+                                </div>
 
-                    <div class="param-description">
-                        <p>traverse all nested namespaces</p>
-                    </div>
+                                
+                            </li>
+                            
+                            <li class="param">
+                                
+                                    <code class="param-name optional">[eventMode=null]</code>
+                                    <span class="type">String</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+                                
 
-                    
-                </li>
-            
-                <li class="param">
-                    
-                        <code class="param-name optional">[options.eventMode=null]</code>
-                        <span class="type">String</span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-                    
+                                <div class="param-description">
+                                    <p>the event mode of the callback to be removed</p>
+                                </div>
 
-                    
+                                
+                            </li>
+                            
+                            <li class="param">
+                                
+                                    <code class="param-name optional">[isOne]</code>
+                                    <span class="type">Boolean</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+                                
 
-                    <div class="param-description">
-                        <p>the event mode for which the callback is triggered too. Available modes are</p>
-                    </div>
+                                <div class="param-description">
+                                    
+                                </div>
 
+                                
+                            </li>
+                            
+                        </ul>
                     
                 </li>
             
@@ -1455,7 +1333,7 @@ namespaces inside 'eventName' are removed</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l207"><code>src&#x2F;eventhub.js:207</code></a>
+        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l208"><code>src&#x2F;eventhub.js:208</code></a>
         
         </p>
 
@@ -1546,7 +1424,7 @@ parameter it is also possible to execute the callback in a capturing or bubbling
 
                                 <div class="param-description">
                                     <p>the event mode for which the callback is triggered too. Available modes are
-         <tt>capture</tt> and <tt>bubble</tt></p>
+         <tt>capture</tt>, <tt>bubble</tt> or both</p>
                                 </div>
 
                                 
@@ -1647,7 +1525,7 @@ parameter it is also possible to execute the callback in a capturing or bubbling
             
         
         
-        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l229"><code>src&#x2F;eventhub.js:229</code></a>
+        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l230"><code>src&#x2F;eventhub.js:230</code></a>
         
         </p>
 
@@ -1814,7 +1692,7 @@ except that this callback is removed from the list after it has been triggered.<
             
         
         
-        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l120"><code>src&#x2F;eventhub.js:120</code></a>
+        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l117"><code>src&#x2F;eventhub.js:117</code></a>
         
         </p>
 
@@ -1874,7 +1752,13 @@ except that this callback is removed from the list after it has been triggered.<
             
                 <li class="arg">
                     
-                        <code class="optional">[data]</code>
+                        <code>eventName</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>data</code>
                     
                 </li>
             
@@ -1917,7 +1801,7 @@ except that this callback is removed from the list after it has been triggered.<
             
         
         
-        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l178"><code>src&#x2F;eventhub.js:178</code></a>
+        <a href="..&#x2F;files&#x2F;src_eventhub.js.html#l167"><code>src&#x2F;eventhub.js:167</code></a>
         
         </p>
 
@@ -1928,8 +1812,7 @@ except that this callback is removed from the list after it has been triggered.<
     </div>
 
     <div class="description">
-        <p>Triggers one or more events. One event is triggered if the 'eventName' parameter targets a specific event, but if this parameter is a namespace, all nested events and
-namespaces will be triggered.</p>
+        <p>check if a specific event is disabled.</p>
     </div>
 
     
@@ -1937,6 +1820,21 @@ namespaces will be triggered.</p>
             <h4>Parameters:</h4>
 
             <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">eventName</code>
+                        <span class="type">String</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>name of the event</p>
+                    </div>
+
+                    
+                </li>
             
                 <li class="param">
                     
@@ -1955,9 +1853,8 @@ namespaces will be triggered.</p>
             
                 <li class="param">
                     
-                        <code class="param-name optional">[data]</code>
+                        <code class="param-name">data</code>
                         <span class="type"></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
                     
 
                     
@@ -2001,13 +1898,13 @@ namespaces will be triggered.</p>
                             
                             <li class="param">
                                 
-                                    <code class="param-name optional">[eventModes=true]</code>
-                                    <span class="type">Boolean</span>
+                                    <code class="param-name optional">[eventMode]</code>
+                                    <span class="type">String</span>
                                     <span class="flag optional" title="This parameter is optional.">optional</span>
                                 
 
                                 <div class="param-description">
-                                    <p>run the BUBBLE and CAPTURE event modes</p>
+                                    <p>define the event mode to be used</p>
                                 </div>
 
                                 
@@ -2041,8 +1938,10 @@ namespaces will be triggered.</p>
             <h4>Example:</h4>
 
             <div class="example-content">
-                <pre class="code prettyprint"><code>    Sway.eventHub.trigger('ui.update', {authenticated: true} ) ;               // trigger the 'update' event inside the 'ui' namespace
-    Sway.eventHub.trigger('ui', {authenticated: true} ) ;                      // trigger all nested events and namespaces inside the 'ui' namespace
+                <pre class="code prettyprint"><code>    Sway.eventHub.trigger('ui.update' ) ;                                      // trigger the 'update' event inside the 'ui' namespace
+    Sway.eventHub.trigger('ui', null, {traverse: true} ) ;                     // trigger all nested events and namespaces inside the 'ui' namespace
+    Sway.eventHub.trigger('ui.update', {authenticated: true} ) ;               // trigger the 'update' event inside the 'ui' namespace
+    Sway.eventHub.trigger('ui', {authenticated: true}, {traverse: true} ) ;    // trigger all nested events and namespaces inside the 'ui' namespace
 </code></pre>
             </div>
         </div>
@@ -2141,8 +2040,8 @@ eventHub.trigger('bar.foo') ; // -&gt; callback execution order: myFunc3, myFunc
 </div>
 
                 
-                    <div id="property_EVENT_MODE.ALL" class="property item">
-    <h3 class="name"><code>EVENT_MODE.ALL</code></h3>
+                    <div id="property_EVENT_MODE.BOTH" class="property item">
+    <h3 class="name"><code>EVENT_MODE.BOTH</code></h3>
     <span class="type">String</span>
 
     

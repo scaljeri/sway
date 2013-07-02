@@ -4,6 +4,8 @@ window.Sway.data = window.Sway.data || {};
 
 (function (ns) {
     /*
+        *) Rule nr1: Only one relation can exist between two tables
+
      belongs_to ( === foreign key ) (http://stackoverflow.com/questions/3808926/whats-the-difference-between-belongs-to-and-has-one)
      has_one
      has_many
@@ -74,7 +76,6 @@ window.Sway.data = window.Sway.data || {};
         this.key = key;
         this.type = type;
         this.model = model;
-        this.isSearchable = false ;
 
         switch (type) {
             case 'belongs_to' :
@@ -98,14 +99,33 @@ window.Sway.data = window.Sway.data || {};
 
     Relation.prototype = {} ;
 
-    function setBelongsTo(data, value) {
+    /*
+    is the ID of the ref model
+     */
+    function setBelongsTo(self, key, value) {
+        console.log(key) ;
+        if ( self.__data[key] !== value ) { // prevent circular behavior
+            self.__data[key] = value ;
+
+            // check if 'value' has a relation with 'self' ?
+            if ( Object.getOwnPropertyDescriptor(value, value.constructor.__reverseRelation[self.$className].key) !== undefined ) {
+                value[value.constructor.__reverseRelation[self.$className].key] = self ;
+            }
+            else {  // nope, no relation!!
+                throw "No Relation defined for " + self.$className + ":belongs_to --> " + value.$className + ":???" ;
+            }
+        }
     }
-    function setHasOne(data, value){
+    function setHasOne(self, key, value){
     }
-    function setHasOneThrough(data, value){}
-    function setHasMany(data, value) {}
-    function setHasManyThrough(data, value) {}
-    function setHasAndBelongsToMany(data, value) {}
+    function setHasOneThrough(data, value){
+    }
+    function setHasMany(data, value) {
+    }
+    function setHasManyThrough(data, value) {
+    }
+    function setHasAndBelongsToMany(data, value) {
+    }
 
     ns.Relation = Relation;
 })(window.Sway.data);

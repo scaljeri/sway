@@ -122,7 +122,7 @@
 
     
         <div class="foundat">
-            Defined in: <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l302"><code>src&#x2F;data&#x2F;activerecord.js:302</code></a>
+            Defined in: <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l323"><code>src&#x2F;data&#x2F;activerecord.js:323</code></a>
         </div>
     
 
@@ -260,7 +260,7 @@ userRecord.password = 'Secret' ;
             
         
         
-        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l302"><code>src&#x2F;data&#x2F;activerecord.js:302</code></a>
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l323"><code>src&#x2F;data&#x2F;activerecord.js:323</code></a>
         
         </p>
 
@@ -393,6 +393,8 @@ userRecord.password = 'Secret' ;
                                 <a href="#method_item">item</a>
 
                                 
+                                    <span class="flag static">static</span>
+                                
                                 
                             </li>
                         
@@ -411,37 +413,21 @@ userRecord.password = 'Secret' ;
                             </li>
                         
                             <li class="index-item method">
+                                <a href="#method_reset">reset</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
                                 <a href="#method_save">save</a>
 
                                 
-                                    <span class="flag static">static</span>
-                                
                                 
                             </li>
                         
                             <li class="index-item method">
-                                <a href="#method_save">save</a>
-
-                                
-                                
-                            </li>
-                        
-                            <li class="index-item method">
-                                <a href="#method_setState">setState</a>
-
-                                
-                                
-                            </li>
-                        
-                            <li class="index-item method">
-                                <a href="#method_toJSON">toJSON</a>
-
-                                
-                                
-                            </li>
-                        
-                            <li class="index-item method">
-                                <a href="#method_unlink">unlink</a>
+                                <a href="#method_unlink!~YUIDOC_LINE~!&#x2F;, unlink: function () , getLength: function () {!~YUIDOC_LINE~!               return this.__dataSet.length;!~YUIDOC_LINE~!           }!~YUIDOC_LINE~!       };">unlink!~YUIDOC_LINE~!&#x2F;, unlink: function () , getLength: function () {!~YUIDOC_LINE~!               return this.__dataSet.length;!~YUIDOC_LINE~!           }!~YUIDOC_LINE~!       };</a>
 
                                 
                                 
@@ -458,17 +444,22 @@ userRecord.password = 'Secret' ;
                     <ul class="index-list properties">
                         
                             <li class="index-item property">
-                                <a href="#property_STATE">STATE</a>
+                                <a href="#property_isDirty">isDirty</a>
 
                                 
                                 
                             </li>
                         
                             <li class="index-item property">
-                                <a href="#property_STATE.NORMAL">STATE.NORMAL</a>
+                                <a href="#property_isNew">isNew</a>
 
                                 
-                                    <span class="flag static">static</span>
+                                
+                            </li>
+                        
+                            <li class="index-item property">
+                                <a href="#property_STATE">STATE</a>
+
                                 
                                 
                             </li>
@@ -552,7 +543,7 @@ userRecord.password = 'Secret' ;
             
         
         
-        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l163"><code>src&#x2F;data&#x2F;activerecord.js:163</code></a>
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l155"><code>src&#x2F;data&#x2F;activerecord.js:155</code></a>
         
         </p>
 
@@ -563,21 +554,7 @@ userRecord.password = 'Secret' ;
     </div>
 
     <div class="description">
-        <p>Use find to perform searches</p>
-
-<pre class="code prettyprint"><code> User.find( {
-      'username':   'John'
-      , 'password': 'Secret'
- }, function(user) { ... } ) ;
-</code></pre>
-
-<p>Or simply create a new instance of a Model and use it for a search or save action</p>
-
-<pre class="code prettyprint"><code> var userRecord = new User({ username: 'John', password: 'Secret'}) ;
- User.find(userRecord, callback) ;
- // or
- userRecord.save() ;
-</code></pre>
+        
     </div>
 
     
@@ -676,7 +653,7 @@ userRecord.password = 'Secret' ;
             
         
         
-        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l213"><code>src&#x2F;data&#x2F;activerecord.js:213</code></a>
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l227"><code>src&#x2F;data&#x2F;activerecord.js:227</code></a>
         
         </p>
 
@@ -730,7 +707,7 @@ userRecord.password = 'Secret' ;
             
         
         
-        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l209"><code>src&#x2F;data&#x2F;activerecord.js:209</code></a>
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l223"><code>src&#x2F;data&#x2F;activerecord.js:223</code></a>
         
         </p>
 
@@ -756,7 +733,35 @@ userRecord.password = 'Secret' ;
     <h3 class="name"><code>item</code></h3>
 
     
-        <span class="paren">()</span>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>data</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>options</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>fieldNames</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"></span>
+        </span>
     
 
     
@@ -766,7 +771,7 @@ userRecord.password = 'Secret' ;
     
 
     
-
+        <span class="flag static">static</span>
     
 
     
@@ -784,7 +789,7 @@ userRecord.password = 'Secret' ;
             
         
         
-        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l206"><code>src&#x2F;data&#x2F;activerecord.js:206</code></a>
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l195"><code>src&#x2F;data&#x2F;activerecord.js:195</code></a>
         
         </p>
 
@@ -795,13 +800,95 @@ userRecord.password = 'Secret' ;
     </div>
 
     <div class="description">
-        
+        <p>save json data instead of an active record</p>
     </div>
 
     
+        <div class="params">
+            <h4>Parameters:</h4>
 
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">data</code>
+                        <span class="type">Object</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>json data</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">options</code>
+                        <span class="type">Object</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">fieldNames</code>
+                        <span class="type">Array</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>define the relations which should be loaded</p>
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
     
 
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                    Model class
+                
+            </div>
+        </div>
+    
+
+    
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+                <pre class="code prettyprint"><code>        ModeClass.include('comments').findByName('John') ;
+</code></pre>
+
+<p>/, include: function (fieldName) {
+               return {
+                   //find
+               };
+           }
+       }</p>
+
+<p>/**</p>
+            </div>
+        </div>
     
 </div>
 
@@ -838,7 +925,7 @@ userRecord.password = 'Secret' ;
             
         
         
-        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l274"><code>src&#x2F;data&#x2F;activerecord.js:274</code></a>
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l298"><code>src&#x2F;data&#x2F;activerecord.js:298</code></a>
         
         </p>
 
@@ -853,9 +940,9 @@ userRecord.password = 'Secret' ;
 has no direct link with, for example, a database, this mechanism only works when all changes made to the data are performed
 by one and the same storage object. This storage object is responsible for the notifications.</p>
 
-<p>Always call <a href="../classes/Sway.data.Model.html#method_unlink" class="crosslink">unlink</a> to disable this behavior, or when the Model instance
+<p>Always call Sway.data.Model/unlink:method to disable this behavior, or when the Model instance
 otherwise, the
-If the record or this <tt>link</tt> is not needed anymore, make sure to remove by calling <a href="../classes/Sway.data.Model.html#method_unlink" class="crosslink">unlink</a>,</p>
+If the record or this <tt>link</tt> is not needed anymore, make sure to remove by calling Sway.data.Model/unlink:method,</p>
     </div>
 
     
@@ -875,13 +962,13 @@ If the record or this <tt>link</tt> is not needed anymore, make sure to remove b
             
                 <li class="arg">
                     
-                        <code>key</code>
+                        <code class="optional">[callback]</code>
                     
                 </li>
             
                 <li class="arg">
                     
-                        <code class="optional">[callback]</code>
+                        <code class="optional">[options]</code>
                     
                 </li>
             
@@ -914,7 +1001,7 @@ If the record or this <tt>link</tt> is not needed anymore, make sure to remove b
             
         
         
-        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l259"><code>src&#x2F;data&#x2F;activerecord.js:259</code></a>
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l272"><code>src&#x2F;data&#x2F;activerecord.js:272</code></a>
         
         </p>
 
@@ -925,7 +1012,7 @@ If the record or this <tt>link</tt> is not needed anymore, make sure to remove b
     </div>
 
     <div class="description">
-        
+        <p>load all properties of the model instance.</p>
     </div>
 
     
@@ -933,21 +1020,6 @@ If the record or this <tt>link</tt> is not needed anymore, make sure to remove b
             <h4>Parameters:</h4>
 
             <ul class="params-list">
-            
-                <li class="param">
-                    
-                        <code class="param-name">key</code>
-                        <span class="type">String</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>name of the field</p>
-                    </div>
-
-                    
-                </li>
             
                 <li class="param">
                     
@@ -965,92 +1037,37 @@ If the record or this <tt>link</tt> is not needed anymore, make sure to remove b
                     
                 </li>
             
-            </ul>
-        </div>
-    
-
-    
-
-    
-</div>
-
-                
-                    <div id="method_save" class="method item">
-    <h3 class="name"><code>save</code></h3>
-
-    
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        <code>options</code>
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <span class="flag static">static</span>
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l196"><code>src&#x2F;data&#x2F;activerecord.js:196</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-    
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-            
                 <li class="param">
                     
-                        <code class="param-name">options</code>
+                        <code class="param-name optional">[options]</code>
                         <span class="type">Object</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
                     
 
                     
 
                     <div class="param-description">
-                         
+                        <p>configuration options</p>
                     </div>
 
+                    
+                        <ul class="params-list">
+                            
+                            <li class="param">
+                                
+                                    <code class="param-name optional">[lazy=true]</code>
+                                    <span class="type">Boolnea</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+                                
+
+                                <div class="param-description">
+                                    <p>lazy loading</p>
+                                </div>
+
+                                
+                            </li>
+                            
+                        </ul>
                     
                 </li>
             
@@ -1064,27 +1081,11 @@ If the record or this <tt>link</tt> is not needed anymore, make sure to remove b
 </div>
 
                 
-                    <div id="method_save" class="method item">
-    <h3 class="name"><code>save</code></h3>
+                    <div id="method_reset" class="method item">
+    <h3 class="name"><code>reset</code></h3>
 
     
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        <code class="optional">[deep=true]</code>
-                    
-                </li>
-            
-                <li class="arg">
-                    
-                        <code class="optional">[callback]</code>
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
+        <span class="paren">()</span>
     
 
     
@@ -1097,6 +1098,8 @@ If the record or this <tt>link</tt> is not needed anymore, make sure to remove b
 
     
 
+    
+        <span class="flag chainable">chainable</span>
     
 
     
@@ -1112,7 +1115,7 @@ If the record or this <tt>link</tt> is not needed anymore, make sure to remove b
             
         
         
-        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l246"><code>src&#x2F;data&#x2F;activerecord.js:246</code></a>
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l289"><code>src&#x2F;data&#x2F;activerecord.js:289</code></a>
         
         </p>
 
@@ -1123,49 +1126,9 @@ If the record or this <tt>link</tt> is not needed anymore, make sure to remove b
     </div>
 
     <div class="description">
-        <p>Save the data and its relations (See Relation TODO)</p>
+        <p>set all values back to their original value</p>
     </div>
 
-    
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-            
-                <li class="param">
-                    
-                        <code class="param-name optional">[deep=true]</code>
-                        <span class="type">Boolean</span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>save related data</p>
-                    </div>
-
-                    
-                </li>
-            
-                <li class="param">
-                    
-                        <code class="param-name optional">[callback]</code>
-                        <span class="type">Function</span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>callback function</p>
-                    </div>
-
-                    
-                </li>
-            
-            </ul>
-        </div>
     
 
     
@@ -1174,8 +1137,8 @@ If the record or this <tt>link</tt> is not needed anymore, make sure to remove b
 </div>
 
                 
-                    <div id="method_setState" class="method item">
-    <h3 class="name"><code>setState</code></h3>
+                    <div id="method_save" class="method item">
+    <h3 class="name"><code>save</code></h3>
 
     
         <div class="args">
@@ -1199,10 +1162,20 @@ If the record or this <tt>link</tt> is not needed anymore, make sure to remove b
                     
                 </li>
             
+                <li class="arg">
+                    
+                        <code class="optional">[options]</code>
+                    
+                </li>
+            
             </ul><span class="paren">)</span>
         </div>
     
 
+    
+        <span class="returns-inline">
+            <span class="type">Object</span>
+        </span>
     
 
     
@@ -1228,7 +1201,7 @@ If the record or this <tt>link</tt> is not needed anymore, make sure to remove b
             
         
         
-        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l219"><code>src&#x2F;data&#x2F;activerecord.js:219</code></a>
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l233"><code>src&#x2F;data&#x2F;activerecord.js:233</code></a>
         
         </p>
 
@@ -1291,72 +1264,74 @@ values are transformed immediately.</p>
 
                     <div class="param-description">
                         <p>if <tt>isLazy</tt> is set to TRUE the callback is called when all values
-are transformed.</p>
+are transformed.
+/, setState: function (state, isLazy, callback) {
+               this.state = state;
+               if (typeof(isLazy) === 'function') {
+                   callback = isLazy;
+                   isLazy = true;
+               }
+               // TODO: applie transformers
+               callback();
+           }
+           /**</p>
+
+<p>returns all data in JSON format</p>
                     </div>
 
                     
                 </li>
             
+                <li class="param">
+                    
+                        <code class="param-name optional">[options]</code>
+                        <span class="type">Object</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>configuration</p>
+                    </div>
+
+                    
+                        <ul class="params-list">
+                            
+                            <li class="param">
+                                
+                                    <code class="param-name optional">[success]</code>
+                                    <span class="type">Function</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+                                
+
+                                <div class="param-description">
+                                    <p>success callback function</p>
+                                </div>
+
+                                
+                            </li>
+                            
+                            <li class="param">
+                                
+                                    <code class="param-name optional">[error]</code>
+                                    <span class="type">Function</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+                                
+
+                                <div class="param-description">
+                                    <p>error callback function</p>
+                                </div>
+
+                                
+                            </li>
+                            
+                        </ul>
+                    
+                </li>
+            
             </ul>
         </div>
-    
-
-    
-
-    
-</div>
-
-                
-                    <div id="method_toJSON" class="method item">
-    <h3 class="name"><code>toJSON</code></h3>
-
-    
-        <span class="paren">()</span>
-    
-
-    
-        <span class="returns-inline">
-            <span class="type">Object</span>
-        </span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l237"><code>src&#x2F;data&#x2F;activerecord.js:237</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>returns all data in JSON format</p>
-    </div>
-
     
 
     
@@ -1368,6 +1343,11 @@ are transformed.</p>
                     
                         <span class="type">Object</span>:
                     
+                    /, toJSON: function () {
+               return this.__data;
+           }
+           /**
+Save the data and its relations
                 
             </div>
         </div>
@@ -1377,8 +1357,8 @@ are transformed.</p>
 </div>
 
                 
-                    <div id="method_unlink" class="method item">
-    <h3 class="name"><code>unlink</code></h3>
+                    <div id="method_unlink!~YUIDOC_LINE~!&#x2F;, unlink: function () , getLength: function () {!~YUIDOC_LINE~!               return this.__dataSet.length;!~YUIDOC_LINE~!           }!~YUIDOC_LINE~!       };" class="method item">
+    <h3 class="name"><code>unlink!~YUIDOC_LINE~!&#x2F;, unlink: function () , getLength: function () {!~YUIDOC_LINE~!               return this.__dataSet.length;!~YUIDOC_LINE~!           }!~YUIDOC_LINE~!       };</code></h3>
 
     
         <span class="paren">()</span>
@@ -1409,7 +1389,7 @@ are transformed.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l287"><code>src&#x2F;data&#x2F;activerecord.js:287</code></a>
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l311"><code>src&#x2F;data&#x2F;activerecord.js:311</code></a>
         
         </p>
 
@@ -1437,6 +1417,94 @@ are transformed.</p>
         
             <div id="properties" class="api-class-tabpanel">
                 <h2 class="off-left">Properties</h2>
+
+                
+                    <div id="property_isDirty" class="property item">
+    <h3 class="name"><code>isDirty</code></h3>
+    <span class="type">Boolean</span>
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l358"><code>src&#x2F;data&#x2F;activerecord.js:358</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>bla bla</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="property_isNew" class="property item">
+    <h3 class="name"><code>isNew</code></h3>
+    <span class="type">Boolean</span>
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l366"><code>src&#x2F;data&#x2F;activerecord.js:366</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>bla bla</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
 
                 
                     <div id="property_STATE" class="property item">
@@ -1476,52 +1544,6 @@ are transformed.</p>
 
 <pre class="code prettyprint"><code> userRecord.setState(User.TRANSFORMED, callback) ; // change the state of the record
 </code></pre>
-    </div>
-
-    
-
-    
-
-    
-</div>
-
-                
-                    <div id="property_STATE.NORMAL" class="property item">
-    <h3 class="name"><code>STATE.NORMAL</code></h3>
-    <span class="type">Number</span>
-
-    
-
-    
-
-    
-
-    
-        <span class="flag static">static</span>
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="..&#x2F;files&#x2F;src_data_activerecord.js.html#l155"><code>src&#x2F;data&#x2F;activerecord.js:155</code></a>
-        
-        </p>
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        
     </div>
 
     

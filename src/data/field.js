@@ -90,7 +90,6 @@ window.Sway.data = window.Sway.data || {};
         }
         this.key = key;
         this.type = options.type || 'text';  // define default type
-        this.isSearchable = true ;
 
         return Object.freeze(this);
     };

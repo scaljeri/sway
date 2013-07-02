@@ -122,7 +122,7 @@
 
     
         <div class="foundat">
-            Defined in: <a href="..&#x2F;files&#x2F;src_di.js.html#l4"><code>src&#x2F;di.js:4</code></a>
+            Defined in: <a href="..&#x2F;files&#x2F;src_di.js.html#l6"><code>src&#x2F;di.js:6</code></a>
         </div>
     
 
@@ -140,7 +140,7 @@ facilitating lazy initialization and loose coupling between classes.</p>
 <p>As an example, register all contracts during the application initialization</p>
 
 <pre class="code prettyprint"><code> var di = new Sway.DI() ;
- di.register( 'UserModel'                                                                                 // contract name
+ di.register( 'UserModel'                                                                            // contract name
               , Sway.data.ActiveRecord                                                               // class definiton
               , [ 'User', 'webSql', ['userNameField', 'passwordField', 'accountInfo'], 'websql' ]    // constructor parameters
               , { singleton: TRUE }                                                                  // configuration: create a singleton
@@ -221,7 +221,7 @@ facilitating lazy initialization and loose coupling between classes.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;src_di.js.html#l4"><code>src&#x2F;di.js:4</code></a>
+        <a href="..&#x2F;files&#x2F;src_di.js.html#l6"><code>src&#x2F;di.js:6</code></a>
         
         </p>
 
@@ -356,7 +356,7 @@ facilitating lazy initialization and loose coupling between classes.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;src_di.js.html#l109"><code>src&#x2F;di.js:109</code></a>
+        <a href="..&#x2F;files&#x2F;src_di.js.html#l99"><code>src&#x2F;di.js:99</code></a>
         
         </p>
 
@@ -402,7 +402,7 @@ parameters for this contract. If <tt>params</tt> is defined, the singleton confi
                     
 
                     <div class="param-description">
-                        <p>constructor parameters</p>
+                        <p>constructor parameters which, if defined, replaces its default arguments (see <a href="../classes/Sway.DI.html#method_register" class="crosslink">register</a> )</p>
                     </div>
 
                     
@@ -432,7 +432,9 @@ parameters for this contract. If <tt>params</tt> is defined, the singleton confi
             <h4>Example:</h4>
 
             <div class="example-content">
-                <pre class="code prettyprint"><code>    var ajax = App.di.getInstance("ajax") ;
+                <pre class="code prettyprint"><code>    App.di.register("ajax", ["rest"]) ;
+    var ajax = App.di.getInstance("ajax") ;
+    ajax = App.di.getInstance("ajax", ["rest", true]) ;    //
 </code></pre>
             </div>
         </div>
@@ -472,7 +474,7 @@ parameters for this contract. If <tt>params</tt> is defined, the singleton confi
             
         
         
-        <a href="..&#x2F;files&#x2F;src_di.js.html#l134"><code>src&#x2F;di.js:134</code></a>
+        <a href="..&#x2F;files&#x2F;src_di.js.html#l126"><code>src&#x2F;di.js:126</code></a>
         
         </p>
 
@@ -560,7 +562,7 @@ parameters for this contract. If <tt>params</tt> is defined, the singleton confi
             
         
         
-        <a href="..&#x2F;files&#x2F;src_di.js.html#l73"><code>src&#x2F;di.js:73</code></a>
+        <a href="..&#x2F;files&#x2F;src_di.js.html#l68"><code>src&#x2F;di.js:68</code></a>
         
         </p>
 

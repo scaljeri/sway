@@ -120,7 +120,9 @@
     <pre class="code prettyprint linenums">
 window.Sway = window.Sway || {} ; &#x2F;&#x2F; make sure it exists
 
-(function(console, ns) {
+(function(ns, console, DEBUG) {
+
+    var depCheck = []                                   &#x2F;&#x2F; used to check for circular dependencies
     &#x2F;**
      * DI makes classes accessible by a contract. Instances are created when requested and dependencies are injected into the constructor,
      * facilitating lazy initialization and loose coupling between classes.
@@ -128,7 +130,7 @@ window.Sway = window.Sway || {} ; &#x2F;&#x2F; make sure it exists
      * As an example, register all contracts during the application initialization
      *
      *      var di = new Sway.DI() ;
-     *      di.register( &#x27;UserModel&#x27;                                                                                 &#x2F;&#x2F; contract name
+     *      di.register( &#x27;UserModel&#x27;                                                                            &#x2F;&#x2F; contract name
      *                   , Sway.data.ActiveRecord                                                               &#x2F;&#x2F; class definiton
      *                   , [ &#x27;User&#x27;, &#x27;webSql&#x27;, [&#x27;userNameField&#x27;, &#x27;passwordField&#x27;, &#x27;accountInfo&#x27;], &#x27;websql&#x27; ]    &#x2F;&#x2F; constructor parameters
      *                   , { singleton: TRUE }                                                                  &#x2F;&#x2F; configuration: create a singleton
@@ -172,18 +174,11 @@ window.Sway = window.Sway || {} ; &#x2F;&#x2F; make sure it exists
      * @class Sway.DI
      * @constructor
      **&#x2F;
-    var di = function() {
+     , di = function() {
         &#x2F;&#x2F; container for all registered classes
         Object.defineProperty(this, &#x27;_contracts&#x27;,
             {
                 value: {},
-                enumerable: false &#x2F;&#x2F; hide it
-            }
-        ) ;
-        &#x2F;&#x2F; used to check for circular dependencies
-        Object.defineProperty(this, &#x27;_depCheck&#x27;,
-            {
-                value:[],
                 enumerable: false &#x2F;&#x2F; hide it
             }
         ) ;
@@ -212,17 +207,12 @@ window.Sway = window.Sway || {} ; &#x2F;&#x2F; make sure it exists
          **&#x2F;
         register: function(contract, classRef, params, options)
         {
-            if ( !options &amp;&amp; !Array.isArray(params) ) { &#x2F;&#x2F; fix input
+            if ( params &amp;&amp; !Array.isArray(params) ) { &#x2F;&#x2F; fix input
                 options = params ;
                 params = [] ;
             }
 
-            if ( !classRef ) {
-                console.warn(&#x27;the Class is undefined for contract &#x27; + contract ) ;
-            }
-            else {
-                this._contracts[contract] = { classRef: classRef, params: params||[], options: options||{} } ;
-            }
+            this._contracts[contract] = { classRef: classRef, params: params||[], options: options||{} } ;
             return this ;
         },
 
@@ -232,21 +222,23 @@ window.Sway = window.Sway || {} ; &#x2F;&#x2F; make sure it exists
          *
          * @method getInstance
          * @param  {String} contract name
-         * @param  {Array} [params] constructor parameters
-         * @returns {Object} Class instance
+         * @param  {Array} [params] constructor parameters which, if defined, replaces its default arguments (see {{#crossLink &quot;Sway.DI&#x2F;register:method&quot;}}{{&#x2F;crossLink}} )
+         * @return {Object} Class instance
          * @example
+         App.di.register(&quot;ajax&quot;, [&quot;rest&quot;]) ;
          var ajax = App.di.getInstance(&quot;ajax&quot;) ;
+         ajax = App.di.getInstance(&quot;ajax&quot;, [&quot;rest&quot;, true]) ;    &#x2F;&#x2F;
          **&#x2F;
         getInstance: function(contract, params) {
             var instance = null ;
 
             if ( this._contracts[contract]  ) {                                      &#x2F;&#x2F; it should exist
-                if (this._contracts[contract].options.singleton )                    &#x2F;&#x2F; if singleton, params arg is not used!!
+                if (this._contracts[contract].options.singleton )
                 {
-                    instance = getSingletonInstance.call(this, contract) ;
+                    instance = getSingletonInstance.call(this, contract, params) ;
                 } else &#x2F;&#x2F;create a new instance every time
                 {
-                    instance = createInstance.call(this, contract, params||this._contracts[contract].params||[]) ;
+                    instance = createInstance.call(this, contract, params) ;
                 }
             }
             return instance ;
@@ -266,10 +258,13 @@ window.Sway = window.Sway || {} ; &#x2F;&#x2F; make sure it exists
     &#x2F;* ***** PRIVATE HELPERS ***** *&#x2F;
 
     &#x2F;* Create or reuse a singleton instance *&#x2F;
-    function getSingletonInstance(contract) {
+    function getSingletonInstance(contract, params) {
         var config = this._contracts[contract] ;
+        if ( params ) {
+            config.params = params ;
+        }
 
-        if ( config.instance === undefined ) {
+        if ( config.instance === undefined || params ) {
             config.instance = createInstance.call(this, contract, config.params);
         }
         return config.instance ;
@@ -299,14 +294,14 @@ window.Sway = window.Sway || {} ; &#x2F;&#x2F; make sure it exists
         var constParam = contract
             , problemContract ;
         if ( typeof(contract) === &#x27;string&#x27; &amp;&amp; this._contracts[contract] ) {     &#x2F;&#x2F; is &#x27;contract&#x27; just a contructor parameter or a contract?
-            if ( this._depCheck.indexOf(contract) === -1 ) {                    &#x2F;&#x2F; check for circular dependency
+            if ( depCheck.indexOf(contract) === -1 ) {                    &#x2F;&#x2F; check for circular dependency
                 &#x2F;&#x2F;this._depCheck.push(contract) ;                               &#x2F;&#x2F; add contract to circular dependency check list
                 constParam = this.getInstance(contract) ;                       &#x2F;&#x2F; create the instance
-                this._depCheck.pop() ;                                          &#x2F;&#x2F; done, remove dependency from the list
+                depCheck.pop() ;                                          &#x2F;&#x2F; done, remove dependency from the list
             }
             else { &#x2F;&#x2F; circular dependency detected!! --&gt; STOP, someone did something stupid -&gt; fix needed!!
-                problemContract = this._depCheck[0] ;
-                this._depCheck.length = 0 ;                                     &#x2F;&#x2F; cleanup
+                problemContract = depCheck[0] ;
+                depCheck.length = 0 ;                                     &#x2F;&#x2F; cleanup
                 throw &quot;Circular dependency detected for contract &quot; + problemContract ;
             }
         }
@@ -338,12 +333,12 @@ window.Sway = window.Sway || {} ; &#x2F;&#x2F; make sure it exists
         if ( this._contracts[contract]) {           &#x2F;&#x2F; contract should exist
             cr = this._contracts[contract].classRef ;
 
-            this._depCheck.push(contract) ;
+            depCheck.push(contract) ;
             Dependency.prototype = cr.prototype ;   &#x2F;&#x2F; Fix instanceof
             instance = new Dependency() ;           &#x2F;&#x2F; done
-            this._depCheck.pop() ;
+            depCheck.pop() ;
         }
-        else {
+        else if ( DEBUG ) {
             console.warn( &#x27;Contract &#x27; + contract + &#x27; does not exist&#x27;) ;
         }
         return instance ;
@@ -351,7 +346,7 @@ window.Sway = window.Sway || {} ; &#x2F;&#x2F; make sure it exists
 
     ns.DI = di ;
 
-})(window.console, window.Sway) ;
+})(window.Sway, window.console, window.Sway.DEBUG) ;
 
     </pre>
 </div>
