@@ -51,7 +51,7 @@ window.Sway = window.Sway || {}; // make sure it exists
                 , BUBBLING: 'bubble'            // event goes from target to root
                 /**
                  * Represent both capturing and bubbling event modes
-                 * @property {String} EVENT_MODE.ALL
+                 * @property {String} EVENT_MODE.BOTH
                  * @static
                  */
                 , BOTH: 'both'
