@@ -79,7 +79,7 @@ window.Sway.data = window.Sway.data || {};
 
         switch (type) {
             case 'belongs_to' :
-                this.set = setBelongsTo.bind(this) ;        // force context === this
+                this.set = setHasOne.bind(this) ;        // force context === this
                 break ;
             case 'has_one':
                 this.set = options.through ? setHasOneThrough.bind(this) : setHasOne.bind(this) ;
@@ -100,36 +100,32 @@ window.Sway.data = window.Sway.data || {};
     Relation.prototype = {} ;
 
     /*
-    is the ID of the ref model
+        @param {Object} self the object which receives the 'activeRecord'
+        @param {String} key the property of self
+        @param {Object} activeRecord the value to be set
      */
-    function setBelongsTo(self, key, value) {
+    function setHasOne(self, key, activeRecord) {
         console.log(key) ;
-        if ( self.__data[key] !== value ) { // prevent circular behavior
-            self.__data[key] = value ;
+        self.__data[key] = activeRecord ;
 
-            // check if 'value' has a relation with 'self' ?
-            if ( Object.getOwnPropertyDescriptor(value, value.constructor.__reverseRelation[self.$className].key) !== undefined ) {
-                value[value.constructor.__reverseRelation[self.$className].key] = self ;
-            }
-            else {  // nope, no relation!!
-                throw "No Relation defined for " + self.$className + ":belongs_to --> " + value.$className + ":???" ;
+        var otherField = activeRecord.constructor.__reverseRelation[self.$className]
+        if ( otherField ) {
+            // make sure this will not be an infinite loop
+            if ( activeRecord[otherField.key] !== self ) { //} Object.getOwnPropertyDescriptor(activeRecord, activeRecord.constructor.__reverseRelation[self.$className].key) !== undefined ) {
+                activeRecord[otherField.key] = self ;
             }
         }
-    }
-    function setHasOne(self, key, value){
-        debugger ;
+        else {  // nope, no relation!!
+            throw "No Relation defined for " + self.$className + ":belongs_to --> " + activeRecord.$className + ":???" ;
+        }
     }
     function setHasOneThrough(data, value){
-        debugger ;
     }
     function setHasMany(data, value) {
-        debugger ;
     }
     function setHasManyThrough(data, value) {
-        debugger ;
     }
     function setHasAndBelongsToMany(data, value) {
-        debugger ;
     }
 
     ns.Relation = Relation;
