@@ -86,7 +86,7 @@ window.describe("Sway.data.ActiveRecord", function () {
     Account = Sway.data.ActiveRecord.get('Account');
     AccountHistory = Sway.data.ActiveRecord.get('AccountHistory');
     Address = Sway.data.ActiveRecord.get('Address');
-    Hospital = Sway.data.ActiveRecord.get('Address');
+    Hospital = Sway.data.ActiveRecord.get('Hospital');
 
     beforeEach(function () {
 
@@ -143,7 +143,7 @@ window.describe("Sway.data.ActiveRecord", function () {
         appointmentDate1 = new Date();
         appointment1 = new Appointment({ appointmentDate: appointmentDate });
         hospital = new Hospital();
-        hospital.street = 'Cardiology & Heart Surgery';
+        hospital.name = 'Cardiology & Heart Surgery';
         physician = new Physician({ name: 'John'});
         physician.hospitals = hospital;
         patient = new Patient({ name: 'Sue', address: address, account: account, accountHistory: accountHistory });
@@ -151,8 +151,6 @@ window.describe("Sway.data.ActiveRecord", function () {
         physician.appointments = appointment;                                   // should link a patient
         patient.appointments = appointment;
         physician.patients = patient1;                                          // should link appointment to physician
-
-
     });
 
     it("should exist", function () {
@@ -168,13 +166,11 @@ window.describe("Sway.data.ActiveRecord", function () {
         expect(Sway.data.ActiveRecord.get('Hospital')).toBeDefined();
     });
 
-    it("should create a record", function () {
-        /*
+    xit("should create a record", function () {
         expect(physician).toBeDefined() ;
         expect(physician).toBeInstanceof(Physician) ;
         expect(physician.name).toEqual('John') ;
         expect(physician.isNew).toBeTruthy() ;
-        */
     });
 
     describe("should support HAS_ONE/BELONGS_TO association", function () {
@@ -195,7 +191,7 @@ window.describe("Sway.data.ActiveRecord", function () {
         });
     });
 
-    describe("should support HAS_ONE/BELONGS_TO THROUGH association", function () {
+    xdescribe("should support HAS_ONE/BELONGS_TO THROUGH association", function () {
         it("and be able to create one", function () {
 
         });
@@ -209,7 +205,7 @@ window.describe("Sway.data.ActiveRecord", function () {
         });
     });
 
-    describe("should support HAS_MANY association", function () {
+    xdescribe("should support HAS_MANY association", function () {
         it("and be able to create one", function () {
 
         });
@@ -223,7 +219,7 @@ window.describe("Sway.data.ActiveRecord", function () {
         });
     });
 
-    describe("should support HAS_MANY THROUGH association", function () {
+    xdescribe("should support HAS_MANY THROUGH association", function () {
         it("and be able to create one", function () {
 
         });
