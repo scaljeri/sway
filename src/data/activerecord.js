@@ -380,8 +380,8 @@ window.Sway.data = window.Sway.data || {};
                         set: function(value){field.set( this, i, value);}.bind(this)    // set is handled by the field itself
                         , get: getProperty.bind(this, i)
                     });
-                    if ( data[field.key] ) {
-                        this[i] = data[field.key];
+                    if ( this.__data[i] === undefined ) { // set default value
+                        this.__data[i] = field.defaultValue ;
                     }
                 }.bind(this))(i, field);
 
