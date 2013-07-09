@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src&#x2F;data&#x2F;field.js</title>
+    <title>src&#x2F;data&#x2F;relation.js</title>
     <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.8.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
     <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
@@ -116,36 +116,34 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: src&#x2F;data&#x2F;field.js</h1>
+                        <h1 class="file-heading">File: src&#x2F;data&#x2F;relation.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-window.Sway = window.Sway || {}; &#x2F;&#x2F; make sure it exists
+&#x2F;&#x2F; Create the namespace -&gt; JS load order independent
+window.Sway = window.Sway || {};
 window.Sway.data = window.Sway.data || {};
 
 (function (ns) {
-    &quot;use strict&quot;;
+    &#x2F;*
+        *) Rule nr1: Only one relation can exist between two tables
+
+     belongs_to ( === foreign key ) (http:&#x2F;&#x2F;stackoverflow.com&#x2F;questions&#x2F;3808926&#x2F;whats-the-difference-between-belongs-to-and-has-one)
+     has_one
+     has_many
+     has_many :through   (the thirt table is also a model)
+     has_one :through    ( goes one-to-one through other model)
+     has_and_belongs_to_many    &#x2F;&#x2F; simple linker table (http:&#x2F;&#x2F;stackoverflow.com&#x2F;questions&#x2F;2780798&#x2F;has-and-belongs-to-many-vs-has-many-through)
+     *&#x2F;
 
     &#x2F;**
-     * A Field represents a single value of an {{#crossLink &quot;Sway.data.ActiveRecord&quot;}}{{&#x2F;crossLink}} model.
-     * It can represent a simple field definition, or an association; an relation between two models.
-     *
-     *     var username   = new Field(&#x27;username&#x27;, { friendlyName: &#x27;User name&#x27; })
-     *         , password = new Field(&#x27;password&#x27;, { type: &#x27;password&#x27;, friendlyName: &#x27;Password&#x27; })
-     *         , address  = new Field(&#x27;address&#x27;,  { key: &#x27;address&#x27;, type: &#x27;belongs_to&#x27;, model: Sway.data.Address, friendlyName: &#x27;Address&#x27; }) ;
-     *
-     * Furthermore, a Field can also hold information about data transformation, which is used by the persistence layer
-     *
-     *     var accountInfo = new Field( &#x27;accountInfo&#x27;, { type: &#x27;BLOB&#x27;, friendLyName: &#x27;Account info&#x27;, transformers: [encryptFilter, compressFilter] }) ;
-     *
-     * &lt;h3&gt;Associations&lt;&#x2F;h3&gt;
-     *
-     * This Active Record implementation is based on the Ruby on Rails (RoR) &lt;a href=&quot;http:&#x2F;&#x2F;guides.rubyonrails.org&#x2F;association_basics.html&quot;&gt;ActiveRecord Associations&lt;&#x2F;a&gt;.&lt;br&gt;
+     * Sway.data.Relation defines the association between two {{#crossLink &quot;Sway.data.Model&quot;}}{{&#x2F;crossLink}}s. It is based on the Ruby on Rails (RoR)
+     * &lt;a href=&quot;http:&#x2F;&#x2F;guides.rubyonrails.org&#x2F;association_basics.html&quot;&gt;ActiveRecord Associations&lt;&#x2F;a&gt;.&lt;br&gt;
      * The following associations are available:
      *
      * &lt;h4&gt;BELONGS_TO and HAS_ONE (THROUGH) Association&lt;&#x2F;h4&gt;
      * Assume an &#x27;Account&#x27; &lt;tt&gt;belongs\_to&lt;&#x2F;tt&gt; a &#x27;Supplier&#x27;. Or the other way around, a Supplier &lt;tt&gt;has\_one&lt;&#x2F;tt&gt; Account.
-     * Furthermore, if an &#x27;Account&#x27; and &#x27;Supplier&#x27; both &lt;tt&gt;has\_one&lt;&#x2F;tt&gt; &#x27;AccountHistory&#x27;, it could look like this
+     * Furthermore, if an &#x27;Account&#x27; and &#x27;Supplier&#x27; both &lt;tt&gt;has\_one&lt;&#x2F;tt&gt; &#x27;AccountHistory&#x27;, it will look like this
      *
      *      var Account = new Sway.data.ActiveRecord( &#x27;Account&#x27;, storage, [
      *            new Sway.data.Relation({ key: &#x27;supplier&#x27;, type: &#x27;belongs_to&#x27;, model: &#x27;Supplier&#x27; }       &#x2F;&#x2F; creates a field &#x27;supplier_id&#x27;
@@ -184,107 +182,90 @@ window.Sway.data = window.Sway.data || {};
      *
      *      new Sway.data.Relation({ key: &#x27;parts&#x27;, type: &#x27;has_and_belongs_to_many&#x27;, model: &#x27;Part&#x27; })
      *
-     *
-     * @class Sway.data.Field
+     * @class Sway.data.Relation
      * @constructor
-     * @param {String} key name of the field
-     * @param {Object} [options] definition of this field
-     *      @param {String}  [options.type=TEXT] type of the field or association
-     *      @param {String}  [options.model] referenced model
-     *      @param {String}  [options.through] specifies a join model. Only available for &lt;tt&gt;HAS\_ONE&lt;&#x2F;tt&gt; and &lt;tt&gt;HAS\_MANY&lt;&#x2F;tt&gt; associations
-     *      @param {String}  [options.friendlyName] description of the field
-     *      @param {Boolean} [options.PK=false] primary key field (there can only be one primary key field)
-     *      @param {Boolean} [options.autoIncrement=true] Primary key field is auto-incremented (auto generated key)
-     *      @param {Boolean} [options.index=false] put an index on the field
-     *      @param {Boolean} [options.unique=false] unique field
-     *      @param {Array}   [options.compoundIndex] names of the compound index it is part of.
-     *      @param {Boolean} [options.required=false] a required field
-     *      @param {Array}   [options.transformers] list of transformer objects. A transformer object can transform the data into a new form and also back
-     * into its original form. Think of, zipping and unzipping or encrypting and decrypting
-     *      @param {Array}   [options.validators] list of validation functions
+     * @param {String} key
+     * @param {String} type type of association
+     * @param {String} model name of the model
+     * @param {Object} [options]
+     *          @param {String} [options.through] specifies a join model. Only available for &lt;tt&gt;HAS\_ONE&lt;&#x2F;tt&gt; and &lt;tt&gt;HAS\_MANY&lt;&#x2F;tt&gt; associations
+     *          @param {String} [options.friendlyName] description of the field
      *&#x2F;
-    var Field = function (key, options) {
-        if (!options) {
-            options = {};
-        }
-        for (var i in options) {
-            this[i] = options[i];
+    var Relation = function (key, type, model, options) {
+        if ( !options ) {
+            options = {} ;
         }
         this.key = key;
-        this.type = options.type || &#x27;text&#x27;;  &#x2F;&#x2F; define default type
+        this.type = type;
+        this.model = model;
+        this.defaultValue = options.defaultValue||null ;
+
+        switch (type) {
+            case &#x27;belongs_to&#x27; :
+                this.set = setHasOne.bind(this) ;        &#x2F;&#x2F; force context === this
+                this.defaultValue = options.defaultValue||null ;
+                break ;
+            case &#x27;has_one&#x27;:
+                this.set = setHasOne.bind(this) ;
+                this.defaultValue = options.defaultValue||null ;
+                break ;
+            case &#x27;has_many&#x27;:
+                this.set = setHasMany.bind(this) ;
+                this.defaultValue = options.defaultValue||[] ;
+                break;
+            case &#x27;has_and_belongs_to_many&#x27;:
+                this.set = setHasMany.bind(this);
+                this.defaultValue = options.defaultValue||[] ;
+                break;
+            default:
+                this.set = function(){ throw(&quot;Associtation &quot; + type  + &quot; is not supported&quot;);};
+        }
 
         return Object.freeze(this);
     };
 
-    &#x2F;* this function is called by ActiveRecord, which will also be the context&#x2F;this *&#x2F;
-    function set(key, value) {
-        this[key] = value ;
+    Relation.prototype = {} ;
+
+    &#x2F;*
+        @param {Object} self the object which receives the &#x27;activeRecord&#x27;
+        @param {String} key the property of self
+        @param {Object} activeRecord the value to be set
+     *&#x2F;
+    function setHasOne(self, key, activeRecord) {
+        console.log(self.$className + &#x27;:&#x27; + key + &#x27; has-one &#x27; + activeRecord.$className) ;
+        self.__data[key] = activeRecord ;
+        setSelf2AR(self, key, activeRecord) ;
     }
+    function setHasMany(self, key, activeRecord) {
+        console.log(self.$className + &#x27;:&#x27; + key + &#x27; has-many &#x27; + activeRecord.$className) ;
+        var i;
 
-    Field.prototype = {
-
-        set: function(value) {
-
-        },
-        &#x2F;**
-         * @method transform
-         * @param {*} value value to be transformed
-         * @param {Function} callback function called with the transformed data
-         *&#x2F;
-        transform: function (value, callback) {
-            if (this.transformers) {
-                transform(0, this.transformers, callback, value);
-            }
-            else {
-                callback(value);
+        if ( Array.isArray(activeRecord) ) {
+            self.__data[key] = activeRecord ;
+            for( i = 0; i &lt; activeRecord.length; i++) {
+                setSelf2AR(self, key, activeRecord) ;
             }
         }
-        &#x2F;**
-         * @method validate
-         * @param {*} value value to be validated
-         * @return {Boolean}
-         *&#x2F;, validate: function (value) {
-            var i
-                , ok = true;
-
-            if (this.validators) {
-                for (i = 0; i &lt; this.validators.length; i++) {
-                    if (!this.validators[i].validate(value)) {
-                        ok = false;
-                        break;
-                    }
-                }
-            }
-            return ok;
-        }, isField: function () {
-            return true;
-        }
-        &#x2F;*
-         * Returns the size of
-         * @method size
-         *&#x2F;
-        &#x2F;*
-         , getSize: function() {
-         return this.state === &quot;uncompressed&quot; ? encodeURI(this._inputStr).split(&#x2F;%..|.&#x2F;).length - 1 : this._zippedBlob.size ;
-         }
-         *&#x2F;
-    };
-
-    function transform(index, transformers, callback, value) {
-        if (transformers[index]) {
-            transformers[index].transform(value, transform.bind(null, ++index, transformers, callback));
-        }
-        else {
-            callback(value);
+        else if ( self.__data[key].indexOf(activeRecord) === -1 ) {
+            self.__data[key].push(activeRecord) ;
+            setSelf2AR(self, key, activeRecord) ;
         }
     }
 
-    ns.Field = Field;
+    function setSelf2AR(self, key, activeRecord) {
+        var otherField = activeRecord.constructor.__reverseRelation[self.$className] ;
+        if ( otherField ) {
+            if ( activeRecord[otherField.key] !== self ) {
+                activeRecord[otherField.key] = self ;
+            }
+        }
+        else {  &#x2F;&#x2F; nope, no relation!!
+            throw &quot;No Relation defined for &quot; + self.$className + &quot;:belongs_to --&gt; &quot; + activeRecord.$className + &quot;:???&quot; ;
+        }
+    }
 
+    ns.Relation = Relation;
 })(window.Sway.data);
-
-
-
     </pre>
 </div>
 

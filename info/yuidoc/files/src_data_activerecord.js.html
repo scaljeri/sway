@@ -57,6 +57,8 @@
             
                 <li><a href="..&#x2F;classes/Sway.data.persistance.WebSqlResult.html">Sway.data.persistance.WebSqlResult</a></li>
             
+                <li><a href="..&#x2F;classes/Sway.data.Relation.html">Sway.data.Relation</a></li>
+            
                 <li><a href="..&#x2F;classes/Sway.DI.html">Sway.DI</a></li>
             
                 <li><a href="..&#x2F;classes/Sway.EventHub.html">Sway.EventHub</a></li>
@@ -500,8 +502,8 @@ window.Sway.data = window.Sway.data || {};
                         set: function(value){field.set( this, i, value);}.bind(this)    &#x2F;&#x2F; set is handled by the field itself
                         , get: getProperty.bind(this, i)
                     });
-                    if ( data[field.key] ) {
-                        this[i] = data[field.key];
+                    if ( this.__data[i] === undefined ) { &#x2F;&#x2F; set default value
+                        this.__data[i] = field.defaultValue ;
                     }
                 }.bind(this))(i, field);
 

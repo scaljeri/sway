@@ -101,7 +101,7 @@ h1{font-size:138.5%;}h2{font-size:123.1%;}h3{font-size:108%;}h1,h2,h3{margin:1em
         <div class="hd">
             <!-- title -->
             <h1>./src/data/relation.js Report</h1>
-            <h2>Date Generated: Tue Jul 02 22:22:25 CEST 2013</h2>
+            <h2>Date Generated: Sun Jul 07 21:08:28 CEST 2013</h2>
         </div>
 
         <div class="bd">
@@ -120,15 +120,15 @@ h1{font-size:138.5%;}h2{font-size:123.1%;}h3{font-size:108%;}h1,h2,h3{margin:1em
                 <tbody>
                     <tr>
                         <th>Lines</th>
-                        <td class="results">32</td>
-                        <td class="results">34</td>
-                        <td class="results">94.12%</td>
+                        <td class="results">42</td>
+                        <td class="results">47</td>
+                        <td class="results">89.36%</td>
                     </tr>
                     <tr>
                         <th>Functions</th>
-                        <td class="results">3</td>
-                        <td class="results">9</td>
-                        <td class="results">33.33%</td>
+                        <td class="results">5</td>
+                        <td class="results">6</td>
+                        <td class="results">83.33%</td>
                     </tr>
                 </tbody>
             </table>
@@ -169,7 +169,7 @@ h1{font-size:138.5%;}h2{font-size:123.1%;}h3{font-size:108%;}h1,h2,h3{margin:1em
                     </tr>    <tr class="uncovered">
                         <td class="line-number">16</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">17</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;/*</td>
+                        <td class="line-number">17</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;/**</td>
                     </tr>    <tr class="uncovered">
                         <td class="line-number">18</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Sway.data.Relation&nbsp;defines&nbsp;the&nbsp;association&nbsp;between&nbsp;two&nbsp;{{#crossLink&nbsp;&quot;Sway.data.Model&quot;}}{{/crossLink}}s.&nbsp;It&nbsp;is&nbsp;based&nbsp;on&nbsp;the&nbsp;Ruby&nbsp;on&nbsp;Rails&nbsp;(RoR)</td>
                     </tr>    <tr class="uncovered">
@@ -292,112 +292,142 @@ h1{font-size:138.5%;}h2{font-size:123.1%;}h3{font-size:108%;}h1,h2,h3{margin:1em
                         <td class="line-number">77</td><td class="line-calls">17</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.type&nbsp;=&nbsp;type;</td>
                     </tr>    <tr class="called">
                         <td class="line-number">78</td><td class="line-calls">17</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.model&nbsp;=&nbsp;model;</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">79</td><td class="line-calls">17</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.defaultValue&nbsp;=&nbsp;options.defaultValue||null&nbsp;;</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">79</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                        <td class="line-number">80</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
                     </tr>    <tr class="called">
-                        <td class="line-number">80</td><td class="line-calls">17</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;switch&nbsp;(type)&nbsp;{</td>
+                        <td class="line-number">81</td><td class="line-calls">17</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;switch&nbsp;(type)&nbsp;{</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">81</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;'belongs_to'&nbsp;:</td>
+                        <td class="line-number">82</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;'belongs_to'&nbsp;:</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">82</td><td class="line-calls">6</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.set&nbsp;=&nbsp;setBelongsTo.bind(this)&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;force&nbsp;context&nbsp;===&nbsp;this</td>
+                        <td class="line-number">83</td><td class="line-calls">6</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.set&nbsp;=&nbsp;setHasOne.bind(this)&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;force&nbsp;context&nbsp;===&nbsp;this</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">83</td><td class="line-calls">6</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break&nbsp;;</td>
+                        <td class="line-number">84</td><td class="line-calls">6</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.defaultValue&nbsp;=&nbsp;options.defaultValue||null&nbsp;;</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">85</td><td class="line-calls">6</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break&nbsp;;</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">84</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;'has_one':</td>
+                        <td class="line-number">86</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;'has_one':</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">85</td><td class="line-calls">5</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.set&nbsp;=&nbsp;options.through&nbsp;?&nbsp;setHasOneThrough.bind(this)&nbsp;:&nbsp;setHasOne.bind(this)&nbsp;;</td>
+                        <td class="line-number">87</td><td class="line-calls">5</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.set&nbsp;=&nbsp;setHasOne.bind(this)&nbsp;;</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">86</td><td class="line-calls">5</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break&nbsp;;</td>
+                        <td class="line-number">88</td><td class="line-calls">5</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.defaultValue&nbsp;=&nbsp;options.defaultValue||null&nbsp;;</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">89</td><td class="line-calls">5</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break&nbsp;;</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">87</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;'has_many':</td>
+                        <td class="line-number">90</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;'has_many':</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">88</td><td class="line-calls">4</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.set&nbsp;=&nbsp;options.through&nbsp;?&nbsp;setHasManyThrough.bind(this)&nbsp;:&nbsp;setHasMany.bind(this)&nbsp;;</td>
+                        <td class="line-number">91</td><td class="line-calls">4</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.set&nbsp;=&nbsp;setHasMany.bind(this)&nbsp;;</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">89</td><td class="line-calls">4</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;</td>
+                        <td class="line-number">92</td><td class="line-calls">4</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.defaultValue&nbsp;=&nbsp;options.defaultValue||[]&nbsp;;</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">93</td><td class="line-calls">4</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">90</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;'has_and_belongs_to_many':</td>
+                        <td class="line-number">94</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;'has_and_belongs_to_many':</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">91</td><td class="line-calls">2</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.set&nbsp;=&nbsp;setHasAndBelongsToMany.bind(this);</td>
+                        <td class="line-number">95</td><td class="line-calls">2</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.set&nbsp;=&nbsp;setHasMany.bind(this);</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">92</td><td class="line-calls">2</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;</td>
+                        <td class="line-number">96</td><td class="line-calls">2</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.defaultValue&nbsp;=&nbsp;options.defaultValue||[]&nbsp;;</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">97</td><td class="line-calls">2</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">93</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default:</td>
+                        <td class="line-number">98</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default:</td>
                     </tr>    <tr class="not-called">
-                        <td class="line-number">94</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.set&nbsp;=&nbsp;function(){&nbsp;throw(&quot;Associtation&nbsp;&quot;&nbsp;+&nbsp;type&nbsp;&nbsp;+&nbsp;&quot;&nbsp;is&nbsp;not&nbsp;supported&quot;);};</td>
+                        <td class="line-number">99</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.set&nbsp;=&nbsp;function(){&nbsp;throw(&quot;Associtation&nbsp;&quot;&nbsp;+&nbsp;type&nbsp;&nbsp;+&nbsp;&quot;&nbsp;is&nbsp;not&nbsp;supported&quot;);};</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">95</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">96</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
-                    </tr>    <tr class="called">
-                        <td class="line-number">97</td><td class="line-calls">17</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;Object.freeze(this);</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">98</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;};</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">99</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
-                    </tr>    <tr class="called">
-                        <td class="line-number">100</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;Relation.prototype&nbsp;=&nbsp;{}&nbsp;;</td>
+                        <td class="line-number">100</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
                     </tr>    <tr class="uncovered">
                         <td class="line-number">101</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">102</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;/*</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">103</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;is&nbsp;the&nbsp;ID&nbsp;of&nbsp;the&nbsp;ref&nbsp;model</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">104</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">105</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;setBelongsTo(self,&nbsp;key,&nbsp;value)&nbsp;{</td>
-                    </tr>    <tr class="called">
-                        <td class="line-number">106</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;console.log(key)&nbsp;;</td>
-                    </tr>    <tr class="called">
-                        <td class="line-number">107</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(&nbsp;self.__data[key]&nbsp;!==&nbsp;value&nbsp;)&nbsp;{&nbsp;//&nbsp;prevent&nbsp;circular&nbsp;behavior</td>
-                    </tr>    <tr class="called">
-                        <td class="line-number">108</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.__data[key]&nbsp;=&nbsp;value&nbsp;;</td>
+                        <td class="line-number">102</td><td class="line-calls">17</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;Object.freeze(this);</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">109</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                        <td class="line-number">103</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;};</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">110</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;check&nbsp;if&nbsp;'value'&nbsp;has&nbsp;a&nbsp;relation&nbsp;with&nbsp;'self'&nbsp;?</td>
+                        <td class="line-number">104</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
                     </tr>    <tr class="called">
-                        <td class="line-number">111</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(&nbsp;Object.getOwnPropertyDescriptor(value,&nbsp;value.constructor.__reverseRelation[self.$className].key)&nbsp;!==&nbsp;undefined&nbsp;)&nbsp;{</td>
+                        <td class="line-number">105</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;Relation.prototype&nbsp;=&nbsp;{}&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">106</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">107</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;/*</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">108</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@param&nbsp;{Object}&nbsp;self&nbsp;the&nbsp;object&nbsp;which&nbsp;receives&nbsp;the&nbsp;'activeRecord'</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">109</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@param&nbsp;{String}&nbsp;key&nbsp;the&nbsp;property&nbsp;of&nbsp;self</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">110</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@param&nbsp;{Object}&nbsp;activeRecord&nbsp;the&nbsp;value&nbsp;to&nbsp;be&nbsp;set</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">111</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">112</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value[value.constructor.__reverseRelation[self.$className].key]&nbsp;=&nbsp;self&nbsp;;</td>
+                        <td class="line-number">112</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;setHasOne(self,&nbsp;key,&nbsp;activeRecord)&nbsp;{</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">113</td><td class="line-calls">30</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;console.log(self.$className&nbsp;+&nbsp;':'&nbsp;+&nbsp;key&nbsp;+&nbsp;'&nbsp;has-one&nbsp;'&nbsp;+&nbsp;activeRecord.$className)&nbsp;;</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">114</td><td class="line-calls">30</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.__data[key]&nbsp;=&nbsp;activeRecord&nbsp;;</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">115</td><td class="line-calls">30</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;setSelf2AR(self,&nbsp;key,&nbsp;activeRecord)&nbsp;;</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">113</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                        <td class="line-number">116</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">117</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;setHasMany(self,&nbsp;key,&nbsp;activeRecord)&nbsp;{</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">118</td><td class="line-calls">50</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;console.log(self.$className&nbsp;+&nbsp;':'&nbsp;+&nbsp;key&nbsp;+&nbsp;'&nbsp;has-many&nbsp;'&nbsp;+&nbsp;activeRecord.$className)&nbsp;;</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">119</td><td class="line-calls">50</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;i;</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">114</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;{&nbsp;&nbsp;//&nbsp;nope,&nbsp;no&nbsp;relation!!</td>
+                        <td class="line-number">120</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">121</td><td class="line-calls">50</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(&nbsp;Array.isArray(activeRecord)&nbsp;)&nbsp;{</td>
                     </tr>    <tr class="not-called">
-                        <td class="line-number">115</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw&nbsp;&quot;No&nbsp;Relation&nbsp;defined&nbsp;for&nbsp;&quot;&nbsp;+&nbsp;self.$className&nbsp;+&nbsp;&quot;:belongs_to&nbsp;--&gt;&nbsp;&quot;&nbsp;+&nbsp;value.$className&nbsp;+&nbsp;&quot;:???&quot;&nbsp;;</td>
+                        <td class="line-number">122</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.__data[key]&nbsp;=&nbsp;activeRecord&nbsp;;</td>
+                    </tr>    <tr class="not-called">
+                        <td class="line-number">123</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for(&nbsp;i&nbsp;=&nbsp;0;&nbsp;i&nbsp;&lt;&nbsp;activeRecord.length;&nbsp;i++)&nbsp;{</td>
+                    </tr>    <tr class="not-called">
+                        <td class="line-number">124</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;setSelf2AR(self,&nbsp;key,&nbsp;activeRecord)&nbsp;;</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">116</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                        <td class="line-number">125</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">117</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">118</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                        <td class="line-number">126</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">119</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;setHasOne(self,&nbsp;key,&nbsp;value){</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">120</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                        <td class="line-number">127</td><td class="line-calls">50</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;if&nbsp;(&nbsp;self.__data[key].indexOf(activeRecord)&nbsp;===&nbsp;-1&nbsp;)&nbsp;{</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">121</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;setHasOneThrough(data,&nbsp;value){</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">122</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                        <td class="line-number">128</td><td class="line-calls">30</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.__data[key].push(activeRecord)&nbsp;;</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">123</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;setHasMany(data,&nbsp;value)&nbsp;{</td>
+                        <td class="line-number">129</td><td class="line-calls">30</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;setSelf2AR(self,&nbsp;key,&nbsp;activeRecord)&nbsp;;</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">124</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                        <td class="line-number">130</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">131</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">132</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
                     </tr>    <tr class="called">
-                        <td class="line-number">125</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;setHasManyThrough(data,&nbsp;value)&nbsp;{</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">126</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                        <td class="line-number">133</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;setSelf2AR(self,&nbsp;key,&nbsp;activeRecord)&nbsp;{</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">127</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;setHasAndBelongsToMany(data,&nbsp;value)&nbsp;{</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">128</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;}</td>
-                    </tr>    <tr class="uncovered">
-                        <td class="line-number">129</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                        <td class="line-number">134</td><td class="line-calls">60</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;otherField&nbsp;=&nbsp;activeRecord.constructor.__reverseRelation[self.$className]&nbsp;;</td>
                     </tr>    <tr class="called">
-                        <td class="line-number">130</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;ns.Relation&nbsp;=&nbsp;Relation;</td>
+                        <td class="line-number">135</td><td class="line-calls">60</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(&nbsp;otherField&nbsp;)&nbsp;{</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">136</td><td class="line-calls">60</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(&nbsp;activeRecord[otherField.key]&nbsp;!==&nbsp;self&nbsp;)&nbsp;{</td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">137</td><td class="line-calls">50</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activeRecord[otherField.key]&nbsp;=&nbsp;self&nbsp;;</td>
                     </tr>    <tr class="uncovered">
-                        <td class="line-number">131</td><td class="line-calls">&nbsp;</td><td class="line-code">})(window.Sway.data);</td>
+                        <td class="line-number">138</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">139</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">140</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;{&nbsp;&nbsp;//&nbsp;nope,&nbsp;no&nbsp;relation!!</td>
+                    </tr>    <tr class="not-called">
+                        <td class="line-number">141</td><td class="line-calls">0</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw&nbsp;&quot;No&nbsp;Relation&nbsp;defined&nbsp;for&nbsp;&quot;&nbsp;+&nbsp;self.$className&nbsp;+&nbsp;&quot;:belongs_to&nbsp;--&gt;&nbsp;&quot;&nbsp;+&nbsp;activeRecord.$className&nbsp;+&nbsp;&quot;:???&quot;&nbsp;;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">142</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">143</td><td class="line-calls">&nbsp;</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">144</td><td class="line-calls">&nbsp;</td><td class="line-code"></td>
+                    </tr>    <tr class="called">
+                        <td class="line-number">145</td><td class="line-calls">1</td><td class="line-code">&nbsp;&nbsp;&nbsp;&nbsp;ns.Relation&nbsp;=&nbsp;Relation;</td>
+                    </tr>    <tr class="uncovered">
+                        <td class="line-number">146</td><td class="line-calls">&nbsp;</td><td class="line-code">})(window.Sway.data);</td>
                     </tr>
                 </table>
             </div>
@@ -405,7 +435,7 @@ h1{font-size:138.5%;}h2{font-size:123.1%;}h3{font-size:108%;}h1,h2,h3{margin:1em
 
         <!-- footer -->
         <div class="ft">
-            <p>Code coverage for ./src/data/relation.js generated on Tue Jul 02 22:22:25 CEST 2013 by YUI Test.</p>
+            <p>Code coverage for ./src/data/relation.js generated on Sun Jul 07 21:08:28 CEST 2013 by YUI Test.</p>
         </div>
     </div>
 

@@ -74,6 +74,15 @@
             "fors": {},
             "namespaces": {}
         },
+        "src/data/relation.js": {
+            "name": "src/data/relation.js",
+            "modules": {},
+            "classes": {
+                "Sway.data.Relation": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "src/filters/compress.js": {
             "name": "src/filters/compress.js",
             "modules": {},
@@ -420,6 +429,56 @@
                             "name": "validators",
                             "description": "list of validation functions",
                             "type": "Array",
+                            "optional": true
+                        }
+                    ]
+                }
+            ]
+        },
+        "Sway.data.Relation": {
+            "name": "Sway.data.Relation",
+            "shortname": "Sway.data.Relation",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/data/relation.js",
+            "line": 17,
+            "description": "Sway.data.Relation defines the association between two {{#crossLink \"Sway.data.Model\"}}{{/crossLink}}s. It is based on the Ruby on Rails (RoR)\n<a href=\"http://guides.rubyonrails.org/association_basics.html\">ActiveRecord Associations</a>.<br>\nThe following associations are available:\n\n<h4>BELONGS_TO and HAS_ONE (THROUGH) Association</h4>\nAssume an 'Account' <tt>belongs\\_to</tt> a 'Supplier'. Or the other way around, a Supplier <tt>has\\_one</tt> Account.\nFurthermore, if an 'Account' and 'Supplier' both <tt>has\\_one</tt> 'AccountHistory', it will look like this\n\n     var Account = new Sway.data.ActiveRecord( 'Account', storage, [\n           new Sway.data.Relation({ key: 'supplier', type: 'belongs_to', model: 'Supplier' }       // creates a field 'supplier_id'\n           new Sway.data.Relation({ type: 'has_one', model: 'AccountHistory' }                     // AccountHistory should have a account_id field\n           .....\n     ]) ;\n\n     var Supplier = new Sway.data.ActiveRecord( 'Supplier', storage, [\n          new Sway.data.Relation({ key: 'account', type: 'has_one', model: 'Account' })\n          new Sway.data.Relation({ key: 'accountHistory', type: 'has_one', through: 'AccountHistory', model: 'Account' })\n          ....\n     ]) ;\n\n     var AccountHistory = new Sway.data.ActiveRecord( 'AccountHistory', storage, [\n         new Sway.datat.Relation({ type: 'belongs_to', model: 'Account' })                          // creates an 'account_id' field\n         ...\n     ]) ;\n\n     ...\n     supplierRecord.accountHistory = someAccountHistories\n\nAn <tt>belongs_to</tt> field is always required!!\n\n<h4>HAS_MANY (THROUGH)</h4>\nThis association define a one-to-many or a many-to-many relationship.\n\n     new Sway.data.Relation({ key: 'orders', type: 'has_many', model: 'Order' }) ;            // one-to-many\n     new Sway.data.Relation({ key: 'patients', type: 'has_many', through: 'Appointment', model: 'Patient' }) ;  // many-to-many\n\n<h4>HAS_AND_BELONGS_TO_MANY</h4>\nThis relation is identical to <tt>HAS\\_MANY THROUGH</tt> (many-to-many), except it doesn't have a third model\n\n     new Sway.data.Relation({ key: 'assemblies', type: 'has_and_belongs_to_many', model: 'Assembly' })\n\nAnd the association in the other moddel look like\n\n     new Sway.data.Relation({ key: 'parts', type: 'has_and_belongs_to_many', model: 'Part' })",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "key",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "type",
+                    "description": "type of association",
+                    "type": "String"
+                },
+                {
+                    "name": "model",
+                    "description": "name of the model",
+                    "type": "String"
+                },
+                {
+                    "name": "options",
+                    "description": "",
+                    "type": "Object",
+                    "optional": true,
+                    "props": [
+                        {
+                            "name": "through",
+                            "description": "specifies a join model. Only available for <tt>HAS\\_ONE</tt> and <tt>HAS\\_MANY</tt> associations",
+                            "type": "String",
+                            "optional": true
+                        },
+                        {
+                            "name": "friendlyName",
+                            "description": "description of the field",
+                            "type": "String",
                             "optional": true
                         }
                     ]

@@ -10,24 +10,24 @@
 	@if $prefix-value == true {
 		@if $prefix-property == true {
 			-webkit-#{$property}: -webkit-#{$value} ;
-            -khtml-#{$property}: -khtml-#{$value} ;
-            -moz-#{$property}: -moz-#{$value} ;
+            		-khtml-#{$property}: -khtml-#{$value} ;
+            		-moz-#{$property}: -moz-#{$value} ;
 			-ms-#{$property}: -ms-#{$value} ;
-            -o-#{$property}: -o-#{$value} ;
+            		-o-#{$property}: -o-#{$value} ;
 		}
 		@else {
 			#{$property}: -webkit-#{$value} ;
-            #{$property}: -khtml-#{$value} ;
-            #{$property}: -moz-#{$value} ;
+            		#{$property}: -khtml-#{$value} ;
+            		#{$property}: -moz-#{$value} ;
 			#{$property}: -ms-#{$value} ;
-            #{$property}: -o-#{$value} ;
+            		#{$property}: -o-#{$value} ;
 		}
 	}
 	@else if $prefix-property == true {
 		-webkit-#{$property}: $value ;
-        -khtml-#{$property}: $value ;
-        -moz-#{$property}: $value ;
+        	-khtml-#{$property}: $value ;
+        	-moz-#{$property}: $value ;
 		-ms-#{$property}: $value ;
-        -o-#{$property}: $value ;
+        	-o-#{$property}: $value ;
 	}
 }
