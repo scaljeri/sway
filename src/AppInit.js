@@ -2,7 +2,7 @@
  * Namespace
  * @class Sway
  */
-window.Sway = window.Sway || {} ;
+window.Sway = window.Sway || { data: { persistance: {}}, filter: {}, ux: {}} ;
 
 /**
   * Version of the framework
