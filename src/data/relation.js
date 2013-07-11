@@ -14,7 +14,7 @@ window.Sway.data = window.Sway.data || {};
      has_and_belongs_to_many    // simple linker table (http://stackoverflow.com/questions/2780798/has-and-belongs-to-many-vs-has-many-through)
      */
 
-    /*
+    /**
      * Sway.data.Relation defines the association between two {{#crossLink "Sway.data.Model"}}{{/crossLink}}s. It is based on the Ruby on Rails (RoR)
      * <a href="http://guides.rubyonrails.org/association_basics.html">ActiveRecord Associations</a>.<br>
      * The following associations are available:
@@ -64,7 +64,7 @@ window.Sway.data = window.Sway.data || {};
      * @constructor
      * @param {String} key
      * @param {String} type type of association
-     * @param {String} model name of the model
+     * @param {String} model name of the associated model
      * @param {Object} [options]
      *          @param {String} [options.through] specifies a join model. Only available for <tt>HAS\_ONE</tt> and <tt>HAS\_MANY</tt> associations
      *          @param {String} [options.friendlyName] description of the field
@@ -76,56 +76,103 @@ window.Sway.data = window.Sway.data || {};
         this.key = key;
         this.type = type;
         this.model = model;
+        this.through = options.through ;
+        this.defaultValue = options.defaultValue||null ;
 
         switch (type) {
             case 'belongs_to' :
                 this.set = setHasOne.bind(this) ;        // force context === this
+                this.defaultValue = options.defaultValue||null ;
                 break ;
             case 'has_one':
-                this.set = options.through ? setHasOneThrough.bind(this) : setHasOne.bind(this) ;
+                this.set = (options.through ? setHasOneThrough : setHasOne).bind(this) ;
+                if ( options.through ) {
+                    this.get = getDataThrough ;
+                }
+                this.defaultValue = options.defaultValue||null ;
                 break ;
             case 'has_many':
-                this.set = options.through ? setHasManyThrough.bind(this) : setHasMany.bind(this) ;
+                this.set = (options.through ? setHasManyThrough : setHasMany).bind(this) ;
+                if ( options.through ) {
+                    this.get = getDataThrough ;
+                }
+                this.defaultValue = options.defaultValue||[] ;
                 break;
             case 'has_and_belongs_to_many':
-                this.set = setHasAndBelongsToMany.bind(this);
+                this.set = setHasMany.bind(this);
+                this.defaultValue = options.defaultValue||[] ;
                 break;
             default:
                 this.set = function(){ throw("Associtation " + type  + " is not supported");};
         }
 
-        return Object.freeze(this);
+        //return Object.freeze(this); // cannot freeze at this time because model is still a 'string'
     };
 
     Relation.prototype = {} ;
+    Relation.ActiveRecord = null ;
+
 
     /*
-        @param {Object} self the object which receives the 'activeRecord'
+        The context/this is the instance of this class
+        @param {Object} self the AR object which receives the 'activeRecord'
         @param {String} key the property of self
         @param {Object} activeRecord the value to be set
      */
     function setHasOne(self, key, activeRecord) {
-        console.log(key) ;
+        console.log(self.$className + ':' + key + ' has-one ' + activeRecord.$className) ;
         self.__data[key] = activeRecord ;
+        setSelf2AR(self, key, activeRecord) ;
+    }
+    function setHasMany(self, key, activeRecord) {
+        console.log(self.$className + ':' + key + ' has-many ' + activeRecord.$className) ;
+        var i;
 
-        var otherField = activeRecord.constructor.__reverseRelation[self.$className]
+        if ( Array.isArray(activeRecord) ) {
+            self.__data[key] = activeRecord ;
+            for( i = 0; i < activeRecord.length; i++) {
+                setSelf2AR(self, key, activeRecord) ;
+            }
+        }
+        else if ( self.__data[key].indexOf(activeRecord) === -1 ) {
+            self.__data[key].push(activeRecord) ;
+            setSelf2AR(self, key, activeRecord) ;
+        }
+    }
+
+    function setHasManyThrough(self, key, activeRecord) {
+        if ( activeRecord.$className === this.model ) {
+            console.log(this.model + " goes through " + this.through) ;
+            if ( this.through ) {
+
+            }
+            else {
+                throw "The assoc " + this.key + " for " + self.$className + " doesn't have 'through' defined!!" ;
+            }
+        }
+        else {
+            throw "Association missmatch, " + this.model + " (assoc) not equals " + activeRecord.$className + " (val)" ;
+
+        }
+    }
+
+    function setHasOneThrough(self, key, activeRecord) {
+    }
+
+    function setSelf2AR(self, key, activeRecord) {
+        var otherField = activeRecord.constructor.__reverseRelation[self.$className] ;
         if ( otherField ) {
-            // make sure this will not be an infinite loop
-            if ( activeRecord[otherField.key] !== self ) { //} Object.getOwnPropertyDescriptor(activeRecord, activeRecord.constructor.__reverseRelation[self.$className].key) !== undefined ) {
+            if ( activeRecord[otherField.key] !== self ) {
                 activeRecord[otherField.key] = self ;
             }
         }
-        else {  // nope, no relation!!
+        else {  // oops, no relation!!
             throw "No Relation defined for " + self.$className + ":belongs_to --> " + activeRecord.$className + ":???" ;
         }
     }
-    function setHasOneThrough(data, value){
-    }
-    function setHasMany(data, value) {
-    }
-    function setHasManyThrough(data, value) {
-    }
-    function setHasAndBelongsToMany(data, value) {
+
+    function getDataThrough(self, key) {
+        return self.__data[key] ? self.__data[key][key] : null ;
     }
 
     ns.Relation = Relation;

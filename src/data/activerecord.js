@@ -9,7 +9,8 @@ window.Sway.data = window.Sway.data || {};
      A reference to all registered model classes is kept here for two reasons, 1) you only need to define it once and
      2) relations can be created when available
      */
-    var models = {}
+    var models = {}                 // hash of all models (key is name of the model
+        , registerForModel = {}     // hash of associations, which depend on a model (the key)
     /**
      * Sway.data.ActiveRecord is the pattern used for this ORM implementation and based on the Ruby on Rails (RoR)
      * <a href="http://guides.rubyonrails.org/association_basics.html">ActiveRecord Associations</a>. This pattern
@@ -378,10 +379,14 @@ window.Sway.data = window.Sway.data || {};
                 (function (i, field) {
                     Object.defineProperty(this, i, {
                         set: function(value){field.set( this, i, value);}.bind(this)    // set is handled by the field itself
-                        , get: getProperty.bind(this, i)
+                        , get: field.get ? field.get.bind(field, this, i) : getProperty.bind(this, i)
                     });
                     if ( this.__data[i] === undefined ) { // set default value
                         this.__data[i] = field.defaultValue ;
+                    }
+                    if ( !field.ActiveRecord ) {
+                        field.ActiveRecord =  ActiveRecord ;
+                        Object.freeze(field.ActiveRecord) ;
                     }
                 }.bind(this))(i, field);
 
@@ -392,7 +397,6 @@ window.Sway.data = window.Sway.data || {};
         model.$name = modelName ;
         return model ;
     }
-
 
     function getProperty(key) {
         return this.__data[key];

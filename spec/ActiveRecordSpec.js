@@ -173,64 +173,20 @@ window.describe("Sway.data.ActiveRecord", function () {
         expect(physician.isNew).toBeTruthy() ;
     });
 
-    describe("should support HAS_ONE/BELONGS_TO association", function () {
-        it("and be able to create one", function () {
-
-            expect(accountHistory.account).toBe(account) ;
-            expect(account.accountHistory).toBe(accountHistory) ;
-            expect(accountHistory1.account).toBe(account1) ;
-            expect(account1.accountHistory).toBe(accountHistory1) ;
-        });
-
-        it("and be able to save one", function () {
-
-        });
-
-        it("and be able to load one", function () {
-
-        });
+    it("should support HAS_ONE/BELONGS_TO association", function () {
+        expect(accountHistory.account).toBe(account) ;
+        expect(account.accountHistory).toBe(accountHistory) ;
+        expect(accountHistory1.account).toBe(account1) ;
+        expect(account1.accountHistory).toBe(accountHistory1) ;
     });
 
-    xdescribe("should support HAS_ONE/BELONGS_TO THROUGH association", function () {
-        it("and be able to create one", function () {
-
-        });
-
-        it("and be able to save one", function () {
-
-        });
-
-        it("and be able to load one", function () {
-
-        });
+    it("should support HAS_ONE/BELONGS_TO THROUGH association", function () {
     });
 
-    xdescribe("should support HAS_MANY association", function () {
-        it("and be able to create one", function () {
-
-        });
-
-        it("and be able to save one", function () {
-
-        });
-
-        it("and be able to load one", function () {
-
-        });
+    xit("should support HAS_MANY association", function () {
     });
 
-    xdescribe("should support HAS_MANY THROUGH association", function () {
-        it("and be able to create one", function () {
-
-        });
-
-        it("and be able to save one", function () {
-
-        });
-
-        it("and be able to load one", function () {
-
-        });
+    xit("should support HAS_MANY THROUGH association", function () {
     });
 
     xit("should create a HAS_AND_BELONGS_TO_MANY association", function () {
