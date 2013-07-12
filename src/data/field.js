@@ -82,22 +82,113 @@ window.Sway.data = window.Sway.data || {};
      *      @param {Array}   [options.validators] list of validation functions
      */
     var Field = function (key, options) {
-        if (!options) {
-            options = {};
+        if ( !options ) {
+            options = {} ;
         }
         for (var i in options) {
             this[i] = options[i];
         }
         this.key = key;
-        this.type = options.type || 'text';  // define default type
+        this.type = options.type || 'text';  // default type
 
-        //return Object.freeze(this);
+        switch (this.type) {
+            case 'belongs_to' :
+                this.set = setHasOne.bind(this) ;        // force context === this
+                this.defaultValue = options.defaultValue||null ;
+                break ;
+            case 'has_one':
+                this.set = (options.through ? setHasOneThrough : setHasOne).bind(this) ;
+                if ( options.through ) {
+                    this.get = getDataThrough ;
+                }
+                this.defaultValue = options.defaultValue||null ;
+                break ;
+            case 'has_many':
+                this.set = (options.through ? setHasManyThrough : setHasMany).bind(this) ;
+                if ( options.through ) {
+                    this.get = getDataThrough ;
+                }
+                this.defaultValue = options.defaultValue||[] ;
+                break;
+            case 'has_and_belongs_to_many':
+                this.set = setHasMany.bind(this);
+                this.defaultValue = options.defaultValue||[] ;
+                break;
+            default: // its not a association
+                if ( this.model || this.through ) {
+                    throw "The field " + key + " does not support the mode/through property (" + this.model + " " + this.through + ")" ;
+                }
+        }
     };
 
+    /*
+     The context/this is the instance of this class
+     @param {Object} self the AR object which receives the 'activeRecord'
+     @param {String} key the property of self
+     @param {Object} activeRecord the value to be set
+     */
+    function setHasOne(self, key, activeRecord) {
+        console.log(self.$className + ':' + key + ' has-one ' + activeRecord.$className) ;
+        self.__data[key] = activeRecord ;
+        setSelf2AR(self, key, activeRecord) ;
+    }
+    function setHasMany(self, key, activeRecord) {
+        console.log(self.$className + ':' + key + ' has-many ' + activeRecord.$className) ;
+        var i;
+
+        if ( Array.isArray(activeRecord) ) {
+            self.__data[key] = activeRecord ;
+            for( i = 0; i < activeRecord.length; i++) {
+                setSelf2AR(self, key, activeRecord) ;
+            }
+        }
+        else if ( self.__data[key].indexOf(activeRecord) === -1 ) {
+            self.__data[key].push(activeRecord) ;
+            setSelf2AR(self, key, activeRecord) ;
+        }
+    }
+
+    function setHasManyThrough(self, key, activeRecord) {
+        if ( activeRecord.$className === this.model ) {
+            console.log(this.model + " goes through " + this.through) ;
+            if ( this.through ) {
+
+            }
+            else {
+                throw "The assoc " + this.key + " for " + self.$className + " doesn't have 'through' defined!!" ;
+            }
+        }
+        else {
+            throw "Association missmatch, " + this.model + " (assoc) not equals " + activeRecord.$className + " (val)" ;
+
+        }
+    }
+
+    function setHasOneThrough(self, key, activeRecord) {
+    }
+
+    function setSelf2AR(self, key, activeRecord) {
+        var otherField = activeRecord.constructor.__reverseRelation[self.$className] ;
+        if ( otherField ) {
+            if ( activeRecord[otherField.key] !== self ) {
+                activeRecord[otherField.key] = self ;
+            }
+        }
+        else {  // oops, no relation!!
+            throw "No Relation defined for " + self.$className + ":belongs_to --> " + activeRecord.$className + ":???" ;
+        }
+    }
+
+    function getDataThrough(self, key) {
+        return self.__data[key] ? self.__data[key][key] : null ;
+    }
+
     /* this function is called by ActiveRecord, which will also be the context/this */
+    /*
     function set(key, value) {
         this[key] = value ;
     }
+    */
 
     Field.prototype = {
 

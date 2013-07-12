@@ -39,45 +39,45 @@ window.describe("Sway.data.ActiveRecord", function () {
 
     new Sway.data.ActiveRecord('Physician', ns.persistance, [
         new Sway.data.Field('name')
-        , new Sway.data.Relation('appointments', 'has_many', 'Appointment', { friendlyName: 'Appointments' })
-        , new Sway.data.Relation('patients', 'has_many', 'Patient', { through: 'Appointment', friendlyName: 'Patients' })
-        , new Sway.data.Relation('hospitals', 'has_and_belongs_to_many', 'Hospital', { friendlyName: 'Hospitals' })
+        , new Sway.data.Field('appointments', { type: 'has_many', model: 'Appointment', friendlyName: 'Appointments' })
+        , new Sway.data.Field('patients', { type: 'has_many', model: 'Patient', through: 'Appointment', friendlyName: 'Patients' })
+        , new Sway.data.Field('hospitals', { type: 'has_and_belongs_to_many', model: 'Hospital', friendlyName: 'Hospitals' })
     ]);
 
     new Sway.data.ActiveRecord('Appointment', ns.persistance, [
         new Sway.data.Field('appointmentDate', {type: 'date'})
-        , new Sway.data.Relation('physician', 'belongs_to', 'Physician', { friendlyName: 'Physician' })
-        , new Sway.data.Relation('patients', 'belongs_to', 'Patient', { friendlyName: 'Patient' })
+        , new Sway.data.Field('physician', { type: 'belongs_to', model: 'Physician', friendlyName: 'Physician' })
+        , new Sway.data.Field('patients', { type: 'belongs_to', model: 'Patient', friendlyName: 'Patient' })
     ]);
 
     new Sway.data.ActiveRecord('Patient', ns.persistance, [
         new Sway.data.Field('name')
-        , new Sway.data.Relation('address', 'has_one', 'Address', { friendlyName: 'Address'})
-        , new Sway.data.Relation('account', 'has_one', 'Account', { friendlyName: 'Account'})
-        , new Sway.data.Relation('accountHistory', 'has_one', 'AccountHistory', { through: 'Account', friendlyName: 'Account History'})
-        , new Sway.data.Relation('appointments', 'has_many', 'Appointment', { friendlyName: 'Appointments' })
-        , new Sway.data.Relation('physicians', 'has_many', 'Physician', { through: 'Appointment', friendlyName: 'Physicians' })
+        , new Sway.data.Field('address', { type: 'has_one', model: 'Address', friendlyName: 'Address'})
+        , new Sway.data.Field('account', { type: 'has_one', model: 'Account', friendlyName: 'Account'})
+        , new Sway.data.Field('accountHistory', { type: 'has_one', model: 'AccountHistory', through: 'Account', friendlyName: 'Account History'})
+        , new Sway.data.Field('appointments', { type: 'has_many', model: 'Appointment', friendlyName: 'Appointments' })
+        , new Sway.data.Field('physicians', { type: 'has_many', model: 'Physician', through: 'Appointment', friendlyName: 'Physicians' })
     ]);
 
     new Sway.data.ActiveRecord('Address', ns.persistance, [
         new Sway.data.Field('street')
-        , new Sway.data.Relation('patient', 'belongs_to', 'Patient')
+        , new Sway.data.Field('patient', { type: 'belongs_to', model: 'Patient' })
     ]);
 
     new Sway.data.ActiveRecord('Account', ns.persistance, [
         new Sway.data.Field('name')
-        , new Sway.data.Relation('patient', 'belongs_to', 'Patient', { friendlyName: 'Patient' })
-        , new Sway.data.Relation('accountHistory', 'has_one', 'AccountHistory', { friendlyName: 'Account History' })
+        , new Sway.data.Field('patient', { type: 'belongs_to', model: 'Patient', friendlyName: 'Patient' })
+        , new Sway.data.Field('accountHistory', { type: 'has_one', model: 'AccountHistory', friendlyName: 'Account History' })
     ]);
 
     new Sway.data.ActiveRecord('AccountHistory', ns.persistance, [
         new Sway.data.Field('message')
-        , new Sway.data.Relation('account', 'belongs_to', 'Account', { friendlyName: 'Account' })
+        , new Sway.data.Field('account', { type: 'belongs_to', model: 'Account', friendlyName: 'Account' })
     ]);
 
     new Sway.data.ActiveRecord('Hospital', ns.persistance, [
         new Sway.data.Field('name')
-        , new Sway.data.Relation('physicians', 'has_and_belongs_to_many', 'Physician', { friendlyName: 'Physician' })
+        , new Sway.data.Field('physicians', { type: 'has_and_belongs_to_many', model: 'Physician', friendlyName: 'Physician' })
     ]);
 
     Physician = Sway.data.ActiveRecord.get('Physician');
