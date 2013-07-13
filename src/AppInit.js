@@ -1,5 +1,5 @@
 /**
- * Namespace
+ * TODO
  * @class Sway
  */
 window.Sway = window.Sway || { data: { persistance: {}}, filter: {}, ux: {}} ;
