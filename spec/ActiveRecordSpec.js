@@ -1,12 +1,14 @@
+/*
 var P = new Sway.data.ActiveRecord('Patient', null, [
     new Sway.data.Field('name')
-    , new Sway.data.Relation('account', 'has_one', 'Account', { friendlyName: 'Account'})
+    , new Sway.data.Field('account', 'has_one', 'Account', { friendlyName: 'Account'})
 ]);
 
 var A = new Sway.data.ActiveRecord('Account', null, [
     new Sway.data.Field('name')
-    , new Sway.data.Relation('patient', 'belongs_to', 'Patient', { friendlyName: 'Patient' })
+    , new Sway.data.Field('patient', 'belongs_to', 'Patient', { friendlyName: 'Patient' })
 ]);
+*/
 //window.p = new P({name:'John'}) ;window.a = new A({name:'ver'}) ;window.a.patient = window.p ;
 
 window.describe("Sway.data.ActiveRecord", function () {

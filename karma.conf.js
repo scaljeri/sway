@@ -14,7 +14,6 @@ files = [
   'src/di.js',
   'src/eventhub.js',
   'src/data/field.js',
-  'src/data/relation.js',
   'src/data/activerecord.js',
   'src/data/persistance/websqlresult.js',
 
